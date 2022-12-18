@@ -17,15 +17,41 @@ public class Order {
     private Date data_spedizione;
     private Date data_consegna;
     private OrderState orderState;
-    private Hashtable<Prodotto,Integer> prodotti;
-    private Date data_ordine;
-    private double prezzo_totale;
-    public Order(long id,Date data_spedizione,Date data_consegna,OrderState orderState){
+    private final Hashtable<Prodotto,Integer> prodotti;
+    private final Date data_ordine;
+    private final double prezzo_totale;
+    private String trackId;
+
+    private final Corriere corriere;
+    public Order(long id,Date data_spedizione,Date data_consegna,OrderState orderState,Hashtable<Prodotto,Integer>prodotti,Corriere corriere){
         this.data_spedizione=data_spedizione;
         this.data_consegna=data_consegna;
         this.orderState=orderState;
         this.data_ordine= (Date) Date.from(Instant.now());
         this.prezzo_totale = getTotal();
+        this.corriere=corriere;
+        this.prodotti=prodotti;
+    }
+
+
+    public void setTrackId(String trackId){
+        this.trackId=trackId;
+    }
+
+    public String getTrackId() {
+        return trackId;
+    }
+
+    public Corriere getCorriere() {
+        return corriere;
+    }
+
+    public Hashtable<Prodotto, Integer> getProdotti() {
+        return prodotti;
+    }
+
+    public double getPrezzo_totale() {
+        return prezzo_totale;
     }
 
     public long getId() {
@@ -62,10 +88,6 @@ public class Order {
 
     public Date getData_ordine() {
         return data_ordine;
-    }
-
-    public void setData_ordine(Date data_ordine) {
-        this.data_ordine = data_ordine;
     }
 
     public double getTotal(){

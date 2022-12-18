@@ -14,6 +14,22 @@ public class Prodotto {
     private ProductState stato;
     private String descrizione;
 
+
+    public Prodotto(long id,String sku,String nome,String marchio_Produttore,double prezzo,double peso,double altezza,double larghezza,ProductState stato,String descrizione) {
+        this.id=id;
+        this.sku=sku;
+        this.nome=nome;
+        this.marchio_Produttore=marchio_Produttore;
+        this.prezzo=prezzo;
+        this.peso=peso;
+        this.altezza=altezza;
+        this.larghezza=larghezza;
+        this.stato=stato;
+        this.descrizione=descrizione;
+    }
+
+
+
     private ArrayList<Collezione> collezioni;
     public long getId() {
         return id;
