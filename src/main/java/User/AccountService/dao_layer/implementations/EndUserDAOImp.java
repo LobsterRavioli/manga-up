@@ -21,16 +21,16 @@ public class EndUserDAOImp implements EndUserDAO {
     }
 
     private static final String SQL_INSERT =
-            "INSERT INTO EndUser (email, name, surname, password, number, birth_date)\n" +
+            "INSERT INTO END_USER (email, name, surname, password, number, birth_date)\n" +
             "VALUES (?, ?, ?, MD5(?), ?, ?);";
     private static final String SQL_DELETE =
-            "DELETE FROM EndUser WHERE email = ? ;";
+            "DELETE FROM END_USER WHERE email = ? ;";
     private static final String SQL_UPDATE =
-            "UPDATE EndUser SET name = ? , surname = ? , email = ? , password = MD5(?) , number = ? WHERE user_id = ? ;";
+            "UPDATE END_USER SET name = ? , surname = ? , email = ? , password = MD5(?) , number = ? WHERE user_id = ? ;";
     private static final String SQL_FIND_BY_ID =
-            "SELECT * FROM EndUser WHERE user_id= ? ;";
+            "SELECT * FROM END_USER WHERE user_id= ? ;";
     private static final String SQL_FIND_BY_EMAIL_AND_PASSWORD =
-            "SELECT * FROM EndUser WHERE email = ? AND password = MD5(?) ;";
+            "SELECT * FROM END_USER WHERE email = ? AND password = MD5(?) ;";
 
 
     private static final String SQL_EXIST_EMAIL =

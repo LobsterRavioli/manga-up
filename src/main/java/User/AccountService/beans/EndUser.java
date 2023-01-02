@@ -45,12 +45,6 @@ public class EndUser extends User{
         this.birthdate = birthdate;
     }
 
-    @Override
-    public String getRole() {
-        return this.getClass().getSimpleName().toUpperCase(Locale.ROOT);
-    }
-
-
     public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     }

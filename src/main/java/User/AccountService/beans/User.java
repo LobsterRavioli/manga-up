@@ -1,9 +1,9 @@
 package User.AccountService.beans;
 
-public abstract class User {
-    public static final String END_USER = "ENDUSER";
-    public static final String CATALOG_MANAGER = "CATALOGMANAGERUSER";
-    public static final String ORDER_MANAGER = "ORDERMANAGERUSER";
+import java.util.HashMap;
+
+public class User {
+
 
     protected Long id;
     protected String username;
@@ -33,5 +33,4 @@ public abstract class User {
         this.password = password;
     }
 
-    public abstract String getRole();
 }
