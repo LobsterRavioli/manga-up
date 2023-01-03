@@ -64,6 +64,7 @@
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>
             <groupId>com.h2database</groupId>
@@ -71,6 +72,12 @@
             <version>2.0.202</version>
             <scope>test</scope>
 
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.25</version>
         </dependency>
 
     </dependencies>

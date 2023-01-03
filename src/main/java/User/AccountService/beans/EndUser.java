@@ -1,78 +1,84 @@
 package User.AccountService.beans;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
-public class EndUser extends User{
-
+public class EndUser{
+    int id;
     private String name;
     private String surname;
-    private String number;
-    private List<Address> addresses;
-    private List<PaymentCard> cards;
+    private String email;
+    private String phoneNumber;
+    private String password;
+    private Set addresses;
+    private Set cards;
     private Date birthdate;
 
-    public EndUser(){}
-
-    @Override
-    public String getUsername() {
-        return super.getUsername();
+    public int getId() {
+        return id;
     }
 
-    public String getEmail(){
-        return this.username;
-    }
-    public void setEmail(String email){
-        this.username = email;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public EndUser(String name, String surname, String number, Date birthdate, List<Address> addresses, List<PaymentCard> cards) {
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public EndUser(){
+        cards = new HashSet();
+        addresses = new HashSet();
+    }
+
+    public EndUser(int id, String name, String surname, String email, String phoneNumber, String password, Date birthdate) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
-        this.number = number;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
         this.birthdate = birthdate;
-        setAddresses(addresses);
-        setCards(cards);
+        this.addresses = new HashSet();
+        this.cards = new HashSet();
     }
 
-
-    public EndUser(String name, String surname, String number, Date birthdate) {
+    public EndUser(String name, String surname, String email, String phoneNumber, String password, Date birthdate) {
         this.name = name;
         this.surname = surname;
-        this.number = number;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
         this.birthdate = birthdate;
+        this.addresses = new HashSet();
+        this.cards = new HashSet();
     }
 
-    public void setBirthdate(Date birthdate) {
-        this.birthdate = birthdate;
+    public void addPaymentCard(PaymentCard c){
+        cards.add(c);
     }
 
-    public List<Address> getAddresses() {
-        ArrayList<Address> clonedAddressesList = new ArrayList<Address>();
-        clonedAddressesList.addAll(addresses);
-        return clonedAddressesList;
+    public void removePaymentCard(PaymentCard c){
+        cards.remove(c);
     }
 
-    public void setAddresses(List<Address> addresses) {
-        ArrayList<Address> clonedList = new ArrayList<Address>();
-        clonedList.addAll(addresses);
-        this.addresses = clonedList;
+    public Collection getPaymentCard(){
+        return cards;
     }
 
-    public List<PaymentCard> getCards() {
-        ArrayList<PaymentCard> clonedList = new ArrayList<PaymentCard>();
-        clonedList.addAll(cards);
-        return clonedList;
+    public void addAddress(Address c){
+        addresses.add(c);
+    }
+    public void removeAddress(PaymentCard c){
+        addresses.remove(c);
     }
 
-    public void setCards(List<PaymentCard> cards) {
-        ArrayList<PaymentCard> clonedList = new ArrayList<PaymentCard>();
-        clonedList.addAll(cards);
-        this.cards = clonedList;
+    public Collection getAddresses(){
+        return addresses;
     }
-
 
     public String getName() {
         return name;
@@ -90,15 +96,67 @@ public class EndUser extends User{
         this.surname = surname;
     }
 
-    public String getNumber() {
-        return number;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setAddresses(Set addresses) {
+        this.addresses = addresses;
+    }
+
+    public Set getCards() {
+        return cards;
+    }
+
+    public void setCards(Set cards) {
+        this.cards = cards;
     }
 
     public Date getBirthdate() {
         return birthdate;
+    }
+
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        EndUser endUser = (EndUser) o;
+        return id == endUser.id && Objects.equals(name, endUser.name) && Objects.equals(surname, endUser.surname) && Objects.equals(email, endUser.email) && Objects.equals(phoneNumber, endUser.phoneNumber) && Objects.equals(password, endUser.password) && Objects.equals(addresses, endUser.addresses) && Objects.equals(cards, endUser.cards) && Objects.equals(birthdate, endUser.birthdate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, surname, email, phoneNumber, password, addresses, cards, birthdate);
+    }
+
+    @Override
+    public String toString() {
+        return "EndUser{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", number='" + phoneNumber + '\'' +
+                ", password='" + password + '\'' +
+                ", addresses=" + addresses +
+                ", cards=" + cards +
+                ", birthdate=" + birthdate +
+                '}';
     }
 }

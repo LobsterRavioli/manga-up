@@ -12,10 +12,10 @@ import java.sql.SQLException;
 
 import static utils.DAOUtil.*;
 
-public class EndUserDAOImp implements EndUserDAO {
+public class EndUserDAOSql implements EndUserDAO {
     private DataSource ds;
 
-    public EndUserDAOImp(DataSource ds){
+    public EndUserDAOSql(DataSource ds){
         this.ds = ds;
 
     }
@@ -26,23 +26,23 @@ public class EndUserDAOImp implements EndUserDAO {
     private static final String SQL_DELETE =
             "DELETE FROM END_USER WHERE email = ? ;";
     private static final String SQL_UPDATE =
-            "UPDATE END_USER SET name = ? , surname = ? , email = ? , password = MD5(?) , number = ? WHERE user_id = ? ;";
+            "UPDATE END_USER SET name = ? , surname = ? , email = ? , password = MD5(?) , number = ? WHERE id = ? ;";
     private static final String SQL_FIND_BY_ID =
-            "SELECT * FROM END_USER WHERE user_id= ? ;";
+            "SELECT * FROM END_USER WHERE id = ? ;";
     private static final String SQL_FIND_BY_EMAIL_AND_PASSWORD =
             "SELECT * FROM END_USER WHERE email = ? AND password = MD5(?) ;";
 
 
     private static final String SQL_EXIST_EMAIL =
-            "SELECT user_id FROM EndUser WHERE email = ?";
+            "SELECT id FROM EndUser WHERE email = ?";
 
     private static final String SQL_CHANGE_PASSWORD =
-            "UPDATE EndUser SET password = MD5(?) WHERE user_id = ?";
+            "UPDATE EndUser SET password = MD5(?) WHERE id = ?";
 
     @Override
     public void create(EndUser user) throws IllegalArgumentException, DAOException {
 
-        if (user.getId() != null) {
+        if (user.getId() != 0) {
             throw new IllegalArgumentException("User is already created, the user ID is not null.");
         }
 
@@ -51,13 +51,13 @@ public class EndUserDAOImp implements EndUserDAO {
                 user.getName(),
                 user.getSurname(),
                 user.getPassword(),
-                user.getNumber(),
+                user.getPhoneNumber(),
                 toSqlDate(user.getBirthdate())
         };
 
         try (
                 Connection connection = ds.getConnection();
-                PreparedStatement statement = prepareStatement(connection, SQL_INSERT, true, values);
+                PreparedStatement statement = prepareStatement(connection, SQL_INSERT, true, values)
         ) {
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -66,7 +66,7 @@ public class EndUserDAOImp implements EndUserDAO {
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    user.setId(generatedKeys.getLong(1));
+                    user.setId(generatedKeys.getInt(1));
                 } else {
                     throw new DAOException("Creating user failed, no generated key obtained.");
                 }
@@ -84,13 +84,13 @@ public class EndUserDAOImp implements EndUserDAO {
 
         try (
                 Connection connection = ds.getConnection();
-                PreparedStatement statement = prepareStatement(connection, SQL_DELETE, false, values);
+                PreparedStatement statement = prepareStatement(connection, SQL_DELETE, false, values)
         ) {
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new DAOException("Deleting user failed, no rows affected.");
             } else {
-                user.setId(null);
+                user.setId(0);
             }
         } catch (SQLException e) {
             throw new DAOException(e);
@@ -100,7 +100,7 @@ public class EndUserDAOImp implements EndUserDAO {
     @Override
     public void update(EndUser user) {
 
-        if (user.getId() == null) {
+        if (user.getId() == 0) {
             throw new IllegalArgumentException("User is not created yet, the user ID is null.");
         }
 
@@ -114,7 +114,7 @@ public class EndUserDAOImp implements EndUserDAO {
 
         try (
                 Connection connection = ds.getConnection();
-                PreparedStatement statement = prepareStatement(connection, SQL_UPDATE, false, values);
+                PreparedStatement statement = prepareStatement(connection, SQL_UPDATE, false, values)
         ) {
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -131,12 +131,12 @@ public class EndUserDAOImp implements EndUserDAO {
                 email
         };
 
-        boolean exist = false;
+        boolean exist;
 
         try (
                 Connection connection = ds.getConnection();
                 PreparedStatement statement = prepareStatement(connection, SQL_EXIST_EMAIL, false, values);
-                ResultSet resultSet = statement.executeQuery();
+                ResultSet resultSet = statement.executeQuery()
         ) {
             exist = resultSet.next();
         } catch (SQLException e) {
@@ -147,7 +147,7 @@ public class EndUserDAOImp implements EndUserDAO {
     }
 
     @Override
-    public EndUser find(Long id) { return find(SQL_FIND_BY_ID, id); }
+    public EndUser find(int id) { return find(SQL_FIND_BY_ID, id); }
 
     @Override
     public EndUser find(String email, String password) {
@@ -157,7 +157,7 @@ public class EndUserDAOImp implements EndUserDAO {
     @Override
     public void changePassword(EndUser user) throws DAOException {
 
-        if (user.getId() == null) {
+        if (user.getId() == 0) {
             throw new IllegalArgumentException("User is not created yet, the user ID is null.");
         }
 
@@ -168,7 +168,7 @@ public class EndUserDAOImp implements EndUserDAO {
 
         try (
                 Connection connection = ds.getConnection();
-                PreparedStatement statement = prepareStatement(connection, SQL_CHANGE_PASSWORD, false, values);
+                PreparedStatement statement = prepareStatement(connection, SQL_CHANGE_PASSWORD, false, values)
         ) {
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -185,7 +185,7 @@ public class EndUserDAOImp implements EndUserDAO {
         try (
                 Connection connection = ds.getConnection();
                 PreparedStatement statement = prepareStatement(connection, sql, false, values);
-                ResultSet resultSet = statement.executeQuery();
+                ResultSet resultSet = statement.executeQuery()
         ) {
             if (resultSet.next()) {
                 user = map(resultSet);
@@ -206,8 +206,10 @@ public class EndUserDAOImp implements EndUserDAO {
 
     private static EndUser map(ResultSet resultSet) throws SQLException {
         EndUser user = new EndUser();
-        user.setId(resultSet.getLong("user_id"));
+        user.setId(resultSet.getInt("id"));
         user.setEmail(resultSet.getString("email"));
+        user.setPassword(resultSet.getString("password"));
+        user.setPhoneNumber(resultSet.getString("phone_number"));
         user.setName(resultSet.getString("name"));
         user.setSurname(resultSet.getString("surname"));
         user.setBirthdate(resultSet.getDate("birth_date"));

@@ -1,29 +1,38 @@
 package User.AccountService.dao_layer.implementations;
 
-import org.dbunit.Assertion;
+
+import User.AccountService.beans.EndUser;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import utils.DAOUtil;
+
+import static org.junit.Assert.*;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
-import javax.sql.DataSource;
+import static org.mockito.Mockito.when;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+@ExtendWith(MockitoExtension.class)
 class EndUserDAOImpTest {
     private static IDatabaseTester tester;
+
+    EndUserDAOSql dao;
+    @Mock
+    DataSource ds;
 
     @BeforeAll
     static void setUpAll() throws ClassNotFoundException {
@@ -33,7 +42,7 @@ class EndUserDAOImpTest {
 
         // DB_CLOSE_DELAY=-1 impone ad H2 di eliminare il DB solo quando il processo della JVM termina
         tester = new JdbcDatabaseTester(org.h2.Driver.class.getName(),
-                "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;init=runscript from 'classpath:test/resources/schema.sql'",
+                "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;init=runscript from 'classpath:schema.sql'",
                 "prova",
                 ""
         );
@@ -46,7 +55,7 @@ class EndUserDAOImpTest {
     private static void refreshDataSet(String filename) throws Exception {
         //BHO
         IDataSet initialState = new FlatXmlDataSetBuilder()
-                .build(EndUserDAOImp.class.getClassLoader().getResourceAsStream(filename));
+                .build(EndUserDAOSql.class.getClassLoader().getResourceAsStream(filename));
         tester.setDataSet(initialState);
         tester.onSetup();
     }
@@ -54,12 +63,10 @@ class EndUserDAOImpTest {
     @BeforeEach
     public void setUp() throws Exception {
         // Prepara lo stato iniziale di default
-        refreshDataSet("test/resources/initAccountDAOTest.xml");
-        DataSource ds = Mockito.mock(DataSource.class);
-        Mockito.when(ds.getConnection()).thenReturn(tester.getConnection().getConnection());
+        refreshDataSet("enduser_dao/init.xml");
+        when(ds.getConnection()).thenReturn(tester.getConnection().getConnection());
+        dao = new EndUserDAOSql(ds);
         // SETUP DAO
-        // accountDAO = new AccountDAO(ds);
-        // accountDAOStub = new AccountDAOStub(ds);
     }
 
     @AfterEach
@@ -68,13 +75,27 @@ class EndUserDAOImpTest {
     }
 
 
-    public void registrazione_success(){}
-
-    public void registrazione_fail(){}
-
-    public void existEmailSuccess(){}
-
-    public void existEmailFail(){}
-
+    @Test
+    public void TC1_1(){
+        int id = 2;
+        EndUser user = dao.find(id);
+        assertEquals(user, null)
+;    }
+    @Test
+    public void TC1_2(){
+        int id = 1;
+        EndUser expectedUser = new EndUser();
+        expectedUser.setId(id);
+        expectedUser.setEmail("tommyrock99@hotmail.it");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+        Date expectedDate = DAOUtil.toSqlDate(new GregorianCalendar(2000, 0,1, 0,0 ).getTime());
+        expectedUser.setBirthdate(expectedDate);
+        expectedUser.setName("Tommaso");
+        expectedUser.setSurname("Sorrentino");
+        expectedUser.setPhoneNumber("393662968496");
+        expectedUser.setPassword("napoli99");
+        EndUser user = dao.find(id);
+        assertEquals(expectedUser, user);
+    }
 
 }
