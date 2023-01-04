@@ -10,7 +10,7 @@ CREATE TABLE Credit_Card
     cvc VARCHAR(3) NOT NULL,
     name VARCHAR(15) NOT NULL,
     surname VARCHAR(15) NOT NULL,
-    expirement_date date NOT NULL,
+    expired_date date NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES EndUser(id)
 );
