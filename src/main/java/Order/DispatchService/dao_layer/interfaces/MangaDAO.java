@@ -1,6 +1,6 @@
 package Order.DispatchService.dao_layer.interfaces;
 
-import Order.DispatchService.beans.Manga;
+import Merchandising.MerchandiseService.beans.Manga;
 
 /**
  * @author Alessandro

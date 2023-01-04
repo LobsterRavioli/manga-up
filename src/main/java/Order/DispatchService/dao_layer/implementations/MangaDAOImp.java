@@ -1,6 +1,6 @@
 package Order.DispatchService.dao_layer.implementations;
 
-import Order.DispatchService.beans.Manga;
+import Merchandising.MerchandiseService.beans.Manga;
 import Order.DispatchService.dao_layer.interfaces.MangaDAO;
 
 public class MangaDAOImp implements MangaDAO

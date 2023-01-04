@@ -1,13 +1,16 @@
-package Merchandising;
+package Merchandising.MerchandiseService.beans;
 
-public class ActionFigures extends Prodotto{
+import Order.DispatchService.beans.Collection;
+
+public class ActionFigures extends Product{
 
     private String materiale;
     private boolean assemblaggio_necessario;
 
     private static final int MAX_Q=0;
-    public ActionFigures(long id, String sku, String nome, String marchio_Produttore, double prezzo, double peso, double altezza, double larghezza, ProductState stato, String descrizione, String materiale, boolean assemblaggio_necessario) {
-        super(id, sku, nome, marchio_Produttore, prezzo, peso, altezza, larghezza, stato, descrizione);
+
+    public ActionFigures(String name, String producer, String description, double price, double height, double length, double weight, ProductState state, Collection collection, String materiale, boolean assemblaggio_necessario) {
+        super(name, producer, description, price, height, length, weight, state, collection);
         this.materiale = materiale;
         this.assemblaggio_necessario = assemblaggio_necessario;
     }

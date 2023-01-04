@@ -1,4 +1,4 @@
-package Merchandising;
+package Merchandising.MerchandiseService.beans;
 
 import java.util.HashMap;
 
@@ -7,19 +7,19 @@ public class Magazzino {
     private String nome;
     private String descrizione;
 
-    HashMap<Prodotto,Integer> prodotti;
+    HashMap<Product,Integer> prodotti;
 
-    public Magazzino(String nome, String descrizione,HashMap<Prodotto,Integer> prodotti) {
+    public Magazzino(String nome, String descrizione,HashMap<Product,Integer> prodotti) {
         this.nome = nome;
         this.descrizione = descrizione;
         this.prodotti=prodotti;
     }
 
-    public HashMap<Prodotto, Integer> getProdotti() {
+    public HashMap<Product, Integer> getProdotti() {
         return prodotti;
     }
 
-    public void setProdotti(HashMap<Prodotto, Integer> prodotti) {
+    public void setProdotti(HashMap<Product, Integer> prodotti) {
         this.prodotti = prodotti;
     }
 

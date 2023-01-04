@@ -1,4 +1,6 @@
-package Order.DispatchService.beans;
+package Merchandising.MerchandiseService.beans;
+
+import Order.DispatchService.beans.Collection;
 
 import java.util.Date;
 import java.util.List;
@@ -11,9 +13,9 @@ public class Manga extends Product {
         ;
     }
 
-    public Manga(String name,String producer,String description,double price,double height,double length,
-                 double weight,ProductState state,Collection collection,String isbn,String storyMaker,String binding,
-                 String cartoonist,String language,int volume,int pages,Date exitDate,List<String> type)
+    public Manga(String name, String producer, String description, double price, double height, double length,
+                 double weight, ProductState state, Collection collection, String isbn, String storyMaker, String binding,
+                 String cartoonist, String language, int volume, int pages, Date exitDate, List<String> type)
     {
         this.isbn = isbn;
         this.storyMaker = storyMaker;

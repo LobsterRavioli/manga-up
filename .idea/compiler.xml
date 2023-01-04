@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="MangaUp" />
+        <module name="manga-up" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="MangaUp" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

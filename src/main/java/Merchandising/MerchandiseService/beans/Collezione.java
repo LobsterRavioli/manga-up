@@ -1,4 +1,4 @@
-package Merchandising;
+package Merchandising.MerchandiseService.beans;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,7 @@ public class Collezione {
     private String titolo;
     private String descrizione;
 
-    private ArrayList<Prodotto> prodotti;
+    private ArrayList<Product> prodotti;
 
     public Collezione(String titolo,String descrizione){
         this.titolo = titolo;

@@ -1,6 +1,8 @@
-package Merchandising;
+package Merchandising.MerchandiseService.beans;
 
-public class CartaDaCollezione extends Prodotto{
+import Order.DispatchService.beans.Collection;
+
+public class CartaDaCollezione extends Product {
 
     private String formato;
     private String materiale;
@@ -8,11 +10,11 @@ public class CartaDaCollezione extends Prodotto{
 
     private static final int MAX_Q=0;//Constant
 
-    public CartaDaCollezione(long id,String sku,String nome,String marchio_Produttore,double prezzo,double peso,double altezza,double larghezza,ProductState stato,String descrizione,String formato,String materiale, String rarita){
-        super(id,sku,nome,marchio_Produttore,prezzo,peso,altezza,larghezza,stato,descrizione);
-        this.formato=formato;
-        this.materiale=materiale;
-        this.rarita=rarita;
+    public CartaDaCollezione(String name, String producer, String description, double price, double height, double length, double weight, ProductState state, Collection collection, String formato, String materiale, String rarita) {
+        super(name, producer, description, price, height, length, weight, state, collection);
+        this.formato = formato;
+        this.materiale = materiale;
+        this.rarita = rarita;
     }
 
     public int getMax_q(){

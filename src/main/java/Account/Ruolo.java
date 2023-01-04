@@ -1,3 +1,0 @@
-package Account;
-
-public enum Ruolo {GESTORECATALOGO,GESTOREUTENTI,GESTOREORDINI}
