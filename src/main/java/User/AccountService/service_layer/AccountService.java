@@ -8,7 +8,7 @@ import User.AccountService.beans.User;
 public interface AccountService {
 
     public User login(String username, String password);
-    public void registration(EndUser user);
+    public void registration(EndUser user) throws ConventionExceptions;
     public void addAddress(EndUser user, Address address);
     public void removeAddress(EndUser user, Address address);
     public void addPaymentCard(EndUser user, PaymentCard card);

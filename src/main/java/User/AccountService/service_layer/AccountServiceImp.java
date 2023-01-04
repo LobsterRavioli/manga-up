@@ -26,8 +26,9 @@ public class AccountServiceImp implements AccountService {
     }
 
     @Override
-    public void registration(EndUser user) {
-        return;
+    public void registration(EndUser user){
+        if(EndUser.checkConventions(user))
+            endUserDao.create(user);
     }
 
     @Override

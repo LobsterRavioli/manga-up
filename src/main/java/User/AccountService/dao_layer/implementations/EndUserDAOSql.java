@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import static utils.DAOUtil.*;
 
 public class EndUserDAOSql implements EndUserDAO {
+    public static final String TABLE = "END_USER";
     private DataSource ds;
 
     public EndUserDAOSql(DataSource ds){
@@ -21,12 +22,12 @@ public class EndUserDAOSql implements EndUserDAO {
     }
 
     private static final String SQL_INSERT =
-            "INSERT INTO END_USER (email, name, surname, password, number, birth_date)\n" +
+            "INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)\n" +
             "VALUES (?, ?, ?, MD5(?), ?, ?);";
     private static final String SQL_DELETE =
             "DELETE FROM END_USER WHERE email = ? ;";
     private static final String SQL_UPDATE =
-            "UPDATE END_USER SET name = ? , surname = ? , email = ? , password = MD5(?) , number = ? WHERE id = ? ;";
+            "UPDATE END_USER SET name = ? , surname = ? , email = ? , password = MD5(?) , phone_number = ? WHERE id = ? ;";
     private static final String SQL_FIND_BY_ID =
             "SELECT * FROM END_USER WHERE id = ? ;";
     private static final String SQL_FIND_BY_EMAIL_AND_PASSWORD =

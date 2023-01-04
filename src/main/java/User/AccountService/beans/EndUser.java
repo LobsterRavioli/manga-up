@@ -133,9 +133,16 @@ public class EndUser{
     }
 
 
-
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EndUser endUser = (EndUser) o;
+        return id == endUser.id && Objects.equals(name, endUser.name) && Objects.equals(surname, endUser.surname) && Objects.equals(email, endUser.email) && Objects.equals(phoneNumber, endUser.phoneNumber) && Objects.equals(password, endUser.password) && Objects.equals(addresses, endUser.addresses) && Objects.equals(cards, endUser.cards) && Objects.equals(birthdate, endUser.birthdate);
+    }
+
+    public boolean shallow_equals(EndUser o){
+        if (o == null || getClass() != o.getClass()) return false;
         EndUser endUser = (EndUser) o;
         return id == endUser.id && Objects.equals(name, endUser.name) && Objects.equals(surname, endUser.surname) && Objects.equals(email, endUser.email) && Objects.equals(phoneNumber, endUser.phoneNumber) && Objects.equals(password, endUser.password) && Objects.equals(addresses, endUser.addresses) && Objects.equals(cards, endUser.cards) && Objects.equals(birthdate, endUser.birthdate);
     }
@@ -158,5 +165,9 @@ public class EndUser{
                 ", cards=" + cards +
                 ", birthdate=" + birthdate +
                 '}';
+    }
+
+    public static boolean checkConventions(EndUser user){
+        return true;
     }
 }

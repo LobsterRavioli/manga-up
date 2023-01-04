@@ -2,9 +2,12 @@ package User.AccountService.dao_layer.implementations;
 
 
 import User.AccountService.beans.EndUser;
+import org.dbunit.Assertion;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.jupiter.api.AfterEach;
@@ -74,15 +77,14 @@ class EndUserDAOImpTest {
         tester.onTearDown();
     }
 
-
     @Test
-    public void TC1_1(){
+    public void find_idNotInDB_False(){
         int id = 2;
         EndUser user = dao.find(id);
         assertEquals(user, null)
 ;    }
     @Test
-    public void TC1_2(){
+    public void find_idInDb_False(){
         int id = 1;
         EndUser expectedUser = new EndUser();
         expectedUser.setId(id);
@@ -93,9 +95,40 @@ class EndUserDAOImpTest {
         expectedUser.setName("Tommaso");
         expectedUser.setSurname("Sorrentino");
         expectedUser.setPhoneNumber("393662968496");
-        expectedUser.setPassword("napoli99");
+        expectedUser.setPassword("psw123");
         EndUser user = dao.find(id);
-        assertEquals(expectedUser, user);
+        assertTrue(user.shallow_equals(expectedUser));
     }
+
+    @Test
+    public void create_idValid_InDB_Pass() throws Exception{
+        ITable expectedTable = new FlatXmlDataSetBuilder()
+                .build(EndUserDAOImpTest.class.getClassLoader().getResourceAsStream("enduser_dao/init.xml"))
+                .getTable(EndUserDAOSql.TABLE);
+        EndUser user = new EndUser();
+        user.setName("Tommaso");
+        user.setSurname("Sorrentino");
+        user.setEmail("lu@hotmail.it");
+        Date expectedDate = DAOUtil.toSqlDate(new GregorianCalendar(2000, 0,1, 0,0 ).getTime());
+        user.setPhoneNumber("393662968490");
+        user.setPassword("psw123");
+        user.setBirthdate(expectedDate);
+        dao.create(user);
+        ITable actualTable = tester.getConnection().createDataSet().getTable(EndUserDAOSql.TABLE);
+        Assertion.assertEquals(new SortedTable(expectedTable), new SortedTable(actualTable));
+
+    }
+
+    @Test
+    public void create_idValid_InDB_Fail(){
+        dao.create(null);
+    }
+
+    @Test
+    public void create_idNotValid_NotInDB_Fail(){
+        dao.create(null);
+    }
+
+
 
 }
