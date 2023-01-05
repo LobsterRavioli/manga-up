@@ -1,4 +1,6 @@
-package Order.DispatchService.beans;
+package Merchandising.MerchandiseService.beans;
+
+import Order.DispatchService.beans.Collection;
 
 import java.util.Objects;
 
@@ -9,8 +11,8 @@ public abstract class Product {
         id += 1;
     }
 
-    public Product(String name,String producer,String description,double price,double height,double length,
-                   double weight,ProductState state,Collection collection)
+    public Product(String name, String producer, String description, double price, double height, double length,
+                   double weight, ProductState state, Collection collection)
     {
         id += 1;
 
