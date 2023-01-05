@@ -116,7 +116,7 @@ class EndUserDAOImpTest {
         dao.create(user);
         ITable actualTable = tester.getConnection().createDataSet().getTable(EndUserDAOSql.TABLE);
         Assertion.assertEquals(new SortedTable(expectedTable), new SortedTable(actualTable));
-
+        System.out.println("prova");
     }
 
     @Test
