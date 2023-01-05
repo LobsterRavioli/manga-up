@@ -2,14 +2,14 @@ package Merchandising.MerchandiseService.beans;
 
 import java.util.ArrayList;
 
-public class Collezione {
+public class Collection {
 
     private String titolo;
     private String descrizione;
 
     private ArrayList<Product> prodotti;
 
-    public Collezione(String titolo,String descrizione){
+    public Collection(String titolo, String descrizione){
         this.titolo = titolo;
         this.descrizione=descrizione;
     }

@@ -1,7 +1,5 @@
 package Merchandising.MerchandiseService.beans;
 
-import Order.DispatchService.beans.Collection;
-
 public class ActionFigures extends Product{
 
     private String materiale;

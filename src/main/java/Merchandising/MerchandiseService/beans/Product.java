@@ -1,7 +1,5 @@
 package Merchandising.MerchandiseService.beans;
 
-import Order.DispatchService.beans.Collection;
-
 import java.util.Objects;
 
 public abstract class Product {
@@ -12,7 +10,7 @@ public abstract class Product {
     }
 
     public Product(String name, String producer, String description, double price, double height, double length,
-                   double weight, ProductState state, Collection collection)
+                   double weight, ProductState state)
     {
         id += 1;
 
@@ -24,19 +22,10 @@ public abstract class Product {
         this.length = length;
         this.weight = weight;
         this.state = state;
-        this.collection = collection;
     }
 
     public static int getId() {
         return id;
-    }
-
-    public Collection getCollection() {
-        return collection;
-    }
-
-    public void setCollection(Collection collection) {
-        this.collection = collection;
     }
 
     public String getName() {
@@ -113,7 +102,7 @@ public abstract class Product {
 
     @Override
     public int hashCode() {
-        return Objects.hash(collection, name, producer, description, price, height, length, weight, state);
+        return Objects.hash(name, producer, description, price, height, length, weight, state);
     }
 
     public enum ProductState
@@ -123,7 +112,6 @@ public abstract class Product {
     }
 
     private static int id = 0;
-    private Collection collection;
     private String name, producer, description;
     private double price, height, length, weight;
     private ProductState state;

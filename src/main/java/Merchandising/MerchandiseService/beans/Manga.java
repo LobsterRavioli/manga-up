@@ -1,7 +1,5 @@
 package Merchandising.MerchandiseService.beans;
 
-import Order.DispatchService.beans.Collection;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
