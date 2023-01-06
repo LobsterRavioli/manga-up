@@ -1,7 +1,6 @@
 package Merchandising.MerchandiseService.service_layer.implementations;
 
 import Merchandising.MerchandiseService.beans.Collection;
-import Merchandising.MerchandiseService.service_layer.interfaces.CollectionDAO;
 import Utilities.ConnectionPool;
 
 import java.sql.Connection;
@@ -9,9 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CollectionDAOImp implements CollectionDAO {
+public class CollectionDAO implements Merchandising.MerchandiseService.service_layer.interfaces.CollectionDAO {
 
-    @Override
+
     public void create(Collection collection) {
         PreparedStatement p = null;
         try (Connection conn = ConnectionPool.getConnection()) {
@@ -30,7 +29,7 @@ public class CollectionDAOImp implements CollectionDAO {
         }
     }
 
-    @Override
+
     public void delete(String titolo) {
         PreparedStatement p = null;
         try (Connection conn = ConnectionPool.getConnection()) {
@@ -48,28 +47,6 @@ public class CollectionDAOImp implements CollectionDAO {
         }
     }
 
-    @Override
-    public void update(Collection collection, String OldTitle) {
-        PreparedStatement p = null;
-        try (Connection conn = ConnectionPool.getConnection()) {
-            p = conn.prepareStatement("UPDATE Collection SET titolo=?,descrizione=? WHERE titolo=?");
-            p.setString(1, collection.getTitolo());
-            p.setString(2, collection.getDescrizione());
-            p.setString(3, OldTitle);
-            p.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                p.close();
-            } catch (SQLException e) {
-
-            }
-        }
-    }
-
-
-    @Override
     public Collection retrieve(String titolo) {
         PreparedStatement p = null;
         ResultSet rs = null;

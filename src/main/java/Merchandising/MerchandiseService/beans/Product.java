@@ -5,10 +5,10 @@ import java.util.Objects;
 
 public class Product {
 
-    public Product(String name, String producer, String description, double price, double height, double length,
-                   double weight, ProductState state)
+    public Product(int id,String name, String producer, String description, double price, double height, double length,
+                   double weight, ProductState state,String type_of_product)
     {
-
+        this.id = id;
         this.name = name;
         this.producer = producer;
         this.description = description;
@@ -17,8 +17,32 @@ public class Product {
         this.length = length;
         this.weight = weight;
         this.state = state;
+        this.type_of_product = type_of_product;
     }
 
+    public String getType_of_product() {
+        return type_of_product;
+    }
+
+    public void setType_of_product(String type_of_product) {
+        this.type_of_product = type_of_product;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public ArrayList<Collection> getCollections() {
+        return collections;
+    }
+
+    public void setCollections(ArrayList<Collection> collections) {
+        this.collections = collections;
+    }
 
     public String getName() {
         return name;
@@ -109,4 +133,6 @@ public class Product {
 
     private ArrayList<Collection> collections;
     private ProductState state;
+
+    private String type_of_product;
 }

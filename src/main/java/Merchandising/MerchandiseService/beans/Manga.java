@@ -1,20 +1,14 @@
 package Merchandising.MerchandiseService.beans;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class Manga extends Product {
+public class Manga{
 
-    public Manga()
-    {
-        ;
-    }
 
-    public Manga(String name, String producer, String description, double price, double height, double length,
-                 double weight, ProductState state, Collection collection, String isbn, String storyMaker, String binding,
-                 String cartoonist, String language, int volume, int pages, Date exitDate, List<String> type)
-    {
+    public Manga(String isbn, String storyMaker, String binding, String cartoonist, String language, int volume, int pages, Date exitDate, List<String> type, int id, String name, String producer, String description, double price, double height, double length, double weight, ArrayList<Collection> collections, Product.ProductState state) {
         this.isbn = isbn;
         this.storyMaker = storyMaker;
         this.binding = binding;
@@ -24,6 +18,96 @@ public class Manga extends Product {
         this.pages = pages;
         this.exitDate = exitDate;
         this.type = type;
+        this.id = id;
+        this.name = name;
+        this.producer = producer;
+        this.description = description;
+        this.price = price;
+        this.height = height;
+        this.length = length;
+        this.weight = weight;
+        this.collections = collections;
+        this.state = state;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProducer() {
+        return producer;
+    }
+
+    public void setProducer(String producer) {
+        this.producer = producer;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public ArrayList<Collection> getCollections() {
+        return collections;
+    }
+
+    public void setCollections(ArrayList<Collection> collections) {
+        this.collections = collections;
+    }
+
+    public Product.ProductState getState() {
+        return state;
+    }
+
+    public void setState(Product.ProductState state) {
+        this.state = state;
     }
 
     public String getIsbn() {
@@ -116,4 +200,11 @@ public class Manga extends Product {
     private int volume, pages;
     private Date exitDate;
     private List<String> type;
+
+    private int id;
+    private String name, producer, description;
+    private double price, height, length, weight;
+
+    private ArrayList<Collection> collections;
+    private Product.ProductState state;
 }
