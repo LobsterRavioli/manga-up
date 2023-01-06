@@ -45,7 +45,7 @@ class EndUserDAOImpTest {
 
         // DB_CLOSE_DELAY=-1 impone ad H2 di eliminare il DB solo quando il processo della JVM termina
         tester = new JdbcDatabaseTester(org.h2.Driver.class.getName(),
-                "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;init=runscript from 'classpath:schema.sql'",
+                "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;init=runscript from 'classpath:schema_db/schema.sql'",
                 "prova",
                 ""
         );
@@ -79,13 +79,13 @@ class EndUserDAOImpTest {
 
     @Test
     public void find_idNotInDB_False(){
-        int id = 2;
+        Long id = new Long(2);
         EndUser user = dao.find(id);
         assertEquals(user, null)
-;    }
+        ;    }
     @Test
     public void find_idInDb_False(){
-        int id = 1;
+        Long id = new Long(1);
         EndUser expectedUser = new EndUser();
         expectedUser.setId(id);
         expectedUser.setEmail("tommyrock99@hotmail.it");
@@ -114,9 +114,9 @@ class EndUserDAOImpTest {
         user.setPassword("psw123");
         user.setBirthdate(expectedDate);
         dao.create(user);
+        dao.create(user);
         ITable actualTable = tester.getConnection().createDataSet().getTable(EndUserDAOSql.TABLE);
         Assertion.assertEquals(new SortedTable(expectedTable), new SortedTable(actualTable));
-        System.out.println("prova");
     }
 
     @Test

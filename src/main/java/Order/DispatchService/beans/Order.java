@@ -1,7 +1,6 @@
 package Order.DispatchService.beans;
 
 import Merchandising.MerchandiseService.beans.Product;
-import User.AccountService.beans.User;
 
 import java.util.ArrayList;
 import java.util.Date;

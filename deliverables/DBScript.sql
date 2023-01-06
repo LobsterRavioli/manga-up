@@ -87,8 +87,7 @@ CREATE TABLE Orders
 CREATE TABLE User
 (
 	username VARCHAR(15) PRIMARY KEY NOT NULL,
-    password varchar(15) NOT NULL,
-    created_by VARCHAR(15)
+    password varchar(15) NOT NULL
 );
 
 CREATE TABLE Catalog_Manager
@@ -111,10 +110,6 @@ CREATE TABLE User_Manager
 	FOREIGN KEY (username) REFERENCES USER(username)
     ON UPDATE CASCADE ON DELETE CASCADE
 );
-
-alter table USER add constraint
-	foreign key(created_by)
-    references User_Manager(username);
 
 CREATE TABLE manages
 (
@@ -241,6 +236,15 @@ CREATE TABLE HasProducts
     ON UPDATE cascade ON DELETE cascade
 
 );
+
+CREATE TABLE IF NOT EXISTS ROLES
+(
+    username VARCHAR(15) NOT NULL,
+    role VARCHAR(2)	NOT NULL,
+    PRIMARY KEY(username, role),
+    FOREIGN KEY(username) REFERENCES USER(username)
+);
+
 
 
 

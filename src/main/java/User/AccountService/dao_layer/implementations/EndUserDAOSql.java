@@ -3,6 +3,7 @@ package User.AccountService.dao_layer.implementations;
 import User.AccountService.beans.EndUser;
 import User.AccountService.dao_layer.interfaces.EndUserDAO;
 import utils.DAOException;
+import utils.Utils;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -18,40 +19,36 @@ public class EndUserDAOSql implements EndUserDAO {
 
     public EndUserDAOSql(DataSource ds){
         this.ds = ds;
-
     }
 
     private static final String SQL_INSERT =
             "INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)\n" +
-            "VALUES (?, ?, ?, MD5(?), ?, ?);";
+            "VALUES (?, ?, ?, ?, ?, ?);";
+
     private static final String SQL_DELETE =
             "DELETE FROM END_USER WHERE email = ? ;";
-    private static final String SQL_UPDATE =
-            "UPDATE END_USER SET name = ? , surname = ? , email = ? , password = MD5(?) , phone_number = ? WHERE id = ? ;";
-    private static final String SQL_FIND_BY_ID =
-            "SELECT * FROM END_USER WHERE id = ? ;";
-    private static final String SQL_FIND_BY_EMAIL_AND_PASSWORD =
-            "SELECT * FROM END_USER WHERE email = ? AND password = MD5(?) ;";
 
+    private static final String SQL_UPDATE =
+            "UPDATE END_USER SET name = ? , surname = ? , email = ? , password = ? , phone_number = ? WHERE email = ? ;";
+
+    private static final String SQL_FIND_BY_ID =
+            "SELECT * FROM END_USER WHERE email = ? ;";
+
+
+    private static final String SQL_FIND_BY_EMAIL_AND_PASSWORD =
+            "SELECT * FROM END_USER WHERE email = ? AND password = ? ;";
 
     private static final String SQL_EXIST_EMAIL =
-            "SELECT id FROM EndUser WHERE email = ?";
+            "SELECT email FROM EndUser WHERE email = ?";
 
-    private static final String SQL_CHANGE_PASSWORD =
-            "UPDATE EndUser SET password = MD5(?) WHERE id = ?";
 
     @Override
     public void create(EndUser user) throws IllegalArgumentException, DAOException {
-
-        if (user.getId() != 0) {
-            throw new IllegalArgumentException("User is already created, the user ID is not null.");
-        }
-
         Object[] values = {
                 user.getEmail(),
                 user.getName(),
                 user.getSurname(),
-                user.getPassword(),
+                Utils.hashPassword(user.getPassword()),
                 user.getPhoneNumber(),
                 toSqlDate(user.getBirthdate())
         };
@@ -67,7 +64,7 @@ public class EndUserDAOSql implements EndUserDAO {
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    user.setId(generatedKeys.getInt(1));
+                    user.setName(generatedKeys.getString(1));
                 } else {
                     throw new DAOException("Creating user failed, no generated key obtained.");
                 }
@@ -80,7 +77,7 @@ public class EndUserDAOSql implements EndUserDAO {
     @Override
     public void delete(EndUser user) {
         Object[] values = {
-                user.getId()
+                user.getEmail()
         };
 
         try (
@@ -91,7 +88,7 @@ public class EndUserDAOSql implements EndUserDAO {
             if (affectedRows == 0) {
                 throw new DAOException("Deleting user failed, no rows affected.");
             } else {
-                user.setId(0);
+                user.setEmail(null);
             }
         } catch (SQLException e) {
             throw new DAOException(e);
@@ -101,16 +98,11 @@ public class EndUserDAOSql implements EndUserDAO {
     @Override
     public void update(EndUser user) {
 
-        if (user.getId() == 0) {
-            throw new IllegalArgumentException("User is not created yet, the user ID is null.");
-        }
-
         Object[] values = {
                 user.getName(),
                 user.getSurname(),
                 user.getEmail(),
                 toSqlDate(user.getBirthdate()),
-                user.getId()
         };
 
         try (
@@ -131,7 +123,6 @@ public class EndUserDAOSql implements EndUserDAO {
         Object[] values = {
                 email
         };
-
         boolean exist;
 
         try (
@@ -148,7 +139,7 @@ public class EndUserDAOSql implements EndUserDAO {
     }
 
     @Override
-    public EndUser find(int id) { return find(SQL_FIND_BY_ID, id); }
+    public EndUser find(String username) { return find(SQL_FIND_BY_ID, username); }
 
     @Override
     public EndUser find(String email, String password) {
@@ -158,18 +149,15 @@ public class EndUserDAOSql implements EndUserDAO {
     @Override
     public void changePassword(EndUser user) throws DAOException {
 
-        if (user.getId() == 0) {
-            throw new IllegalArgumentException("User is not created yet, the user ID is null.");
-        }
 
         Object[] values = {
-                user.getPassword(),
-                user.getId()
+                user.getName(),
+                user.getPassword()
         };
 
         try (
                 Connection connection = ds.getConnection();
-                PreparedStatement statement = prepareStatement(connection, SQL_CHANGE_PASSWORD, false, values)
+                PreparedStatement statement = prepareStatement(connection, SQL_INSERT, false, values)
         ) {
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -207,7 +195,6 @@ public class EndUserDAOSql implements EndUserDAO {
 
     private static EndUser map(ResultSet resultSet) throws SQLException {
         EndUser user = new EndUser();
-        user.setId(resultSet.getInt("id"));
         user.setEmail(resultSet.getString("email"));
         user.setPassword(resultSet.getString("password"));
         user.setPhoneNumber(resultSet.getString("phone_number"));
