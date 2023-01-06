@@ -19,9 +19,6 @@ public class Product {
         this.state = state;
     }
 
-    public static int getId() {
-        return id;
-    }
 
     public String getName() {
         return name;
