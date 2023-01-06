@@ -17,28 +17,11 @@ CREATE TABLE Product
     height DOUBLE NOT NULL,
     lenght DOUBLE NOT NULL,
     state VARCHAR(5) NOT NULL,
-    description VARCHAR(255) NOT NULL
+    description VARCHAR(255) NOT NULL,
+    type_of_product VARCHAR(30) NOT NULL
 );
 
-CREATE TABLE Action_Figure
-(
-    id  INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    material VARCHAR(20) NOT NULL,
-    assembly_required boolean NOT NULL,
-    prod_id int,
-    FOREIGN KEY(prod_id) REFERENCES Product(id)
-    ON UPDATE cascade ON DELETE cascade
-);
 
-CREATE TABLE Collection_Card
-(
-    format VARCHAR(50) NOT NULL,
-    material VARCHAR(30) NOT NULL,
-    rarety int NOT NULL,
-    prod_id int,
-    FOREIGN KEY(prod_id) REFERENCES Product(id)
-    ON UPDATE cascade ON DELETE cascade
-);
 
 CREATE TABLE Collection
 (
@@ -101,75 +84,73 @@ CREATE TABLE Orders
 );
 
 
+CREATE TABLE User
+(
+	username VARCHAR(15) PRIMARY KEY NOT NULL,
+    password varchar(15) NOT NULL,
+    created_by VARCHAR(15)
+);
+
 CREATE TABLE Catalog_Manager
 (
-	id int AUTO_INCREMENT PRIMARY KEY NOT NULL
+	username VARCHAR(15) PRIMARY KEY NOT NULL,
+	FOREIGN KEY (username) REFERENCES USER(username)
+    ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE Order_Manager
 (
-	id int AUTO_INCREMENT PRIMARY KEY NOT NULL
+	username VARCHAR(15) PRIMARY KEY NOT NULL,
+	FOREIGN KEY (username) REFERENCES USER(username)
+    ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE User_Manager
 (
-	id int AUTO_INCREMENT PRIMARY KEY NOT NULL
+	username VARCHAR(15) PRIMARY KEY NOT NULL,
+	FOREIGN KEY (username) REFERENCES USER(username)
+    ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-
-CREATE TABLE User
-(
-	username VARCHAR(12) PRIMARY KEY NOT NULL,
-    password varchar(15) NOT NULL,
-    c_m int,
-    o_m int,
-    u_m int,
-    created_by int,
-    FOREIGN KEY (c_m) REFERENCES Catalog_Manager(id)
-	ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY(o_m) REFERENCES Order_Manager(id)
-    ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY(u_m) REFERENCES User_Manager(id)
-    ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY(created_by) REFERENCES User_Manager(id)
-);
-
+alter table USER add constraint
+	foreign key(created_by)
+    references User_Manager(username);
 
 CREATE TABLE manages
 (
-	order_manager_id int NOT NULL,
+	order_manager_username VARCHAR(15) NOT NULL,
     order_id int NOT NULL,
-    PRIMARY KEY(order_manager_id,order_id),
+    PRIMARY KEY(order_manager_username,order_id),
     delivery_date date NOT NULL,
     tracking_number int NOT NULL,
     shipment_date date NOT NULL,
     
-    FOREIGN KEY (order_manager_id) REFERENCES Order_manager(id)
+    FOREIGN KEY (order_manager_username) REFERENCES Order_manager(username)
     ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY(order_id) REFERENCES Orders(id)
     ON UPDATE cascade ON DELETE cascade
 
 );
 
-CREATE TABLE Language
-(
-	name VARCHAR(20) PRIMARY KEY NOT NULL
-);
 
 CREATE TABLE Manga
 (
+	id int auto_increment KEY NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    brand VARCHAR(50) NOT NULL,
+    price DOUBLE NOT NULL,
+    weight DOUBLE NOT NULL,
+    height DOUBLE NOT NULL,
+    lenght DOUBLE NOT NULL,
+    state VARCHAR(5) NOT NULL,
+    description VARCHAR(255) NOT NULL,
     ISBN VARCHAR(64) NOT NULL,
     book_binding VARCHAR(30) NOT NULL,
     volume VARCHAR(50) NOT NULL,
     release_date date NOT NULL,
     page_number int NOT NULL,
     interior VARCHAR(20) NOT NULL,
-    lang VARCHAR(20) NOT NULL,
-    prod_id int,
-    FOREIGN KEY(lang) REFERENCES Language(name)
-    ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY(prod_id) REFERENCES Product(id)
-    ON UPDATE cascade ON DELETE cascade
+    lang VARCHAR(20) NOT NULL
 );
 
 
@@ -197,7 +178,7 @@ CREATE TABLE HasAuthor
 	manga_id int NOT NULL,
     author_id int NOT NULL,
     PRIMARY KEY(manga_id,author_id),
-    FOREIGN KEY (manga_id) REFERENCES Manga(prod_id)
+    FOREIGN KEY (manga_id) REFERENCES Manga(id)
     ON UPDATE cascade ON DELETE cascade,
     FOREIGN KEY (author_id) REFERENCES Author(id)
     ON UPDATE cascade ON DELETE cascade
@@ -208,7 +189,7 @@ CREATE TABLE HasGenre
 	manga_id int NOT NULL,
     genre_id varchar(15) NOT NULL,
     PRIMARY KEY(manga_id,genre_id),
-    FOREIGN KEY (manga_id) REFERENCES Manga(prod_id)
+    FOREIGN KEY (manga_id) REFERENCES Manga(id)
     ON UPDATE cascade ON DELETE cascade,
     FOREIGN KEY (genre_id) REFERENCES Genre(nome)
 	ON UPDATE cascade ON DELETE cascade
@@ -260,4 +241,6 @@ CREATE TABLE HasProducts
     ON UPDATE cascade ON DELETE cascade
 
 );
+
+
 

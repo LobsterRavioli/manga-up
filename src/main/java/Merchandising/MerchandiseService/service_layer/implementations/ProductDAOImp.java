@@ -8,8 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import Merchandising.MerchandiseService.beans.Manga;
-import Merchandising.MerchandiseService.beans.CartaDaCollezione;
-import Merchandising.MerchandiseService.beans.ActionFigures;
 
 public class ProductDAOImp implements ProductDAO {
 

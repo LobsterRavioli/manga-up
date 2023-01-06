@@ -1,18 +1,13 @@
 package Merchandising.MerchandiseService.beans;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
-public abstract class Product {
-
-    public Product()
-    {
-        id += 1;
-    }
+public class Product {
 
     public Product(String name, String producer, String description, double price, double height, double length,
                    double weight, ProductState state)
     {
-        id += 1;
 
         this.name = name;
         this.producer = producer;
@@ -97,7 +92,7 @@ public abstract class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Double.compare(product.price, price) == 0 && Double.compare(product.height, height) == 0 && Double.compare(product.length, length) == 0 && Double.compare(product.weight, weight) == 0 && Objects.equals(collection, product.collection) && Objects.equals(name, product.name) && Objects.equals(producer, product.producer) && Objects.equals(description, product.description) && state == product.state;
+        return Double.compare(product.price, price) == 0 && Double.compare(product.height, height) == 0 && Double.compare(product.length, length) == 0 && Double.compare(product.weight, weight) == 0 && Objects.equals(collections, product.collections) && Objects.equals(name, product.name) && Objects.equals(producer, product.producer) && Objects.equals(description, product.description) && state == product.state;
     }
 
     @Override
@@ -111,8 +106,10 @@ public abstract class Product {
         USED
     }
 
-    private static int id = 0;
+    private int id;
     private String name, producer, description;
     private double price, height, length, weight;
+
+    private ArrayList<Collection> collections;
     private ProductState state;
 }
