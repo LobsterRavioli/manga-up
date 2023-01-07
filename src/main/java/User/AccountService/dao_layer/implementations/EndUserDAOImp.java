@@ -13,11 +13,11 @@ import java.sql.SQLException;
 
 import static utils.DAOUtil.*;
 
-public class EndUserDAOSql implements EndUserDAO {
+public class EndUserDAOImp implements EndUserDAO {
     public static final String TABLE = "END_USER";
     private DataSource ds;
 
-    public EndUserDAOSql(DataSource ds){
+    public EndUserDAOImp(DataSource ds){
         this.ds = ds;
     }
 
@@ -31,7 +31,7 @@ public class EndUserDAOSql implements EndUserDAO {
     private static final String SQL_UPDATE =
             "UPDATE END_USER SET name = ? , surname = ? , email = ? , password = ? , phone_number = ? WHERE email = ? ;";
 
-    private static final String SQL_FIND_BY_ID =
+    private static final String SQL_FIND_BY_EMAIL =
             "SELECT * FROM END_USER WHERE email = ? ;";
 
 
@@ -44,6 +44,10 @@ public class EndUserDAOSql implements EndUserDAO {
 
     @Override
     public void create(EndUser user) throws IllegalArgumentException, DAOException {
+        if(user.getEmail() == null){
+            throw new IllegalArgumentException("User email cannot be null");
+        }
+
         Object[] values = {
                 user.getEmail(),
                 user.getName(),
@@ -97,12 +101,15 @@ public class EndUserDAOSql implements EndUserDAO {
 
     @Override
     public void update(EndUser user) {
-
+        if (user.getEmail() == null) {
+            throw new IllegalArgumentException("User email cannot be null.");
+        }
         Object[] values = {
                 user.getName(),
                 user.getSurname(),
                 user.getEmail(),
-                toSqlDate(user.getBirthdate()),
+                user.getPassword(),
+                toSqlDate(user.getBirthdate())
         };
 
         try (
@@ -139,7 +146,7 @@ public class EndUserDAOSql implements EndUserDAO {
     }
 
     @Override
-    public EndUser find(String username) { return find(SQL_FIND_BY_ID, username); }
+    public EndUser find(String email) { return find(SQL_FIND_BY_EMAIL, email); }
 
     @Override
     public EndUser find(String email, String password) {

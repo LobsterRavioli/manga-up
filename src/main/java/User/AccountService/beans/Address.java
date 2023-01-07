@@ -2,16 +2,16 @@ package User.AccountService.beans;
 
 public class Address {
     private int id;
-    private int userId;
+    private String userEmail;
     private String country;
     private String city;
     private String street;
     private int streetNumber;
     private String postalCode;
 
-    public Address(int id, int userId, String country, String city, String street, int streetNumber, String postalCode) {
+    public Address(int id, String userEmail, String country, String city, String street, int streetNumber, String postalCode) {
         this.id = id;
-        this.userId = userId;
+        this.userEmail = userEmail;
         this.country = country;
         this.city = city;
         this.street = street;
@@ -27,12 +27,12 @@ public class Address {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getCountry() {
