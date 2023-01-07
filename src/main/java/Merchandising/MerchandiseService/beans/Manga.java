@@ -192,7 +192,7 @@ public class Manga{
         if (!(o instanceof Manga)) return false;
         if (!super.equals(o)) return false;
         Manga manga = (Manga) o;
-        return volume == manga.volume && pages == manga.pages && Objects.equals(isbn, manga.isbn) && Objects.equals(binding, manga.binding) && Objects.equals(language, manga.language) && Objects.equals(exitDate, manga.exitDate) && Objects.equals(type, manga.type);
+        return volume == manga.volume && pages == manga.pages && Objects.equals(isbn, manga.isbn) && Objects.equals(binding, manga.binding) && Objects.equals(language, manga.language) && Objects.equals(exitDate, manga.exitDate);
     }
 
     @Override
