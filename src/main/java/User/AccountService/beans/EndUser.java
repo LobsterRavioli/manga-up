@@ -12,7 +12,15 @@ public class EndUser{
     private Set addresses;
     private Set cards;
     private Date birthdate;
+    private int id;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getPassword() {
         return password;
@@ -93,5 +101,15 @@ public class EndUser{
 
     public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
+    }
+
+    public void addAddress(Address address){
+        addresses.add(address);
+        address.setEndUser(this);
+    }
+
+    public void removeAddress(Address address){
+        addresses.remove(address);
+        address.setEndUser(null);
     }
 }

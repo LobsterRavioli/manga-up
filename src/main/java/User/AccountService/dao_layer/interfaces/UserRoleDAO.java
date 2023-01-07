@@ -1,12 +1,17 @@
 package User.AccountService.dao_layer.interfaces;
 
-import Merchandising.MerchandiseService.beans.Collection;
+
+import User.AccountService.beans.User;
+
+import java.util.Collection;
 
 public interface UserRoleDAO {
 
 
-    public void getRoles(String username);
+    public Collection getRoles(User user);
+    public void setRoles(User user, Collection roles);
 
-    public void updateRoles(String username, Collection roles);
+    public void updateRoles(User user, Collection roles);
+
 }
 

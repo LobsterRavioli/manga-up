@@ -2,21 +2,23 @@ package User.AccountService.beans;
 
 public class Address {
     private int id;
-    private String userEmail;
+    private EndUser endUser;
     private String country;
     private String city;
     private String street;
-    private int streetNumber;
+    private String streetNumber;
     private String postalCode;
 
-    public Address(int id, String userEmail, String country, String city, String street, int streetNumber, String postalCode) {
+
+    public Address(){}
+    public Address(int id, EndUser user, String country, String city, String street, String streetNumber, String postalCode) {
         this.id = id;
-        this.userEmail = userEmail;
         this.country = country;
         this.city = city;
         this.street = street;
         this.streetNumber = streetNumber;
         this.postalCode = postalCode;
+        setEndUser(user);
     }
 
     public int getId() {
@@ -27,13 +29,7 @@ public class Address {
         this.id = id;
     }
 
-    public String getUserEmail() {
-        return userEmail;
-    }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
 
     public String getCountry() {
         return country;
@@ -59,11 +55,11 @@ public class Address {
         this.street = street;
     }
 
-    public int getStreetNumber() {
+    public String getStreetNumber() {
         return streetNumber;
     }
 
-    public void setStreetNumber(int streetNumber) {
+    public void setStreetNumber(String streetNumber) {
         this.streetNumber = streetNumber;
     }
 
@@ -73,5 +69,20 @@ public class Address {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public EndUser getEndUser() {
+        return endUser;
+    }
+
+    public void setEndUser(EndUser newEndUser) {
+        if(endUser != newEndUser){
+            EndUser oldEndUser = endUser;
+            endUser = newEndUser;
+            if(newEndUser != null)
+                newEndUser.addAddress(this);
+            if(oldEndUser != null)
+                oldEndUser.removeAddress(this);
+        }
     }
 }

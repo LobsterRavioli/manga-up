@@ -10,6 +10,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import static utils.DAOUtil.*;
 
@@ -26,13 +29,13 @@ public class EndUserDAOImp implements EndUserDAO {
             "VALUES (?, ?, ?, ?, ?, ?);";
 
     private static final String SQL_DELETE =
-            "DELETE FROM END_USER WHERE email = ? ;";
+            "DELETE FROM END_USER WHERE id = ? ;";
 
     private static final String SQL_UPDATE =
-            "UPDATE END_USER SET name = ? , surname = ? , email = ? , password = ? , phone_number = ? WHERE email = ? ;";
+            "UPDATE END_USER SET name = ? , surname = ? , email = ? , password = ? , phone_number = ? WHERE id = ? ;";
 
-    private static final String SQL_FIND_BY_EMAIL =
-            "SELECT * FROM END_USER WHERE email = ? ;";
+    private static final String SQL_FIND_BY_ID =
+            "SELECT * FROM END_USER WHERE id = ? ;";
 
 
     private static final String SQL_FIND_BY_EMAIL_AND_PASSWORD =
@@ -41,11 +44,11 @@ public class EndUserDAOImp implements EndUserDAO {
     private static final String SQL_EXIST_EMAIL =
             "SELECT email FROM EndUser WHERE email = ?";
 
-
+    private static final String SQL_LIST_ORDER_BY_ID = "SELECT * FROM END_USER ORDER BY id";
     @Override
     public void create(EndUser user) throws IllegalArgumentException, DAOException {
-        if(user.getEmail() == null){
-            throw new IllegalArgumentException("User email cannot be null");
+        if (user.getId() != 0) {
+            throw new IllegalArgumentException("User is already created, the user ID is not null.");
         }
 
         Object[] values = {
@@ -68,7 +71,7 @@ public class EndUserDAOImp implements EndUserDAO {
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    user.setName(generatedKeys.getString(1));
+                    user.setId(generatedKeys.getInt(1));
                 } else {
                     throw new DAOException("Creating user failed, no generated key obtained.");
                 }
@@ -81,7 +84,7 @@ public class EndUserDAOImp implements EndUserDAO {
     @Override
     public void delete(EndUser user) {
         Object[] values = {
-                user.getEmail()
+                user.getId()
         };
 
         try (
@@ -92,7 +95,7 @@ public class EndUserDAOImp implements EndUserDAO {
             if (affectedRows == 0) {
                 throw new DAOException("Deleting user failed, no rows affected.");
             } else {
-                user.setEmail(null);
+                user.setId(0);
             }
         } catch (SQLException e) {
             throw new DAOException(e);
@@ -101,8 +104,8 @@ public class EndUserDAOImp implements EndUserDAO {
 
     @Override
     public void update(EndUser user) {
-        if (user.getEmail() == null) {
-            throw new IllegalArgumentException("User email cannot be null.");
+        if (user.getId() != 0) {
+            throw new IllegalArgumentException("User is already created, the user ID is not null.");
         }
         Object[] values = {
                 user.getName(),
@@ -146,34 +149,13 @@ public class EndUserDAOImp implements EndUserDAO {
     }
 
     @Override
-    public EndUser find(String email) { return find(SQL_FIND_BY_EMAIL, email); }
+    public EndUser find(int id) { return find(SQL_FIND_BY_ID, id); }
 
     @Override
     public EndUser find(String email, String password) {
         return find(SQL_FIND_BY_EMAIL_AND_PASSWORD,email,password);
     }
 
-    @Override
-    public void changePassword(EndUser user) throws DAOException {
-
-
-        Object[] values = {
-                user.getName(),
-                user.getPassword()
-        };
-
-        try (
-                Connection connection = ds.getConnection();
-                PreparedStatement statement = prepareStatement(connection, SQL_INSERT, false, values)
-        ) {
-            int affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new DAOException("Changing password failed, no rows affected.");
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        }
-    }
 
     private EndUser find(String sql, Object... values) throws DAOException {
         EndUser user = null;
@@ -193,6 +175,25 @@ public class EndUserDAOImp implements EndUserDAO {
         return user;
     }
 
+    @Override
+    public Collection list() throws DAOException {
+        List<EndUser> users = new ArrayList<>();
+
+        try (
+                Connection connection = ds.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_LIST_ORDER_BY_ID);
+                ResultSet resultSet = statement.executeQuery();
+        ) {
+            while (resultSet.next()) {
+                users.add(map(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+
+        return users;
+    }
+
     /**
      * Map the current row of the given ResultSet to an User.
      * @param resultSet The ResultSet of which the current row is to be mapped to an User.
@@ -202,6 +203,7 @@ public class EndUserDAOImp implements EndUserDAO {
 
     private static EndUser map(ResultSet resultSet) throws SQLException {
         EndUser user = new EndUser();
+        user.setId(resultSet.getInt("id"));
         user.setEmail(resultSet.getString("email"));
         user.setPassword(resultSet.getString("password"));
         user.setPhoneNumber(resultSet.getString("phone_number"));
