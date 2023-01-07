@@ -26,7 +26,8 @@ public class UserRoleDAOImp implements UserRoleDAO {
     }
 
     private static String SQL_GET_ROLES = "SELECT * FROM USER_ROLE WHERE username = ?";
-    private static String SQL_UPDATE_ROLES = "UPDATE USER_ROLE SET role = ? WHERE username = ?";
+
+    private static String SQL_INSERT_ROLE = "INSERT INTO USER_ROLE (username, role) VALUES (?, ?)";
     private static String REMOVE_ALL_ROLES = "DELETE FROM USER_ROLE WHERE username = ?";
 
     @Override
@@ -50,12 +51,34 @@ public class UserRoleDAOImp implements UserRoleDAO {
 
     @Override
     public void setRoles(User user, Collection roles) {
+        removeAllRoles(user);
+        for (Object role : roles) {
+            Object values[] = {user.getUsername(), role};
+            try (
+                    Connection connection = ds.getConnection();
+                    PreparedStatement statement = prepareStatement(connection, SQL_INSERT_ROLE, false, values);
+            ) {
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
+        }
     }
 
-    @Override
-    public void updateRoles(User user, Collection roles) {
 
+    private void removeAllRoles(User user){
+        Object values[] = {user.getUsername()};
+        try (
+                Connection connection = ds.getConnection();
+                PreparedStatement statement = prepareStatement(connection, REMOVE_ALL_ROLES, false, values);
+        ) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
     }
+
+
 
     private static User map(ResultSet resultSet) throws SQLException {
         User user = new User();

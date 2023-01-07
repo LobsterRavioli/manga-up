@@ -11,7 +11,6 @@ public interface UserRoleDAO {
     public Collection getRoles(User user);
     public void setRoles(User user, Collection roles);
 
-    public void updateRoles(User user, Collection roles);
 
 }
 
