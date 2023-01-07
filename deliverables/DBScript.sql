@@ -19,7 +19,8 @@ CREATE TABLE Product
     state VARCHAR(5) NOT NULL,
     description VARCHAR(255) NOT NULL,
     type_of_product VARCHAR(30) NOT NULL,
-    quantity INT NOT NULL
+    quantity INT NOT NULL,
+    image VARCHAR(300) NOT NULL
 );
 
 
@@ -107,6 +108,8 @@ CREATE TABLE Manga
     lenght DOUBLE NOT NULL,
     state VARCHAR(5) NOT NULL,
     description VARCHAR(255) NOT NULL,
+    collections VARCHAR(50) NOT NULL,
+    quantity INT NOT NULL,
     ISBN VARCHAR(64) NOT NULL,
     book_binding VARCHAR(30) NOT NULL,
     volume VARCHAR(50) NOT NULL,
@@ -114,7 +117,7 @@ CREATE TABLE Manga
     page_number int NOT NULL,
     interior VARCHAR(20) NOT NULL,
     lang VARCHAR(20) NOT NULL,
-    quantity INT NOT NULL
+    image VARCHAR(300) NOT NULL
 );
 
 

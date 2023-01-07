@@ -5,6 +5,7 @@ import Merchandising.MerchandiseService.beans.Product;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
+import User.AccountService.beans.User;
 
 public class Order {
 

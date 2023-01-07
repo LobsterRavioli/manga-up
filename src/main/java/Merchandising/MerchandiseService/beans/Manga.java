@@ -1,33 +1,59 @@
 package Merchandising.MerchandiseService.beans;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 
 public class Manga{
 
 
-    public Manga(String isbn, String storyMaker, String binding, String cartoonist, String language, int volume, int pages, Date exitDate, List<String> type, int id, String name, String producer, String description, double price, double height, double length, double weight, ArrayList<Collection> collections, Product.ProductState state) {
+    public Manga(String isbn, String brand, String binding, String language, String volume, int pages, Date exitDate, int id, String name, String description, double price, double height, double length, double weight, String collections,int quantity, Product.ProductState state,String interior,String imagePath) {
         this.isbn = isbn;
-        this.storyMaker = storyMaker;
+        this.brand = brand;
         this.binding = binding;
-        this.cartoonist = cartoonist;
         this.language = language;
         this.volume = volume;
         this.pages = pages;
         this.exitDate = exitDate;
-        this.type = type;
         this.id = id;
         this.name = name;
-        this.producer = producer;
         this.description = description;
         this.price = price;
         this.height = height;
         this.length = length;
         this.weight = weight;
         this.collections = collections;
+        this.quantity = quantity;
         this.state = state;
+        this.interior = interior;
+        this.imagePath = imagePath;
+    }
+
+
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public String getInterior() {
+        return interior;
+    }
+
+    public void setInterior(String interior) {
+        this.interior = interior;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public int getId() {
@@ -44,14 +70,6 @@ public class Manga{
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getProducer() {
-        return producer;
-    }
-
-    public void setProducer(String producer) {
-        this.producer = producer;
     }
 
     public String getDescription() {
@@ -94,11 +112,11 @@ public class Manga{
         this.weight = weight;
     }
 
-    public ArrayList<Collection> getCollections() {
+    public String getCollections() {
         return collections;
     }
 
-    public void setCollections(ArrayList<Collection> collections) {
+    public void setCollections(String collections) {
         this.collections = collections;
     }
 
@@ -110,6 +128,7 @@ public class Manga{
         this.state = state;
     }
 
+
     public String getIsbn() {
         return isbn;
     }
@@ -118,12 +137,12 @@ public class Manga{
         this.isbn = isbn;
     }
 
-    public String getStoryMaker() {
-        return storyMaker;
+    public String getBrand() {
+        return brand;
     }
 
-    public void setStoryMaker(String storyMaker) {
-        this.storyMaker = storyMaker;
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public String getBinding() {
@@ -134,14 +153,6 @@ public class Manga{
         this.binding = binding;
     }
 
-    public String getCartoonist() {
-        return cartoonist;
-    }
-
-    public void setCartoonist(String cartoonist) {
-        this.cartoonist = cartoonist;
-    }
-
     public String getLanguage() {
         return language;
     }
@@ -150,11 +161,11 @@ public class Manga{
         this.language = language;
     }
 
-    public int getVolume() {
+    public String getVolume() {
         return volume;
     }
 
-    public void setVolume(int volume) {
+    public void setVolume(String volume) {
         this.volume = volume;
     }
 
@@ -174,13 +185,6 @@ public class Manga{
         this.exitDate = exitDate;
     }
 
-    public List<String> getType() {
-        return type;
-    }
-
-    public void setType(List<String> type) {
-        this.type = type;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -188,23 +192,27 @@ public class Manga{
         if (!(o instanceof Manga)) return false;
         if (!super.equals(o)) return false;
         Manga manga = (Manga) o;
-        return volume == manga.volume && pages == manga.pages && Objects.equals(isbn, manga.isbn) && Objects.equals(storyMaker, manga.storyMaker) && Objects.equals(binding, manga.binding) && Objects.equals(cartoonist, manga.cartoonist) && Objects.equals(language, manga.language) && Objects.equals(exitDate, manga.exitDate) && Objects.equals(type, manga.type);
+        return volume == manga.volume && pages == manga.pages && Objects.equals(isbn, manga.isbn) && Objects.equals(binding, manga.binding) && Objects.equals(language, manga.language) && Objects.equals(exitDate, manga.exitDate) && Objects.equals(type, manga.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), isbn, storyMaker, binding, cartoonist, language, volume, pages, exitDate, type);
+        return Objects.hash(super.hashCode(), isbn, binding, language, volume, pages, exitDate);
     }
 
-    private String isbn, storyMaker, binding, cartoonist, language;
-    private int volume, pages;
+    private String isbn, brand, binding, language,volume;
+    private int pages;
     private Date exitDate;
-    private List<String> type;
-
     private int id;
-    private String name, producer, description;
+    private String name, description;
     private double price, height, length, weight;
 
-    private ArrayList<Collection> collections;
+    private int quantity;
+
+    private String interior;
+
+    private String imagePath;
+
+    private String collections;
     private Product.ProductState state;
 }
