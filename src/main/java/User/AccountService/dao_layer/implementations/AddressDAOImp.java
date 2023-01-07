@@ -60,9 +60,9 @@ public class AddressDAOImp implements AddressDAO {
                 throw new DAOException("Creating user failed, no generated key obtained.");
             }
         }
-    } catch (SQLException e) {
-        throw new DAOException(e);
-    }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
     }
 
     @Override
@@ -140,6 +140,9 @@ public class AddressDAOImp implements AddressDAO {
         address.setStreet(resultSet.getString("street"));
         address.setStreetNumber(resultSet.getString("street_number"));
         address.setPostalCode(resultSet.getString("postal_code"));
+        EndUser user = new EndUser();
+        user.setId(resultSet.getInt("user_id"));
+        address.setEndUser(user);
 
         return address;
     }

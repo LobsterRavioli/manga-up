@@ -3,7 +3,6 @@ package User.AccountService.beans;
 import java.util.*;
 
 public class EndUser{
-
     private String name;
     private String surname;
     private String email;
@@ -35,7 +34,7 @@ public class EndUser{
         addresses = new HashSet();
     }
 
-    public EndUser(String name, String surname, String email, String phoneNumber, String password, Date birthdate) {
+    public EndUser(String name, String surname, String email, String phoneNumber, String password, Date birthdate, Set addresses, Set cards) {
         this.name = name;
         this.surname = surname;
         this.email = email;

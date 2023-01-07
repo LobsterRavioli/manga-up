@@ -26,11 +26,13 @@ CREATE TABLE Product
 
 CREATE TABLE Credit_Card
 (
-    number_ VARCHAR(20) PRIMARY KEY NOT NULL,
+    number VARCHAR(20) PRIMARY KEY NOT NULL,
+    user_id INT NOT NULL,
     cvc VARCHAR(3) NOT NULL,
     nome VARCHAR(15) NOT NULL,
     cognome VARCHAR(15) NOT NULL,
-    data_scadenza date NOT NULL
+    data_scadenza date NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES EndUser(id)
 );
 
 CREATE TABLE Address
@@ -40,7 +42,8 @@ CREATE TABLE Address
     city VARCHAR(30) NOT NULL,
     street VARCHAR(100) NOT NULL,
     street_number Int NOT NULL,
-    postal_code VARCHAR(5) NOT NULL
+    postal_code VARCHAR(5) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES EndUser(id)
 );
 
 CREATE TABLE EndUser
@@ -53,13 +56,9 @@ CREATE TABLE EndUser
     number VARCHAR(10) NOT NULL,
     birth_date date NOT NULL,
     add_id int,
-    card_number varchar(20),
-    FOREIGN KEY (add_id) REFERENCES Address(id)
-        ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY (card_number) REFERENCES Credit_Card(number_)
-        ON UPDATE cascade ON DELETE cascade
-
+    card_number varchar(20)
 );
+
 
 
 CREATE TABLE Orders
