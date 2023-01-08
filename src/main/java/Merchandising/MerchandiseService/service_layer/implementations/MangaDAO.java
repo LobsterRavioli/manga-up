@@ -220,6 +220,62 @@ public class MangaDAO implements Merchandising.MerchandiseService.service_layer.
     }
 
 
+    public ArrayList<Manga> retrieveAll(){
+        PreparedStatement pr = null;
+        ResultSet rs = null;
+        try(Connection conn = ConnectionPool.getConnection()){
+            pr = conn.prepareStatement("SELECT * from Product as p");
+            rs = pr.executeQuery();
+            ArrayList<Manga> lista = new ArrayList<Manga>();
+            while(rs.next()) {
+                int iD = rs.getInt(1);
+                String name = rs.getString(2);
+                String brand = rs.getString(3);
+                double price = rs.getDouble(4);
+                double weight = rs.getDouble(5);
+                double height = rs.getDouble(6);
+                double lenght = rs.getDouble(7);
+                String type = rs.getString(8);
+
+                Product.ProductState pS;
+
+                if (type.equals("NEW"))
+                    pS = Product.ProductState.NEW;
+                else
+                    pS = Product.ProductState.USED;
+
+                String description = rs.getString(9);
+                String collections = rs.getString(10);
+                int quantity = rs.getInt(11);
+                String isbn = rs.getString(12);
+                String binding = rs.getString(13);
+                String volume = rs.getString(14);
+                Date exit_date = rs.getDate(15);
+                int page = rs.getInt(16);
+                String interior = rs.getString(17);
+                String language = rs.getString(18);
+                String imapePath = rs.getString(19);
+
+                Manga p = new Manga(isbn, brand, binding, language, volume, page, exit_date, iD, name, description, price, height, lenght, weight, collections, quantity, pS, interior, imapePath);
+                lista.add(p);
+            }
+            if(lista.size()==0)
+                return null;
+
+            else return lista;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }finally {
+            try{
+                rs.close();
+                pr.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public ArrayList<Manga> retrieveByPrice(double priceStart,double priceEnd){
         PreparedStatement pr = null;

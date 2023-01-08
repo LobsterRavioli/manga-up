@@ -17,6 +17,8 @@ public interface MangaDAO {
 
     ArrayList<Manga> retrieveByName(String name);
 
+    ArrayList<Manga> retrieveAll();
+
     ArrayList<Manga> retrieveByPrice(double priceStart,double priceEnd);
 
 }

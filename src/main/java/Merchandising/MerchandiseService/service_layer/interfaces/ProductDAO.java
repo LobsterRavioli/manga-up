@@ -15,6 +15,8 @@ public interface ProductDAO {
 
     ArrayList<Product> retrieveByName(String name);
 
+    ArrayList<Product> retrieveAll();
+
     ArrayList<Product> retrieveByPrice(double priceStart,double priceEnd);
 
 
