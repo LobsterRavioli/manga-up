@@ -40,7 +40,7 @@
         <div class="col-lg-6 col-md-5">
           <div class="header__top__right">
             <div class="header__top__links">
-              <a href="${pageContext.request.contextPath}/ProfileView/login.jsp">Sign in</a>
+              <a href="${pageContext.request.contextPath}/ProfileView/NoAuthorView/login.jsp">Sign in</a>
               <a href="${pageContext.request.contextPath}/signUp.jsp">Sign up</a>
             </div>
           </div>

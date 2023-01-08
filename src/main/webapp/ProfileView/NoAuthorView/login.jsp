@@ -57,7 +57,6 @@
     width: 100%;
     height: 100%;
     font-family: 'Open Sans', sans-serif;
-    background-image: url("../images/mangaBackGround.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;
@@ -95,6 +94,8 @@
   }
   input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgba(255,255,255,0.2); }
   </style></head><body>
+
+
 <div class="login">
   <h1>Login</h1>
   <form method="post" action="../loginServlet">
