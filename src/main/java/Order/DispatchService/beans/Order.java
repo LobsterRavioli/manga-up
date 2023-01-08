@@ -1,10 +1,6 @@
 package Order.DispatchService.beans;
 
-import Merchandising.MerchandiseService.beans.Product;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Objects;
+import java.sql.Date;
 import User.AccountService.beans.User;
 
 public class Order {
@@ -14,91 +10,80 @@ public class Order {
         ;
     }
 
-    public Order(OrderState state, User user, Date orderDate, Date arrivalDate)
+    public Order(long id,Date orderDate,Date arrivalDate,State state,User user,Courier courier)
     {
-        this.state = state;
-        this.user = user;
+        this.id = id;
         this.orderDate = orderDate;
         this.arrivalDate = arrivalDate;
+        this.state = state;
+        this.user = user;
+        this.courier = courier;
     }
 
-    public OrderState getState()
-    {
-        return state;
+    public long getId() {
+        return id;
     }
 
-    public User getUser()
-    {
-        return user;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public Date getOrderDate()
-    {
+    public Date getOrderDate() {
         return orderDate;
     }
 
-    public Date getArrivalDate()
-    {
-        return arrivalDate;
-    }
-
-    public void setState(OrderState state)
-    {
-        this.state = state;
-    }
-
-    public void setUser(User user)
-    {
-        this.user = user;
-    }
-
-    public void setOrderDate(Date orderDate)
-    {
+    public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
     }
 
-    public void setArrivalDate(Date arrivalDate)
-    {
+    public Date getArrivalDate() {
+        return arrivalDate;
+    }
+
+    public void setArrivalDate(Date arrivalDate) {
         this.arrivalDate = arrivalDate;
     }
 
-    public void addProduct(Product product)
-    {
-        products.add(product);
+    public State getState() {
+        return state;
     }
 
-    public void removeProduct(Product product)
-    {
-        if(products.contains(product))
-            products.remove(product);
+    public void setState(State state) {
+        this.state = state;
     }
 
-    public ArrayList<Product> getProducts()
-    {
-        return products;
+    public User getUser() {
+        return user;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Order order = (Order) o;
-        return state == order.state && Objects.equals(user, order.user) && Objects.equals(orderDate, order.orderDate) && Objects.equals(arrivalDate, order.arrivalDate);
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(state, user, orderDate, arrivalDate);
+    public Courier getCourier() {
+        return courier;
     }
 
-    public enum OrderState
+    public void setCourier(Courier courier) {
+        this.courier = courier;
+    }
+
+    public enum State
     {
         TO_SEND,
         SENT
     }
 
-    private OrderState state;
-    private User user;
-    private Date orderDate, arrivalDate;
-    private ArrayList<Product> products;
+    private long id;
+
+    //private List<Product> products;
+    /*
+    * Aggiungere l'attributo "products" qui non credo vada bene...
+    * Magari ci serve una tabella che collegli le entità Prodotto e Ordine.
+    * */
+
+    private java.sql.Date orderDate,arrivalDate;
+    private State state;
+    private User user; // Vale la stessa cosa che vale per products (?)
+    private Courier courier;
 }
