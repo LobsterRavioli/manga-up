@@ -1,6 +1,6 @@
-drop schema MangaUp;
-create schema MangaUp;
-use MangaUp;
+drop schema MANGA_UP ;
+create schema MANGA_UP;
+use MANGA_UP;
 
 CREATE TABLE Genre
 (
@@ -23,6 +23,17 @@ CREATE TABLE Product
     image VARCHAR(300) NOT NULL
 );
 
+CREATE TABLE END_USER
+(
+    id  INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    email Varchar(128) NOT NULL UNIQUE ,
+    name VARCHAR(32) NOT NULL,
+    surname VARCHAR(128) NOT NULL,
+    password VARCHAR(15) NOT NULL,
+    phone_number VARCHAR(10) NOT NULL,
+    birth_date date NOT NULL
+);
+
 
 CREATE TABLE Credit_Card
 (
@@ -32,32 +43,22 @@ CREATE TABLE Credit_Card
     nome VARCHAR(15) NOT NULL,
     cognome VARCHAR(15) NOT NULL,
     data_scadenza date NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES EndUser(id)
+    FOREIGN KEY (user_id) REFERENCES END_USER(id)
 );
 
 CREATE TABLE Address
 (
     id  INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    user_id INT NOT NULL ,
     country VARCHAR(64) NOT NULL,
     city VARCHAR(30) NOT NULL,
     street VARCHAR(100) NOT NULL,
     street_number Int NOT NULL,
     postal_code VARCHAR(5) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES EndUser(id)
+    FOREIGN KEY (user_id) REFERENCES END_USER(id)
 );
 
-CREATE TABLE EndUser
-(
-    id  INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    email Varchar(128) NOT NULL UNIQUE ,
-    name VARCHAR(32) NOT NULL,
-    surname VARCHAR(128) NOT NULL,
-    password VARCHAR(15) NOT NULL,
-    number VARCHAR(10) NOT NULL,
-    birth_date date NOT NULL,
-    add_id int,
-    card_number varchar(20)
-);
+
 
 
 
@@ -132,7 +133,7 @@ CREATE TABLE Cart_Element
     user_id INT NOT NULL,
     product_id int NOT NULL,
     PRIMARY KEY(user_id,product_id),
-    FOREIGN KEY (user_id) REFERENCES EndUser(id)
+    FOREIGN KEY (user_id) REFERENCES END_USER(id)
         ON UPDATE cascade ON DELETE cascade,
     FOREIGN KEY (product_id) REFERENCES Product(id)
         ON UPDATE cascade ON DELETE cascade
@@ -161,23 +162,34 @@ CREATE TABLE HasGenre
 );
 
 
-CREATE TABLE ROLES(
-    ROLE_NAME VARCHAR(15) PRIMARY KEY NOT NULL
+create table users (
+                       user_name         varchar(15) not null primary key,
+                       user_pass         varchar(15) not null
 );
 
-INSERT INTO ROLES VALUES('CATALOG_MANAGER');
-INSERT INTO ROLES VALUES('ORDER_MANAGER');
-INSERT INTO ROLES VALUES('USER_MANAGER');
-
-CREATE TABLE USER_ROLES
-(
-    username VARCHAR(15) NOT NULL,
-    role VARCHAR(2)	NOT NULL,
-    PRIMARY KEY(username, role),
-    FOREIGN KEY(username) REFERENCES USER(username),
-    FOREIGN KEY(role) REFERENCES ROLES(ROLE_NAME)
+create table user_roles (
+                            user_name         varchar(15) not null,
+                            role_name         varchar(15) not null,
+                            primary key (user_name, role_name)
 );
 
+INSERT INTO tomcat_users (user_name, password) VALUES ('tommaso', '1a1dc91c907325c69271ddf0c944bc72');
+INSERT INTO tomcat_users (user_name, password) VALUES ('alessandro', '1a1dc91c907325c69271ddf0c944bc72');
+INSERT INTO tomcat_users (user_name, password) VALUES ('francesco', '1a1dc91c907325c69271ddf0c944bc72');
+
+INSERT INTO tomcat_roles (role_name) VALUES ('USER_MANAGER');
+INSERT INTO tomcat_roles (role_name) VALUES ('CATALOG_MANAGER');
+INSERT INTO tomcat_roles (role_name) VALUES ('ORDER_MANAGER');
+
+INSERT INTO tomcat_users_roles (user_name, role_name) VALUES ('tommaso', 'USER_MANAGER');
+INSERT INTO tomcat_users_roles (user_name, role_name) VALUES ('tommaso', 'CATALOG_MANAGER');
+INSERT INTO tomcat_users_roles (user_name, role_name) VALUES ('tommaso', 'ORDER_MANAGER');
+
+INSERT INTO tomcat_users_roles (user_name, role_name) VALUES ('alessandro', 'USER_MANAGER');
+INSERT INTO tomcat_users_roles (user_name, role_name) VALUES ('francesco', 'CATALOG_MANAGER');
+
+INSERT INTO MANGA_UP.END_USER (id, email, name, surname, password, phone_number, birth_date)
+VALUES (1, 'toms@hotmail.it', 'tom', 'sirr', 'napoli123', '3662968496', '1970-01-15');
 
 
 
