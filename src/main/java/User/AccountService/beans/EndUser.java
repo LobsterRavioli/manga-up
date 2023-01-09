@@ -111,4 +111,19 @@ public class EndUser{
         addresses.remove(address);
         address.setEndUser(null);
     }
+
+    @Override
+    public String toString() {
+        return "EndUser{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", password='" + password + '\'' +
+                ", addresses=" + addresses +
+                ", cards=" + cards +
+                ", birthdate=" + birthdate +
+                ", id=" + id +
+                '}';
+    }
 }
