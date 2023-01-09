@@ -24,8 +24,8 @@ public class OrderDAOImp implements OrderDAO
     private static final String ORDER_TABLE = "Orders";
 
     private static final String CREATE = "INSERT INTO "+ORDER_TABLE+
-            " (id, order_date, arrival_date, state, user_id, courier_id)"+
-            " VALUES (?, ?, ?, ?, ?, ?) ;";
+            " (id, order_date, state, total_price, courier_id, user_id, courier)"+
+            " VALUES (?, ?, ?, ?, ?, ?, ?) ;";
 
     private static final String DELETE = "DELETE FROM "+ORDER_TABLE+" WHERE id = ? ;";
 
@@ -45,10 +45,11 @@ public class OrderDAOImp implements OrderDAO
             preparedStatement = connection.prepareStatement(CREATE);
             preparedStatement.setLong(1, order.getId());
             preparedStatement.setDate(2, order.getOrderDate());
-            preparedStatement.setDate(3, order.getArrivalDate());
-            preparedStatement.setString(4, order.getState().toString());
-            preparedStatement.setLong(5, order.getUser().getId());
-            preparedStatement.setString(6, order.getCourier().getName());
+            preparedStatement.setString(3, order.getState().toString());
+            preparedStatement.setDouble(4, order.getTotalPrice());
+            preparedStatement.setLong(5, order.getCourierID());
+            preparedStatement.setLong(6, order.getUserID());
+            preparedStatement.setString(7, order.getCourierName());
 
             int affectedRows = preparedStatement.executeUpdate();
             if(affectedRows == 0)
@@ -154,15 +155,11 @@ public class OrderDAOImp implements OrderDAO
             {
                 orderBean.setId(rs.getLong("id"));
                 orderBean.setOrderDate(rs.getDate("order_date"));
-                // orderBean.setArrivalDate("arrival_date");
                 orderBean.setState(Order.State.valueOf(rs.getString("state")));
-                User user = new User();
-                user.setId(rs.getInt("user_id"));
-                orderBean.setUser(user);
-                Courier courier = new Courier();
-                courier.setId(rs.getLong("courier_id"));
-
-                /*** VALUTARE COME COLLEGARE LA TABELLA PRODOTTO ALLA TABELLA ORDINE ***/
+                orderBean.setTotalPrice(rs.getDouble("total_price"));
+                orderBean.setCourierID(rs.getLong("courier_id"));
+                orderBean.setUserID(rs.getLong("user_id"));
+                orderBean.setCourierName(rs.getString("courier"));
             }
         }
         finally
@@ -178,7 +175,6 @@ public class OrderDAOImp implements OrderDAO
                     preparedStatement.close();
             }
         }
-
         return orderBean;
     }
 }

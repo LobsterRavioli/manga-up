@@ -1,6 +1,8 @@
 package Order.DispatchService.beans;
 
 import java.sql.Date;
+import java.util.Objects;
+
 import User.AccountService.beans.User;
 
 public class Order {
@@ -10,62 +12,97 @@ public class Order {
         ;
     }
 
-    public Order(long id,Date orderDate,Date arrivalDate,State state,User user,Courier courier)
+    public Order(long id, Date orderDate, State state, double totalPrice, Courier courier, User user)
     {
         this.id = id;
         this.orderDate = orderDate;
-        this.arrivalDate = arrivalDate;
         this.state = state;
-        this.user = user;
+        this.totalPrice = totalPrice;
         this.courier = courier;
+        this.user = user;
     }
 
-    public long getId() {
-        return id;
+    public long getId()
+    {
+        return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(long id)
+    {
         this.id = id;
     }
 
-    public Date getOrderDate() {
-        return orderDate;
+    public Date getOrderDate()
+    {
+        return this.orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(Date orderDate)
+    {
         this.orderDate = orderDate;
     }
 
-    public Date getArrivalDate() {
-        return arrivalDate;
+    public State getState()
+    {
+        return this.state;
     }
 
-    public void setArrivalDate(Date arrivalDate) {
-        this.arrivalDate = arrivalDate;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
+    public void setState(State state)
+    {
         this.state = state;
     }
 
-    public User getUser() {
-        return user;
+    public double getTotalPrice()
+    {
+        return this.totalPrice;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setTotalPrice(double totalPrice)
+    {
+        this.totalPrice = totalPrice;
     }
 
-    public Courier getCourier() {
-        return courier;
+    public long getCourierID()
+    {
+        return this.courier.getId();
     }
 
-    public void setCourier(Courier courier) {
-        this.courier = courier;
+    public void setCourierID(long newCourierID)
+    {
+        this.courier.setId(newCourierID);
+    }
+
+    public String getCourierName()
+    {
+        return this.courier.getName();
+    }
+
+    public void setCourierName(String newCourierName)
+    {
+        this.courier.setName(newCourierName);
+    }
+
+    public long getUserID()
+    {
+        return this.user.getId();
+    }
+
+    public void setUserID(long newUserID)
+    {
+        this.setUserID(newUserID);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return id == order.id && Double.compare(order.totalPrice, totalPrice) == 0 && Objects.equals(orderDate, order.orderDate) && state == order.state && Objects.equals(courier, order.courier) && Objects.equals(user, order.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, orderDate, state, totalPrice, courier, user);
     }
 
     public enum State
@@ -75,15 +112,9 @@ public class Order {
     }
 
     private long id;
-
-    //private List<Product> products;
-    /*
-    * Aggiungere l'attributo "products" qui non credo vada bene...
-    * Magari ci serve una tabella che collegli le entità Prodotto e Ordine.
-    * */
-
-    private java.sql.Date orderDate,arrivalDate;
+    private Date orderDate;
     private State state;
-    private User user; // Vale la stessa cosa che vale per products (?)
+    private double totalPrice;
     private Courier courier;
+    private User user;
 }
