@@ -1,39 +1,48 @@
 package Merchandising.MerchandiseService.service_layer.implementations;
 
+import Merchandising.MerchandiseService.beans.Manga;
 import Merchandising.MerchandiseService.beans.Product;
 import Utilities.ConnectionPool;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.sql.DataSource;
+import java.sql.*;
 import java.util.ArrayList;
 
-import Merchandising.MerchandiseService.beans.Manga;
+public class MangaDAOImpl implements Merchandising.MerchandiseService.service_layer.interfaces.MangaDAO {
 
-public class ProductDAO implements Merchandising.MerchandiseService.service_layer.interfaces.ProductDAO {
-
+    private DataSource ds;
+    public MangaDAOImpl(DataSource ds){
+        this.ds = ds;
+    }
     @Override
-    public void create(Product p) {
+    public void create(Manga manga) {
         PreparedStatement pr = null;
-        try(Connection conn = ConnectionPool.getConnection()){
-            pr = conn.prepareStatement("INSERT INTO Product VALUES (?,?,?,?,?,?,?,?,?,?,?)");
-            pr.setString(1,p.getName());
-            pr.setString(2,p.getProducer());
-            pr.setDouble(3,p.getPrice());
-            pr.setDouble(4,p.getWeight());
-            pr.setDouble(5,p.getHeight());
-            pr.setDouble(6,p.getLength());
+        try(Connection conn = ds.getConnection()){
+            pr = conn.prepareStatement("INSERT INTO Manga VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            pr.setString(1,manga.getName());
+            pr.setString(2,manga.getBrand());
+            pr.setDouble(3,manga.getPrice());
+            pr.setDouble(4,manga.getWeight());
+            pr.setDouble(5,manga.getHeight());
+            pr.setDouble(6,manga.getLength());
 
-            if(p.getState().equals(Product.ProductState.USED))
+            if(manga.getState().equals(Product.ProductState.USED))
                 pr.setString(7,"USED");
             else
                 pr.setString(7,"NEW");
 
-            pr.setString(8,p.getDescription());
-            pr.setString(9,p.getType_of_product());
-            pr.setString(10,p.getCollections());
-            pr.setInt(11,p.getQuantity());
+            pr.setString(8,manga.getDescription());
+            pr.setString(9,manga.getCollections());
+            pr.setInt(10,manga.getQuantity());
+            pr.setString(11,manga.getIsbn());
+            pr.setString(12,manga.getBinding());
+            pr.setString(13,manga.getVolume());
+            pr.setDate(14,manga.getExitDate());
+            pr.setInt(15,manga.getPages());
+            pr.setString(16,manga.getInterior());
+            pr.setString(17,manga.getLanguage());
+            pr.setString(18,manga.getImagePath());
+
             pr.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
@@ -50,7 +59,7 @@ public class ProductDAO implements Merchandising.MerchandiseService.service_laye
     public void delete(int id) {
         PreparedStatement pr = null;
         try(Connection conn = ConnectionPool.getConnection()){
-            pr = conn.prepareStatement("DELETE FROM Product as p WHERE p.id=?");
+            pr = conn.prepareStatement("DELETE FROM Manga as p WHERE p.id=?");
             pr.setInt(1,id);
             pr.executeUpdate();
         }catch (SQLException e){
@@ -65,12 +74,12 @@ public class ProductDAO implements Merchandising.MerchandiseService.service_laye
     }
 
     @Override
-    public void update(Product p) {
+    public void update(Manga p) {
         PreparedStatement pr = null;
-        try(Connection conn = ConnectionPool.getConnection()){
-            pr = conn.prepareStatement("UPDATE Product SET name=?,brand=?,price=?,weight=?,height=?,lenght=?,state=?,description=?,type_of_product=?,collections=?,quantity=?)");
+        try(Connection conn = ds.getConnection()){
+            pr = conn.prepareStatement("UPDATE Manga SET name=?,brand=?,price=?,weight=?,height=?,lenght=?,state=?,description=?,collections=?,quantity=?,ISBN=?,book_binding=?,volume=?,release_date=?,page_number=?,interior=?,lang=?,image=?)");
             pr.setString(1,p.getName());
-            pr.setString(2,p.getProducer());
+            pr.setString(2,p.getBrand());
             pr.setDouble(3,p.getPrice());
             pr.setDouble(4,p.getWeight());
             pr.setDouble(5,p.getHeight());
@@ -82,10 +91,16 @@ public class ProductDAO implements Merchandising.MerchandiseService.service_laye
                 pr.setString(7,"NEW");
 
             pr.setString(8,p.getDescription());
-            pr.setString(9,p.getType_of_product());
-            pr.setString(10,p.getCollections());
-            pr.setInt(11,p.getQuantity());
-            pr.setString(12,p.getImagePath());
+            pr.setString(9,p.getCollections());
+            pr.setInt(10,p.getQuantity());
+            pr.setString(11,p.getIsbn());
+            pr.setString(12,p.getBinding());
+            pr.setString(13,p.getVolume());
+            pr.setDate(14,p.getExitDate());
+            pr.setInt(15,p.getPages());
+            pr.setString(16,p.getInterior());
+            pr.setString(17,p.getLanguage());
+            pr.setString(18,p.getImagePath());
             pr.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
@@ -99,11 +114,11 @@ public class ProductDAO implements Merchandising.MerchandiseService.service_laye
     }
 
     @Override
-    public Product retrieveById(int id) {
+    public Manga retrieveById(int id) {
         PreparedStatement pr = null;
         ResultSet rs = null;
-        try(Connection conn = ConnectionPool.getConnection()){
-            pr = conn.prepareStatement("SELECT * from Product as p WHERE p.id=?");
+        try(Connection conn = ds.getConnection()){
+            pr = conn.prepareStatement("SELECT * from Manga as m WHERE m.id=?");
             pr.setInt(1,id);
             rs = pr.executeQuery();
             if(rs.next()){
@@ -114,21 +129,28 @@ public class ProductDAO implements Merchandising.MerchandiseService.service_laye
                 double weight = rs.getDouble(5);
                 double height = rs.getDouble(6);
                 double lenght = rs.getDouble(7);
-                String type = rs.getString(8);
+                String state = rs.getString(8);
 
                 Product.ProductState pS;
 
-                if (type.equals("NEW"))
+                if (state.equals("NEW"))
                     pS = Product.ProductState.NEW;
                 else
                     pS = Product.ProductState.USED;
 
                 String description = rs.getString(9);
-                String type_of_p = rs.getString(10);
-                String collections = rs.getString(11);
-                int quantity = rs.getInt(12);
-                String imagePath = rs.getString(13);
-                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,type_of_p,collections,quantity,imagePath);
+                String collections = rs.getString(10);
+                int quantity = rs.getInt(11);
+                String isbn = rs.getString(12);
+                String binding = rs.getString(13);
+                String volume = rs.getString(14);
+                Date exit_date = rs.getDate(15);
+                int page = rs.getInt(16);
+                String interior = rs.getString(17);
+                String language = rs.getString(18);
+                String imapePath = rs.getString(19);
+
+                Manga p = new Manga(isbn,brand,binding,language,volume,page,exit_date,iD,name,description,price,height,lenght,weight,collections,quantity,pS,interior,imapePath);
                 return p;
             }else
                 return null;
@@ -146,15 +168,15 @@ public class ProductDAO implements Merchandising.MerchandiseService.service_laye
     }
 
     @Override
-    public ArrayList<Product> retrieveByName(String n){
+    public ArrayList<Manga> retrieveByName(String n){
         PreparedStatement pr = null;
         ResultSet rs = null;
-        try(Connection conn = ConnectionPool.getConnection()){
-            pr = conn.prepareStatement("SELECT * from Product as p WHERE p.name=?");
+        try(Connection conn = ds.getConnection()){
+            pr = conn.prepareStatement("SELECT * from Manga as m WHERE m.name=?");
             pr.setString(1,n);
             rs = pr.executeQuery();
-            ArrayList<Product> lista = new ArrayList<Product>();
-            while(rs.next()){
+            ArrayList<Manga> lista = new ArrayList<Manga>();
+            while(rs.next()) {
                 int iD = rs.getInt(1);
                 String name = rs.getString(2);
                 String brand = rs.getString(3);
@@ -172,11 +194,18 @@ public class ProductDAO implements Merchandising.MerchandiseService.service_laye
                     pS = Product.ProductState.USED;
 
                 String description = rs.getString(9);
-                String type_of_p = rs.getString(10);
-                String collections = rs.getString(11);
-                int quantity = rs.getInt(12);
-                String imagePath = rs.getString(13);
-                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,type_of_p,collections,quantity,imagePath);
+                String collections = rs.getString(10);
+                int quantity = rs.getInt(11);
+                String isbn = rs.getString(12);
+                String binding = rs.getString(13);
+                String volume = rs.getString(14);
+                Date exit_date = rs.getDate(15);
+                int page = rs.getInt(16);
+                String interior = rs.getString(17);
+                String language = rs.getString(18);
+                String imapePath = rs.getString(19);
+
+                Manga p = new Manga(isbn, brand, binding, language, volume, page, exit_date, iD, name, description, price, height, lenght, weight, collections, quantity, pS, interior, imapePath);
                 lista.add(p);
             }
             if(lista.size()==0)
@@ -197,14 +226,14 @@ public class ProductDAO implements Merchandising.MerchandiseService.service_laye
     }
 
 
-    public ArrayList<Product> retrieveAll(){
+    public ArrayList<Manga> retrieveAll(){
         PreparedStatement pr = null;
         ResultSet rs = null;
-        try(Connection conn = ConnectionPool.getConnection()){
-            pr = conn.prepareStatement("SELECT * from Product as p");
+        try(Connection conn = ds.getConnection()){
+            pr = conn.prepareStatement("SELECT * from Manga as m");
             rs = pr.executeQuery();
-            ArrayList<Product> lista = new ArrayList<Product>();
-            while(rs.next()){
+            ArrayList<Manga> lista = new ArrayList<Manga>();
+            while(rs.next()) {
                 int iD = rs.getInt(1);
                 String name = rs.getString(2);
                 String brand = rs.getString(3);
@@ -222,11 +251,18 @@ public class ProductDAO implements Merchandising.MerchandiseService.service_laye
                     pS = Product.ProductState.USED;
 
                 String description = rs.getString(9);
-                String type_of_p = rs.getString(10);
-                String collections = rs.getString(11);
-                int quantity = rs.getInt(12);
-                String imagePath = rs.getString(13);
-                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,type_of_p,collections,quantity,imagePath);
+                String collections = rs.getString(10);
+                int quantity = rs.getInt(11);
+                String isbn = rs.getString(12);
+                String binding = rs.getString(13);
+                String volume = rs.getString(14);
+                Date exit_date = rs.getDate(15);
+                int page = rs.getInt(16);
+                String interior = rs.getString(17);
+                String language = rs.getString(18);
+                String imapePath = rs.getString(19);
+
+                Manga p = new Manga(isbn, brand, binding, language, volume, page, exit_date, iD, name, description, price, height, lenght, weight, collections, quantity, pS, interior, imapePath);
                 lista.add(p);
             }
             if(lista.size()==0)
@@ -247,20 +283,20 @@ public class ProductDAO implements Merchandising.MerchandiseService.service_laye
     }
 
     @Override
-    public ArrayList<Product> retrieveByPrice(double priceStart,double priceEnd){
+    public ArrayList<Manga> retrieveByPrice(double priceStart,double priceEnd){
         PreparedStatement pr = null;
         ResultSet rs = null;
-        try(Connection conn = ConnectionPool.getConnection()){
+        try(Connection conn = ds.getConnection()){
             if(priceStart<0) {
-                pr = conn.prepareStatement("SELECT * from Product as p WHERE p.price<?");
+                pr = conn.prepareStatement("SELECT * from Manga as m WHERE m.price<?");
                 pr.setDouble(1, priceEnd);
             }
             else if (priceEnd<0){
-                pr = conn.prepareStatement("SELECT * from Product as p WHERE p.price>?");
+                pr = conn.prepareStatement("SELECT * from Manga as m WHERE m.price>?");
                 pr.setDouble(1,priceStart);
             }
             else if(0<priceStart && 0<priceEnd) {
-                pr = conn.prepareStatement("SELECT * from Product as p WHERE p.price BETWEEN ? AND ?");
+                pr = conn.prepareStatement("SELECT * from Manga as m WHERE m.price BETWEEN ? AND ?");
                 pr.setDouble(1, priceStart);
                 pr.setDouble(2, priceEnd);
             }else{
@@ -268,7 +304,7 @@ public class ProductDAO implements Merchandising.MerchandiseService.service_laye
                 return null;
             }
             rs = pr.executeQuery();
-            ArrayList<Product> lista = new ArrayList<Product>();
+            ArrayList<Manga> lista = new ArrayList<Manga>();
             while(rs.next()){
                 int iD = rs.getInt(1);
                 String name = rs.getString(2);
@@ -287,11 +323,18 @@ public class ProductDAO implements Merchandising.MerchandiseService.service_laye
                     pS = Product.ProductState.USED;
 
                 String description = rs.getString(9);
-                String type_of_p = rs.getString(10);
-                String collections = rs.getString(11);
-                int quantity = rs.getInt(12);
-                String imagePath = rs.getString(13);
-                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,type_of_p,collections,quantity,imagePath);
+                String collections = rs.getString(10);
+                int quantity = rs.getInt(11);
+                String isbn = rs.getString(12);
+                String binding = rs.getString(13);
+                String volume = rs.getString(14);
+                Date exit_date = rs.getDate(15);
+                int page = rs.getInt(16);
+                String interior = rs.getString(17);
+                String language = rs.getString(18);
+                String imapePath = rs.getString(19);
+
+                Manga p = new Manga(isbn,brand,binding,language,volume,page,exit_date,iD,name,description,price,height,lenght,weight,collections,quantity,pS,interior,imapePath);
                 lista.add(p);
             }
             if(lista.size()==0)

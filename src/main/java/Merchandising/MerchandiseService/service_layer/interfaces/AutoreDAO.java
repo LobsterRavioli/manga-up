@@ -4,13 +4,11 @@ import Merchandising.MerchandiseService.beans.Autore;
 
 public interface AutoreDAO {
 
-    void create(Autore a);
+    public void create(Autore a);
 
-    void delete(Autore a);
+    public void delete(int id);
 
-    void update(Autore a);
-
-    Autore retrieve(int id);
+    public Autore retrieve(int id);
 
 
 }

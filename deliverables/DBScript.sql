@@ -29,7 +29,7 @@ CREATE TABLE END_USER
     email Varchar(128) NOT NULL UNIQUE ,
     name VARCHAR(32) NOT NULL,
     surname VARCHAR(128) NOT NULL,
-    password VARCHAR(15) NOT NULL,
+    password VARCHAR(32) NOT NULL,
     phone_number VARCHAR(10) NOT NULL,
     birth_date date NOT NULL
 );
@@ -161,34 +161,7 @@ CREATE TABLE HasGenre
         ON UPDATE cascade ON DELETE cascade
 );
 
-
-create table users (
-                       user_name         varchar(15) not null primary key,
-                       user_pass         varchar(15) not null
-);
-
-create table user_roles (
-                            user_name         varchar(15) not null,
-                            role_name         varchar(15) not null,
-                            primary key (user_name, role_name)
-);
-
-INSERT INTO tomcat_users (user_name, password) VALUES ('tommaso', '1a1dc91c907325c69271ddf0c944bc72');
-INSERT INTO tomcat_users (user_name, password) VALUES ('alessandro', '1a1dc91c907325c69271ddf0c944bc72');
-INSERT INTO tomcat_users (user_name, password) VALUES ('francesco', '1a1dc91c907325c69271ddf0c944bc72');
-
-INSERT INTO tomcat_roles (role_name) VALUES ('USER_MANAGER');
-INSERT INTO tomcat_roles (role_name) VALUES ('CATALOG_MANAGER');
-INSERT INTO tomcat_roles (role_name) VALUES ('ORDER_MANAGER');
-
-INSERT INTO tomcat_users_roles (user_name, role_name) VALUES ('tommaso', 'USER_MANAGER');
-INSERT INTO tomcat_users_roles (user_name, role_name) VALUES ('tommaso', 'CATALOG_MANAGER');
-INSERT INTO tomcat_users_roles (user_name, role_name) VALUES ('tommaso', 'ORDER_MANAGER');
-
-INSERT INTO tomcat_users_roles (user_name, role_name) VALUES ('alessandro', 'USER_MANAGER');
-INSERT INTO tomcat_users_roles (user_name, role_name) VALUES ('francesco', 'CATALOG_MANAGER');
-
-INSERT INTO MANGA_UP.END_USER (id, email, name, surname, password, phone_number, birth_date)
+INSERT INTO MANGAUP.END_USER (id, email, name, surname, password, phone_number, birth_date)
 VALUES (1, 'toms@hotmail.it', 'tom', 'sirr', 'napoli123', '3662968496', '1970-01-15');
 
 

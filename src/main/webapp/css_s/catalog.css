@@ -44,3 +44,17 @@
     margin-top: 0px;
     height:100% !important;
 }
+
+.bbb_deals_image {
+    display: flex!important;
+    justify-content: center!important;
+}
+
+.bbb_deals_image img {
+    max-width: 75% !important;
+    max-height: 100% !important;
+}
+
+.bbb_deals_content {
+    padding: 5% 3% 3% 3% !important;
+}

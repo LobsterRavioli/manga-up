@@ -57,6 +57,7 @@
     width: 100%;
     height: 100%;
     font-family: 'Open Sans', sans-serif;
+    background-image: url("${pageContext.request.contextPath}/images/mangaBackGround.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;

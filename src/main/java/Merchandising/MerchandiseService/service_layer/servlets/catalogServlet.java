@@ -1,8 +1,13 @@
 package Merchandising.MerchandiseService.service_layer.servlets;
 
+import Merchandising.MerchandiseService.service_layer.implementations.MangaDAOImpl;
+import Merchandising.MerchandiseService.service_layer.interfaces.MangaDAO;
+import context.MainContext;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -13,10 +18,15 @@ public class catalogServlet extends HttpServlet {
         String page = request.getParameter("productsSupply");
         String type = request.getParameter("type");
         ArrayList list = new ArrayList();
-        if(type == null){
-
+        if(type.equals("Manga")){
+            DataSource ds =(DataSource) getServletContext().getAttribute("DataSource");
+            MangaDAOImpl mD = new MangaDAOImpl(ds);
+            list = mD.retrieveAll();
+            request.setAttribute("listaElementi",list);
+            RequestDispatcher rD = getServletContext().getRequestDispatcher("/MerchandisingView/catalog.jsp");
+            rD.forward(request,response);
         }else{
-
+            return;
         }
 
 

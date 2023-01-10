@@ -8,4 +8,4 @@
 /httpRequests/
 /artifacts/
 /libraries/
-
+../src/main/webapp/META-INF/context.xml

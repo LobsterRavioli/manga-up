@@ -42,9 +42,9 @@ public class EndUserDAOImp implements EndUserDAO {
             "SELECT * FROM END_USER WHERE email = ? AND password = ? ;";
 
     private static final String SQL_EXIST_EMAIL =
-            "SELECT email FROM EndUser WHERE email = ?";
+            "SELECT email FROM End_User WHERE email = ?";
 
-    private static final String SQL_LIST_ORDER_BY_ID = "SELECT * FROM END_USER ORDER BY id";
+    private static final String SQL_LIST_ORDER_BY_ID = "SELECT * FROM ENDUSER ORDER BY id";
     @Override
     public void create(EndUser user) throws IllegalArgumentException, DAOException {
         if (user.getId() != 0) {
