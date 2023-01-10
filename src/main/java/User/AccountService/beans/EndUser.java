@@ -34,6 +34,14 @@ public class EndUser{
         addresses = new HashSet();
     }
 
+    public EndUser(int id, String name, String password){
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        cards = new HashSet();
+        addresses = new HashSet();
+    }
+
     public EndUser(String name, String surname, String email, String phoneNumber, String password, Date birthdate, Set addresses, Set cards) {
         this.name = name;
         this.surname = surname;

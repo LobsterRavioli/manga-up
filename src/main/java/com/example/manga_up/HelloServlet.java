@@ -28,6 +28,7 @@ public class HelloServlet extends HttpServlet {
         System.out.println("hello");
         //dao.create(new EndUser("Francesco","Monzillo","fracmonz@gmail.com","3427797976","mannaggAMort",new Date(2001,07,19),null,null));
         System.out.println(dao.find(1));
+
     }
 
     public void destroy() {
