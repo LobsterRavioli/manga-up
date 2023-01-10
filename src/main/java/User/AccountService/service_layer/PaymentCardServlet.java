@@ -14,8 +14,8 @@ import java.util.ArrayList;
 @WebServlet("/PaymentCardServlet")
 public class PaymentCardServlet extends HttpServlet {
 
-    private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory("JDBC");
-    private PaymentCardDAO dao = factory.getPayamentDAO();
+    private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.JDBC);
+    private PaymentCardDAO dao = factory.getPaymentDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

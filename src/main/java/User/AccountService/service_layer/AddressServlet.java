@@ -19,7 +19,7 @@ import java.util.Collection;
 @WebServlet("/AddressServlet")
 public class AddressServlet extends HttpServlet {
 
-    private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory("JDBC");
+    private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.JDBC);
     private AddressDAO dao = factory.getAddressDAO();
 
     @Override

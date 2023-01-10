@@ -12,8 +12,9 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 public abstract class AbstractDAOFactory {
+    public static final String JDBC = "JDBC";
     public abstract AddressDAO getAddressDAO();
-    public abstract PaymentCardDAO getPayamentDAO();
+    public abstract PaymentCardDAO getPaymentDAO();
     public abstract EndUserDAO getEndUserDAO();
     public abstract UserRoleDAO getUserRoleDAO();
     public abstract OrderDAO getOrderDAO();
