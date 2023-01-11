@@ -1,31 +1,53 @@
 package User.AccountService.beans;
 
 public class CreditCard {
-    private String cvc;
-    private String cardNumber;
+    private int id;
+    private String cvv;
     private EndUser cardHolder;
+
+    private String cardNumber;
+    private String expirementDate;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCvv() {
+        return cvv;
+    }
+
+    public void setCvv(String cvv) {
+        this.cvv = cvv;
+    }
 
     public CreditCard() {
     }
 
-    public CreditCard(String cvc, String cardNumber, EndUser cardHolder) {
-        this.cvc = cvc;
-        this.cardNumber = cardNumber;
+    public EndUser getCardHolder() {
+        return cardHolder;
+    }
+
+    public void setCardHolder(EndUser cardHolder) {
         this.cardHolder = cardHolder;
     }
 
-    public CreditCard(String cvc, String cardNumber) {
-        this.cvc = cvc;
-        this.cardNumber = cardNumber;
+    public String getExpirementDate() {
+        return expirementDate;
+    }
+
+    public void setExpirementDate(String expirementDate) {
+        this.expirementDate = expirementDate;
+    }
+
+    public CreditCard(int id, String cvv, EndUser cardHolder, String expirementDate) {
+        this.id = id;
+        this.cvv = cvv;
         this.cardHolder = cardHolder;
-    }
-
-    public String getCvc() {
-        return cvc;
-    }
-
-    public void setCvc(String cvc) {
-        this.cvc = cvc;
+        this.expirementDate = expirementDate;
     }
 
     public String getCardNumber() {
@@ -36,11 +58,4 @@ public class CreditCard {
         this.cardNumber = cardNumber;
     }
 
-    public EndUser getCardHolder() {
-        return cardHolder;
-    }
-
-    public void setCardHolder(EndUser cardHolder) {
-        this.cardHolder = cardHolder;
-    }
 }
