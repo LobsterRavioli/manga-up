@@ -6,20 +6,35 @@ public class Address {
     private String country;
     private String city;
     private String street;
-    private String streetNumber;
     private String postalCode;
+    private String phoneNumber;
+    private String region;
 
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
 
     public Address(){}
-    public Address(int id, EndUser user, String country, String city, String street, String streetNumber, String postalCode) {
+
+    public Address(int id, EndUser endUser, String country, String city, String street, String postalCode, String phoneNumber, String region) {
         this.id = id;
+        this.endUser = endUser;
         this.country = country;
         this.city = city;
         this.street = street;
-        this.streetNumber = streetNumber;
         this.postalCode = postalCode;
-        setEndUser(user);
+        this.phoneNumber = phoneNumber;
+        this.region = region;
     }
+
+
+
+
+
 
     public int getId() {
         return id;
@@ -50,14 +65,6 @@ public class Address {
 
     public void setStreet(String street) {
         this.street = street;
-    }
-
-    public String getStreetNumber() {
-        return streetNumber;
-    }
-
-    public void setStreetNumber(String streetNumber) {
-        this.streetNumber = streetNumber;
     }
 
     public String getPostalCode() {
@@ -91,8 +98,18 @@ public class Address {
                 ", country='" + country + '\'' +
                 ", city='" + city + '\'' +
                 ", street='" + street + '\'' +
-                ", streetNumber='" + streetNumber + '\'' +
                 ", postalCode='" + postalCode + '\'' +
                 '}';
     }
+
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+
 }

@@ -1,8 +1,7 @@
 package User.AccountService.service_layer;
 
 import User.AccountService.beans.EndUser;
-import User.AccountService.beans.CreditCard;
-import User.AccountService.dao_layer.interfaces.PaymentCardDAO;
+import User.AccountService.dao_layer.interfaces.AddressDAO;
 import utils.AbstractDAOFactory;
 
 import javax.servlet.*;
@@ -11,11 +10,11 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet("/PaymentCardServlet")
-public class PaymentCardServlet extends HttpServlet {
+@WebServlet("/AddressServletDashboardServlet")
+public class AddressDashboardServlet extends HttpServlet {
 
     private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.JDBC);
-    private PaymentCardDAO dao = factory.getPaymentDAO();
+    private AddressDAO dao = factory.getAddressDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -25,12 +24,12 @@ public class PaymentCardServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-        // da prendere dalla sessione
-        EndUser user = new EndUser(1, "tommyrock99@hotmail.it","napoli99");
-
-        ArrayList<CreditCard> cards = (ArrayList<CreditCard>) dao.find(user);;
-        request.setAttribute("cards", cards);
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/profile_view/dashboard_carte_di_credito.jsp"));
+        HttpSession session = request.getSession();
+        EndUser user = (EndUser) session.getAttribute("user");
+        dao = factory.getAddressDAO();
+        ArrayList addresses = (ArrayList) dao.find(user);
+        request.setAttribute("addresses", addresses);
+        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/profile_view/dashboard_indirizzi.jsp"));
         dispatcher.forward(request, response);
 
     }

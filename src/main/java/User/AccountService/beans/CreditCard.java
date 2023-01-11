@@ -3,9 +3,14 @@ package User.AccountService.beans;
 public class CreditCard {
     private int id;
     private String cvv;
-    private EndUser cardHolder;
+    private EndUser endUser;
 
     private String cardNumber;
+
+    private String name;
+    private String surname;
+
+
     private String expirementDate;
 
     public int getId() {
@@ -26,30 +31,20 @@ public class CreditCard {
 
     public CreditCard() {
     }
-
     public EndUser getCardHolder() {
-        return cardHolder;
+        return endUser;
     }
 
-    public void setCardHolder(EndUser cardHolder) {
-        this.cardHolder = cardHolder;
+    public void setEndUser(EndUser endUser) {
+        this.endUser = this.endUser;
     }
 
     public String getExpirementDate() {
-        return expirementDate;
+        return this.expirementDate;
     }
-
     public void setExpirementDate(String expirementDate) {
         this.expirementDate = expirementDate;
     }
-
-    public CreditCard(int id, String cvv, EndUser cardHolder, String expirementDate) {
-        this.id = id;
-        this.cvv = cvv;
-        this.cardHolder = cardHolder;
-        this.expirementDate = expirementDate;
-    }
-
     public String getCardNumber() {
         return cardNumber;
     }
@@ -58,4 +53,14 @@ public class CreditCard {
         this.cardNumber = cardNumber;
     }
 
+
+    public CreditCard(int id, String cvv, EndUser endUser, String cardNumber, String name, String surname, String expirementDate) {
+        this.id = id;
+        this.cvv = cvv;
+        this.endUser = endUser;
+        this.cardNumber = cardNumber;
+        this.name = name;
+        this.surname = surname;
+        this.expirementDate = expirementDate;
+    }
 }

@@ -4,7 +4,7 @@ import Order.DispatchService.dao_layer.implementations.OrderDAOImp;
 import Order.DispatchService.dao_layer.interfaces.OrderDAO;
 import User.AccountService.dao_layer.implementations.AddressDAOImp;
 import User.AccountService.dao_layer.implementations.EndUserDAOImp;
-import User.AccountService.dao_layer.implementations.PaymentCardDAOImp;
+import User.AccountService.dao_layer.implementations.CreditCardDAOImp;
 import User.AccountService.dao_layer.implementations.UserRoleDAOImp;
 import User.AccountService.dao_layer.interfaces.*;
 
@@ -24,7 +24,7 @@ public class ConcreteSqlDAOFactory extends AbstractDAOFactory {
     }
 
     @Override
-    public PaymentCardDAO getPaymentDAO() { return new PaymentCardDAOImp(ds); }
+    public CreditCardDAO getPaymentDAO() { return new CreditCardDAOImp(ds); }
 
     @Override
     public EndUserDAO getEndUserDAO() {

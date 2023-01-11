@@ -5,7 +5,7 @@ import User.AccountService.beans.CreditCard;
 
 import java.util.Collection;
 
-public interface PaymentCardDAO {
+public interface CreditCardDAO {
     void create(CreditCard card);
     void delete(CreditCard card);
     void update(CreditCard card);

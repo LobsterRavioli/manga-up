@@ -25,10 +25,11 @@ public class UserRoleDAOImp implements UserRoleDAO {
         this.ds = ds;
     }
 
-    private static String SQL_GET_ROLES = "SELECT * FROM USER_ROLE WHERE username = ?";
+    private static String SQL_GET_ROLES = "SELECT * FROM tomcat_users_roles WHERE user_name = ?";
 
-    private static String SQL_INSERT_ROLE = "INSERT INTO USER_ROLE (username, role) VALUES (?, ?)";
-    private static String REMOVE_ALL_ROLES = "DELETE FROM USER_ROLE WHERE username = ?";
+    private static String SQL_INSERT_ROLE = "INSERT INTO tomcat_users_roles (user_name, role_name) VALUES (?, ?)";
+    private static String REMOVE_ALL_ROLES = "DELETE FROM tomcat_users_roles WHERE username = ?";
+
 
     @Override
     public Collection getRoles(User user) {
@@ -83,8 +84,8 @@ public class UserRoleDAOImp implements UserRoleDAO {
     private static User map(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.setId(resultSet.getInt("id"));
-        user.setUsername(resultSet.getString("username"));
-        user.setPassword(resultSet.getString("password"));
+        user.setUsername(resultSet.getString("user_name"));
+        user.setPassword(resultSet.getString("role_name"));
         return user;
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import User.AccountService.beans.Address;
+import User.AccountService.beans.AddressBuilder;
 import User.AccountService.beans.EndUser;
 import User.AccountService.dao_layer.interfaces.AddressDAO;
 import utils.DAOException;
@@ -23,13 +24,13 @@ public class AddressDAOImp implements AddressDAO {
     public AddressDAOImp(DataSource ds){
         this.ds = ds;
     }
-    private static final String CREATE_QUERY = "INSERT INTO ADDRESS (street, country, city, street, street_number, postal_code, user_id) VALUES (?, ?, ?, ?, ?, ?, ?);";
-    private static final String DELETE_QUERY = "DELETE FROM ADDRESS WHERE id = ?;";
+    private static final String CREATE_QUERY = "INSERT INTO address (street, addr_country, addr_city, addr_street, addr_postal_code, addr_phone_number,addr_region usr_id) VALUES (?, ?, ?, ?, ?, ?, ?);";
+    private static final String DELETE_QUERY = "DELETE FROM ADDRESS WHERE addr_id = ?;";
 
     private static final String SQL_LIST_ORDER_BY_ORDER_ID =
-            "SELECT * FROM ADDRESS ORDER BY id";
-    private static final String SQL_FIND_BY_ADDRESS_ID = "SELECT * FROM ADDRESS WHERE user_id = ?;";
-    private static final String SQL_FIND_BY_USER_ID = "SELECT * FROM ADDRESS WHERE user_id = ?;";
+            "SELECT * FROM address ORDER BY addr_id";
+    private static final String SQL_FIND_BY_ADDRESS_ID = "SELECT * FROM address WHERE usr_id = ?;";
+    private static final String SQL_FIND_BY_USER_ID = "SELECT * FROM ADDRESS WHERE usr_id = ?;";
     
 
     @Override
@@ -39,8 +40,9 @@ public class AddressDAOImp implements AddressDAO {
             address.getCountry(),
             address.getCity(),
             address.getStreet(),
-            address.getStreetNumber(),
             address.getPostalCode(),
+            address.getPhoneNumber(),
+                address.getRegion(),
             address.getEndUser().getId()
     };
 
@@ -130,18 +132,21 @@ public class AddressDAOImp implements AddressDAO {
     public Address find(int id) {
         return find(SQL_FIND_BY_ADDRESS_ID);
     }
-
+    public Address find(EndUser user, Address address) {
+        return find(SQL_FIND_BY_ADDRESS_ID);
+    }
     private static Address map(ResultSet resultSet) throws SQLException {
-        Address address = new Address();
-        address.setId(resultSet.getInt("id"));
-        address.setStreet(resultSet.getString("street"));
-        address.setCountry(resultSet.getString("country"));
-        address.setCity(resultSet.getString("city"));
-        address.setStreet(resultSet.getString("street"));
-        address.setStreetNumber(resultSet.getString("street_number"));
-        address.setPostalCode(resultSet.getString("postal_code"));
+        Address address = new AddressBuilder().createAddress();
+        address.setId(resultSet.getInt("addr_id"));
+        address.setStreet(resultSet.getString("addr_street"));
+        address.setCountry(resultSet.getString("addr_country"));
+        address.setCity(resultSet.getString("addr_city"));
+        address.setStreet(resultSet.getString("addr_street"));
+        address.setPostalCode(resultSet.getString("addr_postal_code"));
+        address.setPhoneNumber(resultSet.getString("addr_phone_number"));
+        address.setRegion(resultSet.getString("addr_region"));
         EndUser user = new EndUser();
-        user.setId(resultSet.getInt("user_id"));
+        user.setId(resultSet.getInt("usr_id"));
         address.setEndUser(user);
 
         return address;

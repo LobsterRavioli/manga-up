@@ -25,26 +25,26 @@ public class EndUserDAOImp implements EndUserDAO {
     }
 
     private static final String SQL_INSERT =
-            "INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)\n" +
+            "INSERT INTO end_user (usr_email, usr_name, usr_surname, usr_password, usr_phone_number, usr_birth_date)\n" +
             "VALUES (?, ?, ?, ?, ?, ?);";
 
     private static final String SQL_DELETE =
-            "DELETE FROM END_USER WHERE id = ? ;";
+            "DELETE FROM end_user WHERE usr_id = ? ;";
 
     private static final String SQL_UPDATE =
-            "UPDATE END_USER SET name = ? , surname = ? , email = ? , password = ? , phone_number = ? WHERE id = ? ;";
+            "UPDATE end_user SET usr_name = ? , usr_surname = ? , usr_email = ? , usr_password = ? , usr_phone_number = ? WHERE usr_id = ? ;";
 
     private static final String SQL_FIND_BY_ID =
-            "SELECT * FROM END_USER WHERE id = ? ;";
+            "SELECT * FROM end_user WHERE usr_id = ? ;";
 
 
     private static final String SQL_FIND_BY_EMAIL_AND_PASSWORD =
-            "SELECT * FROM END_USER WHERE email = ? AND password = ? ;";
+            "SELECT * FROM end_user WHERE usr_email = ? AND usr_password = ? ;";
 
     private static final String SQL_EXIST_EMAIL =
-            "SELECT email FROM End_User WHERE email = ?";
+            "SELECT usr_email FROM end_user WHERE usr_email = ?";
 
-    private static final String SQL_LIST_ORDER_BY_ID = "SELECT * FROM ENDUSER ORDER BY id";
+    private static final String SQL_LIST_ORDER_BY_ID = "SELECT * FROM end_user ORDER BY usr_id;";
     @Override
     public void create(EndUser user) throws IllegalArgumentException, DAOException {
         if (user.getId() != 0) {
@@ -55,7 +55,7 @@ public class EndUserDAOImp implements EndUserDAO {
                 user.getEmail(),
                 user.getName(),
                 user.getSurname(),
-                Utils.hashPassword(user.getPassword()),
+                Utils.MD5(user.getPassword()),
                 user.getPhoneNumber(),
                 toSqlDate(user.getBirthdate())
         };
@@ -203,13 +203,13 @@ public class EndUserDAOImp implements EndUserDAO {
 
     private static EndUser map(ResultSet resultSet) throws SQLException {
         EndUser user = new EndUser();
-        user.setId(resultSet.getInt("id"));
-        user.setEmail(resultSet.getString("email"));
-        user.setPassword(resultSet.getString("password"));
-        user.setPhoneNumber(resultSet.getString("phone_number"));
-        user.setName(resultSet.getString("name"));
-        user.setSurname(resultSet.getString("surname"));
-        user.setBirthdate(resultSet.getDate("birth_date"));
+        user.setId(resultSet.getInt("usr_id"));
+        user.setEmail(resultSet.getString("usr_email"));
+        user.setPassword(resultSet.getString("usr_password"));
+        user.setPhoneNumber(resultSet.getString("usr_phone_number"));
+        user.setName(resultSet.getString("usr_name"));
+        user.setSurname(resultSet.getString("usr_surname"));
+        user.setBirthdate(resultSet.getDate("usr_birth_date"));
         return user;
     }
 }

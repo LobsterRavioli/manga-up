@@ -15,7 +15,9 @@
 </head>
 <body>
 <c:forEach items="${addresses}" var="address">
-    <p>${address.country}, ${address.city}, ${address.street},${address.postalCode}</p><br/>
+
+    <p>${address.country}, ${address.city}, ${address.street}, ${address.postalCode}, ${address.phoneNumber}, ${address.region} </p><br/>
+
 </c:forEach>
 
 

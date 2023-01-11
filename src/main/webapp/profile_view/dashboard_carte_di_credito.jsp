@@ -14,7 +14,7 @@
 <body>
 
 <c:forEach items="${cards}" var="card">
-    <p>${card.cardNumber}, ${card.cvv}, ${card.cardHolder.name}, ${card.cardHolder.surname}</p><br/>
+    <p>${card.cardNumber}, ${card.cvv}, Proprietario: {${card.cardHolder.name}, ${card.cardHolder.surname}}, ${card.expirementDate} </p><br/>
 </c:forEach>
 
 </body>
