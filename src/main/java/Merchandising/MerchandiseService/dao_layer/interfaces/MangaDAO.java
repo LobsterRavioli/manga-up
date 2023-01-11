@@ -1,4 +1,4 @@
-package Merchandising.MerchandiseService.service_layer.interfaces;
+package Merchandising.MerchandiseService.dao_layer.interfaces;
 
 import Merchandising.MerchandiseService.beans.Manga;
 import Merchandising.MerchandiseService.beans.Product;

@@ -5,6 +5,13 @@ img.logoManga {
     background: #ffffff;
     height: 0;
 }
+
+@media (min-width: 1200px){
+    .container {
+        max-width: 90%;
+    }
+}
+
 .container{
     max-height: 132px;
 }

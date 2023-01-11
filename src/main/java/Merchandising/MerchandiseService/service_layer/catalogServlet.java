@@ -1,8 +1,6 @@
-package Merchandising.MerchandiseService.service_layer.servlets;
+package Merchandising.MerchandiseService.service_layer;
 
-import Merchandising.MerchandiseService.service_layer.implementations.MangaDAOImpl;
-import Merchandising.MerchandiseService.service_layer.interfaces.MangaDAO;
-import context.MainContext;
+import Merchandising.MerchandiseService.dao_layer.implementations.MangaDAOImpl;
 
 import javax.servlet.*;
 import javax.servlet.http.*;

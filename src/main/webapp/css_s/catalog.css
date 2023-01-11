@@ -58,3 +58,16 @@
 .bbb_deals_content {
     padding: 5% 3% 3% 3% !important;
 }
+
+.header__menu ul li a {
+    font-weight: 600;
+    text-decoration: unset !important;
+    font-family: "Nunito Sans", sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 1200px){
+    .container {
+        max-width: 90%;
+    }
+}

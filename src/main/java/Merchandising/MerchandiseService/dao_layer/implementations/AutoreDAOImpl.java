@@ -1,8 +1,8 @@
-package Merchandising.MerchandiseService.service_layer.implementations;
+package Merchandising.MerchandiseService.dao_layer.implementations;
 
 import Merchandising.MerchandiseService.beans.Autore;
 import Merchandising.MerchandiseService.beans.RuoloAutore;
-import Merchandising.MerchandiseService.service_layer.interfaces.AutoreDAO;
+import Merchandising.MerchandiseService.dao_layer.interfaces.AutoreDAO;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
