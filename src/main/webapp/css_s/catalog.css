@@ -2,6 +2,17 @@
     width: 100%;
 }
 
+.mydiv {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    width: 70%;
+}
+
+.fulll{
+    margin-top: 3%;
+    padding: 0 0.5%;
+}
+
 .bbb_deals_slider_container {
     width: 100%;
     box-sizing: content-box;
@@ -30,6 +41,16 @@
     width:100%;
     text-align: center;
 
+}
+
+.mydiv{
+    height: 100% !important;
+    margin:0 !important;
+    width: 75%;
+}
+
+.x{
+    height: 100% !important;
 }
 
 .bbb_deals {
@@ -70,4 +91,46 @@
     .container {
         max-width: 90%;
     }
+}
+
+
+body{
+    font-family: "Nunito Sans", sans-serif !important;
+}
+
+.leftpane{
+    width: 15%;
+    height: 100%;
+    border-collapse: separate;
+    border-color: rgba(4,11,5,0.15);
+    border-width: 0.5px;
+    border-right-style: solid;
+    text-align: center;
+}
+
+.filterinput{
+    width: 80%;
+}
+
+.formMainLabel{
+    margin-top:13%;
+    font-weight: 600;
+    text-decoration: unset !important;
+    font-family: "Nunito Sans", sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+.filterform{
+    margin-top: 20%;
+}
+
+.contxxx{
+    height: calc(100vh - 177px) !important;
+    margin-top: 177px;
+    border-color: rgba(4,11,5,0.15);
+    border-width: 0.5px;
+    border-top-style: solid;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: content;
 }

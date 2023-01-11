@@ -31,7 +31,7 @@
 <header class="header">
   <div class="header__top">
     <div class="container">
-      <div class="row">
+      <div class="row widdd">
         <div class="col-lg-6 col-md-7">
           <div class="header__top__left">
             <p>Free shipping, 30-day return or refund guarantee.</p>
@@ -48,7 +48,7 @@
       </div>
     </div>
   </div>
-  <div class="container">
+  <div class="container frat">
     <div class="row">
       <div class="col-lg-3 col-md-3">
         <div class="header__logo">
