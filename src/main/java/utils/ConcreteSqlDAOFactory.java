@@ -24,7 +24,7 @@ public class ConcreteSqlDAOFactory extends AbstractDAOFactory {
     }
 
     @Override
-    public CreditCardDAO getPaymentDAO() { return new CreditCardDAOImp(ds); }
+    public CreditCardDAO getCreditCardDAO() { return new CreditCardDAOImp(ds); }
 
     @Override
     public EndUserDAO getEndUserDAO() {

@@ -11,7 +11,7 @@ import java.io.IOException;
 @WebServlet(name = "CreditCardDeleteServlet", value = "/CreditCardDeleteServlet")
 public class CreditCardDeleteServlet extends HttpServlet {
     private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.JDBC);
-    private CreditCardDAO dao = factory.getPaymentDAO();
+    private CreditCardDAO dao = factory.getCreditCardDAO();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);

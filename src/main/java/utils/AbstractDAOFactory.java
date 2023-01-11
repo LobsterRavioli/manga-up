@@ -2,8 +2,8 @@ package utils;
 
 import Order.DispatchService.dao_layer.interfaces.OrderDAO;
 import User.AccountService.dao_layer.interfaces.AddressDAO;
+import User.AccountService.dao_layer.interfaces.CreditCardDAO;
 import User.AccountService.dao_layer.interfaces.EndUserDAO;
-import User.AccountService.dao_layer.interfaces.PaymentCardDAO;
 import User.AccountService.dao_layer.interfaces.UserRoleDAO;
 
 import javax.naming.Context;
@@ -14,7 +14,8 @@ import javax.sql.DataSource;
 public abstract class AbstractDAOFactory {
     public static final String JDBC = "JDBC";
     public abstract AddressDAO getAddressDAO();
-    public abstract PaymentCardDAO getPaymentDAO();
+    public abstract CreditCardDAO getCreditCardDAO();
+
     public abstract EndUserDAO getEndUserDAO();
     public abstract UserRoleDAO getUserRoleDAO();
     public abstract OrderDAO getOrderDAO();
