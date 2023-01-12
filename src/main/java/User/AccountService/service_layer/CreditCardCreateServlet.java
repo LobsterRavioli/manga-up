@@ -11,6 +11,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.util.Date;
 
 @WebServlet(name = "CreditCardCreateServlet", value = "/CreditCardCreateServlet")
 public class CreditCardCreateServlet extends HttpServlet {
@@ -30,7 +31,7 @@ public class CreditCardCreateServlet extends HttpServlet {
         CreditCard creditCard = new CreditCardBuilder()
                 .setCardNumber(request.getParameter("card_number"))
                 .setCardHolder(request.getParameter("card_holder"))
-                .setExpirementDate(request.getParameter("expiration_date"))
+                .setExpirementDate(new Date(request.getParameter("expiration_date")))
                 .setCvv(request.getParameter("cvv"))
                 .setEndUser(user)
                 .createCreditCard();
