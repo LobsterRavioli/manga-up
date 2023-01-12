@@ -82,7 +82,7 @@
                                                 <!--<div class="bbb_deals_item_price_a ml-auto"><strike>€<%=m.getPrice()%></strike></div>-->
                                             </div>
                                             <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
-                                                <div class="bbb_deals_item_name"><%=m.getName()%></div>
+                                                <div class="bbb_deals_item_name"><a class="prodAnchor" href="${pageContext.request.contextPath}/productE_U?prodId=<%=m.getId()%>&prodType=M"><p class="prodName"> <%=m.getName()%> </p> </a></div>
                                                 <div class="bbb_deals_item_price ml-auto">€<%=m.getPrice()%></div>
                                             </div>
                                             <div class="available">

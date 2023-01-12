@@ -14,7 +14,7 @@ public class Utils {
     }
      */
 
-    public static String MD5(String string) {
+    public static String hash(String string) {
         MessageDigest md = null;
         try {
             md = MessageDigest.getInstance("MD5");

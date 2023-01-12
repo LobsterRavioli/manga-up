@@ -19,8 +19,8 @@ CREATE TABLE credit_card
     crd_number VARCHAR(20) NOT NULL ,
     usr_id INT NOT NULL,
     crd_cvc VARCHAR(3) NOT NULL,
-    crd_name_holder VARCHAR(15) NOT NULL,
-    crd_surname_holder VARCHAR(15) NOT NULL,
+    crd_holder_name VARCHAR(15) NOT NULL,
+    crd_holder_surname VARCHAR(15) NOT NULL,
     crd_expirement_date date NOT NULL,
     PRIMARY KEY (crd_id),
     FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)
@@ -33,7 +33,6 @@ CREATE TABLE address
     addr_country VARCHAR(64) NOT NULL,
     addr_city VARCHAR(30) NOT NULL,
     addr_street VARCHAR(100) NOT NULL,
-    addr_street_number Int NOT NULL,
     addr_postal_code VARCHAR(5) NOT NULL,
     phone_number VARCHAR(20) NOT NULL,
     FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)

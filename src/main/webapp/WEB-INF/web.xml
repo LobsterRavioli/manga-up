@@ -12,7 +12,9 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>RISORSE PER USER_MANAGER</web-resource-name>
-            <url-pattern>/profile_view/homepage.jsp</url-pattern>
+
+            <!--<url-pattern>/profile_view/homepage.jsp</url-pattern>
+            -->
             <http-method>GET</http-method>
             <http-method>POST</http-method>
         </web-resource-collection>
@@ -30,9 +32,12 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>RISORSE PER ORDER_MANAGER</web-resource-name>
-            <url-pattern>/order_view/homepage.jsp</url-pattern>
+
+            <!-- <url-pattern>/order_view/homepage.jsp</url-pattern>
+
             <http-method>GET</http-method>
             <http-method>POST</http-method>
+            -->
         </web-resource-collection>
         <auth-constraint>
             <role-name>ORDER_MANAGER</role-name>
@@ -47,9 +52,11 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>RISORSE PER CATALOG_MANAGER</web-resource-name>
-            <url-pattern>/MerchandisingView/homepage.jsp</url-pattern>
+            <!--<url-pattern>/MerchandisingView/homepage.jsp</url-pattern>
+
             <http-method>GET</http-method>
             <http-method>POST</http-method>
+            -->
         </web-resource-collection>
         <auth-constraint>
             <role-name>CATALOG_MANAGER</role-name>
@@ -71,5 +78,9 @@
             <form-error-page>/profile_view/error_page_manager.jsp</form-error-page>
         </form-login-config>
     </login-config>
+
+    <welcome-file-list>
+        <welcome-file>MerchandisingView/homepage.jsp</welcome-file>>
+    </welcome-file-list>
 
 </web-app>

@@ -6,6 +6,7 @@ import User.AccountService.beans.EndUser;
 import User.AccountService.dao_layer.interfaces.CreditCardDAO;
 import utils.AbstractDAOFactory;
 
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -28,7 +29,7 @@ public class CreditCardCreateServlet extends HttpServlet {
         response.setContentType("text/html");
         CreditCard creditCard = new CreditCardBuilder()
                 .setCardNumber(request.getParameter("card_number"))
-                .setEndUser(user)
+                .setCardHolder(request.getParameter("card_holder"))
                 .setExpirementDate(request.getParameter("expiration_date"))
                 .setCvv(request.getParameter("cvv"))
                 .setEndUser(user)

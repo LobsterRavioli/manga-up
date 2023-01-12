@@ -4,13 +4,8 @@ public class CreditCard {
     private int id;
     private String cvv;
     private EndUser endUser;
-
     private String cardNumber;
-
-    private String name;
-    private String surname;
-
-
+    private String cardHolder;
     private String expirementDate;
 
     public int getId() {
@@ -31,9 +26,6 @@ public class CreditCard {
 
     public CreditCard() {
     }
-    public EndUser getCardHolder() {
-        return endUser;
-    }
 
     public void setEndUser(EndUser endUser) {
         this.endUser = this.endUser;
@@ -53,14 +45,24 @@ public class CreditCard {
         this.cardNumber = cardNumber;
     }
 
-
-    public CreditCard(int id, String cvv, EndUser endUser, String cardNumber, String name, String surname, String expirementDate) {
+    public CreditCard(int id, String cvv, EndUser endUser, String cardNumber, String cardHolder, String expirementDate) {
         this.id = id;
         this.cvv = cvv;
         this.endUser = endUser;
         this.cardNumber = cardNumber;
-        this.name = name;
-        this.surname = surname;
+        this.cardHolder = cardHolder;
         this.expirementDate = expirementDate;
+    }
+
+    public EndUser getEndUser() {
+        return endUser;
+    }
+
+    public String getCardHolder() {
+        return cardHolder;
+    }
+
+    public void setCardHolder(String cardHolder) {
+        this.cardHolder = cardHolder;
     }
 }

@@ -1,10 +1,10 @@
 package User.AccountService.dao_layer.implementations;
 
-import User.AccountService.beans.CreditCardBuilder;
 import User.AccountService.beans.EndUser;
 import User.AccountService.beans.CreditCard;
 import User.AccountService.dao_layer.interfaces.CreditCardDAO;
 import utils.DAOException;
+
 import utils.Utils;
 
 import javax.sql.DataSource;
@@ -26,21 +26,33 @@ public class CreditCardDAOImp implements CreditCardDAO {
             "SELECT cvc FROM credit_card WHERE crd_cvc = ?";
 
     DataSource ds;
-    private static final String SQL_INSERT = "INSERT INTO credit_card (crd_cvc, crd_number, usr_id) VALUES (?, ?, ?)";
+    private static final String SQL_INSERT = "INSERT INTO credit_card (crd_cvc, crd_number, usr_id, crd_holder, crd_expirement_date) VALUES (?, ?, ?, ? ,?)";
 
-    private static final String SQL_DELETE = "DELETE FROM credit_card WHERE crd_number = ?";
+    private static final String SQL_DELETE = "DELETE FROM credit_card WHERE crd_id = ?";
 
-    private static final String SQL_FIND_BY_USER_ID = "SELECT * FROM credit_card WHERE usr_id = ?;";
+    private static final String SQL_FIND_SINGLE_BY_ENDUSER = "SELECT * FROM MANGA_UP.credit_card WHERE " +
+            "usr_id = ?1 " +
+            "AND crd_number = ?2 " +
+            "AND crd_holder = ?3 " +
+            "AND crd_expirement_date = ?4 " +
+            "AND crd_cvc = ?5 ;";
+    private static final String SQL_FIND_ALL_BY_ENDUSER = "SELECT * FROM credit_card WHERE usr_id = ?;";
+
     public CreditCardDAOImp(DataSource ds){
         this.ds = ds;
     }
 
+    @Override
+    public void update(CreditCard card) {
+
+    }
 
     public void create(CreditCard card) {
         Object[] values = {
-                Utils.MD5(String.valueOf(card.getCardNumber())),
-                Utils.MD5(card.getCvv()),
-                card.getCardHolder().getId()
+                Utils.hash(String.valueOf(card.getCardNumber())),
+                Utils.hash(card.getCvv()),
+                card.getCardHolder(),
+                card.getEndUser().getId(),
         };
 
         try (
@@ -66,7 +78,7 @@ public class CreditCardDAOImp implements CreditCardDAO {
     }
     public void delete(CreditCard card) {
         Object[] values = {
-                card.getCardNumber()
+                card.getId()
         };
 
         try (
@@ -82,11 +94,6 @@ public class CreditCardDAOImp implements CreditCardDAO {
         } catch (SQLException e) {
             throw new DAOException(e);
         }
-    }
-
-    @Override
-    public void update(CreditCard card) {
-
     }
 
     @Override
@@ -112,14 +119,14 @@ public class CreditCardDAOImp implements CreditCardDAO {
 
 
     @Override
-    public Collection find(EndUser user) {
+    public Collection findAllByEnduser(CreditCard userCard) {
         List<CreditCard> creditCards = new ArrayList<>();
         Object[] values = {
-                user.getId()
+                userCard.getId()
         };
         try (
                 Connection connection = ds.getConnection();
-                PreparedStatement statement = prepareStatement(connection, SQL_FIND_BY_USER_ID, false, values);
+                PreparedStatement statement = prepareStatement(connection, SQL_FIND_ALL_BY_ENDUSER, false, values);
                 ResultSet resultSet = statement.executeQuery()
         ) {
             while (resultSet.next()) {
@@ -133,21 +140,34 @@ public class CreditCardDAOImp implements CreditCardDAO {
     }
 
 
+    @Override
+    public Collection findSingleByEnduser(CreditCard userCard) {
+        List<CreditCard> creditCards = new ArrayList<>();
+        Object[] values = {
+                userCard.getEndUser().getId(),
+                userCard.getCardNumber(),
+                userCard.getCardHolder(),
+                userCard.getExpirementDate()
+        };
+        try (
+                Connection connection = ds.getConnection();
+                PreparedStatement statement = prepareStatement(connection, SQL_FIND_SINGLE_BY_ENDUSER, false, values);
+                ResultSet resultSet = statement.executeQuery()
+        ) {
+            while (resultSet.next()) {
+                creditCards.add(map(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+
+        return creditCards;
+    }
+
     private static CreditCard map(ResultSet resultSet) throws SQLException {
-        CreditCard card = new CreditCardBuilder().createCreditCard();
-        card.setId(resultSet.getInt("crd_id"));
-        card.setCardNumber(resultSet.getString("crd_number"));
-        card.setCvv(resultSet.getString("crd_cvc"));
         DateFormat format =  new SimpleDateFormat("yyyy-mm-dd");
-        String data = format.format(resultSet.getDate("crd_expirement_date"));
-        System.out.println(data);
-        card.setExpirementDate(data);
-        EndUser user = new EndUser();
-        user.setId(resultSet.getInt("usr_id"));
-        user.setName(resultSet.getString("crd_name_holder"));
-        user.setSurname(resultSet.getString("crd_surname_holder"));
-        card.setEndUser(user);
-        return card;
+        String date = format.format(resultSet.getDate("crd_expirement_date"));
+        return null;
     }
 
 

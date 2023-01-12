@@ -5,8 +5,7 @@ public class CreditCardBuilder {
     private String cvv;
     private EndUser endUser;
     private String cardNumber;
-    private String name;
-    private String surname;
+    private String cardHolder;
     private String expirementDate;
 
     public CreditCardBuilder setId(int id) {
@@ -29,13 +28,8 @@ public class CreditCardBuilder {
         return this;
     }
 
-    public CreditCardBuilder setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public CreditCardBuilder setSurname(String surname) {
-        this.surname = surname;
+    public CreditCardBuilder setCardHolder(String cardHolder) {
+        this.cardHolder = cardHolder;
         return this;
     }
 
@@ -45,6 +39,6 @@ public class CreditCardBuilder {
     }
 
     public CreditCard createCreditCard() {
-        return new CreditCard(id, cvv, endUser, cardNumber, name, surname, expirementDate);
+        return new CreditCard(id, cvv, endUser, cardNumber, cardHolder, expirementDate);
     }
 }
