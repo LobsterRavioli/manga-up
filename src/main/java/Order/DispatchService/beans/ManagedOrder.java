@@ -1,5 +1,6 @@
 package Order.DispatchService.beans;
 
+import User.AccountService.beans.EndUser;
 import User.AccountService.beans.User;
 
 import java.sql.Date;
@@ -12,10 +13,10 @@ public class ManagedOrder extends Order {
         super();
     }
 
-    public ManagedOrder(long id,Date orderDate,State state,double totalPrice,Courier courier,User user,
-                        Date deliveryDate,String trackNumber,Date shipmentDate)
+    public ManagedOrder(long id,Date orderDate,State state,double totalPrice,User user,EndUser endUser,
+                        String courierName,Date deliveryDate,String trackNumber,Date shipmentDate)
     {
-        super(id, orderDate, state, totalPrice, courier, user);
+        super(id, orderDate, state, totalPrice, user, endUser, courierName);
         this.deliveryDate = deliveryDate;
         this.trackNumber = trackNumber;
         this.shipmentDate = shipmentDate;

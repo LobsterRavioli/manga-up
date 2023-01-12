@@ -3,6 +3,7 @@ package Order.DispatchService.beans;
 import java.sql.Date;
 import java.util.Objects;
 
+import User.AccountService.beans.EndUser;
 import User.AccountService.beans.User;
 
 public class Order {
@@ -12,14 +13,15 @@ public class Order {
         ;
     }
 
-    public Order(long id, Date orderDate, State state, double totalPrice, Courier courier, User user)
+    public Order(long id, Date orderDate, State state, double totalPrice, User user, EndUser endUser, String courierName)
     {
         this.id = id;
         this.orderDate = orderDate;
         this.state = state;
         this.totalPrice = totalPrice;
-        this.courier = courier;
         this.user = user;
+        this.endUser = endUser;
+        this.courierName = courierName;
     }
 
     public long getId()
@@ -62,34 +64,33 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    public long getCourierID()
-    {
-        return this.courier.getId();
-    }
-
-    public void setCourierID(long newCourierID)
-    {
-        this.courier.setId(newCourierID);
-    }
-
     public String getCourierName()
     {
-        return this.courier.getName();
+        return courierName;
     }
 
     public void setCourierName(String newCourierName)
     {
-        this.courier.setName(newCourierName);
+        courierName = newCourierName;
     }
 
-    public long getUserID()
+    public String getUserName()
     {
-        return this.user.getId();
+        return this.user.getUsername();
     }
 
-    public void setUserID(long newUserID)
+    public void setUserName(String newUserName)
     {
-        this.setUserID(newUserID);
+        this.setUserName(newUserName);
+    }
+
+    public long getEndUserID() {
+        return this.endUser.getId();
+    }
+
+    public void setEndUserID(int newEndUserID)
+    {
+        this.endUser.setId(newEndUserID);
     }
 
     @Override
@@ -97,12 +98,12 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return id == order.id && Double.compare(order.totalPrice, totalPrice) == 0 && Objects.equals(orderDate, order.orderDate) && state == order.state && Objects.equals(courier, order.courier) && Objects.equals(user, order.user);
+        return id == order.id && Double.compare(order.totalPrice, totalPrice) == 0 && Objects.equals(orderDate, order.orderDate) && state == order.state && Objects.equals(user, order.user) && Objects.equals(endUser, order.endUser) && Objects.equals(courierName, order.courierName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, orderDate, state, totalPrice, courier, user);
+        return Objects.hash(id, orderDate, state, totalPrice, user, endUser, courierName);
     }
 
     public enum State
@@ -115,6 +116,9 @@ public class Order {
     private Date orderDate;
     private State state;
     private double totalPrice;
-    private Courier courier;
     private User user;
+
+    private EndUser endUser;
+
+    private String courierName;
 }
