@@ -1,5 +1,9 @@
 package utils;
 
+import Merchandising.MerchandiseService.dao_layer.implementations.AutoreDAOImpl;
+import Merchandising.MerchandiseService.dao_layer.implementations.MangaDAOImpl;
+import Merchandising.MerchandiseService.dao_layer.implementations.ProductDAOImpl;
+import Merchandising.MerchandiseService.dao_layer.interfaces.ProductDAO;
 import Order.DispatchService.dao_layer.interfaces.OrderDAO;
 import User.AccountService.dao_layer.interfaces.AddressDAO;
 import User.AccountService.dao_layer.interfaces.CreditCardDAO;
@@ -18,6 +22,12 @@ public abstract class AbstractDAOFactory {
     public abstract CreditCardDAO getCreditCardDAO();
 
     public abstract EndUserDAO getEndUserDAO();
+
+    public abstract MangaDAOImpl getMangaDAO();
+
+    public abstract ProductDAOImpl getProductDAO();
+
+    public abstract AutoreDAOImpl getAutoreDAO();
     public abstract UserRoleDAO getUserRoleDAO();
     public abstract OrderDAO getOrderDAO();
     public static AbstractDAOFactory getDAOFactory(String factory){

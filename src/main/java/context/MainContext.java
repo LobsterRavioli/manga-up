@@ -32,7 +32,7 @@ public class MainContext implements ServletContextListener {
 				System.out.println(e);
 			}
 
-			context.setAttribute("Datasource", ds);
+			context.setAttribute("DataSource", ds);
 		} catch (NamingException e) {
 			System.out.println(e.getMessage());
 		}

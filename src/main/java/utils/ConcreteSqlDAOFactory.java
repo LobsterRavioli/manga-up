@@ -1,5 +1,8 @@
 package utils;
 
+import Merchandising.MerchandiseService.dao_layer.implementations.AutoreDAOImpl;
+import Merchandising.MerchandiseService.dao_layer.implementations.MangaDAOImpl;
+import Merchandising.MerchandiseService.dao_layer.implementations.ProductDAOImpl;
 import Order.DispatchService.dao_layer.implementations.OrderDAOImp;
 import Order.DispatchService.dao_layer.interfaces.OrderDAO;
 import User.AccountService.dao_layer.implementations.AddressDAOImp;
@@ -43,4 +46,14 @@ public class ConcreteSqlDAOFactory extends AbstractDAOFactory {
     public OrderDAO getOrderDAO() {
         return new OrderDAOImp(ds);
     }
+
+    public MangaDAOImpl getMangaDAO() {
+        return new MangaDAOImpl(ds);
+    }
+    public ProductDAOImpl getProductDAO() {
+        return new ProductDAOImpl(ds);
+    }
+    public AutoreDAOImpl getAutoreDAO() {
+        return new AutoreDAOImpl(ds);}
+
 }
