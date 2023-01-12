@@ -1,10 +1,6 @@
 package utils;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 /**
  * Utility class for DAO's. This class contains commonly used DAO logic which is been refactored in

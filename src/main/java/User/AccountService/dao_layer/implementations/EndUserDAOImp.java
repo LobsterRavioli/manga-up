@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static utils.DAOUtil.*;
+import static utils.DAOUtil.prepareStatement;
+import static utils.DAOUtil.toSqlDate;
+
 
 public class EndUserDAOImp implements EndUserDAO {
     public static final String TABLE = "END_USER";
@@ -55,7 +57,7 @@ public class EndUserDAOImp implements EndUserDAO {
                 user.getEmail(),
                 user.getName(),
                 user.getSurname(),
-                Utils.MD5(user.getPassword()),
+                Utils.hash(user.getPassword()),
                 user.getPhoneNumber(),
                 toSqlDate(user.getBirthdate())
         };
@@ -153,7 +155,7 @@ public class EndUserDAOImp implements EndUserDAO {
 
     @Override
     public EndUser find(String email, String password) {
-        return find(SQL_FIND_BY_EMAIL_AND_PASSWORD,email,password);
+        return find(SQL_FIND_BY_EMAIL_AND_PASSWORD,email, Utils.hash(password));
     }
 
 

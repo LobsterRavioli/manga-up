@@ -1,16 +1,11 @@
 package Order.DispatchService.dao_layer.implementations;
 
-import Merchandising.MerchandiseService.beans.Product;
-import Order.DispatchService.beans.Courier;
 import Order.DispatchService.beans.Order;
 import Order.DispatchService.dao_layer.interfaces.OrderDAO;
-import User.AccountService.beans.User;
 import utils.DAOException;
 
-import javax.naming.Context;
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.List;
 
 public class OrderDAOImp implements OrderDAO
 {

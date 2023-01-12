@@ -13,8 +13,14 @@
 </head>
 <body>
 
+<a href="${pageContext.request.contextPath}/profile_view/form_carta_credito.jsp">Servizio di aggiunta di carta di credito.</a>
+
+<c:if test="${empty cards}">
+    <p> Non hai nessuna carta di credito. </p>
+</c:if>
+
 <c:forEach items="${cards}" var="card">
-    <p>${card.cardNumber}, ${card.cvv}, Proprietario: {${card.cardHolder.name}, ${card.cardHolder.surname}}, ${card.expirementDate} </p><br/>
+    <p>Numero Carta: ${card.cardNumber}, Proprietario: ${card.cardHolder}, Data di scadenza:${card.expirementDate} </p><br/>
 </c:forEach>
 
 </body>

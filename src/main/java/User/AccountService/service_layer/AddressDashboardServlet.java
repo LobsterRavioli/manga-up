@@ -1,8 +1,11 @@
 package User.AccountService.service_layer;
 
+import User.AccountService.beans.Address;
+import User.AccountService.beans.AddressBuilder;
 import User.AccountService.beans.EndUser;
 import User.AccountService.dao_layer.interfaces.AddressDAO;
 import utils.AbstractDAOFactory;
+
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -27,7 +30,10 @@ public class AddressDashboardServlet extends HttpServlet {
         HttpSession session = request.getSession();
         EndUser user = (EndUser) session.getAttribute("user");
         dao = factory.getAddressDAO();
-        ArrayList addresses = (ArrayList) dao.find(user);
+        Address address = new AddressBuilder()
+                .setEndUser(user)
+                .createAddress();
+        ArrayList addresses = (ArrayList) dao.findAllByEnduser(address);
         request.setAttribute("addresses", addresses);
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/profile_view/dashboard_indirizzi.jsp"));
         dispatcher.forward(request, response);
