@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public interface ManagedOrderDAO {
     void create(ManagedOrder managedOrder) throws SQLException;
-    ManagedOrder retrieve(int id) throws SQLException;
+    ManagedOrder retrieve(long ordId, String userName) throws SQLException;
     void update(ManagedOrder managedOrder) throws SQLException;
     void delete(ManagedOrder managedOrder) throws SQLException;
 

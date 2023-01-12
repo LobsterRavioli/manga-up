@@ -1,16 +1,11 @@
 package Order.DispatchService.dao_layer.implementations;
 
-import Merchandising.MerchandiseService.beans.Product;
-import Order.DispatchService.beans.Courier;
 import Order.DispatchService.beans.Order;
 import Order.DispatchService.dao_layer.interfaces.OrderDAO;
-import User.AccountService.beans.User;
 import utils.DAOException;
 
-import javax.naming.Context;
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.List;
 
 public class OrderDAOImp implements OrderDAO
 {
@@ -24,14 +19,14 @@ public class OrderDAOImp implements OrderDAO
     private static final String ORDER_TABLE = "Orders";
 
     private static final String CREATE = "INSERT INTO "+ORDER_TABLE+
-            " (id, order_date, state, total_price, courier_id, user_id, courier)"+
+            " (ord_id, ord_date, ord_state, ord_total_price, ord_user_name, ord_end_user_id, ord_courier)"+
             " VALUES (?, ?, ?, ?, ?, ?, ?) ;";
 
-    private static final String DELETE = "DELETE FROM "+ORDER_TABLE+" WHERE id = ? ;";
+    private static final String DELETE = "DELETE FROM "+ORDER_TABLE+" WHERE ord_id = ? ;";
 
-    private static final String UPDATE = "UPDATE "+ORDER_TABLE+" SET state = ? WHERE id = ? ;";
+    private static final String UPDATE = "UPDATE "+ORDER_TABLE+" SET ord_state = ? WHERE ord_id = ? ;";
 
-    private static final String RETRIEVE = "SELECT * FROM "+ORDER_TABLE+" WHERE id = ? ;";
+    private static final String RETRIEVE = "SELECT * FROM "+ORDER_TABLE+" WHERE ord_id = ? ;";
 
     @Override
     public void create(Order order) throws SQLException
@@ -47,8 +42,8 @@ public class OrderDAOImp implements OrderDAO
             preparedStatement.setDate(2, order.getOrderDate());
             preparedStatement.setString(3, order.getState().toString());
             preparedStatement.setDouble(4, order.getTotalPrice());
-            preparedStatement.setLong(5, order.getCourierID());
-            preparedStatement.setLong(6, order.getUserID());
+            preparedStatement.setString(5, order.getUserName());
+            preparedStatement.setLong(6, order.getEndUserID());
             preparedStatement.setString(7, order.getCourierName());
 
             int affectedRows = preparedStatement.executeUpdate();
@@ -153,13 +148,13 @@ public class OrderDAOImp implements OrderDAO
 
             while(rs.next())
             {
-                orderBean.setId(rs.getLong("id"));
-                orderBean.setOrderDate(rs.getDate("order_date"));
-                orderBean.setState(Order.State.valueOf(rs.getString("state")));
-                orderBean.setTotalPrice(rs.getDouble("total_price"));
-                orderBean.setCourierID(rs.getLong("courier_id"));
-                orderBean.setUserID(rs.getLong("user_id"));
-                orderBean.setCourierName(rs.getString("courier"));
+                orderBean.setId(rs.getLong("ord_id"));
+                orderBean.setOrderDate(rs.getDate("ord_date"));
+                orderBean.setState(Order.State.valueOf(rs.getString("ord_state")));
+                orderBean.setTotalPrice(rs.getDouble("ord_total_price"));
+                orderBean.setUserName(rs.getString("ord_user_name"));
+                orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
+                orderBean.setCourierName(rs.getString("ord_courier"));
             }
         }
         finally
