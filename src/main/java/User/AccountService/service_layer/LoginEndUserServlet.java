@@ -24,22 +24,20 @@ public class LoginEndUserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         response.setContentType("text/html");
         String email = request.getParameter("username");
         String password = request.getParameter("password");
-        System.out.println(email);
-        System.out.println(password);
         EndUser user = dao.find(email,password);
 
         if(user != null){
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user);
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/MerchandisingView/homepage.jsp"));
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/RegistrationServlet"));
             dispatcher.forward(request, response);
+            return;
         }
-        else{
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/profile_view/login_end_user.jsp"));
-            dispatcher.forward(request, response);
-        }
+
+        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/profile_view/login_end_user.jsp"));
+        dispatcher.forward(request, response);
+
     }
 }

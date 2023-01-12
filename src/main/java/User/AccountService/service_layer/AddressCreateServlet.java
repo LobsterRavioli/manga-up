@@ -24,6 +24,7 @@ public class AddressCreateServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         response.setContentType("text/html");
         EndUser user = (EndUser) request.getSession().getAttribute("user");
         Address address = new AddressBuilder()

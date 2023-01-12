@@ -26,4 +26,5 @@ public class LogoutEndUserServlet extends HttpServlet {
         request.getSession().invalidate();
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/MerchandisingView/home.jsp"));
     }
+
 }

@@ -1,12 +1,14 @@
 package User.AccountService.beans;
 
+import java.util.Date;
+
 public class CreditCardBuilder {
     private int id;
     private String cvv;
     private EndUser endUser;
     private String cardNumber;
     private String cardHolder;
-    private String expirementDate;
+    private Date expirementDate;
 
     public CreditCardBuilder setId(int id) {
         this.id = id;
@@ -33,12 +35,17 @@ public class CreditCardBuilder {
         return this;
     }
 
-    public CreditCardBuilder setExpirementDate(String expirementDate) {
+    public CreditCardBuilder setExpirementDate(Date expirementDate) {
         this.expirementDate = expirementDate;
         return this;
     }
 
     public CreditCard createCreditCard() {
         return new CreditCard(id, cvv, endUser, cardNumber, cardHolder, expirementDate);
+    }
+
+    public CreditCardBuilder setExpirationDate(Date expirationDate) {
+        this.expirementDate = expirationDate;
+        return this;
     }
 }

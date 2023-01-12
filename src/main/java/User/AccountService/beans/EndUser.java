@@ -30,33 +30,33 @@ public class EndUser{
     }
 
     public EndUser(){
-        cards = new HashSet();
-        addresses = new HashSet();
+        setCards(new HashSet());
+        setAddresses(new HashSet());
     }
 
     public EndUser(int id){
-        this.id = id;
-        cards = new HashSet();
-        addresses = new HashSet();
+        this.setId(id);
+        setCards(new HashSet());
+        setAddresses(new HashSet());
     }
 
     public EndUser(int id, String name, String password){
-        this.id = id;
-        this.name = name;
-        this.password = password;
-        cards = new HashSet();
-        addresses = new HashSet();
+        this.setId(id);
+        this.setName(name);
+        this.setPassword(password);
+        setCards(new HashSet());
+        setAddresses(new HashSet());
     }
 
     public EndUser(String name, String surname, String email, String phoneNumber, String password, Date birthdate, Set addresses, Set cards) {
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-        this.birthdate = birthdate;
-        this.addresses = new HashSet();
-        this.cards = new HashSet();
+        this.setName(name);
+        this.setSurname(surname);
+        this.setEmail(email);
+        this.setPhoneNumber(phoneNumber);
+        this.setPassword(password);
+        this.setBirthdate(birthdate);
+        this.setAddresses(new HashSet());
+        this.setCards(new HashSet());
     }
 
 
@@ -117,27 +117,27 @@ public class EndUser{
     }
 
     public void addAddress(Address address){
-        addresses.add(address);
+        getAddresses().add(address);
         address.setEndUser(this);
     }
 
     public void removeAddress(Address address){
-        addresses.remove(address);
+        getAddresses().remove(address);
         address.setEndUser(null);
     }
 
     @Override
     public String toString() {
         return "EndUser{" +
-                "name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", password='" + password + '\'' +
-                ", addresses=" + addresses +
-                ", cards=" + cards +
-                ", birthdate=" + birthdate +
-                ", id=" + id +
+                "name='" + getName() + '\'' +
+                ", surname='" + getSurname() + '\'' +
+                ", email='" + getEmail() + '\'' +
+                ", phoneNumber='" + getPhoneNumber() + '\'' +
+                ", password='" + getPassword() + '\'' +
+                ", addresses=" + getAddresses() +
+                ", cards=" + getCards() +
+                ", birthdate=" + getBirthdate() +
+                ", id=" + getId() +
                 '}';
     }
 }

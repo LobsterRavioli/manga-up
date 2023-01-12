@@ -14,9 +14,22 @@
     <title>Indirizzi</title>
 </head>
 <body>
-<c:forEach items="${addresses}" var="address">
 
-    <p>${address.country}, ${address.city}, ${address.street}, ${address.postalCode}, ${address.phoneNumber}, ${address.region} </p><br/>
+
+
+<c:if test="${addresses == null}">
+    <p> Non hai nessun indirizzo registrane uno.</p>
+</c:if>
+
+<c:forEach items="${addresses}" var="address">
+    <p>${address.country}, ${address.city}, ${address.street}, ${address.postalCode}, ${address.phoneNumber}, ${address.region} </p> <br/>
+
+<form action="/AddressDeleteServlet">
+
+    <input type="hidden" name="address_id" value=${address.id}/>
+    <input type="submit" value="deny" name="act" id="box_button" class="accept">
+</form>
+
 
 </c:forEach>
 

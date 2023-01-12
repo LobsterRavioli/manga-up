@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 
 import User.AccountService.beans.Address;
 import User.AccountService.beans.AddressBuilder;
-import User.AccountService.beans.EndUser;
+import User.AccountService.beans.EndUserBuilder;
 import User.AccountService.dao_layer.interfaces.AddressDAO;
 import utils.DAOException;
 
@@ -148,7 +148,7 @@ public class AddressDAOImp implements AddressDAO {
                 .setPostalCode(resultSet.getString("addr_postal_code"))
                 .setPhoneNumber(resultSet.getString("addr_phone_number"))
                 .setRegion(resultSet.getString("addr_region"))
-                .setEndUser(new EndUser(resultSet.getInt("usr_id")))
+                .setEndUser(new EndUserBuilder().setId(resultSet.getInt("usr_id")).createEndUser())
                 .setId(resultSet.getInt("addr_id"))
                 .createAddress();
         return address;

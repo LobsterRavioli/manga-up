@@ -26,17 +26,7 @@ public class AddressDeleteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         EndUser user = (EndUser) request.getSession().getAttribute("user");
-        Address address = new AddressBuilder()
-                .setStreet(request.getParameter("street"))
-                .setCity(request.getParameter("city"))
-                .setCountry(request.getParameter("country"))
-                .setPostalCode(request.getParameter("postal_code"))
-                .setRegion(request.getParameter("region"))
-                .setPhoneNumber(request.getParameter("phone_number"))
-                .setEndUser(user)
-                .createAddress();
-
-        dao.findSingleByEnduser(address);
+        Address address = new AddressBuilder().setId(Integer.valueOf(request.getParameter("id"))).setEndUser(user).createAddress();
         dao.delete(address);
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/AddressDashboardServlet"));
         dispatcher.forward(request, response);

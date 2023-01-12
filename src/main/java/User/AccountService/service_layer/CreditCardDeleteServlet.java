@@ -1,5 +1,6 @@
 package User.AccountService.service_layer;
 
+import User.AccountService.beans.CreditCard;
 import User.AccountService.dao_layer.interfaces.CreditCardDAO;
 import utils.AbstractDAOFactory;
 
@@ -20,6 +21,10 @@ public class CreditCardDeleteServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
+        int id = Integer.valueOf(request.getParameter("cardNumber"));
+        CreditCard card = new CreditCard();
+        card.setId(id);
+        dao.delete(card);
+        response.sendRedirect("CreditCardListServlet");
     }
 }
