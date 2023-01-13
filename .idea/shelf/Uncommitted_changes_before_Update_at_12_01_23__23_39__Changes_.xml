@@ -1,0 +1,9 @@
+<changelist name="Uncommitted_changes_before_Update_at_12_01_23,_23_39_[Changes]" date="1673563235712" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_01_23,_23_39_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 12/01/23, 23:39 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/User/AccountService/dao_layer/implementations/EndUserDAOImp.class" />
+    <option name="AFTER_PATH" value="target/classes/User/AccountService/dao_layer/implementations/EndUserDAOImp.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_01_23,_23_39_[Changes]/EndUserDAOImp.class" />
+  </binary>
+</changelist>
