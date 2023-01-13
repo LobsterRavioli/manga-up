@@ -18,8 +18,7 @@ public class MainContext implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent event) { 
 
 		ServletContext context = event.getServletContext();
-
-		DataSource ds = null; 
+		DataSource ds = null;
 		try {
 			Context initCtx = new InitialContext();
 			Context envCtx = (Context) initCtx.lookup("java:comp/env"); 

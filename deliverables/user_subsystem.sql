@@ -19,8 +19,7 @@ CREATE TABLE credit_card
     crd_number VARCHAR(20) NOT NULL ,
     usr_id INT NOT NULL,
     crd_cvc VARCHAR(3) NOT NULL,
-    crd_holder_name VARCHAR(15) NOT NULL,
-    crd_holder_surname VARCHAR(15) NOT NULL,
+    crd_holder VARCHAR(15) NOT NULL,
     crd_expirement_date date NOT NULL,
     PRIMARY KEY (crd_id),
     FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)
@@ -28,13 +27,16 @@ CREATE TABLE credit_card
 
 CREATE TABLE address
 (
-    addr_id  INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    addr_id  INT AUTO_INCREMENT,
     usr_id INT NOT NULL ,
     addr_country VARCHAR(64) NOT NULL,
     addr_city VARCHAR(30) NOT NULL,
     addr_street VARCHAR(100) NOT NULL,
+    addr_phone_number INT NOT NULL,
+    addr_region VARCHAR(30) NOT NULL ,
     addr_postal_code VARCHAR(5) NOT NULL,
-    phone_number VARCHAR(20) NOT NULL,
+    addr_region VARCHAR(30) NOT NULL,
+    PRIMARY KEY (addr_id),
     FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)
 );
 
@@ -44,18 +46,16 @@ CREATE TABLE tomcat_users
     user_name varchar(20) NOT NULL PRIMARY KEY,
     password varchar(32) NOT NULL
 );
-
 CREATE TABLE tomcat_roles
 (
     role_name varchar(20) NOT NULL PRIMARY KEY
 );
-
 CREATE TABLE tomcat_users_roles (
-    user_name varchar(20) NOT NULL,
-    role_name varchar(20) NOT NULL,
-    PRIMARY KEY (user_name, role_name),
-    CONSTRAINT tomcat_users_roles_foreign_key_1 FOREIGN KEY (user_name) REFERENCES tomcat_users (user_name),
-    CONSTRAINT tomcat_users_roles_foreign_key_2 FOREIGN KEY (role_name) REFERENCES tomcat_roles (role_name)
+                                    user_name varchar(20) NOT NULL,
+                                    role_name varchar(20) NOT NULL,
+                                    PRIMARY KEY (user_name, role_name),
+                                    CONSTRAINT tomcat_users_roles_foreign_key_1 FOREIGN KEY (user_name) REFERENCES tomcat_users (user_name),
+                                    CONSTRAINT tomcat_users_roles_foreign_key_2 FOREIGN KEY (role_name) REFERENCES tomcat_roles (role_name)
 );
 
 
@@ -91,9 +91,19 @@ INSERT INTO credit_card(crd_number, usr_id, crd_cvc, crd_name_holder, crd_surnam
 INSERT INTO credit_card(crd_number, usr_id, crd_cvc, crd_name_holder, crd_surname_holder, crd_expirement_date) VALUES ('589399632112560496',1 , 899 , 'Tommaso', 'Sorrentino', '2050-02-02');
 INSERT INTO credit_card(crd_number, usr_id, crd_cvc, crd_name_holder, crd_surname_holder, crd_expirement_date) VALUES ('589399632112560496',1 , 899 , 'Tommaso', 'Sorrentino', '2050-02-02');
 
-INSERT INTO address (usr_id, adr_street, adr_city, adr_state, adr_zip_code) VALUES (1, 'Via Roma', 'Roma', 'RM', '00100');
-INSERT INTO address (usr_id, adr_street, adr_city, adr_state, adr_zip_code) VALUES (2, 'Via belloccio', 'Roma', 'RM', '00100');
-INSERT INTO address (usr_id, adr_street, adr_city, adr_state, adr_zip_code) VALUES (2, 'Via sacro', 'Napoli', 'NA', '00100');
-INSERT INTO address (usr_id, adr_street, adr_city, adr_state, adr_zip_code) VALUES (1, 'Via germania', 'Roma', 'RM', '00100');
-INSERT INTO address (usr_id, adr_street, adr_city, adr_state, adr_zip_code) VALUES (3, 'Via germania', 'Roma', 'RM', '00100');
-INSERT INTO address (usr_id, adr_street, adr_city, adr_state, adr_zip_code) VALUES (4, 'Via germania', 'Roma', 'RM', '00100');
+INSERT INTO address(usr_id, addr_country, addr_city, addr_street, addr_street_number, addr_postal_code, addr_phone_number, address.addr_region) VALUES (1, 'ITA', 'Napoli', 'Via boccia', '35', '80040', '3662968496', 'Campania');
+
+DROP TABLE MANGA_UP.credit_card;
+CREATE TABLE credit_card
+(
+    crd_id INT AUTO_INCREMENT NOT NULL,
+    crd_number VARCHAR(20) NOT NULL ,
+    usr_id INT NOT NULL,
+    crd_cvc VARCHAR(3) NOT NULL,
+    crd_holder_name VARCHAR(15) NOT NULL,
+    crd_holder_surname VARCHAR(15) NOT NULL,
+    crd_expirement_date date NOT NULL,
+    PRIMARY KEY (crd_id),
+    FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)
+);
+
