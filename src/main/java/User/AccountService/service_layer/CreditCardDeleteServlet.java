@@ -21,7 +21,7 @@ public class CreditCardDeleteServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.valueOf(request.getParameter("cardNumber"));
+        int id = Integer.valueOf(request.getParameter("credit_card_id"));
         CreditCard card = new CreditCard();
         card.setId(id);
         dao.delete(card);

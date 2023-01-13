@@ -17,8 +17,10 @@ import javax.sql.DataSource;
 
 public abstract class AbstractDAOFactory {
     private static final String DATASOURCE = "ABSTRACT_DAO_FACTORY";
+
     public static final String JDBC = "JDBC";
     public abstract AddressDAO getAddressDAO();
+
     public abstract CreditCardDAO getCreditCardDAO();
 
     public abstract EndUserDAO getEndUserDAO();

@@ -30,8 +30,8 @@ public class LoginEndUserServlet extends HttpServlet {
         String password = request.getParameter("password");
         EndUser user = dao.find(email,password);
 
-        if(user != null){
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/RegistrationServlet"));
+        if(user == null){
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/profile_view/login_end_user.jsp"));
             dispatcher.forward(request, response);
             return;
         }

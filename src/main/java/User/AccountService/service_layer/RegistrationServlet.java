@@ -36,10 +36,10 @@ public class RegistrationServlet extends HttpServlet {
                 .setEmail(request.getParameter("email"))
                 .setPhoneNumber(request.getParameter("phone_number"))
                 .setPassword(request.getParameter("password"))
-                .setBirthdate(new Date(request.getParameter("password")))
+                .setBirthdate(new Date(request.getParameter("birthdate")))
                 .createEndUser();
 
-        if(!daoEndUser.existEmail(user.getEmail())){
+        if(daoEndUser.existEmail(user.getEmail())){
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/profile_view/registration_end_user.jsp"));
             request.setAttribute("message", EMAIL_ERROR);
             dispatcher.forward(request, response);
@@ -53,7 +53,6 @@ public class RegistrationServlet extends HttpServlet {
                 .setPostalCode(request.getParameter("postal_code"))
                 .setRegion(request.getParameter("region"))
                 .createAddress();
-
 
         CreditCard card = new CreditCardBuilder()
                 .setCardNumber(request.getParameter("card_number"))
