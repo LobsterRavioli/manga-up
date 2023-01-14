@@ -20,6 +20,8 @@
 
         <h1>Form di registrazione.</h1>
         <p>Riempi il seguente form per registrarti.</p>
+
+        <p>${error_message}</p>
         <hr>
         <p class="email_error"></p>
         <label for="email"><b>Email</b></label>
@@ -29,7 +31,7 @@
         <label for="password"><b>Password</b></label>
         <input type="password" placeholder="Enter Password" name="psw" id="password" required>
 
-
+        <p class="psw-repeat_error"></p>
         <label for="psw-repeat"><b>Ripeti la Password</b></label>
         <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" required>
 
@@ -60,10 +62,11 @@
             <label for="expirement_date"><b>Data scadenza</b></label>
             <input type="date"  placeholder="Campo obbligatorio" name="date" id="expirement_date" required>
             <br>
-            <p class="cvv_error"></p>
+            <p class="cvc_error"></p>
             <label for="cvc"><b>cvc</b></label>
             <input type="password" placeholder="Campo obbligatorio" name="cvc" id="cvc" size="3" required>
             <br>
+
             <p class="card_holder_error"></p>
             <label for="card_holder"><b>Nome proprietario</b></label>
             <input type="text" placeholder="Campo obbligatorio" name="card_holder_name" id="card_holder" required>
@@ -72,7 +75,6 @@
         </div>
 
         <div class="container">
-
             <h1>Crea il tuo indirizzo</h1>
             <p>Completa il from per poter inserire un nuovo indirizzo</p>
             <hr>
@@ -92,7 +94,6 @@
             <label for="city"><b>Città</b></label>
             <input type="text" placeholder="Campo obbligatorio" name="city" id="city" required>
             <br>
-
             <p class="phone_number_error"></p>
             <label for="phone_number"><b>Numero di cellulare</b></label>
             <input type="text" placeholder="Campo obbligatorio" name="phone_number" id="phone_number" required>
@@ -106,10 +107,11 @@
 
     </div>
     <br>
-    <button class="fry" onclick="check_registration_format()">Register</button>
+    <button class="fry" type="submit" onclick="check_registration_format()">Register</button>
 </form>
 
 
 
 </body>
 </html>
+
