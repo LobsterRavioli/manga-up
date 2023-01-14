@@ -16,7 +16,7 @@ CREATE TABLE Product
     weight DOUBLE NOT NULL,
     height DOUBLE NOT NULL,
     lenght DOUBLE NOT NULL,
-    state VARCHAR(5) NOT NULL,
+    state VARCHAR(20) NOT NULL,
     description VARCHAR(255) NOT NULL,
     type_of_product VARCHAR(30) NOT NULL,
     quantity INT NOT NULL,
