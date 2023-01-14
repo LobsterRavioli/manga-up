@@ -106,9 +106,10 @@
 
     </div>
     <br>
+    <button class="fry" onclick="check_registration_format()">Register</button>
 </form>
 
-<button class="fry" onclick="check_format()">Register</button>
+
 
 </body>
 </html>

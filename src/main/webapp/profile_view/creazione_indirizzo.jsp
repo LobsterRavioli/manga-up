@@ -35,6 +35,7 @@
             <br>
             <hr>
         </div>
+        <button class="fry" onclick="check_registration_format()">Register</button>
     </form>
 </body>
 </html>

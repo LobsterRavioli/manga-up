@@ -1,4 +1,4 @@
-function check_format(){
+function check_registration_format(){
 
     var email_format = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     var name_format = /^[a-zA-Z]+$/;
@@ -151,5 +151,82 @@ function check_format(){
     }
 
     return false;
+
+}
+
+function check_address_format(){
+
+    if(!country_format.test(country)) {
+        document.querySelector(".country_error").innerHTML = "Inserire un paese valido";
+        document.querySelector(".country_error").style.display = "block";
+        event.preventDefault();
+
+    }
+
+    if(!region_format.test(region)) {
+        document.querySelector(".region_error").innerHTML = "Inserire una regione valida";
+        document.querySelector(".region_error").style.display = "block";
+        event.preventDefault();
+
+    }
+
+    if(!city_format.test(city)) {
+        document.querySelector(".city_error").innerHTML = "Inserire una città valida";
+        document.querySelector(".city_error").style.display = "block";
+        event.preventDefault();
+
+    }
+
+    if(!street_format.test(street)) {
+        document.querySelector(".street_error").innerHTML = "Inserire una via valida";
+        document.querySelector(".street_error").style.display = "block";
+        event.preventDefault();
+
+    }
+
+    if(!phone_number_format.test(phone_number)) {
+        document.querySelector(".phone_number_error").innerHTML = "Inserire un numero di telefono valido";
+        document.querySelector(".phone_number_error").style.display = "block";
+        event.preventDefault();
+
+    }
+
+    if(!postal_code_format.test(postal_code)) {
+        document.querySelector(".postal_code_error").innerHTML = "Inserire un codice postale valido";
+        document.querySelector(".postal_code_error").style.display = "block";
+        event.preventDefault();
+
+    }
+
+    if (postal_code_format.test(postal_code) && phone_number_format.test(phone_number) && street_format.test(street) && city_format.test(city) && region_format.test(region) && country_format.test(country)) {
+        document.getElementById("address_form").submit();
+    }
+
+    return false;
+
+}
+
+function check_card_format(){
+
+        if(!card_number_format.test(card_number)) {
+            document.querySelector(".card_number_error").innerHTML = "Inserire una carta di credito valida";
+            document.querySelector(".card_number_error").style.display = "block";
+            event.preventDefault();
+
+        }
+
+        if(!cvc_format.test(cvc)) {
+            document.querySelector(".cvc_error").innerHTML = "Inserire un cvc valido";
+            document.querySelector(".cvc_error").style.display = "block";
+            event.preventDefault();
+            return false;
+        }
+
+        if(!card_holder_format.test(card_holder)) {
+            document.querySelector(".card_holder_error").innerHTML = "Inserire un nome valido";
+            document.querySelector(".card_holder_error").style.display = "block";
+            event.preventDefault();
+
+        }
 
 }
