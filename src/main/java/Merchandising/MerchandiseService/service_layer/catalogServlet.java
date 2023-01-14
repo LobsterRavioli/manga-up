@@ -34,7 +34,12 @@ public class catalogServlet extends HttpServlet {
             RequestDispatcher rD = getServletContext().getRequestDispatcher("/MerchandisingView/catalog.jsp");
             rD.forward(request,response);
         }else{
-            return;
+            DataSource ds =(DataSource) getServletContext().getAttribute("DataSource");
+            ProductDAOImpl daoP = new ProductDAOImpl(ds);
+            list = daoP.retrieveAll();
+            request.setAttribute("listaElementi",list);
+            RequestDispatcher rD = getServletContext().getRequestDispatcher("/MerchandisingView/catalog.jsp");
+            rD.forward(request,response);
         }
 
 
