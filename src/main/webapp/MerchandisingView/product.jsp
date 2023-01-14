@@ -12,6 +12,7 @@
   <%@ include file="/header.jsp" %>
   <Title>ProdottioX</Title>
   <base target="_parent">
+  <script type="text/javascript" src="/js/cartInsertion.js"></script>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display=swap">
   <link rel="stylesheet" href="https://mdbootstrap.com/api/snippets/static/download/MDB-Pro_4.20.0/css/bootstrap.min.css">
@@ -66,29 +67,32 @@
         <div class="p-4">
 
           <div class="mb-3">
-            <a href="">
-              <span class="">Category 2</span>
-            </a>
-            <a href="">
-              <span class="">New</span>
-            </a>
-            <a href="">
-              <span class="">Bestseller</span>
-            </a>
+              <%if(m.getState()== Product.ProductState.NEW){%>
+                <span class="statesss"><%="Nuovo"%></span>
+              <%}else{%>
+                <span class="statesss"><%="Usato"%></span>
+              <%}%>
           </div>
+
+          <p class="lead">
+          <p class="lead font-weight-bold">Prezzo</p>
 
           <p class="lead">
             <span>€<%=m.getPrice()%></span>
           </p>
 
-          <p class="lead font-weight-bold">Description</p>
+          <p class="thin font-weight-bold">Brand</p>
 
-          <p><%=m.getDescription()%></p>
+          <p><%=m.getBrand()%></p>
+
+          <p class="thin font-weight-bold">Collezione</p>
+
+          <p style="margin-bottom: 2rem;"><%=m.getCollections()%></p>
 
           <form class="d-flex justify-content-left">
             <!-- Default input -->
-            <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
-            <button class="btn btn-primary btn-md my-0 p waves-effect waves-light" type="submit">Add to cart
+            <input type="number" value="1" min="1" max="<%=m.getQuantity()%>" aria-label="Search" class="form-control" style="width: 100px">
+            <button class="btn btn-primary btn-md my-0 p waves-effect waves-light" type="submit" onclick="addItem()">Add to cart
               <i class="fas fa-shopping-cart ml-1"></i>
             </button>
 
@@ -106,17 +110,45 @@
     <hr>
 
     <!--Grid row-->
-    <div class="row d-flex justify-content-center wow fadeIn">
+    <div class="row d-flex justify-content-center wow fadeIn" style="display: block !important;">
 
       <!--Grid column-->
-      <div class="col-md-6 text-center">
+      <div class="text-center">
 
-        <h4 class="my-4 h4">Additional information</h4>
+        <div style="display: flex;justify-content: center">
+          <h4 class="my-4 h4">Additional information</h4>
+        </div>
 
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta odit
-              voluptates,
-      quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in laborum.</p>
+      </div>
 
+      <div class="addInfs">
+        <ul class="inL">
+          <li class=mLeft>Description
+            <p class="none_center"><%=m.getDescription()%></p>
+          </li>
+          <li class="mLeft">ISBN
+            <p class="none_center"><%=m.getIsbn()%></p>
+          </li>
+          <li class="mLeft">Data di immissione
+            <p class="none_center"><%=m.getExitDate()%></p>
+          </li>
+          <li class="mLeft">Numero di pagine
+            <p class="none_center"><%=m.getPages()%></p>
+          </li>
+          <li class="mLeft">Colori
+            <p class="none_center"><%=m.getInterior()%></p>
+          </li>
+          <li class="mLeft">Dimensioni
+            <p class="none_center">Altezza: <%=m.getHeight()%></p>
+            <p class="none_center">Larghezza: <%=m.getLength()%></p>
+          </li>
+          <li class="mLeft">Lingua
+            <p class="none_center"><%=m.getLanguage()%></p>
+          </li>
+          <li class="mLeft">Volume
+            <p class="none_center"><%=m.getVolume()%></p>
+          </li>
+        </ul>
       </div>
       <!--Grid column-->
 
@@ -127,27 +159,23 @@
     <div class="row wow fadeIn">
 
       <!--Grid column-->
-      <div class="col-lg-4 col-md-12 mb-4">
+      <!--<div class="col-lg-4 col-md-12 mb-4">
 
         <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="">
 
       </div>
-      <!--Grid column-->
 
-      <!--Grid column-->
       <div class="col-lg-4 col-md-6 mb-4">
 
         <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="">
 
       </div>
-      <!--Grid column-->
 
-      <!--Grid column-->
       <div class="col-lg-4 col-md-6 mb-4">
 
         <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="">
 
-      </div>
+      </div>-->
       <!--Grid column-->
 
     </div>
@@ -191,18 +219,23 @@
             </a>
           </div>
 
+          <p class="lead font-weight-bold">Prezzo</p>
+
           <p class="lead">
-              <span class="mr-1">
-                <del>$200</del>
-              </span>
-            <span>$100</span>
+            <span><%=p.getPrice()%></span>
           </p>
+
+          <p class="lead font-weight-bold">Descrizione</p>
+
+          <p><%=p.getDescription()%></p>
 
           <p class="lead font-weight-bold">Description</p>
 
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et dolor suscipit libero eos atque quia ipsa
-      sint voluptatibus!
-              Beatae sit assumenda asperiores iure at maxime atque repellendus maiores quia sapiente.</p>
+          <p><%=p.getDescription()%></p>
+
+          <p class="lead font-weight-bold">Description</p>
+
+          <p><%=p.getDescription()%></p>
 
           <form class="d-flex justify-content-left">
             <!-- Default input -->
