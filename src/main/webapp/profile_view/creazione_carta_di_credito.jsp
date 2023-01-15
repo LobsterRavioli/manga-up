@@ -14,27 +14,30 @@
 <body>
     <form action="${pageContext.request.contextPath}/CreditCardCreateServlet" method="POST">
         <div class="container">
+
             <h1>Inserisci la tua carta di credito</h1>
             <p>Completa il form per poter inserire una carta di credito</p>
             <hr>
-            <label for="country"><b>Numero Carta </b></label>
-            <input type="text" placeholder="Campo obbligatorio" name="country" id="country" required>
+            <p class="card_number_error"></p>
+            <label for="card_number"><b>Numero Carta </b></label>
+            <input type="text" placeholder="Campo obbligatorio" name="card_number" id="card_number" required>
             <br>
-
-            <label for="date"><b>Data scadenza</b></label>
-            <input type="date"  placeholder="Campo obbligatorio" name="date" id="date" required>
+            <p class="expirement_date_error"></p>
+            <label for="expirement_date"><b>Data scadenza</b></label>
+            <input type="date"  placeholder="Campo obbligatorio" name="expirement_date" id="expirement_date" required>
             <br>
+            <p class="cvc_error"></p>
             <label for="cvc"><b>cvc</b></label>
             <input type="password" placeholder="Campo obbligatorio" name="cvc" id="cvc" size="3" required>
             <br>
-            <label for="card_holder_name"><b>Nome proprietario</b></label>
-            <input type="text" placeholder="Campo obbligatorio" name="card_holder_name" id="card_holder_name" required>
-            <br>
-            <label for="card_holder_surname"><b>Cognome proprietario</b></label>
-            <input type="text" placeholder="Campo obbligatorio" name="card_holder_surname" id="card_holder_surname" required>
-            <br>
+
+            <p class="card_holder_error"></p>
+            <label for="card_holder"><b>Nome proprietario</b></label>
+            <input type="text" placeholder="Campo obbligatorio" name="card_holder" id="card_holder" required>
+
             <hr>
         </div>
+        <button class="fry" type="submit" onclick="check_card_format()">Crea carta di credito</button>
     </form>
 </body>
 </html>

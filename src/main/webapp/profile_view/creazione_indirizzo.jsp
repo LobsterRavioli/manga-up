@@ -17,25 +17,33 @@
             <h1>Crea il tuo indirizzo</h1>
             <p>Completa il from per poter inserire un nuovo indirizzo</p>
             <hr>
+            <p class="street_error"></p>
+            <label for="street"><b>Via</b></label>
+            <input type="text" placeholder="Campo obbligatorio" name="street" id="street" required>
+            <br>
+            <p class="country_error"></p>
             <label for="country"><b>Nazione</b></label>
             <input type="text" placeholder="Campo obbligatorio" name="country" id="country" required>
             <br>
-
+            <p class="region_error"></p>
             <label for="region"><b>Regione</b></label>
             <input type="text"  placeholder="Campo obbligatorio" name="region" id="region" required>
             <br>
+            <p class="city_error"></p>
             <label for="city"><b>Città</b></label>
             <input type="text" placeholder="Campo obbligatorio" name="city" id="city" required>
             <br>
-            <label for="phone_number"><b>Numero di cellualare</b></label>
+            <p class="phone_number_error"></p>
+            <label for="phone_number"><b>Numero di cellulare</b></label>
             <input type="text" placeholder="Campo obbligatorio" name="phone_number" id="phone_number" required>
             <br>
+            <p class="postal_code_error"></p>
             <label for="postal_code"><b>Codice Postale</b></label>
             <input type="text" placeholder="Campo obbligatorio" name="postal_code" id="postal_code" required>
             <br>
             <hr>
         </div>
-        <button class="fry" onclick="check_registration_format()">Register</button>
+        <button class="fry"  onclick="check_address_format()">Crea indirizzo</button>
     </form>
 </body>
 </html>

@@ -2,50 +2,20 @@ package User.AccountService.beans;
 
 import java.util.Date;
 
-public class CreditCardBuilder {
-    private int id;
-    private String cvv;
-    private EndUser endUser;
-    private String cardNumber;
-    private String cardHolder;
-    private Date expirementDate;
+public interface CreditCardBuilder {
+    CreditCardBuilder setId(int id);
 
-    public CreditCardBuilder setId(int id) {
-        this.id = id;
-        return this;
-    }
+    CreditCardBuilder setCvv(String cvv);
 
-    public CreditCardBuilder setCvv(String cvv) {
-        this.cvv = cvv;
-        return this;
-    }
+    CreditCardBuilder setEndUser(EndUser endUser);
 
-    public CreditCardBuilder setEndUser(EndUser endUser) {
-        this.endUser = endUser;
-        return this;
-    }
+    CreditCardBuilder setCardNumber(String cardNumber);
 
-    public CreditCardBuilder setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
-        return this;
-    }
+    CreditCardBuilder setCardHolder(String cardHolder);
 
-    public CreditCardBuilder setCardHolder(String cardHolder) {
-        this.cardHolder = cardHolder;
-        return this;
-    }
+    CreditCardBuilder setExpirementDate(Date expirementDate);
 
-    public CreditCardBuilder setExpirementDate(Date expirementDate) {
-        this.expirementDate = expirementDate;
-        return this;
-    }
+    CreditCard createCreditCard();
 
-    public CreditCard createCreditCard() {
-        return new CreditCard(id, cvv, endUser, cardNumber, cardHolder, expirementDate);
-    }
-
-    public CreditCardBuilder setExpirationDate(Date expirationDate) {
-        this.expirementDate = expirationDate;
-        return this;
-    }
+    CreditCardBuilder setExpirationDate(Date expirationDate);
 }

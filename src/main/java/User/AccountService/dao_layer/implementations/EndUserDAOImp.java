@@ -1,7 +1,7 @@
 package User.AccountService.dao_layer.implementations;
 
 import User.AccountService.beans.EndUser;
-import User.AccountService.beans.EndUserBuilder;
+import User.AccountService.beans.ConcreteEndUserBuilder;
 import User.AccountService.dao_layer.interfaces.EndUserDAO;
 import utils.DAOException;
 import utils.Utils;
@@ -205,7 +205,7 @@ public class EndUserDAOImp implements EndUserDAO {
      */
 
     private static EndUser map(ResultSet resultSet) throws SQLException {
-        EndUser user = new EndUserBuilder().createEndUser();
+        EndUser user = new ConcreteEndUserBuilder().createEndUser();
         user.setId(resultSet.getInt("usr_id"));
         user.setEmail(resultSet.getString("usr_email"));
         user.setPassword(resultSet.getString("usr_password"));

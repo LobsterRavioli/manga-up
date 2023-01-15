@@ -49,10 +49,11 @@ public class CreditCardDAOImp implements CreditCardDAO {
 
     public void create(CreditCard card) {
         Object[] values = {
-                Utils.hash(String.valueOf(card.getCardNumber())),
                 Utils.hash(card.getCvv()),
-                card.getCardHolder(),
+                String.valueOf(card.getCardNumber()),
                 card.getEndUser().getId(),
+                card.getCardHolder(),
+                card.getExpirementDate()
         };
 
         try (

@@ -11,8 +11,8 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import User.AccountService.beans.Address;
-import User.AccountService.beans.AddressBuilder;
-import User.AccountService.beans.EndUserBuilder;
+import User.AccountService.beans.ConcreteAddressBuilder;
+import User.AccountService.beans.ConcreteEndUserBuilder;
 import User.AccountService.dao_layer.interfaces.AddressDAO;
 import utils.DAOException;
 
@@ -26,7 +26,7 @@ public class AddressDAOImp implements AddressDAO {
     public AddressDAOImp(DataSource ds){
         this.ds = ds;
     }
-    private static final String CREATE_QUERY = "INSERT INTO address (street, addr_country, addr_city, addr_street, addr_postal_code, addr_phone_number,addr_region,usr_id) VALUES (?, ?, ?, ?, ?, ?, ?);";
+    private static final String CREATE_QUERY = "INSERT INTO address (addr_street, addr_country, addr_city, addr_postal_code, addr_phone_number, addr_region,usr_id) VALUES (?, ?, ?, ?, ?, ?, ?);";
     private static final String DELETE_QUERY = "DELETE FROM ADDRESS WHERE addr_id = ?;";
 
     private static final String SQL_LIST_ORDER_BY_ORDER_ID =
@@ -46,7 +46,6 @@ public class AddressDAOImp implements AddressDAO {
             address.getStreet(),
             address.getCountry(),
             address.getCity(),
-            address.getStreet(),
             address.getPostalCode(),
             address.getPhoneNumber(),
                 address.getRegion(),
@@ -141,14 +140,14 @@ public class AddressDAOImp implements AddressDAO {
     }
 
     private static Address map(ResultSet resultSet) throws SQLException {
-        Address address = new AddressBuilder().setStreet(resultSet.getString("addr_street"))
+        Address address = new ConcreteAddressBuilder().setStreet(resultSet.getString("addr_street"))
                 .setCountry(resultSet.getString("addr_country"))
                 .setCity(resultSet.getString("addr_city"))
                 .setStreet(resultSet.getString("addr_street"))
                 .setPostalCode(resultSet.getString("addr_postal_code"))
                 .setPhoneNumber(resultSet.getString("addr_phone_number"))
                 .setRegion(resultSet.getString("addr_region"))
-                .setEndUser(new EndUserBuilder().setId(resultSet.getInt("usr_id")).createEndUser())
+                .setEndUser(new ConcreteEndUserBuilder().setId(resultSet.getInt("usr_id")).createEndUser())
                 .setId(resultSet.getInt("addr_id"))
                 .createAddress();
         return address;

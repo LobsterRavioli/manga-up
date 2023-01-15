@@ -29,8 +29,15 @@ public class CreditCard {
     public CreditCard() {
     }
 
-    public void setEndUser(EndUser endUser) {
-        this.endUser = this.endUser;
+    public void setEndUser(EndUser newEndUser) {
+        if(endUser != newEndUser){
+            EndUser oldEndUser = endUser;
+            endUser = newEndUser;
+            if(newEndUser != null)
+                newEndUser.addCards(this);
+            if(oldEndUser != null)
+                oldEndUser.removeCards(this);
+        }
     }
 
     public Date getExpirementDate() {
@@ -66,5 +73,17 @@ public class CreditCard {
 
     public void setCardHolder(String cardHolder) {
         this.cardHolder = cardHolder;
+    }
+
+    @Override
+    public String toString() {
+        return "CreditCard{" +
+                "id=" + id +
+                ", cvv='" + cvv + '\'' +
+                ", endUser=" + endUser.getId() +
+                ", cardNumber='" + cardNumber + '\'' +
+                ", cardHolder='" + cardHolder + '\'' +
+                ", expirementDate=" + expirementDate +
+                '}';
     }
 }

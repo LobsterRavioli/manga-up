@@ -36,7 +36,7 @@ public class LoginEndUserServlet extends HttpServlet {
             return;
         }
 
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/profile_view/login_end_user.jsp"));
+        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/profile_view/.jsp"));
         dispatcher.forward(request, response);
 
     }

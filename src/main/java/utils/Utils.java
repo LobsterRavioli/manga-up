@@ -2,17 +2,18 @@ package utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Utils {
 
-    /*
+
     public static void main(String[] args) throws Exception {
-        System.out.println(MD5("password1"));
-        System.out.println(MD5("password2"));
-        System.out.println(MD5("password3"));
-        System.out.println(MD5("password4"));
+        System.out.println(hash("password1"));
+
     }
-     */
+
 
     public static String hash(String string) {
         MessageDigest md = null;
@@ -29,6 +30,18 @@ public class Utils {
             return sb.toString();
 
         } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+    public static Date parseDate(String date){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date startDate = sdf.parse(date);
+            return startDate;
+        } catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }

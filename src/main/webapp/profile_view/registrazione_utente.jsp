@@ -29,7 +29,7 @@
 
         <p class="password_error"></p>
         <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" id="password" required>
+        <input type="password" placeholder="Enter Password" name="password" id="password" required>
 
         <p class="psw-repeat_error"></p>
         <label for="psw-repeat"><b>Ripeti la Password</b></label>
@@ -41,7 +41,7 @@
 
         <p class="surname_error"></p>
         <label for="surname"><b>Cognome</b></label>
-        <input type="text" placeholder="Inserisci cognome" name="name" id="surname" required>
+        <input type="text" placeholder="Inserisci cognome" name="surname" id="surname" required>
 
         <p class="birth_date_error"></p>
         <label for="birth_date"><b>Data di nascita</b></label>
@@ -56,11 +56,11 @@
             <hr>
             <p class="card_number_error"></p>
             <label for="card_number"><b>Numero Carta </b></label>
-            <input type="text" placeholder="Campo obbligatorio" name="country" id="card_number" required>
+            <input type="text" placeholder="Campo obbligatorio" name="card_number" id="card_number" required>
             <br>
             <p class="expirement_date_error"></p>
             <label for="expirement_date"><b>Data scadenza</b></label>
-            <input type="date"  placeholder="Campo obbligatorio" name="date" id="expirement_date" required>
+            <input type="date"  placeholder="Campo obbligatorio" name="expirement_date" id="expirement_date" required>
             <br>
             <p class="cvc_error"></p>
             <label for="cvc"><b>cvc</b></label>
@@ -69,7 +69,7 @@
 
             <p class="card_holder_error"></p>
             <label for="card_holder"><b>Nome proprietario</b></label>
-            <input type="text" placeholder="Campo obbligatorio" name="card_holder_name" id="card_holder" required>
+            <input type="text" placeholder="Campo obbligatorio" name="card_holder" id="card_holder" required>
 
             <hr>
         </div>

@@ -1,56 +1,21 @@
 package User.AccountService.beans;
 
-public class AddressBuilder {
-    private int id;
-    private EndUser endUser;
-    private String country;
-    private String city;
-    private String street;
-    private String postalCode;
-    private String phoneNumber;
-    private String region;
+public interface AddressBuilder {
+    AddressBuilder setId(int id);
 
-    public AddressBuilder setId(int id) {
-        this.id = id;
-        return this;
-    }
+    AddressBuilder setEndUser(EndUser endUser);
 
-    public AddressBuilder setEndUser(EndUser endUser) {
-        this.endUser = endUser;
-        return this;
-    }
+    AddressBuilder setCountry(String country);
 
-    public AddressBuilder setCountry(String country) {
-        this.country = country;
-        return this;
-    }
+    AddressBuilder setCity(String city);
 
-    public AddressBuilder setCity(String city) {
-        this.city = city;
-        return this;
-    }
+    AddressBuilder setStreet(String street);
 
-    public AddressBuilder setStreet(String street) {
-        this.street = street;
-        return this;
-    }
+    AddressBuilder setPostalCode(String postalCode);
 
-    public AddressBuilder setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-        return this;
-    }
+    AddressBuilder setPhoneNumber(String phoneNumber);
 
-    public AddressBuilder setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-        return this;
-    }
+    AddressBuilder setRegion(String region);
 
-    public AddressBuilder setRegion(String region) {
-        this.region = region;
-        return this;
-    }
-
-    public Address createAddress() {
-        return new Address(id, endUser, country, city, street, postalCode, phoneNumber, region);
-    }
+    Address createAddress();
 }

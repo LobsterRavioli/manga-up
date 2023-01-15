@@ -1,6 +1,6 @@
 package User.AccountService.service_layer;
 
-import User.AccountService.beans.CreditCardBuilder;
+import User.AccountService.beans.ConcreteCardBuilder;
 import User.AccountService.beans.EndUser;
 import User.AccountService.beans.CreditCard;
 import User.AccountService.dao_layer.interfaces.CreditCardDAO;
@@ -29,7 +29,7 @@ public class CreditCardDashboardServlet extends HttpServlet {
         HttpSession session = request.getSession();
         EndUser user = (EndUser) session.getAttribute("user");
         response.setContentType("text/html");
-        CreditCard userCard = new CreditCardBuilder()
+        CreditCard userCard = new ConcreteCardBuilder()
                 .setEndUser(user)
                 .createCreditCard();
         ArrayList<CreditCard> cards = (ArrayList<CreditCard>) dao.findAllByEnduser(userCard);

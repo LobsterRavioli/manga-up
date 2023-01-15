@@ -13,6 +13,8 @@ public class EndUser{
     private Date birthdate;
     private int id;
 
+
+
     public int getId() {
         return id;
     }
@@ -124,6 +126,17 @@ public class EndUser{
     public void removeAddress(Address address){
         getAddresses().remove(address);
         address.setEndUser(null);
+    }
+
+
+    public void addCards(CreditCard card){
+        getCards().add(card);
+        card.setEndUser(this);
+    }
+
+    public void removeCards(CreditCard card){
+        getCards().remove(card);
+        card.setEndUser(null);
     }
 
     @Override

@@ -3,63 +3,24 @@ package User.AccountService.beans;
 import java.util.Date;
 import java.util.Set;
 
-public class EndUserBuilder {
-    private int id;
-    private String name;
-    private String password;
-    private String surname;
-    private String email;
-    private String phoneNumber;
-    private Date birthdate;
-    private Set addresses;
-    private Set cards;
+public interface EndUserBuilder {
+    EndUserBuilder setId(int id);
 
-    public EndUserBuilder setId(int id) {
-        this.id = id;
-        return this;
-    }
+    EndUserBuilder setName(String name);
 
-    public EndUserBuilder setName(String name) {
-        this.name = name;
-        return this;
-    }
+    EndUserBuilder setPassword(String password);
 
-    public EndUserBuilder setPassword(String password) {
-        this.password = password;
-        return this;
-    }
+    EndUserBuilder setSurname(String surname);
 
-    public EndUserBuilder setSurname(String surname) {
-        this.surname = surname;
-        return this;
-    }
+    EndUserBuilder setEmail(String email);
 
-    public EndUserBuilder setEmail(String email) {
-        this.email = email;
-        return this;
-    }
+    EndUserBuilder setPhoneNumber(String phoneNumber);
 
-    public EndUserBuilder setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-        return this;
-    }
+    EndUserBuilder setBirthdate(Date birthdate);
 
-    public EndUserBuilder setBirthdate(Date birthdate) {
-        this.birthdate = birthdate;
-        return this;
-    }
+    EndUserBuilder setAddresses(Set addresses);
 
-    public EndUserBuilder setAddresses(Set addresses) {
-        this.addresses = addresses;
-        return this;
-    }
+    EndUserBuilder setCards(Set cards);
 
-    public EndUserBuilder setCards(Set cards) {
-        this.cards = cards;
-        return this;
-    }
-
-    public EndUser createEndUser() {
-        return new EndUser(id);
-    }
+    EndUser createEndUser();
 }

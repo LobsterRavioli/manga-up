@@ -24,10 +24,10 @@
 <c:forEach items="${addresses}" var="address">
     <p>${address.country}, ${address.city}, ${address.street}, ${address.postalCode}, ${address.phoneNumber}, ${address.region} </p> <br/>
 
-<form action="/AddressDeleteServlet">
+<form action="${pageContext.request.contextPath}/AddressDeleteServlet" method="post">
 
     <input type="hidden" name="address_id" value=${address.id}/>
-    <input type="submit" value="deny" name="act" id="box_button" class="accept">
+    <input type="submit" value="elimina" name="act" id="box_button" class="accept">
 </form>
 
 

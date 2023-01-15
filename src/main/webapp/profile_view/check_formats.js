@@ -11,14 +11,12 @@ function check_registration_format(){
     let card_holder_format = /^[a-zA-Z]{1,20}$/;
     let expirement_date_format = /^\d{4}-\d{2}-\d{2}$/;
 
-
     let country_format = /^[a-zA-Z]{1,56}$/;
     let region_format = /^[a-zA-Z]{1,30}$/;
     let city_format = /^[a-zA-Z]{1,163}$/;
     let street_format = /^[a-zA-Z]{1,44}$/;
     let phone_number_format = /^[0-9]{13,15}$/;
     let postal_code_format = /^[0-9]{5}$/;
-
 
 
     let email = document.getElementById("email").value;
@@ -246,7 +244,12 @@ function check_registration_format(){
         event.preventDefault();
     }
 
-    if (postal_code_format.test(postal_code) && phone_number_format.test(phone_number) && street_format.test(street) && city_format.test(city) && region_format.test(region) && country_format.test(country) && expirement_date_format.test(expirement_date) && card_holder_format.test(card_holder) && cvc_format.test(cvc) && card_number_format.test(card_number) && birth_date_format.test(birth_date) && password_format.test(password) && surname_format.test(surname) && name_format.test(name) && email_format.test(email)) {
+    if (postal_code_format.test(postal_code) && phone_number_format.test(phone_number)
+        && street_format.test(street) && city_format.test(city) && region_format.test(region)
+        && country_format.test(country) && expirement_date_format.test(expirement_date)
+        && card_holder_format.test(card_holder) && cvc_format.test(cvc) && card_number_format.test(card_number)
+        && birth_date_format.test(birth_date) && password_format.test(password) && surname_format.test(surname)
+        && name_format.test(name) && email_format.test(email)) {
         document.getElementById("registration_form").submit();
     }
 
@@ -345,7 +348,7 @@ function check_address_format(){
     }
 
 
-    if (postal_code_format.test(postal_code) && phone_number_format.test(phone_number) && street_format.test(street) && city_format.test(city) && region_format.test(region) && country_format.test(country)) {
+    if (postal_code_format.test(postal_code) && phone_number_format.test(phone_number) && street_format.test(street) && city_format.test(city) && region_format.test(region) && country_format.test(country) ) {
         document.getElementById("address_form").submit();
     }
 

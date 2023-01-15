@@ -4,6 +4,8 @@ import Cart.CartService.dao_layer.interfaces.CartDAO;
 import Merchandising.MerchandiseService.dao_layer.implementations.AutoreDAOImpl;
 import Merchandising.MerchandiseService.dao_layer.implementations.MangaDAOImpl;
 import Merchandising.MerchandiseService.dao_layer.implementations.ProductDAOImpl;
+import Merchandising.MerchandiseService.dao_layer.interfaces.AutoreDAO;
+import Merchandising.MerchandiseService.dao_layer.interfaces.MangaDAO;
 import Merchandising.MerchandiseService.dao_layer.interfaces.ProductDAO;
 import Order.DispatchService.dao_layer.interfaces.OrderDAO;
 import User.AccountService.dao_layer.interfaces.AddressDAO;
@@ -17,7 +19,6 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 public abstract class AbstractDAOFactory {
-    private static final String DATASOURCE = "ABSTRACT_DAO_FACTORY";
 
     public static final String JDBC = "JDBC";
     public abstract AddressDAO getAddressDAO();

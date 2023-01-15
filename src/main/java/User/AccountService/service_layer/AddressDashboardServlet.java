@@ -1,7 +1,7 @@
 package User.AccountService.service_layer;
 
 import User.AccountService.beans.Address;
-import User.AccountService.beans.AddressBuilder;
+import User.AccountService.beans.ConcreteAddressBuilder;
 import User.AccountService.beans.EndUser;
 import User.AccountService.dao_layer.interfaces.AddressDAO;
 import utils.AbstractDAOFactory;
@@ -30,7 +30,7 @@ public class AddressDashboardServlet extends HttpServlet {
         HttpSession session = request.getSession();
         EndUser user = (EndUser) session.getAttribute("user");
         dao = factory.getAddressDAO();
-        Address address = new AddressBuilder()
+        Address address = new ConcreteAddressBuilder()
                 .setEndUser(user)
                 .createAddress();
         ArrayList addresses = (ArrayList) dao.findAllByEnduser(address);

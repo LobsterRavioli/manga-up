@@ -1,10 +1,11 @@
 package User.AccountService.service_layer;
 
 import User.AccountService.beans.CreditCard;
-import User.AccountService.beans.CreditCardBuilder;
+import User.AccountService.beans.ConcreteCardBuilder;
 import User.AccountService.beans.EndUser;
 import User.AccountService.dao_layer.interfaces.CreditCardDAO;
 import utils.AbstractDAOFactory;
+import utils.Utils;
 
 
 import javax.servlet.*;
@@ -29,15 +30,15 @@ public class CreditCardCreateServlet extends HttpServlet {
         HttpSession session = request.getSession();
         EndUser user = (EndUser) session.getAttribute("user");
         response.setContentType("text/html");
-        CreditCard creditCard = new CreditCardBuilder()
+        CreditCard card = new ConcreteCardBuilder()
                 .setCardNumber(request.getParameter("card_number"))
                 .setCardHolder(request.getParameter("card_holder"))
-                .setExpirementDate(new Date(request.getParameter("expiration_date")))
-                .setCvv(request.getParameter("cvv"))
-                .setEndUser(user)
+                .setExpirationDate(Utils.parseDate(request.getParameter("expirement_date")))
+                .setCvv(request.getParameter("cvc"))
                 .createCreditCard();
 
-        dao.create(creditCard);
+        card.setEndUser(user);
+        dao.create(card);
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/"));
         dispatcher.forward(request, response);
     }

@@ -1,7 +1,7 @@
 package User.AccountService.service_layer;
 
 import User.AccountService.beans.Address;
-import User.AccountService.beans.AddressBuilder;
+import User.AccountService.beans.ConcreteAddressBuilder;
 import User.AccountService.beans.EndUser;
 import User.AccountService.dao_layer.interfaces.AddressDAO;
 import utils.AbstractDAOFactory;
@@ -27,16 +27,16 @@ public class AddressCreateServlet extends HttpServlet {
 
         response.setContentType("text/html");
         EndUser user = (EndUser) request.getSession().getAttribute("user");
-        Address address = new AddressBuilder()
+        Address address = new ConcreteAddressBuilder()
                 .setStreet(request.getParameter("street"))
                 .setCity(request.getParameter("city"))
                 .setCountry(request.getParameter("country"))
                 .setPostalCode(request.getParameter("postal_code"))
                 .setRegion(request.getParameter("region"))
                 .setPhoneNumber(request.getParameter("phone_number"))
-                .setEndUser(user)
                 .createAddress();
 
+        address.setEndUser(user);
         dao.create(address);
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/AddressDashBoardServlet"));
             dispatcher.forward(request, response);

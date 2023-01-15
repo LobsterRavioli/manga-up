@@ -1,7 +1,7 @@
 package User.AccountService.service_layer;
 
 import User.AccountService.beans.EndUser;
-import User.AccountService.beans.EndUserBuilder;
+import User.AccountService.beans.ConcreteEndUserBuilder;
 import User.AccountService.dao_layer.interfaces.EndUserDAO;
 import utils.AbstractDAOFactory;
 
@@ -27,12 +27,13 @@ public class RegistrationInSessionServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         response.setContentType("text/html");
-        EndUser user = new EndUserBuilder()
+        EndUser user = new ConcreteEndUserBuilder()
                 .setEmail(request.getParameter("username"))
                 .setPassword(request.getParameter("password"))
                 .createEndUser();
+
+
 
         HttpSession session = request.getSession();
         session.setAttribute("user", user);

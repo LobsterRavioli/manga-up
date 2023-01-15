@@ -21,9 +21,9 @@
 
 <c:forEach items="${cards}" var="card">
     <p>Numero Carta: ${card.cardNumber}, Proprietario: ${card.cardHolder}, Data di scadenza:${card.expirementDate} </p><br/>
-<form action="/CreditCardDeleteServlet">
+<form action="${pageContext.request.contextPath}/CreditCardDeleteServlet" method="post">
     <input type="hidden" name="credit_card_id" value=${card.id}/>
-    <input type="submit" value="deny" name="act" id="box_button" class="accept">
+    <input type="submit" value="elimina" name="act" id="box_button" class="accept">
 </form>
 
 </c:forEach>
