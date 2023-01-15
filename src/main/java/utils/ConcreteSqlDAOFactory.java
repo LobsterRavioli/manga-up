@@ -1,5 +1,7 @@
 package utils;
 
+import Cart.CartService.dao_layer.implementations.CartDAOImpl;
+import Cart.CartService.dao_layer.interfaces.CartDAO;
 import Merchandising.MerchandiseService.dao_layer.implementations.AutoreDAOImpl;
 import Merchandising.MerchandiseService.dao_layer.implementations.MangaDAOImpl;
 import Merchandising.MerchandiseService.dao_layer.implementations.ProductDAOImpl;
@@ -54,6 +56,10 @@ public class ConcreteSqlDAOFactory extends AbstractDAOFactory {
         return new ProductDAOImpl(ds);
     }
     public AutoreDAOImpl getAutoreDAO() {
-        return new AutoreDAOImpl(ds);}
+        return new AutoreDAOImpl(ds);
+    }
 
+    public CartDAO getCartDAO() {
+        return new CartDAOImpl(ds);
+    }
 }

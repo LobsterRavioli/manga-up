@@ -1,5 +1,6 @@
 package utils;
 
+import Cart.CartService.dao_layer.interfaces.CartDAO;
 import Merchandising.MerchandiseService.dao_layer.implementations.AutoreDAOImpl;
 import Merchandising.MerchandiseService.dao_layer.implementations.MangaDAOImpl;
 import Merchandising.MerchandiseService.dao_layer.implementations.ProductDAOImpl;
@@ -32,6 +33,9 @@ public abstract class AbstractDAOFactory {
     public abstract AutoreDAOImpl getAutoreDAO();
     public abstract UserRoleDAO getUserRoleDAO();
     public abstract OrderDAO getOrderDAO();
+
+    public abstract CartDAO getCartDAO();
+
     public static AbstractDAOFactory getDAOFactory(String factory){
 
 

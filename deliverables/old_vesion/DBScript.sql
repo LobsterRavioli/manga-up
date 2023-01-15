@@ -158,6 +158,30 @@ CREATE TABLE HasGenre
         ON UPDATE cascade ON DELETE cascade
 );
 
+
+CREATE TABLE HasProductP
+(
+    product_id int NOT NULL,
+    user_id int NOT NULL,
+    PRIMARY KEY(product_id,user_id),
+    FOREIGN KEY (product_id) REFERENCES Product(id)
+        ON UPDATE cascade ON DELETE cascade,
+    FOREIGN KEY (user_id) REFERENCES END_USER(user_id)
+        ON UPDATE cascade ON DELETE cascade
+);
+
+
+CREATE TABLE HasProductM
+(
+    manga_id int NOT NULL,
+    user_id int NOT NULL,
+    PRIMARY KEY(manga_id,user_id),
+    FOREIGN KEY (manga_id) REFERENCES Manga(id)
+        ON UPDATE cascade ON DELETE cascade,
+    FOREIGN KEY (user_id) REFERENCES END_USER(user_id)
+        ON UPDATE cascade ON DELETE cascade
+);
+
 INSERT INTO MANGAUP.END_USER (id, email, name, surname, password, phone_number, birth_date)
 VALUES (1, 'toms@hotmail.it', 'tom', 'sirr', 'napoli123', '3662968496', '1970-01-15');
 
