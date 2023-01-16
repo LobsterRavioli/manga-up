@@ -14,7 +14,6 @@ import java.io.IOException;
 
 @WebServlet(name = "cartAddServlet", value = "/cartAddServlet")
 public class cartAddServlet extends HttpServlet {
-
     private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.JDBC);
     private CartDAO dao = factory.getCartDAO();
 
@@ -31,11 +30,10 @@ public class cartAddServlet extends HttpServlet {
         String quantity = request.getParameter("quantity");
         String prod_id = request.getParameter("prod");
         String type = request.getParameter("type");
-
         response.setContentType("text/plain");
 
         if(type.equals("M")){
-            if(dao.addElement(endUser.getId(),Integer.parseInt(prod_id),Integer.parseInt(quantity), Manga.class)==true) {
+            if(dao.addElement(endUser.getId(),Integer.parseInt(prod_id),Integer.parseInt(quantity), Manga.class) == true) {
                 response.getWriter().write("OK");
             }else{
                 response.getWriter().write("Problem");

@@ -8,7 +8,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "CreditCardDeleteServlet", value = "/CreditCardDeleteServlet")
+@WebServlet("/CreditCardDeleteServlet")
 public class CreditCardDeleteServlet extends HttpServlet {
     private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.JDBC);
     private CreditCardDAO dao = factory.getCreditCardDAO();

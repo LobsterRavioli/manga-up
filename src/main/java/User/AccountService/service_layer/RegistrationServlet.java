@@ -70,9 +70,6 @@ public class RegistrationServlet extends HttpServlet {
         address.setEndUser(user);
         card.setEndUser(user);
 
-        System.out.println(user);
-        System.out.println(address);
-        System.out.println(card);
 
         daoEndUser.create(user);
         daoAddress.create(address);

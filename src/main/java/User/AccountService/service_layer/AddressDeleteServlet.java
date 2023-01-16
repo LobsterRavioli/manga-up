@@ -12,7 +12,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "AddressDeleteServlet", value = "/AddressDeleteServlet")
+@WebServlet("/AddressDeleteServlet")
 public class AddressDeleteServlet extends HttpServlet {
 
     private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.JDBC);

@@ -195,6 +195,8 @@ CREATE TABLE TO_MANAGE
         ON UPDATE cascade ON DELETE cascade
 );
 
+
+
 INSERT INTO MANGAUP.END_USER (id, email, name, surname, password, phone_number, birth_date)
 VALUES (1, 'toms@hotmail.it', 'tom', 'sirr', 'napoli123', '3662968496', '1970-01-15');
 
