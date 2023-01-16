@@ -13,7 +13,7 @@ public class ManagedOrder extends Order {
         super();
     }
 
-    public ManagedOrder(long id,Date orderDate,State state,double totalPrice,User user,EndUser endUser,
+    public ManagedOrder(long id,Date orderDate,String state,double totalPrice,User user,EndUser endUser,
                         String courierName,Date deliveryDate,String trackNumber,Date shipmentDate)
     {
         super(id, orderDate, state, totalPrice, user, endUser, courierName);

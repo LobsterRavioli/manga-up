@@ -10,14 +10,15 @@ public class Order {
 
     public Order()
     {
-        ;
+        this.user = new User();
+        this.endUser = new EndUser();
     }
 
-    public Order(long id, Date orderDate, State state, double totalPrice, User user, EndUser endUser, String courierName)
+    public Order(long id, Date orderDate, String state, double totalPrice, User user, EndUser endUser, String courierName)
     {
         this.id = id;
         this.orderDate = orderDate;
-        this.state = state;
+        this.state = Order.TO_SENT;
         this.totalPrice = totalPrice;
         this.user = user;
         this.endUser = endUser;
@@ -44,12 +45,12 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public State getState()
+    public String getState()
     {
         return this.state;
     }
 
-    public void setState(State state)
+    public void setState(String state)
     {
         this.state = state;
     }
@@ -81,7 +82,7 @@ public class Order {
 
     public void setUserName(String newUserName)
     {
-        this.setUserName(newUserName);
+        this.user.setUsername(newUserName);
     }
 
     public long getEndUserID() {
@@ -114,11 +115,14 @@ public class Order {
 
     private long id;
     private Date orderDate;
-    private State state;
+    private String state;
     private double totalPrice;
     private User user;
 
     private EndUser endUser;
 
     private String courierName;
+
+    public static final String TO_SENT = "TO_SEND";
+    public static final String SENT = "SENT";
 }

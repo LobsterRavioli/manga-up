@@ -36,7 +36,7 @@
     </div>
 
     <div class="navbar">
-        <a href="#">Orders</a>
+        <a href="${pageContext.request.contextPath}/orderServlet">Orders</a>
     </div>
 
 </body>

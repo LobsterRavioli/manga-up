@@ -18,7 +18,7 @@ public class OrderDAOImp implements OrderDAO
         this.ds = ds;
     }
 
-    private static final String ORDER_TABLE = "Orders";
+    private static final String ORDER_TABLE = "orders";
 
     private static final String CREATE = "INSERT INTO "+ORDER_TABLE+
             " (ord_id, ord_date, ord_state, ord_total_price, ord_user_name, ord_end_user_id, ord_courier)"+
@@ -152,7 +152,7 @@ public class OrderDAOImp implements OrderDAO
             {
                 orderBean.setId(rs.getLong("ord_id"));
                 orderBean.setOrderDate(rs.getDate("ord_date"));
-                orderBean.setState(Order.State.valueOf(rs.getString("ord_state")));
+                orderBean.setState(rs.getString("ord_state"));
                 orderBean.setTotalPrice(rs.getDouble("ord_total_price"));
                 orderBean.setUserName(rs.getString("ord_user_name"));
                 orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
@@ -202,7 +202,7 @@ public class OrderDAOImp implements OrderDAO
 
                 orderBean.setId(rs.getLong("ord_id"));
                 orderBean.setOrderDate(rs.getDate("ord_date"));
-                orderBean.setState(Order.State.valueOf(rs.getString("ord_state")));
+                orderBean.setState(rs.getString("ord_state"));
                 orderBean.setTotalPrice(rs.getDouble("ord_total_price"));
                 orderBean.setUserName(rs.getString("ord_user_name"));
                 orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
