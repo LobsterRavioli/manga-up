@@ -2,18 +2,18 @@ DROP DATABASE IF EXISTS MANGA_UP;
 CREATE DATABASE MANGA_UP;
 USE MANGA_UP;
 
-CREATE TABLE tomcat_users
+CREATE TABLE users
 (
     user_name VARCHAR(20) NOT NULL PRIMARY KEY,
     password VARCHAR(32) NOT NULL
 );
 
-CREATE TABLE tomcat_roles
+CREATE TABLE roles
 (
     role_name VARCHAR(20) NOT NULL PRIMARY KEY
 );
 
-CREATE TABLE tomcat_users_roles (
+CREATE TABLE user_roles (
     user_name VARCHAR(20) NOT NULL,
     role_name VARCHAR(20) NOT NULL,
     PRIMARY KEY (user_name, role_name),

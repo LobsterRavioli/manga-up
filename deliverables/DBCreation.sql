@@ -114,4 +114,35 @@ CREATE TABLE credit_card
     FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)
 );
 
+CREATE TABLE users
+(
+    user_name VARCHAR(20) NOT NULL PRIMARY KEY,
+    password VARCHAR(32) NOT NULL
+);
+
+CREATE TABLE roles
+(
+    role_name VARCHAR(20) NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE user_roles
+(
+    user_name VARCHAR(20) NOT NULL,
+    role_name VARCHAR(20) NOT NULL,
+    PRIMARY KEY (user_name, role_name),
+    CONSTRAINT tomcat_users_roles_foreign_key_1 FOREIGN KEY (user_name) REFERENCES tomcat_users (user_name),
+    CONSTRAINT tomcat_users_roles_foreign_key_2 FOREIGN KEY (role_name) REFERENCES tomcat_roles (role_name)
+);
+
+INSERT INTO users (user_name, password) VALUES ('Tommaso', 'password1');
+INSERT INTO users (user_name, password) VALUES ('Alessandro', 'password1');
+INSERT INTO users (user_name, password) VALUES ('Francesco', 'password1');
+
+INSERT INTO roles (role_name) VALUES ('GESTORE_CATALOGO');
+INSERT INTO roles (role_name) VALUES ('GESTORE_UTENTI');
+INSERT INTO roles (role_name) VALUES ('GESTORE_ORDINI');
+
+INSERT INTO user_roles (user_name, role_name) VALUES ('Tommaso', 'GESTORE_CATALOGO');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Alessandro', 'GESTORE_UTENTI');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Francesco', 'GESTORE_ORDINI');
 
