@@ -24,6 +24,7 @@ CREATE TABLE Product
     image VARCHAR(300) NOT NULL
 );
 
+
 CREATE TABLE END_USER
 (
     id  INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -179,6 +180,18 @@ CREATE TABLE HasProductM
     FOREIGN KEY (manga_id) REFERENCES Manga(id)
         ON UPDATE cascade ON DELETE cascade,
     FOREIGN KEY (user_id) REFERENCES END_USER(user_id)
+        ON UPDATE cascade ON DELETE cascade
+);
+
+CREATE TABLE TO_MANAGE
+(
+    user_id int NOT NULL,
+    order_id int NOT NULL,
+
+    PRIMARY KEY (user_id,order_id),
+    FOREIGN KEY (user_id) REFERENCES User(id)
+        ON UPDATE cascade ON DELETE cascade,
+    FOREIGN KEY(order_id) REFERENCES Orders(id)
         ON UPDATE cascade ON DELETE cascade
 );
 
