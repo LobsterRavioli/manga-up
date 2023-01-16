@@ -8,7 +8,7 @@ function check_registration_format(){
 
     let card_number_format = /^[0-9]{13,16}$/;
     let cvc_format = /^[0-9]{3,5}$/;
-    let card_holder_format = /^[a-zA-Z]{1,20}$/;
+    let card_holder_format = /^[a-zA-Z]{1,40}$/;
     let expirement_date_format = /^\d{4}-\d{2}-\d{2}$/;
 
     let country_format = /^[a-zA-Z]{1,56}$/;
@@ -25,13 +25,14 @@ function check_registration_format(){
     let password = document.getElementById("password").value;
     let psw_repeat = document.getElementById("psw-repeat").value;
     let birth_date = document.getElementById("birth_date").value;
-
+    let phone_number = document.getElementById("phone_number").value;
 
 
     let card_number = document.getElementById("card_number").value;
     let cvc = document.getElementById("cvc").value;
     let card_holder = document.getElementById("card_holder").value;
     let expirement_date = document.getElementById("expirement_date").value;
+    let phone_number_address = document.getElementById("phone_number_address").value;
 
 
 
@@ -39,11 +40,8 @@ function check_registration_format(){
     let region = document.getElementById("region").value;
     let city = document.getElementById("city").value;
     let street = document.getElementById("street").value;
-    let phone_number = document.getElementById("phone_number").value;
-    let postal_code = document.getElementById("postal_code").value;
 
-    console.log(birth_date)
-    console.log(expirement_date)
+    let postal_code = document.getElementById("postal_code").value;
 
 
     if(!email_format.test(email)) {
@@ -220,7 +218,7 @@ function check_registration_format(){
         event.preventDefault();
     }
 
-    if(!phone_number_format.test(phone_number)) {
+    if(!phone_number_format.test(phone_number_address)) {
         document.querySelector(".phone_number_error").innerHTML = "Inserire un numero di telefono valido";
         document.querySelector(".phone_number_error").style.display = "block";
         event.preventDefault();
@@ -244,12 +242,26 @@ function check_registration_format(){
         event.preventDefault();
     }
 
+    if(!phone_number_format.test(phone_number)) {
+        document.querySelector(".phone_number_error").innerHTML = "Inserire un numero valido";
+        document.querySelector(".phone_number_error").style.display = "block";
+        event.preventDefault();
+
+    }
+    else {
+        document.querySelector(".phone_number_card_error").innerHTML = "";
+        document.querySelector(".phone_number_card_error").style.display = "block";
+        event.preventDefault();
+    }
+
+
+
     if (postal_code_format.test(postal_code) && phone_number_format.test(phone_number)
         && street_format.test(street) && city_format.test(city) && region_format.test(region)
         && country_format.test(country) && expirement_date_format.test(expirement_date)
         && card_holder_format.test(card_holder) && cvc_format.test(cvc) && card_number_format.test(card_number)
         && birth_date_format.test(birth_date) && password_format.test(password) && surname_format.test(surname)
-        && name_format.test(name) && email_format.test(email)) {
+        && name_format.test(name) && email_format.test(email) && phone_number_format.test(phone_number_address) && (password == psw_repeat)){
         document.getElementById("registration_form").submit();
     }
 
@@ -348,7 +360,7 @@ function check_address_format(){
     }
 
 
-    if (postal_code_format.test(postal_code) && phone_number_format.test(phone_number) && street_format.test(street) && city_format.test(city) && region_format.test(region) && country_format.test(country) ) {
+    if (postal_code_format.test(postal_code) && phone_number_format.test(phone_number) && street_format.test(street) && city_format.test(city) && region_format.test(region) && country_format.test(country)) {
         document.getElementById("address_form").submit();
     }
 

@@ -41,8 +41,7 @@ CREATE TABLE credit_card
     FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)
 );
 
-
-
+/*
 CREATE TABLE tomcat_users
 (
     user_name varchar(20) NOT NULL PRIMARY KEY,
@@ -108,4 +107,5 @@ CREATE TABLE credit_card
     PRIMARY KEY (crd_id),
     FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)
 );
+ */
 

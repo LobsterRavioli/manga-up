@@ -39,6 +39,10 @@
         <label for="name"><b>Nome</b></label>
         <input type="text" placeholder="Inserisci nome" name="name" id="name" required>
 
+        <p class="phone_number_error"></p>
+        <label for="phone_number"><b>Numero di cellulare</b></label>
+        <input type="text" placeholder="Campo obbligatorio" name="phone_number" id="phone_number" required>
+        <br>
         <p class="surname_error"></p>
         <label for="surname"><b>Cognome</b></label>
         <input type="text" placeholder="Inserisci cognome" name="surname" id="surname" required>
@@ -94,10 +98,12 @@
             <label for="city"><b>Città</b></label>
             <input type="text" placeholder="Campo obbligatorio" name="city" id="city" required>
             <br>
-            <p class="phone_number_error"></p>
-            <label for="phone_number"><b>Numero di cellulare</b></label>
-            <input type="text" placeholder="Campo obbligatorio" name="phone_number" id="phone_number" required>
+
+            <p class="phone_number_card_error"></p>
+            <label for="phone_number_address"><b>Numero di cellulare carta</b></label>
+            <input type="text" placeholder="Campo obbligatorio" name="phone_number_address" id="phone_number_address" required>
             <br>
+
             <p class="postal_code_error"></p>
             <label for="postal_code"><b>Codice Postale</b></label>
             <input type="text" placeholder="Campo obbligatorio" name="postal_code" id="postal_code" required>

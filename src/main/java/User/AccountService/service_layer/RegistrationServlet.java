@@ -55,7 +55,7 @@ public class RegistrationServlet extends HttpServlet {
                 .setCountry(request.getParameter("country"))
                 .setPostalCode(request.getParameter("postal_code"))
                 .setRegion(request.getParameter("region"))
-                .setPhoneNumber(request.getParameter("phone_number"))
+                .setPhoneNumber(request.getParameter("phone_number_address"))
                 .createAddress();
 
         CreditCard card = new ConcreteCardBuilder()
