@@ -13,8 +13,6 @@ public class EndUser{
     private Date birthdate;
     private int id;
 
-
-
     public int getId() {
         return id;
     }

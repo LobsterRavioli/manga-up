@@ -74,3 +74,75 @@ CREATE TABLE has_author
     FOREIGN KEY (author_id) REFERENCES author(aut_id)
         ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+CREATE TABLE end_user
+(
+    usr_id  INT AUTO_INCREMENT NOT NULL,
+    usr_email Varchar(128) NOT NULL UNIQUE ,
+    usr_name VARCHAR(32) NOT NULL,
+    usr_surname VARCHAR(32) NOT NULL,
+    usr_password VARCHAR(32) NOT NULL,
+    usr_phone_number VARCHAR(20) NOT NULL,
+    usr_birth_date date NOT NULL,
+    PRIMARY KEY (usr_id)
+);
+
+
+CREATE TABLE address
+(
+    addr_id  INT AUTO_INCREMENT,
+    usr_id INT NOT NULL ,
+    addr_country VARCHAR(64) NOT NULL,
+    addr_city VARCHAR(30) NOT NULL,
+    addr_street VARCHAR(100) NOT NULL,
+    addr_phone_number VARCHAR(15) NOT NULL,
+    addr_region VARCHAR(30) NOT NULL ,
+    addr_postal_code VARCHAR(5) NOT NULL,
+    PRIMARY KEY (addr_id),
+    FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)
+);
+
+CREATE TABLE credit_card
+(
+    crd_id INT AUTO_INCREMENT NOT NULL,
+    crd_number VARCHAR(20) NOT NULL ,
+    usr_id INT NOT NULL,
+    crd_cvc VARCHAR(32) NOT NULL,
+    crd_holder VARCHAR(15) NOT NULL,
+    crd_expirement_date date NOT NULL,
+    PRIMARY KEY (crd_id),
+    FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)
+);
+
+CREATE TABLE users
+(
+    user_name VARCHAR(20) NOT NULL PRIMARY KEY,
+    password VARCHAR(32) NOT NULL
+);
+
+CREATE TABLE roles
+(
+    role_name VARCHAR(20) NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE user_roles
+(
+    user_name VARCHAR(20) NOT NULL,
+    role_name VARCHAR(20) NOT NULL,
+    PRIMARY KEY (user_name, role_name),
+    CONSTRAINT tomcat_users_roles_foreign_key_1 FOREIGN KEY (user_name) REFERENCES tomcat_users (user_name),
+    CONSTRAINT tomcat_users_roles_foreign_key_2 FOREIGN KEY (role_name) REFERENCES tomcat_roles (role_name)
+);
+
+INSERT INTO users (user_name, password) VALUES ('Tommaso', 'password1');
+INSERT INTO users (user_name, password) VALUES ('Alessandro', 'password1');
+INSERT INTO users (user_name, password) VALUES ('Francesco', 'password1');
+
+INSERT INTO roles (role_name) VALUES ('GESTORE_CATALOGO');
+INSERT INTO roles (role_name) VALUES ('GESTORE_UTENTI');
+INSERT INTO roles (role_name) VALUES ('GESTORE_ORDINI');
+
+INSERT INTO user_roles (user_name, role_name) VALUES ('Tommaso', 'GESTORE_CATALOGO');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Alessandro', 'GESTORE_UTENTI');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Francesco', 'GESTORE_ORDINI');
+

@@ -25,10 +25,10 @@ public class UserRoleDAOImp implements UserRoleDAO {
         this.ds = ds;
     }
 
-    private static String SQL_GET_ROLES = "SELECT * FROM tomcat_users_roles WHERE user_name = ?";
+    private static String SQL_GET_ROLES = "SELECT * FROM user_roles WHERE user_name = ?";
 
-    private static String SQL_INSERT_ROLE = "INSERT INTO tomcat_users_roles (user_name, role_name) VALUES (?, ?)";
-    private static String REMOVE_ALL_ROLES = "DELETE FROM tomcat_users_roles WHERE username = ?";
+    private static String SQL_INSERT_ROLE = "INSERT INTO user_roles (user_name, role_name) VALUES (?, ?)";
+    private static String REMOVE_ALL_ROLES = "DELETE FROM user_roles WHERE username = ?";
 
 
     @Override

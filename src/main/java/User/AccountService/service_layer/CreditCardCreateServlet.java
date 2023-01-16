@@ -14,7 +14,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.Date;
 
-@WebServlet(name = "CreditCardCreateServlet", value = "/CreditCardCreateServlet")
+@WebServlet("/CreditCardCreateServlet")
 public class CreditCardCreateServlet extends HttpServlet {
 
     private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.JDBC);
