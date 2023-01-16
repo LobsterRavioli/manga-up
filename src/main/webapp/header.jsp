@@ -60,7 +60,7 @@
           <ul>
             <li class="active"><a href="${pageContext.request.contextPath}/index.html">Home</a></li>
             <li><a href="${pageContext.request.contextPath}/catalogServlet?productsSupply=1&type=Manga">Manga</a></li>
-            <li><a href="${pageContext.request.contextPath}/catalogServlet?productsSupply=1">Catalogo</a></li>
+            <li><a href="${pageContext.request.contextPath}/catalogServlet?productsSupply=1&type=">Catalogo</a></li>
           </ul>
         </nav>
       </div>

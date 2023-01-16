@@ -47,7 +47,7 @@ public class CartDAOImpl implements CartDAO {
                 double price = rs.getDouble(4);
                 String type_of_p = rs.getString(5);
                 int quantity = rs.getInt(6);
-                Product p = new Product(id,name,brand,"",price,0.0,0.0,0.0, Product.ProductState.NEW,type_of_p,"",-1,"");
+                Product p = new Product(id,name,brand,"",price,0.0,0.0,0.0, Product.ProductState.NEW,type_of_p,-1,"");
                 mappa.put(p,quantity);
             }
 

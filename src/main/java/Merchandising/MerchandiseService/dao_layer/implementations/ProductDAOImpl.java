@@ -16,7 +16,7 @@ public class ProductDAOImpl implements ProductDAO {
 
     private DataSource ds;
     public ProductDAOImpl(DataSource ds){
-
+        this.ds=ds;
     }
     @Override
     public void create(Product p) {
@@ -88,9 +88,8 @@ public class ProductDAOImpl implements ProductDAO {
 
             pr.setString(8,p.getDescription());
             pr.setString(9,p.getType_of_product());
-            pr.setString(10,p.getCollections());
-            pr.setInt(11,p.getQuantity());
-            pr.setString(12,p.getImagePath());
+            pr.setInt(10,p.getQuantity());
+            pr.setString(11,p.getImagePath());
             pr.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
@@ -130,10 +129,9 @@ public class ProductDAOImpl implements ProductDAO {
 
                 String description = rs.getString(9);
                 String type_of_p = rs.getString(10);
-                String collections = rs.getString(11);
-                int quantity = rs.getInt(12);
-                String imagePath = rs.getString(13);
-                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,type_of_p,collections,quantity,imagePath);
+                int quantity = rs.getInt(11);
+                String imagePath = rs.getString(12);
+                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,type_of_p,quantity,imagePath);
                 return p;
             }else
                 return null;
@@ -178,10 +176,9 @@ public class ProductDAOImpl implements ProductDAO {
 
                 String description = rs.getString(9);
                 String type_of_p = rs.getString(10);
-                String collections = rs.getString(11);
-                int quantity = rs.getInt(12);
-                String imagePath = rs.getString(13);
-                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,type_of_p,collections,quantity,imagePath);
+                int quantity = rs.getInt(11);
+                String imagePath = rs.getString(12);
+                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,type_of_p,quantity,imagePath);
                 lista.add(p);
             }
             if(lista.size()==0)
@@ -209,6 +206,7 @@ public class ProductDAOImpl implements ProductDAO {
             pr = conn.prepareStatement("SELECT * from Product as p");
             rs = pr.executeQuery();
             ArrayList<Product> lista = new ArrayList<Product>();
+            System.out.println("las");
             while(rs.next()){
                 int iD = rs.getInt(1);
                 String name = rs.getString(2);
@@ -228,10 +226,9 @@ public class ProductDAOImpl implements ProductDAO {
 
                 String description = rs.getString(9);
                 String type_of_p = rs.getString(10);
-                String collections = rs.getString(11);
-                int quantity = rs.getInt(12);
-                String imagePath = rs.getString(13);
-                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,type_of_p,collections,quantity,imagePath);
+                int quantity = rs.getInt(11);
+                String imagePath = rs.getString(12);
+                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,type_of_p,quantity,imagePath);
                 lista.add(p);
             }
             if(lista.size()==0)
@@ -239,7 +236,7 @@ public class ProductDAOImpl implements ProductDAO {
 
             else return lista;
         }catch (SQLException e){
-            e.printStackTrace();
+            e.getMessage();
             return null;
         }finally {
             try{
@@ -293,10 +290,9 @@ public class ProductDAOImpl implements ProductDAO {
 
                 String description = rs.getString(9);
                 String type_of_p = rs.getString(10);
-                String collections = rs.getString(11);
-                int quantity = rs.getInt(12);
-                String imagePath = rs.getString(13);
-                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,type_of_p,collections,quantity,imagePath);
+                int quantity = rs.getInt(11);
+                String imagePath = rs.getString(12);
+                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,type_of_p,quantity,imagePath);
                 lista.add(p);
             }
             if(lista.size()==0)

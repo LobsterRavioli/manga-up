@@ -6,7 +6,7 @@ import java.util.Objects;
 public class Product {
 
     public Product(int id,String name, String producer, String description, double price, double height, double length,
-                   double weight, ProductState state,String type_of_product,String collections,int quantity,String imagePath)
+                   double weight, ProductState state,String type_of_product,int quantity,String imagePath)
     {
         this.id = id;
         this.name = name;
@@ -18,7 +18,6 @@ public class Product {
         this.weight = weight;
         this.state = state;
         this.type_of_product = type_of_product;
-        this.collections = collections;
         this.quantity = quantity;
         this.imagePath = imagePath;
     }

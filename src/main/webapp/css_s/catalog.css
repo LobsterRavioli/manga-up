@@ -2,12 +2,6 @@
     width: 100%;
 }
 
-.mydiv {
-    margin-top: 50px;
-    margin-bottom: 50px;
-    width: 70%;
-}
-
 .fulll{
     margin-top: 3%;
     padding: 0 0.5%;
@@ -45,7 +39,8 @@
 
 .mydiv{
     height: 100% !important;
-    margin:0 !important;
+    margin-left: 5.2% !important;
+    margin-top: 2% !important;
     width: 75%;
 }
 
@@ -136,7 +131,6 @@ body{
 
 .contxxx{
     height: calc(100vh - 177px) !important;
-    margin-top: 177px;
     border-color: rgba(4,11,5,0.15);
     border-width: 0.5px;
     border-top-style: solid;

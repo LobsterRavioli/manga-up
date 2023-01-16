@@ -3,7 +3,7 @@ img.logoManga {
 }
 .header {
     background: #ffffff;
-    height: 0;
+    height: 23%;
 }
 
 @media (min-width: 1200px){
