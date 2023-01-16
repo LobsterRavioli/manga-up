@@ -6,6 +6,8 @@ import utils.DAOException;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.Collection;
+import java.util.LinkedList;
 
 public class OrderDAOImp implements OrderDAO
 {
@@ -167,9 +169,57 @@ public class OrderDAOImp implements OrderDAO
             finally
             {
                 if(connection != null)
-                    preparedStatement.close();
+                    connection.close();
             }
         }
         return orderBean;
+    }
+
+    @Override
+    public Collection<Order> doRetriveAll(String ordCriteria) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        Collection<Order> orders = new LinkedList<Order>();
+
+        String selectQuery = "SELECT * FROM "+ORDER_TABLE;
+
+        if(ordCriteria != null && !ordCriteria.equals(""))
+        {
+            selectQuery += " ORDER BY "+ordCriteria;
+        }
+
+        try
+        {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(selectQuery);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next())
+            {
+                Order orderBean = new Order();
+
+                orderBean.setId(rs.getLong("ord_id"));
+                orderBean.setOrderDate(rs.getDate("ord_date"));
+                orderBean.setState(Order.State.valueOf(rs.getString("ord_state")));
+                orderBean.setTotalPrice(rs.getDouble("ord_total_price"));
+                orderBean.setUserName(rs.getString("ord_user_name"));
+                orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
+                orderBean.setCourierName(rs.getString("ord_courier"));
+
+                orders.add(orderBean);
+            }
+        } finally {
+            try {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            } finally {
+                if(connection != null)
+                    connection.close();
+            }
+        }
+
+        return orders;
     }
 }
