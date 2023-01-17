@@ -9,6 +9,20 @@ CREATE TABLE User
     password varchar(15) NOT NULL
 );
 
+CREATE TABLE roles
+(
+    role_name VARCHAR(20) NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE user_roles
+(
+    user_name VARCHAR(20) NOT NULL,
+    role_name VARCHAR(20) NOT NULL,
+    PRIMARY KEY (user_name, role_name),
+    FOREIGN KEY (user_name) REFERENCES User(username),
+    FOREIGN KEY (role_name) REFERENCES roles(role_name)
+);
+
 CREATE TABLE END_USER
 (
     id  INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -25,7 +39,7 @@ CREATE TABLE Credit_Card
     number VARCHAR(20) PRIMARY KEY NOT NULL,
     user_id INT NOT NULL,
     cvc VARCHAR(3) NOT NULL,
-    nome VARCHAR(15) NOT NULL,
+    nome VARCHAR(128) NOT NULL,
     cognome VARCHAR(15) NOT NULL,
     data_scadenza date NOT NULL,
     FOREIGN KEY (user_id) REFERENCES END_USER(id)
@@ -187,5 +201,92 @@ CREATE TABLE Cart_Element
         ON UPDATE cascade ON DELETE cascade
 );
 
-INSERT INTO END_USER (id, email, name, surname, password, phone_number, birth_date)
-VALUES (1, 'toms@hotmail.it', 'tom', 'sirr', 'napoli123', '3662968496', '1970-01-15');
+INSERT INTO User (username, password) VALUES ('Tommaso', 'password1');
+INSERT INTO User (username, password) VALUES ('Alessandro', 'password1');
+INSERT INTO User (username, password) VALUES ('Francesco', 'password1');
+
+
+INSERT INTO roles (role_name) VALUES ('GESTORE_CATALOGO');
+INSERT INTO roles (role_name) VALUES ('GESTORE_UTENTI');
+INSERT INTO roles (role_name) VALUES ('GESTORE_ORDINI');
+
+
+INSERT INTO user_roles (user_name, role_name) VALUES ('Tommaso', 'GESTORE_CATALOGO');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Alessandro', 'GESTORE_UTENTI');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Francesco', 'GESTORE_ORDINI');
+
+
+INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
+VALUES ('toms@hotmail.it', 'Tommaso', 'Sorrentino', 'napoli123', '3662968496', '1970-01-15');
+
+INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
+VALUES ('fra@hotmail.it', 'Francesco', 'Monzillo', 'dontTypeInGoogle', '3409567346', '1976-03-01');
+
+INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
+VALUES ('ale@hotmail.it', 'Alessandro', 'Carnevale', 'passWARUDO', '3201992344', '1975-07-15');
+
+INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
+VALUES ('squidditen@blue.it', 'Squidward Quincy', 'Tentacles', 'golDclarinet', '3774890918', '1999-05-01');
+
+INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
+VALUES ('mrkrabs@blue.it', 'Eugene Harold', 'Krab', 'IngredientXISNotPlanktons', '3446779921', '1942-11-30');
+
+INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
+VALUES ('spongy87@blue.it', 'Spongebob', 'Squarepants', 'spugnaBOBPantaloniQuadrati23', '3449576923', '1986-07-14');
+
+INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
+VALUES ('patrik060@blue.it', 'Patrick', 'Star', 'spongibob-uhKrabbyPattySENSEI', '3994058843', '1986-04-22');
+
+INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
+VALUES ('spike@mars.it', 'Spike', 'Spiegel', 'WhateverHappensHappens', '3998831966', '1944-06-26');
+
+
+INSERT INTO Credit_Card (number, user_id, cvc, nome, cognome, data_scadenza)
+VALUES ('1234990388769210', 8, 297, 'Faye', 'Valentine', '2032-08-03');
+
+INSERT INTO Credit_Card (number, user_id, cvc, nome, cognome, data_scadenza)
+VALUES ('3234338700228810', 2, 887, 'Francesco', 'Monzillo', '2030-01-09');
+
+INSERT INTO Credit_Card (number, user_id, cvc, nome, cognome, data_scadenza)
+VALUES ('6543388700226254', 4, 885, 'Squidward Quincy', 'Tentacles', '2025-11-10');
+
+INSERT INTO Credit_Card (number, user_id, cvc, nome, cognome, data_scadenza)
+VALUES ('4567338711779023', 5, 332, 'Spongebob', 'Squarepants', '2023-09-08');
+
+INSERT INTO Credit_Card (number, user_id, cvc, nome, cognome, data_scadenza)
+VALUES ('3232115522009988', 1, 320, 'Tommaso', 'Sorrentino', '2025-07-10');
+
+INSERT INTO Credit_Card (number, user_id, cvc, nome, cognome, data_scadenza)
+VALUES ('4590120000509023', 3, 775, 'Alessandro', 'Carnevale', '2024-12-12');
+
+INSERT INTO Credit_Card (number, user_id, cvc, nome, cognome, data_scadenza)
+VALUES ('1239888899776534', 6, 266, 'Spongebob', 'Squarepants', '2025-06-10');
+
+INSERT INTO Credit_Card (number, user_id, cvc, nome, cognome, data_scadenza)
+VALUES ('2900338661198212', 7, 112, 'Patrick', 'Star', '2025-10-02');
+
+
+
+INSERT INTO Address (user_id, country, city, street, street_number, postal_code)
+VALUES (1, 'Italy', 'City1', 'Street1', 36, 84011);
+
+INSERT INTO Address (user_id, country, city, street, street_number, postal_code)
+VALUES (7, 'Italy', 'City2', 'Street2', 22, 84056);
+
+INSERT INTO Address (user_id, country, city, street, street_number, postal_code)
+VALUES (5, 'Italy', 'City3', 'Street3', 12, 84098);
+
+INSERT INTO Address (user_id, country, city, street, street_number, postal_code)
+VALUES (2, 'Italy', 'City4', 'Street4', 9, 84032);
+
+INSERT INTO Address (user_id, country, city, street, street_number, postal_code)
+VALUES (3, 'Italy', 'City5', 'Street5', 2, 84546);
+
+INSERT INTO Address (user_id, country, city, street, street_number, postal_code)
+VALUES (8, 'Italy', 'City6', 'Street6', 34, 84213);
+
+INSERT INTO Address (user_id, country, city, street, street_number, postal_code)
+VALUES (4, 'Italy', 'City7', 'Street7', 28, 84767);
+
+INSERT INTO Address (user_id, country, city, street, street_number, postal_code)
+VALUES (6, 'Italy', 'City8', 'Street8', 19, 84323);
