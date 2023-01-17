@@ -2,28 +2,12 @@ drop schema MANGA_UP ;
 create schema MANGA_UP;
 use MANGA_UP;
 
-CREATE TABLE Genre
-(
-    nome VARCHAR(15) PRIMARY KEY NOT NULL
-);
-
-
-CREATE TABLE Product
+CREATE TABLE User
 (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    name VARCHAR(50) NOT NULL,
-    brand VARCHAR(50) NOT NULL,
-    price DOUBLE NOT NULL,
-    weight DOUBLE NOT NULL,
-    height DOUBLE NOT NULL,
-    lenght DOUBLE NOT NULL,
-    state VARCHAR(20) NOT NULL,
-    description VARCHAR(255) NOT NULL,
-    type_of_product VARCHAR(30) NOT NULL,
-    quantity INT NOT NULL,
-    image VARCHAR(300) NOT NULL
+    username VARCHAR(15) NOT NULL UNIQUE,
+    password varchar(15) NOT NULL
 );
-
 
 CREATE TABLE END_USER
 (
@@ -35,7 +19,6 @@ CREATE TABLE END_USER
     phone_number VARCHAR(10) NOT NULL,
     birth_date date NOT NULL
 );
-
 
 CREATE TABLE Credit_Card
 (
@@ -71,11 +54,16 @@ CREATE TABLE Orders
     courier VARCHAR(30) NOT NULL
 );
 
-CREATE TABLE User
+CREATE TABLE TO_MANAGE
 (
-    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    username VARCHAR(15) NOT NULL UNIQUE ,
-    password varchar(15) NOT NULL
+    user_id int NOT NULL,
+    order_id int NOT NULL,
+
+    PRIMARY KEY (user_id,order_id),
+    FOREIGN KEY (user_id) REFERENCES User(id)
+        ON UPDATE cascade ON DELETE cascade,
+    FOREIGN KEY(order_id) REFERENCES Orders(id)
+        ON UPDATE cascade ON DELETE cascade
 );
 
 CREATE TABLE manages
@@ -91,7 +79,33 @@ CREATE TABLE manages
         ON UPDATE cascade ON DELETE cascade,
     FOREIGN KEY(order_id) REFERENCES Orders(id)
         ON UPDATE cascade ON DELETE cascade
+);
 
+CREATE TABLE Product
+(
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    brand VARCHAR(50) NOT NULL,
+    price DOUBLE NOT NULL,
+    weight DOUBLE NOT NULL,
+    height DOUBLE NOT NULL,
+    lenght DOUBLE NOT NULL,
+    state VARCHAR(20) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    type_of_product VARCHAR(30) NOT NULL,
+    quantity INT NOT NULL,
+    image VARCHAR(300) NOT NULL
+);
+
+CREATE TABLE HasProductP
+(
+    product_id int NOT NULL,
+    user_id int NOT NULL,
+    PRIMARY KEY(product_id,user_id),
+    FOREIGN KEY (product_id) REFERENCES Product(id)
+        ON UPDATE cascade ON DELETE cascade,
+    FOREIGN KEY (user_id) REFERENCES END_USER(id)
+        ON UPDATE cascade ON DELETE cascade
 );
 
 CREATE TABLE Manga
@@ -117,35 +131,20 @@ CREATE TABLE Manga
     image VARCHAR(300) NOT NULL
 );
 
-
-CREATE TABLE Author
-(
-    id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    name VARCHAR(30) NOT NULL,
-    role VARCHAR(20) NOT NULL,
-);
-
-
-CREATE TABLE Cart_Element
-(
-    user_id INT NOT NULL,
-    product_id int NOT NULL,
-    PRIMARY KEY(user_id,product_id),
-    FOREIGN KEY (user_id) REFERENCES END_USER(id)
-        ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY (product_id) REFERENCES Product(id)
-        ON UPDATE cascade ON DELETE cascade
-);
-
-CREATE TABLE HasAuthor
+CREATE TABLE HasProductM
 (
     manga_id int NOT NULL,
-    author_id int NOT NULL,
-    PRIMARY KEY(manga_id,author_id),
+    user_id int NOT NULL,
+    PRIMARY KEY(manga_id,user_id),
     FOREIGN KEY (manga_id) REFERENCES Manga(id)
         ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY (author_id) REFERENCES Author(id)
+    FOREIGN KEY (user_id) REFERENCES END_USER(id)
         ON UPDATE cascade ON DELETE cascade
+);
+
+CREATE TABLE Genre
+(
+    nome VARCHAR(15) PRIMARY KEY NOT NULL
 );
 
 CREATE TABLE HasGenre
@@ -159,47 +158,34 @@ CREATE TABLE HasGenre
         ON UPDATE cascade ON DELETE cascade
 );
 
-
-CREATE TABLE HasProductP
+CREATE TABLE Author
 (
-    product_id int NOT NULL,
-    user_id int NOT NULL,
-    PRIMARY KEY(product_id,user_id),
-    FOREIGN KEY (product_id) REFERENCES Product(id)
-        ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY (user_id) REFERENCES END_USER(user_id)
-        ON UPDATE cascade ON DELETE cascade
+    id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    name VARCHAR(30) NOT NULL,
+    role VARCHAR(20) NOT NULL
 );
 
-
-CREATE TABLE HasProductM
+CREATE TABLE HasAuthor
 (
     manga_id int NOT NULL,
-    user_id int NOT NULL,
-    PRIMARY KEY(manga_id,user_id),
+    author_id int NOT NULL,
+    PRIMARY KEY(manga_id,author_id),
     FOREIGN KEY (manga_id) REFERENCES Manga(id)
         ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY (user_id) REFERENCES END_USER(user_id)
+    FOREIGN KEY (author_id) REFERENCES Author(id)
         ON UPDATE cascade ON DELETE cascade
 );
 
-CREATE TABLE TO_MANAGE
+CREATE TABLE Cart_Element
 (
-    user_id int NOT NULL,
-    order_id int NOT NULL,
-
-    PRIMARY KEY (user_id,order_id),
-    FOREIGN KEY (user_id) REFERENCES User(id)
+    user_id INT NOT NULL,
+    product_id int NOT NULL,
+    PRIMARY KEY(user_id,product_id),
+    FOREIGN KEY (user_id) REFERENCES END_USER(id)
         ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY(order_id) REFERENCES Orders(id)
+    FOREIGN KEY (product_id) REFERENCES Product(id)
         ON UPDATE cascade ON DELETE cascade
 );
 
-
-
-INSERT INTO MANGAUP.END_USER (id, email, name, surname, password, phone_number, birth_date)
+INSERT INTO END_USER (id, email, name, surname, password, phone_number, birth_date)
 VALUES (1, 'toms@hotmail.it', 'tom', 'sirr', 'napoli123', '3662968496', '1970-01-15');
-
-
-
-
