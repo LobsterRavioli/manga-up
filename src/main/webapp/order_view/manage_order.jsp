@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<h2>manage the order having id = <%=ord_id %></h2>
+<h2>Manage the order having id = <%=ord_id %></h2>
 	<form action="${pageContext.request.contextPath}/managedServlet" method="post">
 		<input type="hidden" name="action" value="insert">
 

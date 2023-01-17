@@ -37,7 +37,7 @@
 
     <div class="navbar">
         <a href="${pageContext.request.contextPath}/orderServlet">Orders<br><br></a>
-        <a href="manage_order.jsp">Managed Orders<br></a>
+        <a href="manage_order_list.jsp">Managed Orders<br></a>
     </div>
 
 </body>
