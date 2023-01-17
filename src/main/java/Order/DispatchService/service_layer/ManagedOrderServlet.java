@@ -6,6 +6,7 @@ import Order.DispatchService.dao_layer.implementations.OrderDAOImp;
 import Order.DispatchService.dao_layer.interfaces.ManagedOrderDAO;
 import Order.DispatchService.dao_layer.interfaces.OrderDAO;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,29 +16,23 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "orderServlet", value = "/orderServlet")
-public class OrderServlet extends HttpServlet {
+@WebServlet(name = "manageServlet", value = "/manageServlet")
+public class ManagedOrderServlet extends HttpServlet{
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-        OrderDAO model = new OrderDAOImp(ds);
+        String ord_id = request.getParameter("manage");
 
-        String criteria = request.getParameter("sort");
-
-        try
+        if(ord_id != null)
         {
-            request.removeAttribute("orders");
-            request.setAttribute("orders", model.doRetriveAll(criteria));
+            getServletContext().getRequestDispatcher("/order_view/manage_order.jsp").forward(request, response);
         }
-        catch (SQLException e)
+        else
         {
-            e.printStackTrace();
-            request.setAttribute("error", e.getMessage());
+            response.sendRedirect(request.getServletContext().getContextPath()+"/orderServlet");
+            return;
         }
-
-        getServletContext().getRequestDispatcher("/order_view/order_list.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

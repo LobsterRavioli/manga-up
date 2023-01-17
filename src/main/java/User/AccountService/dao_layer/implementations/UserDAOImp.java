@@ -1,10 +1,12 @@
+/*
 package User.AccountService.dao_layer.implementations;
 
 import User.AccountService.beans.User;
-import User.AccountService.dao_layer.interfaces.UserDAO;
+//import User.AccountService.dao_layer.interfaces.UserDAO;
 import User.AccountService.dao_layer.interfaces.UserRoleDAO;
 
 import java.util.Collection;
+
 
 public class UserDAOImp implements UserDAO {
     @Override
@@ -32,3 +34,4 @@ public class UserDAOImp implements UserDAO {
         return null;
     }
 }
+*/
