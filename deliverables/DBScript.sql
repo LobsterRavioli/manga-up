@@ -16,10 +16,12 @@ CREATE TABLE roles
 
 CREATE TABLE user_roles
 (
+    user_id INT NOT NULL,
     user_name VARCHAR(20) NOT NULL,
     role_name VARCHAR(20) NOT NULL,
-    PRIMARY KEY (user_name, role_name),
+    PRIMARY KEY (user_id, role_name),
     FOREIGN KEY (user_name) REFERENCES User(username),
+    FOREIGN KEY (user_id) REFERENCES User(id),
     FOREIGN KEY (role_name) REFERENCES roles(role_name)
 );
 
@@ -214,12 +216,12 @@ INSERT INTO roles (role_name) VALUES ('GESTORE_UTENTI');
 INSERT INTO roles (role_name) VALUES ('GESTORE_ORDINI');
 
 
-INSERT INTO user_roles (user_name, role_name) VALUES ('Tommaso', 'GESTORE_CATALOGO');
-INSERT INTO user_roles (user_name, role_name) VALUES ('Alessandro', 'GESTORE_UTENTI');
+INSERT INTO user_roles (user_id, user_name, role_name) VALUES (1, 'Tommaso', 'GESTORE_CATALOGO');
+INSERT INTO user_roles (user_id, user_name, role_name) VALUES (2, 'Alessandro', 'GESTORE_UTENTI');
 
-INSERT INTO user_roles (user_name, role_name) VALUES ('Giovanni', 'GESTORE_ORDINI');
-INSERT INTO user_roles (user_name, role_name) VALUES ('Sara', 'GESTORE_ORDINI');
-INSERT INTO user_roles (user_name, role_name) VALUES ('Francesco', 'GESTORE_ORDINI');
+INSERT INTO user_roles (user_id, user_name, role_name) VALUES (3, 'Giovanni', 'GESTORE_ORDINI');
+INSERT INTO user_roles (user_id, user_name, role_name) VALUES (4, 'Sara', 'GESTORE_ORDINI');
+INSERT INTO user_roles (user_id, user_name, role_name) VALUES (5, 'Francesco', 'GESTORE_ORDINI');
 
 
 INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
