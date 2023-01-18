@@ -14,6 +14,5 @@ public interface UserDAO {
 
     User checkUsername(String login) throws SQLException;
 
-    // modified
     Collection<User> getAllUsers(String role_name) throws SQLException;
 }
