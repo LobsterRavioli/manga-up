@@ -21,6 +21,14 @@ public class OrderServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        // RECUPERO L'ID DELL'ORDER MANAGER
+        Integer orderManagerId = (Integer)request.getSession().getAttribute("managerID");
+
+        //CODICE TEMPORANEO TANTO PER TESTARE
+        if(orderManagerId == null)
+            orderManagerId = 4; // recupero gli ordini del gestore avebte ID = 4
+        // CI SERVE UNA QUERY CHE POSSA RECUPERARE GLI ID DEI MANAGER CHE SIANO SOLO GESTORI DEGLI ORDINI
+
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
         OrderDAO model = new OrderDAOImp(ds);
 
@@ -29,7 +37,7 @@ public class OrderServlet extends HttpServlet {
         try
         {
             request.removeAttribute("orders");
-            request.setAttribute("orders", model.doRetrieveAll(criteria));
+            request.setAttribute("orders", model.doRetrieveAllForSpecificUser(orderManagerId, criteria));
         }
         catch (SQLException e)
         {

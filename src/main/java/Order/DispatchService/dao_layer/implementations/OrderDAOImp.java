@@ -216,4 +216,53 @@ public class OrderDAOImp implements OrderDAO
 
         return orders;
     }
+
+    @Override
+    public Collection<Order> doRetrieveAllForSpecificUser(long orderManagerID, String ordCriteria) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        Collection<Order> orders = new LinkedList<Order>();
+
+        String selectQuery = "SELECT * " +
+                             "FROM Orders AS O, TO_MANAGE AS M " +
+                             "WHERE O.ord_id = M.order_id AND M.user_id = ?";
+
+        if(ordCriteria != null && !ordCriteria.equals(""))
+        {
+            selectQuery += " ORDER BY "+ordCriteria;
+        }
+
+        try
+        {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(selectQuery);
+            preparedStatement.setLong(1, orderManagerID);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next())
+            {
+                Order orderBean = new Order();
+
+                orderBean.setId(rs.getLong("ord_id"));
+                orderBean.setOrderDate(rs.getDate("ord_date"));
+                orderBean.setState(rs.getString("ord_state"));
+                orderBean.setTotalPrice(rs.getDouble("ord_total_price"));
+                orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
+
+                orders.add(orderBean);
+            }
+        } finally {
+            try {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            } finally {
+                if(connection != null)
+                    connection.close();
+            }
+        }
+
+        return orders;
+    }
 }

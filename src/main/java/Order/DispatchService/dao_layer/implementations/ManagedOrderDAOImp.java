@@ -257,39 +257,4 @@ public class ManagedOrderDAOImp implements ManagedOrderDAO {
         }
         return managedOrderBean;
     }
-
-    public int numManageOrder(int userID) throws SQLException
-    {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-
-        int count = 0;
-
-        try
-        {
-            connection = ds.getConnection();
-            preparedStatement = connection.prepareStatement(COUNT_MANAGED);
-            preparedStatement.setInt(1, userID);
-
-            ResultSet rs = preparedStatement.executeQuery();
-
-            while(rs.next())
-            {
-                count = rs.getInt("man_order_id"); // CONTROLLARE SE FUNZIONA
-            }
-        }
-        finally {
-            try
-            {
-                if(preparedStatement != null)
-                    preparedStatement.close();
-            }
-            finally
-            {
-                if(connection != null)
-                    preparedStatement.close();
-            }
-        }
-        return count;
-    }
 }

@@ -83,9 +83,9 @@ CREATE TABLE TO_MANAGE
 
 CREATE TABLE manages
 (
-    man_order_id INT NOT NULL,
     man_user_id int NOT NULL,
-    PRIMARY KEY(man_order_id, man_user_id),
+    man_order_id INT NOT NULL,
+    PRIMARY KEY(man_user_id, man_order_id),
     man_delivery_date DATE NOT NULL,
     man_tracking_number VARCHAR(20) NOT NULL,
     man_courier VARCHAR(30) NOT NULL,
@@ -312,3 +312,27 @@ VALUES ('2018-09-09', 'TO_SENT', 532.00, 1);
 
 INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id)
 VALUES ('2018-06-04', 'TO_SENT', 21.50, 8);
+
+
+INSERT INTO TO_MANAGE (user_id, order_id) VALUES (3, 5);
+INSERT INTO TO_MANAGE (user_id, order_id) VALUES (4, 4);
+INSERT INTO TO_MANAGE (user_id, order_id) VALUES (4, 1);
+INSERT INTO TO_MANAGE (user_id, order_id) VALUES (3, 2);
+INSERT INTO TO_MANAGE (user_id, order_id) VALUES (5, 3);
+
+
+
+INSERT INTO manages (man_user_id, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
+VALUES (3, 5, '2007-10-08', 'TRN1', 'BRT', '2007-10-09');
+
+INSERT INTO manages (man_user_id, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
+VALUES (3, 2, '2007-12-08', 'TRN2', 'BRT', '2007-12-09');
+
+INSERT INTO manages (man_user_id, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
+VALUES (5, 1, '2007-10-08', 'TRN3', 'DHL', '2007-10-09');
+
+INSERT INTO manages (man_user_id, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
+VALUES (5, 3, '2007-10-08', 'TRN4', 'DHL', '2007-10-09');
+
+INSERT INTO manages (man_user_id, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
+VALUES (5, 4, '2007-10-08', 'TRN5', 'BRT', '2007-10-09');
