@@ -107,7 +107,7 @@ CREATE TABLE Manga
     description VARCHAR(255) NOT NULL,
     collections VARCHAR(50) NOT NULL,
     quantity INT NOT NULL,
-    ISBN VARCHAR(64) NOT NULL,
+    ISBN VARCHAR(13) NOT NULL,
     book_binding VARCHAR(30) NOT NULL,
     volume VARCHAR(50) NOT NULL,
     release_date date NOT NULL,
@@ -189,6 +189,7 @@ CREATE TABLE TO_MANAGE
     order_id int NOT NULL,
 
     PRIMARY KEY (user_id,order_id),
+
     FOREIGN KEY (user_id) REFERENCES User(id)
         ON UPDATE cascade ON DELETE cascade,
     FOREIGN KEY(order_id) REFERENCES Orders(id)

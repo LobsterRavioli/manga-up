@@ -1,4 +1,4 @@
-package User.AccountService.dao_layer.implementations;
+/*package User.AccountService.dao_layer.implementations;
 
 import User.AccountService.beans.User;
 import User.AccountService.dao_layer.interfaces.UserDAO;
@@ -31,4 +31,4 @@ public class UserDAOImp implements UserDAO {
     public Collection getAllUsers() {
         return null;
     }
-}
+}*/

@@ -18,6 +18,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css_s/catalog.css" type="text/css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!--<script type="text/javascript" src="${pageContext.request.contextPath}/js/catalog.js"></script>-->
     <style>
         ::-webkit-scrollbar {
             width: 8px;
@@ -41,24 +42,25 @@
 <div class="contxxx">
 <div class="toppane"></div>
 <div class="leftpane">
-    <p class="formMainLabel">Filtri:<p>
+<div class="filterForm">
+    <form action="/action_page.php">
+        <p class="formMainLabel">Filtri:<p>
+        <p class="widthAppropriate">
+            <label for="collections" class="filterinput">Collezione:</label><br>
+            <input type="text" id="collections" name="collections" placeholder="nome collezione" class="filterinput"><br>
 
-    <form class="filterForm" action="/action_page.php">
-
-        <label for="collections" class="filterinput">Collezione:</label><br>
-        <input type="text" id="collections" name="collections" placeholder="nome collezione" class="filterinput"><br>
-
-        <label for="minPrice" class="filterinput">Prezzo di partenza:</label><br>
-        <input type="text" id="minPrice" name="minPrice" placeholder="0" class="filterinput"><br>
-        <label for="maxPrice" class="filterinput">Prezzo Massimo:</label><br>
-        <input type="text" id="maxPrice" name="maxPrice" placeholder="0" class="filterinput"><br><br>
+            <label for="minPrice" class="filterinput">Prezzo di partenza:</label><br>
+            <input type="text" id="minPrice" name="minPrice" placeholder="0" class="filterinput"><br>
+            <label for="maxPrice" class="filterinput">Prezzo Massimo:</label><br>
+            <input type="text" id="maxPrice" name="maxPrice" placeholder="0" class="filterinput"><br><br>
         <input type="submit" value="Submit">
+        </p>
     </form>
 
-
+</div>
 
 </div>
-<div class="container mydiv x">
+<div class="container mydiv x" id="paginated-list">
     <% ArrayList list = (ArrayList) request.getAttribute("listaElementi");
     boolean b = false;
        for(int i=0;i<list.size();i++){
@@ -69,7 +71,7 @@
                     </div>
                <%}%>
                 <%b=true;%>
-                    <div class="row fulll">
+                    <div class="row fulll" id="idkidk">
             <%}
            if(list.get(i) instanceof Manga){
                 m = (Manga) list.get(i);
@@ -91,14 +93,13 @@
                                                 <div class="bbb_deals_item_price ml-auto">€<%=m.getPrice()%></div>
                                             </div>
                                             <div class="available">
-                                                <div class="available_line d-flex flex-row justify-content-start">
-                                                    <div class="available_title">Disponibili: <span><%=m.getQuantity()%></span></div>
+                                                <div class="available_title">Disponibili: <span><%=m.getQuantity()%></span></div>
                                                     <!--<div class="sold_stars ml-auto"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div>
                                                 </div>-->
                                                 <div class="available_bar"><span style="width:17%"></span></div>
+
                                             </div>
                                         </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -108,39 +109,64 @@
                         <div class="col-md-4">
                             <!-- bbb_deals -->
                             <div class="bbb_deals">
-                                <div class="bbb_deals_title"><p class="p_title"><%=p.getProducer()%></p></div>
+                                <div class="bbb_deals_title"><p class="p_title">Collezione: <%=p.getProducer()%></p></div>
                                 <div class="bbb_deals_slider_container">
                                     <div class=" bbb_deals_item">
                                         <div class="bbb_deals_image"><img src="https://i.imgur.com/9UYzfny.png" alt=""></div>
+
                                         <div class="bbb_deals_content">
-                                            <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
-                                                <div class="bbb_deals_item_category"><a href="#"><%=p.getType_of_product()%></a></div>
-                                                <!--<div class="bbb_deals_item_price_a ml-auto"><strike>€<%=p.getPrice()%></strike></div>-->
-                                            </div>
-                                            <div class="bbb_deals_info_line d-flex flex-row justify-content-start">
-                                                <div class="bbb_deals_item_name"><a class="prodAnchor" href="${pageContext.request.contextPath}/productE_U?prodId=<%=p.getId()%>&prodType=P"><p class="prodName"> <%=p.getName()%> </p> </a></div>
-                                                <div class="bbb_deals_item_price ml-auto">€<%=p.getPrice()%></div>
-                                            </div>
-                                            <div class="available">
-                                                <div class="available_line d-flex flex-row justify-content-start">
-                                                    <div class="available_title">Disponibili: <span><%=p.getQuantity()%></span></div>
-                                                    <!--<div class="sold_stars ml-auto"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div>
-                                                </div>-->
-                                                    <div class="available_bar"><span style="width:17%"></span></div>
-                                                </div>
-                                            </div>
+                                            <!--<div class="bbb_deals_info_line d-flex flex-row justify-content-start">-->
+                                            <div class="bbb_deals_item_category"><a href="#"><%=p.getType_of_product()%></a></div>
+                                            <!--<div class="bbb_deals_item_price_a ml-auto"><strike>€<%=p.getPrice()%></strike></div>-->
                                         </div>
+                                        <!--<div class="bbb_deals_info_line d-flex flex-row justify-content-start">-->
+                                        <div class="bbb_deals_item_name"><a class="prodAnchor" href="${pageContext.request.contextPath}/productE_U?prodId=<%=p.getId()%>&prodType=P"><p class="prodName"> <%=p.getName()%> </p> </a>
+                                        </div>
+
                                     </div>
-                                </div>
+                                        </div>
+
+                                    </div>
+                            <div class="bbb_deals_item_price ml-auto">€<%=p.getPrice()%></div>
+                            <div class="available">
+
+                                <div class="available_title">Disponibili: <span><%=p.getQuantity()%></span></div>
+                                <!--<div class="sold_stars ml-auto"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div>
+                            </div>-->
+                                <div class="available_bar"><span style="width:17%"></span></div>
                             </div>
-                        </div>
+                                </div>
+
+
+
            <%}
 
        }%>
 
     </div>
-                    </div></div>
-<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+
+    <nav class="pagination-container">
+        <button class="pagination-button" id="prev-button" aria-label="Previous page" title="Previous page">
+            &lt;
+        </button>
+
+        <div id="pagination-numbers">
+
+        </div>
+
+        <button class="pagination-button" id="next-button" aria-label="Next page" title="Next page">
+            &gt;
+        </button>
+    </nav>
+        <br class="clear" />
+
+</div>
+
+
+</div>
+
+
+<!--<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="#"></script>
 <script type="text/javascript" src="#"></script>
 <script type="text/javascript" src="#"></script>
@@ -152,6 +178,110 @@
             e.preventDefault();
         });
     });
+</script>-->
+
+<script>
+    const paginationNumbers = document.getElementById("pagination-numbers");
+    const paginatedList = document.getElementById("paginated-list");
+    const listItems = paginatedList.querySelectorAll("#idkidk");
+    const nextButton = document.getElementById("next-button");
+    const prevButton = document.getElementById("prev-button");
+
+    const paginationLimit = 3;
+    const pageCount = Math.ceil((listItems.length) / paginationLimit);
+    let currentPage = 1;
+
+    const disableButton = (button) => {
+        button.classList.add("disabled");
+        button.setAttribute("disabled", true);
+    };
+
+    const enableButton = (button) => {
+        button.classList.remove("disabled");
+        button.removeAttribute("disabled");
+    };
+
+    const handlePageButtonsStatus = () => {
+        if (currentPage === 1) {
+            disableButton(prevButton);
+        } else {
+            enableButton(prevButton);
+        }
+
+        if (pageCount === currentPage) {
+            disableButton(nextButton);
+        } else {
+            enableButton(nextButton);
+        }
+    };
+
+    const handleActivePageNumber = () => {
+        document.querySelectorAll(".pagination-number").forEach((button) => {
+            button.classList.remove("active");
+            const pageIndex = Number(button.getAttribute("page-index"));
+            if (pageIndex == currentPage) {
+                button.classList.add("active");
+            }
+        });
+    };
+
+    const appendPageNumber = (index) => {
+        const pageNumber = document.createElement("button");
+        pageNumber.className = "pagination-number";
+        pageNumber.innerHTML = index;
+        pageNumber.setAttribute("page-index", index);
+        pageNumber.setAttribute("aria-label", "Page " + index);
+
+        paginationNumbers.appendChild(pageNumber);
+    };
+
+    const getPaginationNumbers = () => {
+        for (let i = 1; i <= pageCount; i++) {
+            appendPageNumber(i);
+        }
+    };
+
+    const setCurrentPage = (pageNum) => {
+        currentPage = pageNum;
+
+        handleActivePageNumber();
+        handlePageButtonsStatus();
+
+        const prevRange = (pageNum - 1) * paginationLimit;
+        const currRange = pageNum * paginationLimit;
+
+        listItems.forEach((item, index) => {
+            item.classList.add("hidden");
+            if (index >= prevRange && index < currRange) {
+                item.classList.remove("hidden");
+            }
+        });
+    };
+
+    window.addEventListener("load", () => {
+        getPaginationNumbers();
+        setCurrentPage(1);
+
+        prevButton.addEventListener("click", () => {
+            setCurrentPage(currentPage - 1);
+        });
+
+        nextButton.addEventListener("click", () => {
+            setCurrentPage(currentPage + 1);
+        });
+
+        document.querySelectorAll(".pagination-number").forEach((button) => {
+            const pageIndex = Number(button.getAttribute("page-index"));
+
+            if (pageIndex) {
+                button.addEventListener("click", () => {
+                    setCurrentPage(pageIndex);
+                });
+            }
+        });
+    });
+
+
 </script>
 
 </body></html>

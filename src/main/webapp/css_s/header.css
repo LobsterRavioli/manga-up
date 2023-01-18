@@ -12,6 +12,11 @@ img.logoManga {
     }
 }
 
+.available_title{
+    position: absolute;
+    
+}
+
 .widdd{
     width: 100%;
 }
