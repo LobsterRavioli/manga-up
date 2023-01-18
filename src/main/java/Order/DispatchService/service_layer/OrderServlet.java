@@ -29,7 +29,7 @@ public class OrderServlet extends HttpServlet {
         try
         {
             request.removeAttribute("orders");
-            request.setAttribute("orders", model.doRetriveAll(criteria));
+            request.setAttribute("orders", model.doRetrieveAll(criteria));
         }
         catch (SQLException e)
         {

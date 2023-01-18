@@ -11,15 +11,29 @@ public class ManagedOrder extends Order {
     public ManagedOrder()
     {
         super();
+        this.user = new User();
     }
 
-    public ManagedOrder(long id,Date orderDate,String state,double totalPrice,User user,EndUser endUser,
-                        String courierName,Date deliveryDate,String trackNumber,Date shipmentDate)
+    public ManagedOrder(long id,Date orderDate, double totalPrice,EndUser endUser,
+                        User user,Date deliveryDate,String trackNumber,String courierName,Date shipmentDate)
     {
-        super(id, orderDate, state, totalPrice, user, endUser, courierName);
+        super(id, orderDate, totalPrice, endUser);
+        this.state = Order.SENT;
+        this.user = user;
         this.deliveryDate = deliveryDate;
         this.trackNumber = trackNumber;
+        this.courierName = courierName;
         this.shipmentDate = shipmentDate;
+    }
+
+    public long getUserId()
+    {
+        return this.user.getId();
+    }
+
+    public void setUserId(int newUserId)
+    {
+        this.user.setId(newUserId);
     }
 
     public Date getDeliveryDate()
@@ -41,7 +55,15 @@ public class ManagedOrder extends Order {
     {
         this.trackNumber = newTrackNumber;
     }
+    public String getCourierName()
+    {
+        return courierName;
+    }
 
+    public void setCourierName(String newCourierName)
+    {
+        courierName = newCourierName;
+    }
     public Date getShipmentDate()
     {
         return this.shipmentDate;
@@ -58,14 +80,15 @@ public class ManagedOrder extends Order {
         if (!(o instanceof ManagedOrder)) return false;
         if (!super.equals(o)) return false;
         ManagedOrder that = (ManagedOrder) o;
-        return Objects.equals(deliveryDate, that.deliveryDate) && Objects.equals(shipmentDate, that.shipmentDate) && Objects.equals(trackNumber, that.trackNumber);
+        return Objects.equals(user, that.user) && Objects.equals(deliveryDate, that.deliveryDate) && Objects.equals(shipmentDate, that.shipmentDate) && Objects.equals(trackNumber, that.trackNumber) && Objects.equals(state, that.state) && Objects.equals(courierName, that.courierName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), deliveryDate, shipmentDate, trackNumber);
+        return Objects.hash(super.hashCode(), user, deliveryDate, shipmentDate, trackNumber, state, courierName);
     }
 
+    private User user;
     private Date deliveryDate, shipmentDate;
-    private String trackNumber;
+    private String trackNumber, state, courierName;
 }

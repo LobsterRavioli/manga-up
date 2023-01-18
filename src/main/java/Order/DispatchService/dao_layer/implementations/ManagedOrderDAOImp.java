@@ -20,18 +20,19 @@ public class ManagedOrderDAOImp implements ManagedOrderDAO {
     private static final String MANAGED_ORDER_TABLE = "manages";
 
     private static final String CREATE = "INSERT INTO "+MANAGED_ORDER_TABLE+
-            " (man_order_id, man_user_name, man_delivery_date, man_tracking_number, man_shipment_date)"+
-            " VALUES (?, ?, ?, ?, ?) ;";
+            " (man_order_id, man_user_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)"+
+            " VALUES (?, ?, ?, ?, ?, ?) ;";
 
-    private static final String DELETE = "DELETE FROM "+MANAGED_ORDER_TABLE+" WHERE man_order_id = ? AND man_user_name = ? ;";
+    private static final String DELETE = "DELETE FROM "+MANAGED_ORDER_TABLE+" WHERE man_order_id = ? AND man_user_id = ? ;";
 
-    private static final String UPDATE = "UPDATE "+MANAGED_ORDER_TABLE+" SET man_tracking_number = ? WHERE man_order_id = ? AND man_user_name = ? ;";
+    private static final String UPDATE = "UPDATE "+MANAGED_ORDER_TABLE+" SET man_tracking_number = ? WHERE man_order_id = ? AND man_user_id = ? ;";
 
-    private static final String RETRIEVE = "SELECT * FROM "+MANAGED_ORDER_TABLE+" WHERE man_order_id = ? AND man_user_name = ? ;";
+    private static final String RETRIEVE = "SELECT * FROM "+MANAGED_ORDER_TABLE+" WHERE man_order_id = ? AND man_user_id = ? ;";
 
     private static final String RETRIEVE_BY_DELIVERY_DATE = "SELECT * FROM "+MANAGED_ORDER_TABLE+" WHERE delivery_date = ? ;";
     private static final String RETRIEVE_BY_TRACKING_NUMBER = "SELECT * FROM "+MANAGED_ORDER_TABLE+" WHERE tracking_number = ? ;";
 
+    private static final String COUNT_MANAGED = "SELECT COUNT(*) FROM "+MANAGED_ORDER_TABLE+" WHERE man_user_id = ? ;";
     @Override
     public void create(ManagedOrder managedOrder) throws SQLException
     {
@@ -43,10 +44,11 @@ public class ManagedOrderDAOImp implements ManagedOrderDAO {
             connection = ds.getConnection();
             preparedStatement = connection.prepareStatement(CREATE);
             preparedStatement.setLong(1, managedOrder.getId());
-            preparedStatement.setString(2, managedOrder.getUserName());
+            preparedStatement.setLong(2, managedOrder.getUserId());
             preparedStatement.setDate(3, managedOrder.getDeliveryDate());
             preparedStatement.setString(4, managedOrder.getTrackNumber());
-            preparedStatement.setDate(5, managedOrder.getShipmentDate());
+            preparedStatement.setString(5, managedOrder.getCourierName());
+            preparedStatement.setDate(6, managedOrder.getShipmentDate());
 
             int affectedRows = preparedStatement.executeUpdate();
             if(affectedRows == 0)
@@ -70,7 +72,7 @@ public class ManagedOrderDAOImp implements ManagedOrderDAO {
     }
 
     @Override
-    public ManagedOrder retrieve(long ordId, String userName) throws SQLException {
+    public ManagedOrder retrieve(long ordId, long userId) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -81,16 +83,17 @@ public class ManagedOrderDAOImp implements ManagedOrderDAO {
             connection = ds.getConnection();
             preparedStatement = connection.prepareStatement(RETRIEVE);
             preparedStatement.setLong(1, ordId);
-            preparedStatement.setString(2, userName);
+            preparedStatement.setLong(2, userId);
 
             ResultSet rs = preparedStatement.executeQuery();
 
             while(rs.next())
             {
                 managedOrderBean.setId(rs.getLong("man_order_id"));
-                managedOrderBean.setUserName(rs.getString("man_user_name"));
+                managedOrderBean.setUserId(rs.getInt("man_user_id"));
                 managedOrderBean.setDeliveryDate(rs.getDate("man_delivery_date"));
                 managedOrderBean.setTrackNumber(rs.getString("man_tracking_number"));
+                managedOrderBean.setCourierName(rs.getString("man_courier"));
                 managedOrderBean.setShipmentDate(rs.getDate("man_shipment_date"));
             }
         }
@@ -121,7 +124,7 @@ public class ManagedOrderDAOImp implements ManagedOrderDAO {
             preparedStatement = connection.prepareStatement(UPDATE);
             preparedStatement.setString(1, managedOrder.getTrackNumber());
             preparedStatement.setLong(2, managedOrder.getId());
-            preparedStatement.setString(3, managedOrder.getUserName());
+            preparedStatement.setLong(3, managedOrder.getUserId());
 
             int affectedRows = preparedStatement.executeUpdate();
             if(affectedRows == 0)
@@ -152,7 +155,7 @@ public class ManagedOrderDAOImp implements ManagedOrderDAO {
             connection = ds.getConnection();
             preparedStatement = connection.prepareStatement(DELETE);
             preparedStatement.setLong(1, managedOrder.getId());
-            preparedStatement.setString(2, managedOrder.getUserName());
+            preparedStatement.setLong(2, managedOrder.getUserId());
 
             int affectedRows = preparedStatement.executeUpdate();
             if(affectedRows == 0)
@@ -191,9 +194,10 @@ public class ManagedOrderDAOImp implements ManagedOrderDAO {
             while(rs.next())
             {
                 managedOrderBean.setId(rs.getLong("man_order_id"));
-                managedOrderBean.setUserName(rs.getString("man_user_name"));
+                managedOrderBean.setUserId(rs.getInt("man_user_id"));
                 managedOrderBean.setDeliveryDate(rs.getDate("man_delivery_date"));
                 managedOrderBean.setTrackNumber(rs.getString("man_tracking_number"));
+                managedOrderBean.setCourierName(rs.getString("man_courier"));
                 managedOrderBean.setShipmentDate(rs.getDate("man_shipment_date"));
             }
         }
@@ -231,9 +235,10 @@ public class ManagedOrderDAOImp implements ManagedOrderDAO {
             while(rs.next())
             {
                 managedOrderBean.setId(rs.getLong("man_order_id"));
-                managedOrderBean.setUserName(rs.getString("man_user_name"));
+                managedOrderBean.setUserId(rs.getInt("man_user_id"));
                 managedOrderBean.setDeliveryDate(rs.getDate("man_delivery_date"));
                 managedOrderBean.setTrackNumber(rs.getString("man_tracking_number"));
+                managedOrderBean.setCourierName(rs.getString("man_courier"));
                 managedOrderBean.setShipmentDate(rs.getDate("man_shipment_date"));
             }
         }
@@ -251,5 +256,40 @@ public class ManagedOrderDAOImp implements ManagedOrderDAO {
             }
         }
         return managedOrderBean;
+    }
+
+    public int numManageOrder(int userID) throws SQLException
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        int count = 0;
+
+        try
+        {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(COUNT_MANAGED);
+            preparedStatement.setInt(1, userID);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next())
+            {
+                count = rs.getInt("man_order_id"); // CONTROLLARE SE FUNZIONA
+            }
+        }
+        finally {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            }
+            finally
+            {
+                if(connection != null)
+                    preparedStatement.close();
+            }
+        }
+        return count;
     }
 }

@@ -10,19 +10,17 @@ public class Order {
 
     public Order()
     {
-        this.user = new User();
+        //this.user = new User();
         this.endUser = new EndUser();
     }
 
-    public Order(long id, Date orderDate, String state, double totalPrice, User user, EndUser endUser, String courierName)
+    public Order(long id, Date orderDate, double totalPrice, EndUser endUser)
     {
         this.id = id;
         this.orderDate = orderDate;
         this.state = Order.TO_SENT;
         this.totalPrice = totalPrice;
-        this.user = user;
         this.endUser = endUser;
-        this.courierName = courierName;
     }
 
     public long getId()
@@ -65,6 +63,7 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
+    /*
     public String getCourierName()
     {
         return courierName;
@@ -84,7 +83,7 @@ public class Order {
     {
         this.user.setUsername(newUserName);
     }
-
+*/
     public long getEndUserID() {
         return this.endUser.getId();
     }
@@ -99,29 +98,19 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return id == order.id && Double.compare(order.totalPrice, totalPrice) == 0 && Objects.equals(orderDate, order.orderDate) && state == order.state && Objects.equals(user, order.user) && Objects.equals(endUser, order.endUser) && Objects.equals(courierName, order.courierName);
+        return id == order.id && Double.compare(order.totalPrice, totalPrice) == 0 && Objects.equals(orderDate, order.orderDate) && Objects.equals(state, order.state) && Objects.equals(endUser, order.endUser);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, orderDate, state, totalPrice, user, endUser, courierName);
-    }
-
-    public enum State
-    {
-        TO_SEND,
-        SENT
+        return Objects.hash(id, orderDate, state, totalPrice, endUser);
     }
 
     private long id;
     private Date orderDate;
     private String state;
     private double totalPrice;
-    private User user;
-
     private EndUser endUser;
-
-    private String courierName;
 
     public static final String TO_SENT = "TO_SEND";
     public static final String SENT = "SENT";

@@ -28,9 +28,7 @@
 		<th>Order date <a href="${pageContext.request.contextPath}/orderServlet?sort=ord_date">Sort</a></th>
 		<th>Order state <a href="${pageContext.request.contextPath}/orderServlet?sort=ord_state">Sort</a></th>
 		<th>Total price <a href="${pageContext.request.contextPath}/orderServlet?sort=ord_total_price">Sort</a></th>
-		<th>Username</th>
 		<th>End-user ID</th>
-		<th>Courier name</th>
 		<th>Action</th>
 	</tr>
 	<%
@@ -45,9 +43,7 @@
 				<td><%=bean.getOrderDate() %></td>
 				<td><%=bean.getState() %></td>
 				<td><%=bean.getTotalPrice() %></td>
-				<td><%=bean.getUserName() %></td>
 				<td><%=bean.getEndUserID() %></td>
-				<td><%=bean.getCourierName() %></td>
 				<td><a href="${pageContext.request.contextPath}/manageServlet?manage=<%=bean.getId()%>">Manage order</a></td>
 			</tr>
 	<%
@@ -56,7 +52,7 @@
 		else {
 	%>
 		<tr>
-			<td colspan="8">No orders available</td>
+			<td colspan="6">No orders available</td>
 		</tr>
 	<%	} %>
 </table>
