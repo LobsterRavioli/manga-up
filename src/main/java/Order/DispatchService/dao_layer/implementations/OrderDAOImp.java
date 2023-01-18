@@ -142,7 +142,7 @@ public class OrderDAOImp implements OrderDAO
         {
             connection = ds.getConnection();
             preparedStatement = connection.prepareStatement(RETRIEVE);
-            preparedStatement.setLong(1, orderBean.getId());
+            preparedStatement.setLong(1, id);
 
             ResultSet rs = preparedStatement.executeQuery();
 
