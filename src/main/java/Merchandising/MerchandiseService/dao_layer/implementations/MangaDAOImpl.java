@@ -2,6 +2,8 @@ package Merchandising.MerchandiseService.dao_layer.implementations;
 
 import Merchandising.MerchandiseService.beans.Manga;
 import Merchandising.MerchandiseService.beans.Product;
+import Merchandising.MerchandiseService.dao_layer.exceptions.*;
+import Merchandising.MerchandiseService.dao_layer.interfaces.GenreDAO;
 import Merchandising.MerchandiseService.dao_layer.interfaces.MangaDAO;
 import Utilities.ConnectionPool;
 
@@ -16,7 +18,19 @@ public class MangaDAOImpl implements MangaDAO {
         this.ds = ds;
     }
     @Override
-    public void create(Manga manga) {
+    public void create(Manga manga) throws ExceededLengthException,WrongRangeException,InvalidQuantityException, NeededStateException {
+        if(manga.getName().length()>50 || manga.getName().length()<1 || manga.getBrand().length()>50 || manga.getBrand().length()<1 || manga.getDescription().length()>255 ||manga.getIsbn().length()!=13 ||manga.getVolume().length()>20 || manga.getInterior().length()>20)
+            throw new ExceededLengthException();
+
+        if(manga.getPrice()<0 ||manga.getWeight()<1 || manga.getHeight()<1 || manga.getLength()<1 || manga.getPages()<1)
+            throw new WrongRangeException();
+
+        if(manga.getQuantity()>50 || manga.getQuantity()<1)
+            throw new InvalidQuantityException();
+
+        if(manga.getState()==null)
+            throw new NeededStateException();
+
         PreparedStatement pr = null;
         try(Connection conn = ds.getConnection()){
             pr = conn.prepareStatement("INSERT INTO Manga VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -75,33 +89,18 @@ public class MangaDAOImpl implements MangaDAO {
     }
 
     @Override
-    public void update(Manga p) {
+    public void update(int quantity,int id) throws InvalidQuantityException, UnavailableProductException {
+        if(retrieveById(id)==null)
+            throw new UnavailableProductException();
+
+        if(quantity>50 || quantity<0)
+            throw new InvalidQuantityException();
+
         PreparedStatement pr = null;
         try(Connection conn = ds.getConnection()){
-            pr = conn.prepareStatement("UPDATE Manga SET name=?,brand=?,price=?,weight=?,height=?,lenght=?,state=?,description=?,collections=?,quantity=?,ISBN=?,book_binding=?,volume=?,release_date=?,page_number=?,interior=?,lang=?,image=?)");
-            pr.setString(1,p.getName());
-            pr.setString(2,p.getBrand());
-            pr.setDouble(3,p.getPrice());
-            pr.setDouble(4,p.getWeight());
-            pr.setDouble(5,p.getHeight());
-            pr.setDouble(6,p.getLength());
-
-            if(p.getState().equals(Product.ProductState.USED))
-                pr.setString(7,"USED");
-            else
-                pr.setString(7,"NEW");
-
-            pr.setString(8,p.getDescription());
-            pr.setString(9,p.getCollections());
-            pr.setInt(10,p.getQuantity());
-            pr.setString(11,p.getIsbn());
-            pr.setString(12,p.getBinding());
-            pr.setString(13,p.getVolume());
-            pr.setDate(14,p.getExitDate());
-            pr.setInt(15,p.getPages());
-            pr.setString(16,p.getInterior());
-            pr.setString(17,p.getLanguage());
-            pr.setString(18,p.getImagePath());
+            pr = conn.prepareStatement("UPDATE Manga AS m SET m.quantity=? WHERE m.id=?");
+            pr.setInt(1,quantity);
+            pr.setInt(2,id);
             pr.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
@@ -169,17 +168,58 @@ public class MangaDAOImpl implements MangaDAO {
     }
 
     @Override
-    public ArrayList<Manga> retrieveByName(String n){
+    public ArrayList<Manga> retrieveByFilters(String name,String collections,float min_price, float max_price, Product.ProductState ps) throws WrongRangeException {
+
+        if(name==null && collections==null && min_price==0 && max_price==0 && ps==null)
+            return retrieveAll();
+        if(max_price<min_price)
+            throw new WrongRangeException();
+
+        GenreDAOImpl g = new GenreDAOImpl(ds);
+        AutoreDAOImpl aut = new AutoreDAOImpl(ds);
+
         PreparedStatement pr = null;
         ResultSet rs = null;
+        String state = "";
+
         try(Connection conn = ds.getConnection()){
-            pr = conn.prepareStatement("SELECT * from Manga as m WHERE m.name=?");
-            pr.setString(1,n);
+            if(ps!=null){
+                if(ps.equals(Product.ProductState.USED))
+                    state = "USED";
+                else state = "NEW";
+            }
+            String ricerca= "SELECT * FROM Manga AS m WHERE p.name LIKE %?% AND p.collections LIKE ?%? AND p.price BETWEEN ? AND";
+            if(max_price<=0) {
+                ricerca = ricerca + "CAST('1.79E+308' AS float) AND p.state LIKE %?%";
+                pr = conn.prepareStatement(ricerca);
+                pr.setString(1, name);
+                pr.setString(2, name);
+                if (min_price <= 0)
+                    pr.setFloat(3, 0);
+                else {
+                    pr.setFloat(3, min_price);
+                }
+                pr.setString(4,state);
+            }
+            else{
+                ricerca = ricerca+"? AND p.state LIKE ?%?";
+                pr = conn.prepareStatement(ricerca);
+                pr.setString(1, name);
+                pr.setString(2, name);
+                if (min_price <= 0)
+                    pr.setFloat(3, 0);
+                else {
+                    pr.setFloat(3, min_price);
+                }
+                pr.setFloat(4,max_price);
+                pr.setString(5,state);
+            }
             rs = pr.executeQuery();
             ArrayList<Manga> lista = new ArrayList<Manga>();
+
             while(rs.next()) {
                 int iD = rs.getInt(1);
-                String name = rs.getString(2);
+                String nome = rs.getString(2);
                 String brand = rs.getString(3);
                 double price = rs.getDouble(4);
                 double weight = rs.getDouble(5);
@@ -195,7 +235,7 @@ public class MangaDAOImpl implements MangaDAO {
                     pS = Product.ProductState.USED;
 
                 String description = rs.getString(9);
-                String collections = rs.getString(10);
+                String collect = rs.getString(10);
                 int quantity = rs.getInt(11);
                 String isbn = rs.getString(12);
                 String binding = rs.getString(13);
@@ -206,9 +246,12 @@ public class MangaDAOImpl implements MangaDAO {
                 String language = rs.getString(18);
                 String imapePath = rs.getString(19);
 
-                Manga p = new Manga(isbn, brand, binding, language, volume, page, exit_date, iD, name, description, price, height, lenght, weight, collections, quantity, pS, interior, imapePath);
-                lista.add(p);
+                Manga m = new Manga(isbn, brand, binding, language, volume, page, exit_date, iD, nome, description, price, height, lenght, weight, collect, quantity, pS, interior, imapePath);
+
+                m.setGenre(g.retrieveByManga(m.getId()));
+                lista.add(m);
             }
+
             if(lista.size()==0)
                 return null;
 
@@ -283,7 +326,7 @@ public class MangaDAOImpl implements MangaDAO {
         }
     }
 
-    @Override
+    /*@Override
     public ArrayList<Manga> retrieveByPrice(double priceStart,double priceEnd){
         PreparedStatement pr = null;
         ResultSet rs = null;
@@ -353,6 +396,6 @@ public class MangaDAOImpl implements MangaDAO {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
 }

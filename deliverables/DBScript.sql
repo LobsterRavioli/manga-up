@@ -106,8 +106,8 @@ CREATE TABLE Product
     height DOUBLE NOT NULL,
     lenght DOUBLE NOT NULL,
     state VARCHAR(20) NOT NULL,
-    description VARCHAR(255) NOT NULL,
-    type_of_product VARCHAR(30) NOT NULL,
+    description VARCHAR(255),
+    collections VARCHAR(30),
     quantity INT NOT NULL,
     image VARCHAR(300) NOT NULL
 );
@@ -133,15 +133,15 @@ CREATE TABLE Manga
     height DOUBLE NOT NULL,
     lenght DOUBLE NOT NULL,
     state VARCHAR(5) NOT NULL,
-    description VARCHAR(255) NOT NULL,
-    collections VARCHAR(50) NOT NULL,
+    description VARCHAR(255),
+    collections VARCHAR(50),
     quantity INT NOT NULL,
-    ISBN VARCHAR(64) NOT NULL,
-    book_binding VARCHAR(30) NOT NULL,
-    volume VARCHAR(50) NOT NULL,
+    ISBN VARCHAR(13) NOT NULL,
+    book_binding VARCHAR(30),
+    volume VARCHAR(20),
     release_date date NOT NULL,
-    page_number int NOT NULL,
-    interior VARCHAR(20) NOT NULL,
+    page_number int,
+    interior VARCHAR(20) ,
     lang VARCHAR(20) NOT NULL,
     image VARCHAR(300) NOT NULL
 );
@@ -191,7 +191,7 @@ CREATE TABLE HasAuthor
         ON UPDATE cascade ON DELETE cascade
 );
 
-CREATE TABLE Cart_Element
+CREATE TABLE HASPRODUCTP
 (
     user_id INT NOT NULL,
     product_id int NOT NULL,

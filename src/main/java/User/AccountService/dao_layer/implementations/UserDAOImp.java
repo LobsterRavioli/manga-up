@@ -1,5 +1,5 @@
 package User.AccountService.dao_layer.implementations;
-
+/*
 import User.AccountService.beans.User;
 import User.AccountService.dao_layer.interfaces.UserDAO;
 import User.AccountService.dao_layer.interfaces.UserRoleDAO;
@@ -32,3 +32,4 @@ public class UserDAOImp implements UserDAO {
         return null;
     }
 }
+*/

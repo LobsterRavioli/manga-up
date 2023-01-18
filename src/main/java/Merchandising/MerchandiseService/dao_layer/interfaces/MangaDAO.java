@@ -2,23 +2,22 @@ package Merchandising.MerchandiseService.dao_layer.interfaces;
 
 import Merchandising.MerchandiseService.beans.Manga;
 import Merchandising.MerchandiseService.beans.Product;
+import Merchandising.MerchandiseService.dao_layer.exceptions.*;
 
 import java.util.ArrayList;
 
 public interface MangaDAO {
 
-    void create(Manga p);
+    void create(Manga p) throws ExceededLengthException, InvalidQuantityException,WrongRangeException, NeededStateException;
 
     void delete(int id);
 
-    void update(Manga p);
+    void update(int quantity,int id) throws InvalidQuantityException, UnavailableProductException;
 
     Manga retrieveById(int id);
 
-    ArrayList<Manga> retrieveByName(String name);
-
     ArrayList<Manga> retrieveAll();
 
-    ArrayList<Manga> retrieveByPrice(double priceStart,double priceEnd);
+    ArrayList<Manga> retrieveByFilters(String name,String collections,float min_price, float max_price, Product.ProductState ps)throws WrongRangeException;
 
 }

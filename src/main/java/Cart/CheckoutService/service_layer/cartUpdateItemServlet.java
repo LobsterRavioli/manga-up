@@ -1,4 +1,4 @@
-package Cart.CartService.service_layer;
+package Cart.CheckoutService.service_layer;
 
 import javax.servlet.*;
 import javax.servlet.http.*;

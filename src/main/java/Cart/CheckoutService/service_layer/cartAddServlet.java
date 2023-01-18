@@ -1,10 +1,9 @@
-package Cart.CartService.service_layer;
+package Cart.CheckoutService.service_layer;
 
-import Cart.CartService.dao_layer.interfaces.CartDAO;
+import Cart.CheckoutService.dao_layer.interfaces.CartDAO;
 import Merchandising.MerchandiseService.beans.Manga;
 import Merchandising.MerchandiseService.beans.Product;
 import User.AccountService.beans.EndUser;
-import User.AccountService.dao_layer.interfaces.AddressDAO;
 import utils.AbstractDAOFactory;
 
 import javax.servlet.*;

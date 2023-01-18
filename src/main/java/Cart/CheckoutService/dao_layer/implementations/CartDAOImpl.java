@@ -1,17 +1,22 @@
-package Cart.CartService.dao_layer.implementations;
+package Cart.CheckoutService.dao_layer.implementations;
 
-import Cart.CartService.dao_layer.interfaces.CartDAO;
+import Cart.CheckoutService.dao_layer.UserNotAssociatedException;
+import Cart.CheckoutService.dao_layer.interfaces.CartDAO;
 import Merchandising.MerchandiseService.beans.Manga;
 import Merchandising.MerchandiseService.beans.Product;
+import Merchandising.MerchandiseService.dao_layer.exceptions.InvalidQuantityException;
+import Merchandising.MerchandiseService.dao_layer.exceptions.NonExistentProductException;
+import Merchandising.MerchandiseService.dao_layer.implementations.MangaDAOImpl;
+import Merchandising.MerchandiseService.dao_layer.implementations.ProductDAOImpl;
+import User.AccountService.dao_layer.implementations.EndUserDAOImp;
+import User.AccountService.dao_layer.interfaces.EndUserDAO;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class CartDAOImpl implements CartDAO {
     private DataSource ds;
@@ -19,7 +24,12 @@ public class CartDAOImpl implements CartDAO {
         this.ds = ds;
     }
     @Override
-    public HashMap<Object,Integer> retrieveCart(int userID) {
+    public HashMap<Object,Integer> retrieveCart(int userID) throws UserNotAssociatedException{
+        EndUserDAOImp ed = new EndUserDAOImp(ds);
+
+        if(ed.find(userID)==null)
+            throw new UserNotAssociatedException();
+
         PreparedStatement pr = null;
         ResultSet rs = null;
         HashMap<Object,Integer> mappa = new HashMap<Object,Integer>();
@@ -67,7 +77,23 @@ public class CartDAOImpl implements CartDAO {
     }
 
     @Override
-    public boolean removeElement(int user_id,int prod_ID,Class type) {
+    public boolean removeElement(int user_id,int prod_ID,Class type) throws NonExistentProductException,UserNotAssociatedException{
+        EndUserDAOImp eD = new EndUserDAOImp(ds);
+        ProductDAOImpl p = new ProductDAOImpl(ds);
+        MangaDAOImpl m = new MangaDAOImpl(ds);
+
+        if(type.equals(MangaDAOImpl.class))
+            if(m.retrieveById(prod_ID)==null)
+                throw new NonExistentProductException();
+            else{
+                if(p.retrieveById(prod_ID)==null)
+                    throw new NonExistentProductException();
+            }
+
+        if(eD.find(user_id)==null){
+            throw new UserNotAssociatedException();
+        }
+
         PreparedStatement pr = null;
         ResultSet rs = null;
         try(Connection conn = ds.getConnection()){
@@ -95,7 +121,28 @@ public class CartDAOImpl implements CartDAO {
     }
 
     @Override
-    public boolean addElement(int user_id,int prod_id,int quantity,Class c) {
+    public boolean addElement(int user_id,int prod_id,int quantity,Class c) throws NonExistentProductException,UserNotAssociatedException,InvalidQuantityException{
+        EndUserDAOImp eD = new EndUserDAOImp(ds);
+        ProductDAOImpl p = new ProductDAOImpl(ds);
+        MangaDAOImpl m = new MangaDAOImpl(ds);
+
+        if(c.equals(MangaDAOImpl.class))
+            if(m.retrieveById(prod_id)==null)
+                throw new NonExistentProductException();
+        else{
+            if(p.retrieveById(prod_id)==null)
+                throw new NonExistentProductException();
+            }
+
+        if(eD.find(user_id)==null){
+            throw new UserNotAssociatedException();
+        }
+
+        if(quantity>50 || quantity<0){
+            throw new InvalidQuantityException();
+        }
+
+
         PreparedStatement pr = null;
         ResultSet rs = null;
         try(Connection conn = ds.getConnection()){
@@ -124,7 +171,28 @@ public class CartDAOImpl implements CartDAO {
     }
 
     @Override
-    public boolean updateElement(int user_id,int prod_id,int quantity, Class c) {
+    public boolean updateElement(int user_id,int prod_id,int quantity, Class c) throws NonExistentProductException,UserNotAssociatedException,InvalidQuantityException{
+
+        EndUserDAOImp eD = new EndUserDAOImp(ds);
+        ProductDAOImpl p = new ProductDAOImpl(ds);
+        MangaDAOImpl m = new MangaDAOImpl(ds);
+
+        if(c.equals(MangaDAOImpl.class))
+            if(m.retrieveById(prod_id)==null)
+                throw new NonExistentProductException();
+            else{
+                if(p.retrieveById(prod_id)==null)
+                    throw new NonExistentProductException();
+            }
+
+        if(eD.find(user_id)==null){
+            throw new UserNotAssociatedException();
+        }
+
+        if(quantity>50 || quantity<0){
+            throw new InvalidQuantityException();
+        }
+
         PreparedStatement pr = null;
         ResultSet rs = null;
         try(Connection conn = ds.getConnection()){

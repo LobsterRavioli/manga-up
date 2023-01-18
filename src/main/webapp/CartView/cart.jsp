@@ -7,8 +7,8 @@
 --%>
 <%@ page language="java" contentType="text/html;charset=UTF-8"
          pageEncoding="ISO-8859-1" import="java.util.ArrayList"%>
-<%@ page import="Cart.CartService.dao_layer.interfaces.CartDAO" %>
-<%@ page import="Cart.CartService.beans.Cart" %>
+<%@ page import="Cart.CheckoutService.dao_layer.interfaces.CartDAO" %>
+<%@ page import="Cart.CheckoutService.beans.Cart" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="Merchandising.MerchandiseService.beans.Product" %>

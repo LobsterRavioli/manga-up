@@ -1,7 +1,7 @@
 package utils;
 
-import Cart.CartService.dao_layer.implementations.CartDAOImpl;
-import Cart.CartService.dao_layer.interfaces.CartDAO;
+import Cart.CheckoutService.dao_layer.implementations.CartDAOImpl;
+import Cart.CheckoutService.dao_layer.interfaces.CartDAO;
 import Merchandising.MerchandiseService.dao_layer.implementations.AutoreDAOImpl;
 import Merchandising.MerchandiseService.dao_layer.implementations.MangaDAOImpl;
 import Merchandising.MerchandiseService.dao_layer.implementations.ProductDAOImpl;

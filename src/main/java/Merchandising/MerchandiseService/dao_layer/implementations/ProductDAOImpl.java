@@ -1,8 +1,10 @@
 package Merchandising.MerchandiseService.dao_layer.implementations;
 
 import Merchandising.MerchandiseService.beans.Product;
+import Merchandising.MerchandiseService.dao_layer.exceptions.ExceededLengthException;
+import Merchandising.MerchandiseService.dao_layer.exceptions.InvalidQuantityException;
+import Merchandising.MerchandiseService.dao_layer.exceptions.WrongRangeException;
 import Merchandising.MerchandiseService.dao_layer.interfaces.ProductDAO;
-import Utilities.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +21,17 @@ public class ProductDAOImpl implements ProductDAO {
         this.ds=ds;
     }
     @Override
-    public void create(Product p) {
+    public void create(Product p) throws ExceededLengthException,WrongRangeException,InvalidQuantityException{
+
+        if(p.getName().length()>50 || p.getName().length()<1 || p.getProducer().length()>50 || p.getProducer().length()<1 || p.getDescription().length()>255)
+            throw new ExceededLengthException();
+
+        if(p.getPrice()<0 ||p.getWeight()<1 || p.getHeight()<1 || p.getLength()<1)
+            throw new WrongRangeException();
+
+        if(p.getQuantity()>50 || p.getQuantity()<1)
+            throw new InvalidQuantityException();
+
         PreparedStatement pr = null;
         try(Connection conn = ds.getConnection()){
             pr = conn.prepareStatement("INSERT INTO Product VALUES (?,?,?,?,?,?,?,?,?,?,?)");
@@ -36,9 +48,9 @@ public class ProductDAOImpl implements ProductDAO {
                 pr.setString(7,"NEW");
 
             pr.setString(8,p.getDescription());
-            pr.setString(9,p.getType_of_product());
-            pr.setString(10,p.getCollections());
-            pr.setInt(11,p.getQuantity());
+            pr.setString(9,p.getCollections());
+            pr.setInt(10,p.getQuantity());
+            pr.setString(11,p.getImagePath());
             pr.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
@@ -70,26 +82,15 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public void update(Product p) {
+    public void update(int id,int quantity)throws InvalidQuantityException {
+        if(quantity>50 || quantity<1)
+            throw new InvalidQuantityException();
+
         PreparedStatement pr = null;
         try(Connection conn = ds.getConnection()){
-            pr = conn.prepareStatement("UPDATE Product SET name=?,brand=?,price=?,weight=?,height=?,lenght=?,state=?,description=?,type_of_product=?,collections=?,quantity=?)");
-            pr.setString(1,p.getName());
-            pr.setString(2,p.getProducer());
-            pr.setDouble(3,p.getPrice());
-            pr.setDouble(4,p.getWeight());
-            pr.setDouble(5,p.getHeight());
-            pr.setDouble(6,p.getLength());
-
-            if(p.getState().equals(Product.ProductState.USED))
-                pr.setString(7,"USED");
-            else
-                pr.setString(7,"NEW");
-
-            pr.setString(8,p.getDescription());
-            pr.setString(9,p.getType_of_product());
-            pr.setInt(10,p.getQuantity());
-            pr.setString(11,p.getImagePath());
+            pr = conn.prepareStatement("UPDATE Product as p SET p.quantity=? WHERE p.id=?)");
+            pr.setInt(1,quantity);
+            pr.setInt(2,id);
             pr.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
@@ -128,10 +129,10 @@ public class ProductDAOImpl implements ProductDAO {
                     pS = Product.ProductState.USED;
 
                 String description = rs.getString(9);
-                String type_of_p = rs.getString(10);
+                String collections = rs.getString(10);
                 int quantity = rs.getInt(11);
                 String imagePath = rs.getString(12);
-                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,type_of_p,quantity,imagePath);
+                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,collections,quantity,imagePath);
                 return p;
             }else
                 return null;
@@ -149,17 +150,55 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public ArrayList<Product> retrieveByName(String n){
+    public ArrayList<Product> retrieveByFilters(String name,String collections,float min_price, float max_price, Product.ProductState ps) throws WrongRangeException{
+        if(name==null && collections==null && min_price==0 && max_price==0 && ps==null)
+            return retrieveAll();
+        if(max_price<min_price)
+            throw new WrongRangeException();
+
+
         PreparedStatement pr = null;
         ResultSet rs = null;
+        String state = "";
+
         try(Connection conn = ds.getConnection()){
-            pr = conn.prepareStatement("SELECT * from Product as p WHERE p.name=?");
-            pr.setString(1,n);
+            if(state!= null){
+                if(state.equals(Product.ProductState.USED))
+                    state = "USED";
+                else state = "NEW";
+            }
+            String ricerca= "SELECT * FROM PRODUCT AS p WHERE p.name LIKE %?% AND p.collections LIKE ?%? AND p.price BETWEEN ? AND";
+            if(max_price<=0) {
+                ricerca = ricerca + "CAST('1.79E+308' AS float) AND p.state LIKE %?%";
+                pr = conn.prepareStatement(ricerca);
+                pr.setString(1, name);
+                pr.setString(2, name);
+                if (min_price <= 0)
+                    pr.setFloat(3, 0);
+                else {
+                    pr.setFloat(3, min_price);
+                }
+                pr.setString(4,state);
+            }
+            else{
+                ricerca = ricerca+"? AND p.state LIKE ?%?";
+                pr = conn.prepareStatement(ricerca);
+                pr.setString(1, name);
+                pr.setString(2, name);
+                if (min_price <= 0)
+                    pr.setFloat(3, 0);
+                else {
+                    pr.setFloat(3, min_price);
+                }
+                pr.setFloat(4,max_price);
+                pr.setString(5,state);
+            }
             rs = pr.executeQuery();
             ArrayList<Product> lista = new ArrayList<Product>();
+
             while(rs.next()){
                 int iD = rs.getInt(1);
-                String name = rs.getString(2);
+                String nome = rs.getString(2);
                 String brand = rs.getString(3);
                 double price = rs.getDouble(4);
                 double weight = rs.getDouble(5);
@@ -175,10 +214,10 @@ public class ProductDAOImpl implements ProductDAO {
                     pS = Product.ProductState.USED;
 
                 String description = rs.getString(9);
-                String type_of_p = rs.getString(10);
+                String collect = rs.getString(10);
                 int quantity = rs.getInt(11);
                 String imagePath = rs.getString(12);
-                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,type_of_p,quantity,imagePath);
+                Product p = new Product(iD,nome,brand,description,price,height,lenght,weight,pS,collect,quantity,imagePath);
                 lista.add(p);
             }
             if(lista.size()==0)
@@ -225,10 +264,10 @@ public class ProductDAOImpl implements ProductDAO {
                     pS = Product.ProductState.USED;
 
                 String description = rs.getString(9);
-                String type_of_p = rs.getString(10);
+                String collect = rs.getString(10);
                 int quantity = rs.getInt(11);
                 String imagePath = rs.getString(12);
-                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,type_of_p,quantity,imagePath);
+                Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,collect,quantity,imagePath);
                 lista.add(p);
             }
             if(lista.size()==0)
@@ -248,7 +287,7 @@ public class ProductDAOImpl implements ProductDAO {
         }
     }
 
-    @Override
+    /*@Override
     public ArrayList<Product> retrieveByPrice(double priceStart,double priceEnd){
         PreparedStatement pr = null;
         ResultSet rs = null;
@@ -310,6 +349,6 @@ public class ProductDAOImpl implements ProductDAO {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
 }

@@ -1,6 +1,5 @@
-package Cart.CartService.beans;
+package Cart.CheckoutService.beans;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Cart {

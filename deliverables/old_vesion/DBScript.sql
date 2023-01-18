@@ -109,7 +109,7 @@ CREATE TABLE Manga
     quantity INT NOT NULL,
     ISBN VARCHAR(13) NOT NULL,
     book_binding VARCHAR(30) NOT NULL,
-    volume VARCHAR(50) NOT NULL,
+    volume VARCHAR(20) NOT NULL,
     release_date date NOT NULL,
     page_number int NOT NULL,
     interior VARCHAR(20) NOT NULL,

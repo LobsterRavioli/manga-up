@@ -1,5 +1,7 @@
 package Merchandising.MerchandiseService.beans;
 
+import com.sun.tools.javac.jvm.Gen;
+
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
@@ -195,6 +197,14 @@ public class Manga{
         return volume == manga.volume && pages == manga.pages && Objects.equals(isbn, manga.isbn) && Objects.equals(binding, manga.binding) && Objects.equals(language, manga.language) && Objects.equals(exitDate, manga.exitDate);
     }
 
+    public void setAutore(ArrayList<Autore> a){
+        autore=a;
+    }
+
+    public void setGenre(ArrayList<Genre> g){
+        genre=g;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), isbn, binding, language, volume, pages, exitDate);
@@ -215,4 +225,8 @@ public class Manga{
 
     private String collections;
     private Product.ProductState state;
+
+    private ArrayList<Autore> autore;
+
+    private ArrayList<Genre> genre;
 }
