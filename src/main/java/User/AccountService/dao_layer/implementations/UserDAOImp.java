@@ -3,6 +3,7 @@ package User.AccountService.dao_layer.implementations;
 
 import User.AccountService.beans.User;
 import User.AccountService.dao_layer.interfaces.UserDAO;
+import utils.DAOException;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -20,8 +21,20 @@ public class UserDAOImp implements UserDAO {
     private static final String USER_TABLE = "User";
     private static final String USER_ROLE_TABLE = "user_roles";
 
+    private static final String CREATE = "INSERT INTO "+USER_TABLE+
+            " (id, username, password)"+
+            " VALUES (?, ?, ?) ;";
+
+    private static final String DELETE = "DELETE FROM "+USER_TABLE+" WHERE id = ? ;";
+    private static final String RETRIEVE = "SELECT * FROM "+USER_TABLE+" WHERE id = ? ;";
+
+    private static final String RETRIEVE_BY_USERNAME = "SELECT * FROM "+USER_TABLE+" WHERE username = ? ;";
     private static final String RETRIEVE_ALL = "SELECT * "+
                                                "FROM "+USER_TABLE+" AS U";
+
+    private static final String CHECK_USER = "SELECT username, password "+
+                                             "FROM "+USER_TABLE+" "+
+                                             "WHERE username = ? AND password = ?";
 
     public UserDAOImp(DataSource ds)
     {
@@ -31,21 +44,178 @@ public class UserDAOImp implements UserDAO {
     @Override
     public void create(User user) throws SQLException {
 
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try
+        {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(CREATE);
+            preparedStatement.setLong(1, user.getId());
+            preparedStatement.setString(2, user.getUsername());
+            preparedStatement.setString(3, user.getPassword());
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if(affectedRows == 0)
+                throw new DAOException("Creating user failed, no rows affected");
+
+            connection.commit();
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            }
+            finally
+            {
+                if(connection != null)
+                    connection.close();
+            }
+        }
     }
 
     @Override
-    public void delete(User user) throws SQLException {
+    public void delete(User user) throws SQLException
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
 
+        try
+        {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(DELETE);
+            preparedStatement.setLong(1, user.getId());
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if(affectedRows == 0)
+                throw new DAOException("Deleting user failed, no rows affected.");
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            }
+            finally
+            {
+                if(connection != null)
+                    connection.close();
+            }
+        }
     }
 
     @Override
     public User getUserById(int id) throws SQLException {
-        return null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        User userBean = new User();
+
+        try
+        {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(RETRIEVE);
+            preparedStatement.setLong(1, id);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next())
+            {
+                userBean.setId(rs.getInt("id"));
+                userBean.setUsername(rs.getString("username"));
+                userBean.setPassword(rs.getString("password"));
+            }
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            }
+            finally
+            {
+                if(connection != null)
+                    connection.close();
+            }
+        }
+
+        return userBean;
     }
 
     @Override
     public User checkUsername(String login) throws SQLException {
-        return null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        User userBean = new User();
+
+        try
+        {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(RETRIEVE_BY_USERNAME);
+            preparedStatement.setString(1, login);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next())
+            {
+                userBean.setId(rs.getInt("id"));
+                userBean.setUsername(rs.getString("username"));
+                userBean.setPassword(rs.getString("password"));
+            }
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            }
+            finally
+            {
+                if(connection != null)
+                    connection.close();
+            }
+        }
+
+        return userBean;
+    }
+
+    @Override
+    public boolean checkUser(User user) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        if(user == null)
+            return false;
+
+        try
+        {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(CHECK_USER);
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getPassword());
+
+            ResultSet rs = preparedStatement.executeQuery();
+            return rs.first(); // true if the cursor is on a valid row; false if there are no rows in the result set
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            }
+            finally
+            {
+                if(connection != null)
+                    connection.close();
+            }
+        }
     }
 
     @Override
