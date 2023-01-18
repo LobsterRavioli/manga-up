@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="java.util.*, Order.DispatchService.beans.Order"%>
 <%
+
     Collection<?> orders = (Collection<?>)request.getAttribute("orders");
     String error = (String)request.getAttribute("error");
 
@@ -23,18 +24,15 @@
 
 <table>
 	<tr>
-		<th>Order ID</th>
-		<th>Order date</th>
-		<th>Order state</th>
-		<th>Total price</th>
-		<th>Username</th>
+		<th>Order ID <a href="${pageContext.request.contextPath}/orderServlet?sort=ord_id">Sort</a></th>
+		<th>Order date <a href="${pageContext.request.contextPath}/orderServlet?sort=ord_date">Sort</a></th>
+		<th>Order state <a href="${pageContext.request.contextPath}/orderServlet?sort=ord_state">Sort</a></th>
+		<th>Total price <a href="${pageContext.request.contextPath}/orderServlet?sort=ord_total_price">Sort</a></th>
 		<th>End-user ID</th>
-		<th>Courier name</th>
-		<th>IS_SELECTED</th>
+		<th>Action</th>
 	</tr>
 	<%
 		if(orders != null && orders.size() > 0) {
-			
 			Iterator<?> it = orders.iterator();
 			while(it.hasNext()) {
 				Order bean = (Order)it.next();
@@ -45,10 +43,8 @@
 				<td><%=bean.getOrderDate() %></td>
 				<td><%=bean.getState() %></td>
 				<td><%=bean.getTotalPrice() %></td>
-				<td><%=bean.getUserName() %></td>
 				<td><%=bean.getEndUserID() %></td>
-				<td><%=bean.getCourierName() %></td>
-				<td></td>
+				<td><a href="${pageContext.request.contextPath}/manageServlet?manage=<%=bean.getId()%>">Manage order</a></td>
 			</tr>
 	<%
 			}
@@ -56,7 +52,7 @@
 		else {
 	%>
 		<tr>
-			<td colspan="8">No orders available</td>
+			<td colspan="6">No orders available</td>
 		</tr>
 	<%	} %>
 </table>

@@ -130,8 +130,8 @@ CREATE TABLE user_roles
     user_name VARCHAR(20) NOT NULL,
     role_name VARCHAR(20) NOT NULL,
     PRIMARY KEY (user_name, role_name),
-    CONSTRAINT tomcat_users_roles_foreign_key_1 FOREIGN KEY (user_name) REFERENCES tomcat_users (user_name),
-    CONSTRAINT tomcat_users_roles_foreign_key_2 FOREIGN KEY (role_name) REFERENCES tomcat_roles (role_name)
+    FOREIGN KEY (user_name) REFERENCES users (user_name),
+    FOREIGN KEY (role_name) REFERENCES roles (role_name)
 );
 
 INSERT INTO users (user_name, password) VALUES ('Tommaso', 'password1');

@@ -1,6 +1,9 @@
 package Order.DispatchService.service_layer;
 
+import Order.DispatchService.beans.Order;
+import Order.DispatchService.dao_layer.implementations.ManagedOrderDAOImp;
 import Order.DispatchService.dao_layer.implementations.OrderDAOImp;
+import Order.DispatchService.dao_layer.interfaces.ManagedOrderDAO;
 import Order.DispatchService.dao_layer.interfaces.OrderDAO;
 
 import javax.servlet.ServletException;
@@ -18,12 +21,23 @@ public class OrderServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        // RECUPERO L'ID DELL'ORDER MANAGER
+        Integer orderManagerId = (Integer)request.getSession().getAttribute("managerID");
+
+        //CODICE TEMPORANEO TANTO PER TESTARE
+        if(orderManagerId == null)
+            orderManagerId = 4; // recupero gli ordini del gestore avebte ID = 4
+        // CI SERVE UNA QUERY CHE POSSA RECUPERARE GLI ID DEI MANAGER CHE SIANO SOLO GESTORI DEGLI ORDINI
+
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
         OrderDAO model = new OrderDAOImp(ds);
 
+        String criteria = request.getParameter("sort");
+
         try
         {
-            request.setAttribute("orders", model.doRetriveAll(null));
+            request.removeAttribute("orders");
+            request.setAttribute("orders", model.doRetrieveAllForSpecificUser(orderManagerId, criteria));
         }
         catch (SQLException e)
         {

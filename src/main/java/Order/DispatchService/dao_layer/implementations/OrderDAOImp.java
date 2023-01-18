@@ -18,11 +18,11 @@ public class OrderDAOImp implements OrderDAO
         this.ds = ds;
     }
 
-    private static final String ORDER_TABLE = "orders";
+    private static final String ORDER_TABLE = "Orders";
 
     private static final String CREATE = "INSERT INTO "+ORDER_TABLE+
-            " (ord_id, ord_date, ord_state, ord_total_price, ord_user_name, ord_end_user_id, ord_courier)"+
-            " VALUES (?, ?, ?, ?, ?, ?, ?) ;";
+            " (ord_id, ord_date, ord_state, ord_total_price, ord_end_user_id)"+
+            " VALUES (?, ?, ?, ?, ?) ;";
 
     private static final String DELETE = "DELETE FROM "+ORDER_TABLE+" WHERE ord_id = ? ;";
 
@@ -42,11 +42,9 @@ public class OrderDAOImp implements OrderDAO
             preparedStatement = connection.prepareStatement(CREATE);
             preparedStatement.setLong(1, order.getId());
             preparedStatement.setDate(2, order.getOrderDate());
-            preparedStatement.setString(3, order.getState().toString());
+            preparedStatement.setString(3, order.getState());
             preparedStatement.setDouble(4, order.getTotalPrice());
-            preparedStatement.setString(5, order.getUserName());
-            preparedStatement.setLong(6, order.getEndUserID());
-            preparedStatement.setString(7, order.getCourierName());
+            preparedStatement.setLong(5, order.getEndUserID());
 
             int affectedRows = preparedStatement.executeUpdate();
             if(affectedRows == 0)
@@ -110,7 +108,7 @@ public class OrderDAOImp implements OrderDAO
         {
             connection = ds.getConnection();
             preparedStatement = connection.prepareStatement(UPDATE);
-            preparedStatement.setString(1, order.getState().toString());
+            preparedStatement.setString(1, order.getState());
             preparedStatement.setLong(2, order.getId());
 
             int affectedRows = preparedStatement.executeUpdate();
@@ -154,9 +152,7 @@ public class OrderDAOImp implements OrderDAO
                 orderBean.setOrderDate(rs.getDate("ord_date"));
                 orderBean.setState(rs.getString("ord_state"));
                 orderBean.setTotalPrice(rs.getDouble("ord_total_price"));
-                orderBean.setUserName(rs.getString("ord_user_name"));
                 orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
-                orderBean.setCourierName(rs.getString("ord_courier"));
             }
         }
         finally
@@ -176,7 +172,7 @@ public class OrderDAOImp implements OrderDAO
     }
 
     @Override
-    public Collection<Order> doRetriveAll(String ordCriteria) throws SQLException {
+    public Collection<Order> doRetrieveAll(String ordCriteria) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -204,9 +200,56 @@ public class OrderDAOImp implements OrderDAO
                 orderBean.setOrderDate(rs.getDate("ord_date"));
                 orderBean.setState(rs.getString("ord_state"));
                 orderBean.setTotalPrice(rs.getDouble("ord_total_price"));
-                orderBean.setUserName(rs.getString("ord_user_name"));
                 orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
-                orderBean.setCourierName(rs.getString("ord_courier"));
+
+                orders.add(orderBean);
+            }
+        } finally {
+            try {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            } finally {
+                if(connection != null)
+                    connection.close();
+            }
+        }
+
+        return orders;
+    }
+
+    @Override
+    public Collection<Order> doRetrieveAllForSpecificUser(long orderManagerID, String ordCriteria) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        Collection<Order> orders = new LinkedList<Order>();
+
+        String selectQuery = "SELECT * " +
+                             "FROM Orders AS O, TO_MANAGE AS M " +
+                             "WHERE O.ord_id = M.order_id AND M.user_id = ?";
+
+        if(ordCriteria != null && !ordCriteria.equals(""))
+        {
+            selectQuery += " ORDER BY "+ordCriteria;
+        }
+
+        try
+        {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(selectQuery);
+            preparedStatement.setLong(1, orderManagerID);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next())
+            {
+                Order orderBean = new Order();
+
+                orderBean.setId(rs.getLong("ord_id"));
+                orderBean.setOrderDate(rs.getDate("ord_date"));
+                orderBean.setState(rs.getString("ord_state"));
+                orderBean.setTotalPrice(rs.getDouble("ord_total_price"));
+                orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
 
                 orders.add(orderBean);
             }

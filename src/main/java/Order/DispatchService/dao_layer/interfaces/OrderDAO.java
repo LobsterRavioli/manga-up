@@ -18,5 +18,7 @@ public interface OrderDAO {
 
     Order retrieve(int id) throws SQLException;
 
-    Collection<Order> doRetriveAll(String ordCriteria) throws SQLException;
+    Collection<Order> doRetrieveAll(String ordCriteria) throws SQLException;
+
+    Collection<Order> doRetrieveAllForSpecificUser(long orderManagerID, String ordCriteria) throws SQLException;
 }
