@@ -5,6 +5,8 @@ import Cart.CheckoutService.dao_layer.interfaces.CartDAO;
 import Merchandising.MerchandiseService.beans.Manga;
 import Merchandising.MerchandiseService.beans.Product;
 import Merchandising.MerchandiseService.dao_layer.exceptions.NonExistentProductException;
+import Merchandising.MerchandiseService.dao_layer.exceptions.InvalidQuantityException;
+import Merchandising.MerchandiseService.dao_layer.exceptions.NonExistentProductException;
 import User.AccountService.beans.EndUser;
 import utils.AbstractDAOFactory;
 

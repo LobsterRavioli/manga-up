@@ -19,7 +19,7 @@
 <body>
 
 <h2>Manage the order having id = <%=ord_id %></h2>
-	<form action="${pageContext.request.contextPath}/managedServlet" method="post">
+	<form action="${pageContext.request.contextPath}/manageServlet" method="post">
 		<input type="hidden" name="action" value="insert">
 
 		<label for="name">Name:</label><br>

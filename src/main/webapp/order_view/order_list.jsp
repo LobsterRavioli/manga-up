@@ -20,13 +20,13 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css_s/order_style.css">
 </head>
 <body>
-<h2>Order List</h2>
+<h2>List of orders to manage</h2>
 
 <table>
 	<tr>
 		<th>Order ID <a href="${pageContext.request.contextPath}/orderServlet?sort=ord_id">Sort</a></th>
 		<th>Order date <a href="${pageContext.request.contextPath}/orderServlet?sort=ord_date">Sort</a></th>
-		<th>Order state <a href="${pageContext.request.contextPath}/orderServlet?sort=ord_state">Sort</a></th>
+		<th>Order state</th>
 		<th>Total price <a href="${pageContext.request.contextPath}/orderServlet?sort=ord_total_price">Sort</a></th>
 		<th>End-user ID</th>
 		<th>Action</th>
