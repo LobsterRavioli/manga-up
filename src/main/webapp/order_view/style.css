@@ -1,29 +1,3 @@
-div.logo {
-    height: 80px;
-    width: 100%;
-    border: 2px solid;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-}
-
-.select_role {
-    position: absolute;
-    left: 500px;
-    padding: 10px;
-    top: 40px;
-}
-
-.logout {
-    position: absolute;
-    right: 0;
-    padding: 10px;
-}
-
-div.logo img {
-    margin-right: 20px;
-}
-
 div.navbar {
     height: 100%;
     width: 120px;

@@ -1,0 +1,24 @@
+div.logo {
+    height: 80px;
+    width: 100%;
+    border: 2px solid;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.select_role {
+    position: absolute;
+    left: 600px;
+    top: 54px;
+}
+
+.logout {
+    position: absolute;
+    right: 0;
+    padding: 10px;
+}
+
+div.logo img {
+    margin-right: 20px;
+}
