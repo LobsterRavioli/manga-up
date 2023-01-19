@@ -1,5 +1,6 @@
 package Cart.CheckoutService.service_layer;
 
+import Cart.CheckoutService.dao_layer.UserNotAssociatedException;
 import Cart.CheckoutService.dao_layer.interfaces.CartDAO;
 import User.AccountService.beans.EndUser;
 
@@ -28,7 +29,11 @@ public class visualizeCartServlet extends HttpServlet {
         EndUser u = (EndUser) request.getSession().getAttribute("user");
         Cart c;
         if(s.getAttribute("cart")==null){
-            c = new Cart(dao.retrieveCart(u.getId()));
+            try {
+                c = new Cart(dao.retrieveCart(u.getId()));
+            } catch (UserNotAssociatedException e) {
+                throw new RuntimeException(e);
+            }
             s.setAttribute("cart",c);
         }
         else{

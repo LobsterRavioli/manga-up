@@ -21,6 +21,8 @@ public class UserDAOImp implements UserDAO {
     private static final String USER_TABLE = "User";
     private static final String USER_ROLE_TABLE = "user_roles";
 
+    private static final String MANAGES_TABLE = "manages";
+
     private static final String CREATE = "INSERT INTO "+USER_TABLE+
             " (id, username, password)"+
             " VALUES (?, ?, ?) ;";
@@ -32,6 +34,13 @@ public class UserDAOImp implements UserDAO {
     private static final String RETRIEVE_ALL = "SELECT * "+
                                                "FROM "+USER_TABLE+" AS U";
 
+    private static final String RETRIEVE_ALL_BEGINNERS = "SELECT * "+
+            "FROM "+USER_TABLE+" AS U, "+USER_ROLE_TABLE+" AS R "+
+            "WHERE U.id = R.user_id AND R.role_name = \'GESTORE_ORDINI\' AND U.id NOT IN " +
+            "(SELECT man_user_id FROM manages) ;";
+
+    private static final String RETRIEVE_MANAGED_SORTED = "SELECT man_user_id, COUNT(*) AS result " +
+            "FROM "+MANAGES_TABLE+" GROUP BY man_user_id ORDER BY result";
     private static final String CHECK_USER = "SELECT username, password "+
                                              "FROM "+USER_TABLE+" "+
                                              "WHERE username = ? AND password = ?";
@@ -270,5 +279,78 @@ public class UserDAOImp implements UserDAO {
         }
 
         return users;
+    }
+
+    @Override
+    public Collection<User> getAllBeginnerOrderManagers() throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        Collection<User> users = new LinkedList<User>();
+
+        try
+        {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(RETRIEVE_ALL_BEGINNERS);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next())
+            {
+                User userBean = new User();
+
+                userBean.setId(rs.getInt("id"));
+                userBean.setUsername(rs.getString("username"));
+                userBean.setPassword(rs.getString("password"));
+
+                users.add(userBean);
+            }
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            }
+            finally
+            {
+                if(connection != null)
+                    connection.close();
+            }
+        }
+        return users;
+    }
+
+    @Override
+    public int getTargetOrderManagerId() throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        User user = new User();
+
+        try
+        {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(RETRIEVE_MANAGED_SORTED);
+            ResultSet rs = preparedStatement.executeQuery();
+
+
+            if(rs.first())
+                user.setId(rs.getInt("man_user_id")); // il gestore al quale assegnare il task
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            }
+            finally
+            {
+                if(connection != null)
+                    connection.close();
+            }
+        }
+        return user.getId();
     }
 }

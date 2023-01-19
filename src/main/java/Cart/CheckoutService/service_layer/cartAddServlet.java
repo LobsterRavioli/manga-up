@@ -1,8 +1,11 @@
 package Cart.CheckoutService.service_layer;
 
+import Cart.CheckoutService.dao_layer.UserNotAssociatedException;
 import Cart.CheckoutService.dao_layer.interfaces.CartDAO;
 import Merchandising.MerchandiseService.beans.Manga;
 import Merchandising.MerchandiseService.beans.Product;
+import Merchandising.MerchandiseService.dao_layer.exceptions.InvalidQuantityException;
+import Merchandising.MerchandiseService.dao_layer.exceptions.NonExistentProductException;
 import User.AccountService.beans.EndUser;
 import utils.AbstractDAOFactory;
 
@@ -32,16 +35,32 @@ public class cartAddServlet extends HttpServlet {
         response.setContentType("text/plain");
 
         if(type.equals("M")){
-            if(dao.addElement(endUser.getId(),Integer.parseInt(prod_id),Integer.parseInt(quantity), Manga.class) == true) {
-                response.getWriter().write("OK");
-            }else{
-                response.getWriter().write("Problem");
+            try {
+                if(dao.addElement(endUser.getId(),Integer.parseInt(prod_id),Integer.parseInt(quantity), Manga.class) == true) {
+                    response.getWriter().write("OK");
+                }else{
+                    response.getWriter().write("Problem");
+                }
+            } catch (NonExistentProductException e) {
+                throw new RuntimeException(e);
+            } catch (UserNotAssociatedException e) {
+                throw new RuntimeException(e);
+            } catch (InvalidQuantityException e) {
+                throw new RuntimeException(e);
             }
         }else{
-            if(dao.addElement(endUser.getId(),Integer.parseInt(prod_id),Integer.parseInt(quantity), Product.class)==true){
-                response.getWriter().write("OK");
-            }else{
-                response.getWriter().write("Problem");
+            try {
+                if(dao.addElement(endUser.getId(),Integer.parseInt(prod_id),Integer.parseInt(quantity), Product.class)==true){
+                    response.getWriter().write("OK");
+                }else{
+                    response.getWriter().write("Problem");
+                }
+            } catch (NonExistentProductException e) {
+                throw new RuntimeException(e);
+            } catch (UserNotAssociatedException e) {
+                throw new RuntimeException(e);
+            } catch (InvalidQuantityException e) {
+                throw new RuntimeException(e);
             }
         }
     }

@@ -27,7 +27,6 @@ public class ToManageDAOImp implements ToManageDAO {
 
     private static final String DELETE = "DELETE FROM "+TO_MANAGE_TABLE+" WHERE user_id = ? AND order_id = ? ;";
 
-    private static final String COUNT_MANAGED = "SELECT man_user_id, COUNT(*) AS result FROM "+"manages"+" GROUP BY man_user_id ORDER BY result";
     @Override
     public void create(ToManage order) throws SQLException {
         Connection connection = null;
@@ -59,39 +58,6 @@ public class ToManageDAOImp implements ToManageDAO {
                     connection.close();
             }
         }
-    }
-
-    @Override
-    public int numManageOrder() throws SQLException
-    {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-
-        int count = 0;
-
-        try
-        {
-            connection = ds.getConnection();
-            preparedStatement = connection.prepareStatement(COUNT_MANAGED);
-
-            ResultSet rs = preparedStatement.executeQuery();
-
-            rs.next(); // mi serve vedere solo la prima riga
-            count = rs.getInt("result"); // CONTROLLARE SE FUNZIONA
-        }
-        finally {
-            try
-            {
-                if(preparedStatement != null)
-                    preparedStatement.close();
-            }
-            finally
-            {
-                if(connection != null)
-                    preparedStatement.close();
-            }
-        }
-        return count;
     }
 
     @Override

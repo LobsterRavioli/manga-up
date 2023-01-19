@@ -193,22 +193,12 @@ CREATE TABLE HasAuthor
         ON UPDATE cascade ON DELETE cascade
 );
 
-CREATE TABLE HASPRODUCTP
-(
-    user_id INT NOT NULL,
-    product_id int NOT NULL,
-    PRIMARY KEY(user_id,product_id),
-    FOREIGN KEY (user_id) REFERENCES END_USER(id)
-        ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY (product_id) REFERENCES Product(id)
-        ON UPDATE cascade ON DELETE cascade
-);
-
 INSERT INTO User (username, password) VALUES ('Tommaso', 'password1');
 INSERT INTO User (username, password) VALUES ('Alessandro', 'password2');
 INSERT INTO User (username, password) VALUES ('Giovanni', 'password3');
 INSERT INTO User (username, password) VALUES ('Sara', 'password4');
 INSERT INTO User (username, password) VALUES ('Francesco', 'password5');
+INSERT INTO User (username, password) VALUES ('Riccardo', 'password6');
 
 
 INSERT INTO roles (role_name) VALUES ('GESTORE_CATALOGO');
@@ -222,6 +212,7 @@ INSERT INTO user_roles (user_id, user_name, role_name) VALUES (2, 'Alessandro', 
 INSERT INTO user_roles (user_id, user_name, role_name) VALUES (3, 'Giovanni', 'GESTORE_ORDINI');
 INSERT INTO user_roles (user_id, user_name, role_name) VALUES (4, 'Sara', 'GESTORE_ORDINI');
 INSERT INTO user_roles (user_id, user_name, role_name) VALUES (5, 'Francesco', 'GESTORE_ORDINI');
+INSERT INTO user_roles (user_id, user_name, role_name) VALUES (6, 'Riccardo', 'GESTORE_ORDINI');
 
 
 INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)

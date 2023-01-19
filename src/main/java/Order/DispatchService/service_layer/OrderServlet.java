@@ -1,9 +1,6 @@
 package Order.DispatchService.service_layer;
 
-import Order.DispatchService.beans.Order;
-import Order.DispatchService.dao_layer.implementations.ManagedOrderDAOImp;
 import Order.DispatchService.dao_layer.implementations.OrderDAOImp;
-import Order.DispatchService.dao_layer.interfaces.ManagedOrderDAO;
 import Order.DispatchService.dao_layer.interfaces.OrderDAO;
 
 import javax.servlet.ServletException;

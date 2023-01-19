@@ -32,7 +32,6 @@ public class ManagedOrderDAOImp implements ManagedOrderDAO {
     private static final String RETRIEVE_BY_DELIVERY_DATE = "SELECT * FROM "+MANAGED_ORDER_TABLE+" WHERE delivery_date = ? ;";
     private static final String RETRIEVE_BY_TRACKING_NUMBER = "SELECT * FROM "+MANAGED_ORDER_TABLE+" WHERE tracking_number = ? ;";
 
-    private static final String COUNT_MANAGED = "SELECT COUNT(*) FROM "+MANAGED_ORDER_TABLE+" WHERE man_user_id = ? ;";
     @Override
     public void create(ManagedOrder managedOrder) throws SQLException
     {
