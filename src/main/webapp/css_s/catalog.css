@@ -21,11 +21,92 @@
     height: 55%;
     box-sizing: content-box;
 }
-@media (min-width: 768px) {
+
+@media only screen and (max-width: 399px){
     .col-md-4 {
         -ms-flex: 0 0 25%;
         flex: 0 0 25%;
         max-width: 25%;
+    }
+}
+
+@media only screen and (min-width: 400px) {
+   /* .header__menu ul li {
+        margin-right: 10px;
+    }
+    .header__nav__option a {
+        margin-right: 10px;
+    }
+    .header__nav__option .price {
+        margin-left: 0;
+    }
+    .hero__slider.owl-carousel .owl-nav button {
+        left: 2px;
+    }
+    .hero__slider.owl-carousel .owl-nav button.owl-next {
+        right: 2px;
+    }
+    .banner__item.banner__item--middle {
+        margin-top: 0;
+    }
+    .banner__item.banner__item--last {
+        margin-top: 0;
+    }
+    .banner__item {
+        margin-bottom: 40px;
+    }
+    .banner {
+        padding-bottom: 60px;
+    }
+    .categories__text {
+        margin-bottom: 40px;
+    }
+    .categories__hot__deal {
+        margin-bottom: 40px;
+    }
+    .instagram__text {
+        padding-top: 70px;
+    }
+    .shop__sidebar {
+        padding-right: 0;
+        padding-top: 40px;
+    }
+    .cart__discount {
+        margin-top: 40px;
+    }
+    .testimonial__text {
+        padding: 100px 105px 100px;
+    }
+    .blog__details__share {
+        position: relative;
+        left: 0;
+        margin-bottom: 18px;
+    }
+    .blog__details__share span {
+        margin-bottom: 14px;
+        margin-right: 0;
+    }
+    .blog__details__share ul li {
+        margin-bottom: 15px;
+        display: inline-block;
+        margin-right: 10px;
+    }
+    .blog__details__share ul li:last-child {
+        margin-right: 0;
+    }*/
+    .col-md-4 {
+        -ms-flex: 0 0 33%;
+        flex: 0 0 33%;
+        max-width: 33%;
+    }
+    .available_title {
+        margin-left: 4%;
+        font-size: 61% !important;
+    }
+    .available {
+        position: absolute;
+        top: 83%;
+        width: 71%;
     }
 }
 
@@ -44,7 +125,7 @@
 .p_title{
     width:100%;
     text-align: center;
-
+    font-size: 63%;
 }
 
 .mydiv{
@@ -65,21 +146,21 @@
 }
 
 .bbb_deals_item_price {
-    font-size: 100% !important;
+    font-size: 85% !important;
 }
 
 
 .bbb_deals {
-    width: 100%;
+    width: 88%;
     margin-right: 7%;
     padding-top: 0px !important;
-    padding-bottom: 34px;
     padding-left: 0 !important;
     padding-right:0 !important;
     box-shadow: 1px 1px 5px 1px rgb(0 0 0 / 10%);
     border-radius: 5px;
     margin-top: 0px;
     height:100% !important;
+    padding-bottom: 36% !important;
 }
 
 .bbb_deals_image {
@@ -109,6 +190,7 @@
     .container {
         max-width: 90%;
     }
+
 }
 
 
@@ -142,12 +224,12 @@ body{
     text-decoration: unset !important;
     font-family: "Nunito Sans", sans-serif;
     -webkit-font-smoothing: antialiased;
+    font-size: 57%;
 }
 
 
 
 .contxxx{
-    height: calc(100vh - 177px) !important;
     border-color: rgba(4,11,5,0.15);
     border-width: 0.5px;
     border-top-style: solid;
@@ -159,10 +241,6 @@ body{
 
 .prodName{
     width: 100% !important;
-}
-
-.widthAppropriate{
-    font-size: 14px!important;
 }
 
 .clear { clear: both; }
@@ -209,6 +287,7 @@ body{
 
 .available_title{
     margin-left: 4%;
+    font-size: 70% !important;
 }
 
 .bbb_deals_item_price{
@@ -218,7 +297,6 @@ body{
 }
 
 .bbb_deals_item_category{
-    position: absolute;
     bottom: 0%;
 }
 
@@ -226,3 +304,16 @@ body{
     height: 35%;
 }
 
+p.prodName{
+    padding-left: 2.9%;
+    font-size: 53%;
+}
+
+
+.bbb_deals_item_category a {
+    font-size: 67%;
+}
+
+.mydiv{
+    margin-left: 9% !important;
+}

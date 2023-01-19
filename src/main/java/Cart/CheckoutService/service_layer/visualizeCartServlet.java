@@ -27,16 +27,22 @@ public class visualizeCartServlet extends HttpServlet {
         HttpSession s = request.getSession();
         EndUser u = (EndUser) request.getSession().getAttribute("user");
         Cart c;
-        if(s.getAttribute("cart")==null){
-            c = new Cart(dao.retrieveCart(u.getId()));
-            s.setAttribute("cart",c);
-        }
-        else{
-            c = (Cart) s.getAttribute("cart");
-        }
+        try{
+            if(s.getAttribute("cart")==null){
+                c = new Cart(dao.retrieveCart(u.getId()));
+                s.setAttribute("cart",c);
+            }
+            else{
+                c = (Cart) s.getAttribute("cart");
+            }
         request.setAttribute("cart",c);
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/CartView/cart.jsp"));
         dispatcher.forward(request, response);
         return;
+        }catch (Exception e){
+            request.setAttribute("error",e.getMessage());
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/CartView/cart.jsp"));
+            dispatcher.forward(request, response);
+        }
     }
 }

@@ -153,45 +153,46 @@ public class ProductDAOImpl implements ProductDAO {
     public ArrayList<Product> retrieveByFilters(String name,String collections,float min_price, float max_price, Product.ProductState ps) throws WrongRangeException{
         if(name==null && collections==null && min_price==0 && max_price==0 && ps==null)
             return retrieveAll();
-        if(max_price<min_price)
+        if(max_price>0 && max_price<min_price)
             throw new WrongRangeException();
 
+        if(name==null)
+            name="";
+
+        if(collections==null)
+            collections="";
 
         PreparedStatement pr = null;
         ResultSet rs = null;
         String state = "";
-
-        try(Connection conn = ds.getConnection()){
-            if(state!= null){
-                if(state.equals(Product.ProductState.USED))
+        String ricerca = null;
+        try(Connection conn = ds.getConnection()) {
+            if (ps != null) {
+                if (ps.equals(Product.ProductState.USED))
                     state = "USED";
                 else state = "NEW";
+            }else{
+                state="";
             }
-            String ricerca= "SELECT * FROM PRODUCT AS p WHERE p.name LIKE %?% AND p.collections LIKE ?%? AND p.price BETWEEN ? AND";
+            ricerca= "SELECT * FROM PRODUCT AS p WHERE p.name LIKE '%"+name+"%' AND p.collections LIKE '%"+collections+"%' AND p.price BETWEEN ? AND ";
             if(max_price<=0) {
-                ricerca = ricerca + "CAST('1.79E+308' AS float) AND p.state LIKE %?%";
+                ricerca = ricerca + "99999999999 AND p.state LIKE '%"+state+"%'";
                 pr = conn.prepareStatement(ricerca);
-                pr.setString(1, name);
-                pr.setString(2, name);
                 if (min_price <= 0)
-                    pr.setFloat(3, 0);
+                    pr.setFloat(1, 0);
                 else {
-                    pr.setFloat(3, min_price);
+                    pr.setFloat(1, min_price);
                 }
-                pr.setString(4,state);
             }
             else{
-                ricerca = ricerca+"? AND p.state LIKE ?%?";
+                ricerca = ricerca+"? AND p.state LIKE '%"+state+"%'";
                 pr = conn.prepareStatement(ricerca);
-                pr.setString(1, name);
-                pr.setString(2, name);
                 if (min_price <= 0)
-                    pr.setFloat(3, 0);
+                    pr.setFloat(1, 0);
                 else {
-                    pr.setFloat(3, min_price);
+                    pr.setFloat(1, min_price);
                 }
-                pr.setFloat(4,max_price);
-                pr.setString(5,state);
+                pr.setFloat(2,max_price);
             }
             rs = pr.executeQuery();
             ArrayList<Product> lista = new ArrayList<Product>();
@@ -220,12 +221,15 @@ public class ProductDAOImpl implements ProductDAO {
                 Product p = new Product(iD,nome,brand,description,price,height,lenght,weight,pS,collect,quantity,imagePath);
                 lista.add(p);
             }
-            if(lista.size()==0)
+            System.out.println(lista.size());
+            if(lista.size()==0) {
                 return null;
+            }
+
 
             else return lista;
         }catch (SQLException e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }finally {
             try{
@@ -245,7 +249,6 @@ public class ProductDAOImpl implements ProductDAO {
             pr = conn.prepareStatement("SELECT * from Product as p");
             rs = pr.executeQuery();
             ArrayList<Product> lista = new ArrayList<Product>();
-            System.out.println("las");
             while(rs.next()){
                 int iD = rs.getInt(1);
                 String name = rs.getString(2);
@@ -270,12 +273,12 @@ public class ProductDAOImpl implements ProductDAO {
                 Product p = new Product(iD,name,brand,description,price,height,lenght,weight,pS,collect,quantity,imagePath);
                 lista.add(p);
             }
-            if(lista.size()==0)
+            if(lista.size()==0) {
                 return null;
-
+            }
             else return lista;
         }catch (SQLException e){
-            e.getMessage();
+            e.printStackTrace();
             return null;
         }finally {
             try{

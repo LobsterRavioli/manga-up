@@ -170,10 +170,17 @@ public class MangaDAOImpl implements MangaDAO {
     @Override
     public ArrayList<Manga> retrieveByFilters(String name,String collections,float min_price, float max_price, Product.ProductState ps) throws WrongRangeException {
 
-        if(name==null && collections==null && min_price==0 && max_price==0 && ps==null)
+        if(name=="" && collections=="" && min_price==0 && max_price==0 && ps==null)
             return retrieveAll();
-        if(max_price<min_price)
+        if(max_price>0 && max_price<min_price)
             throw new WrongRangeException();
+
+        if(name==null)
+            name="";
+
+        if(collections==null)
+            collections="";
+
 
         GenreDAOImpl g = new GenreDAOImpl(ds);
         AutoreDAOImpl aut = new AutoreDAOImpl(ds);
@@ -181,43 +188,38 @@ public class MangaDAOImpl implements MangaDAO {
         PreparedStatement pr = null;
         ResultSet rs = null;
         String state = "";
+        String ricerca = null;
 
-        try(Connection conn = ds.getConnection()){
-            if(ps!=null){
-                if(ps.equals(Product.ProductState.USED))
+        try(Connection conn = ds.getConnection()) {
+            if (ps != null) {
+                if (ps.equals(Product.ProductState.USED))
                     state = "USED";
                 else state = "NEW";
+            }else{
+                state="";
             }
-            String ricerca= "SELECT * FROM Manga AS m WHERE p.name LIKE %?% AND p.collections LIKE ?%? AND p.price BETWEEN ? AND";
-            if(max_price<=0) {
-                ricerca = ricerca + "CAST('1.79E+308' AS float) AND p.state LIKE %?%";
+            ricerca = "SELECT * FROM Manga AS m WHERE m.name LIKE '%" + name + "%' AND m.collections LIKE '%" + collections + "%' AND m.price BETWEEN ? AND ";
+            if (max_price <= 0) {
+                ricerca = ricerca + "99999999999 AND m.state LIKE '%" + state + "%'";
                 pr = conn.prepareStatement(ricerca);
-                pr.setString(1, name);
-                pr.setString(2, name);
                 if (min_price <= 0)
-                    pr.setFloat(3, 0);
+                    pr.setFloat(1, 0);
                 else {
-                    pr.setFloat(3, min_price);
+                    pr.setFloat(1, min_price);
                 }
-                pr.setString(4,state);
-            }
-            else{
-                ricerca = ricerca+"? AND p.state LIKE ?%?";
+            } else {
+                ricerca = ricerca + "? AND m.state LIKE '%" + state + "%'";
                 pr = conn.prepareStatement(ricerca);
-                pr.setString(1, name);
-                pr.setString(2, name);
                 if (min_price <= 0)
-                    pr.setFloat(3, 0);
+                    pr.setFloat(1, 0);
                 else {
-                    pr.setFloat(3, min_price);
+                    pr.setFloat(1, min_price);
                 }
-                pr.setFloat(4,max_price);
-                pr.setString(5,state);
+                pr.setFloat(2, max_price);
             }
-            rs = pr.executeQuery();
             ArrayList<Manga> lista = new ArrayList<Manga>();
-
-            while(rs.next()) {
+            rs = pr.executeQuery();
+            while (rs.next()) {
                 int iD = rs.getInt(1);
                 String nome = rs.getString(2);
                 String brand = rs.getString(3);
@@ -251,13 +253,13 @@ public class MangaDAOImpl implements MangaDAO {
                 m.setGenre(g.retrieveByManga(m.getId()));
                 lista.add(m);
             }
-
-            if(lista.size()==0)
+            System.out.println(lista.size());
+            if (lista.size() == 0) {
                 return null;
-
+            }
             else return lista;
         }catch (SQLException e){
-            e.printStackTrace();
+            System.out.println(ricerca);
             return null;
         }finally {
             try{

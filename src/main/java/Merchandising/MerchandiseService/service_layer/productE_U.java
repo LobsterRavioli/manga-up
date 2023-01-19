@@ -32,12 +32,12 @@ public class productE_U extends HttpServlet {
         if(prodType.equals("M")){
             Manga m = daoM.retrieveById(Integer.parseInt(id));
             request.setAttribute("prod",m);
-            RequestDispatcher rD = getServletContext().getRequestDispatcher("/MerchandisingView/product.jsp");
+            RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/product.jsp");
             rD.forward(request,response);
         }else{
             Product p = daoP.retrieveById(Integer.parseInt(id));
             request.setAttribute("prod",p);
-            RequestDispatcher rD = getServletContext().getRequestDispatcher("/MerchandisingView/product.jsp");
+            RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/product.jsp");
             rD.forward(request,response);
         }
 

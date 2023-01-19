@@ -31,7 +31,7 @@ public class catalogServlet extends HttpServlet {
             MangaDAOImpl daoM = new MangaDAOImpl(ds);
             list = daoM.retrieveAll();
             request.setAttribute("listaElementi",list);
-            RequestDispatcher rD = getServletContext().getRequestDispatcher("/MerchandisingView/catalog.jsp");
+            RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/catalog.jsp");
             rD.forward(request,response);
         }
         else{
@@ -40,7 +40,7 @@ public class catalogServlet extends HttpServlet {
             list = daoP.retrieveAll();
             list.addAll(daoM.retrieveAll());
             request.setAttribute("listaElementi",list);
-            RequestDispatcher rD = getServletContext().getRequestDispatcher("/MerchandisingView/catalog.jsp");
+            RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/catalog.jsp");
             rD.forward(request,response);
         }
 

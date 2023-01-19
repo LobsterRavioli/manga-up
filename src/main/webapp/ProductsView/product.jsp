@@ -275,7 +275,7 @@
               <p class="none_center"><%=p.getDescription()%></p>
             </li>
             <li class="mLeft">Tipo di Prodotto
-              <p class="none_center"><%=p.getType_of_product()%></p>
+              <p class="none_center"><%=p.getCollections()%></p>
             </li>
             </li>
             <li class="mLeft">Dimensioni

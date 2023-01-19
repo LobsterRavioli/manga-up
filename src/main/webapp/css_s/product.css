@@ -1,6 +1,5 @@
 .contxxx{
     height: calc(100vh - 177px) !important;
-    margin-top: 177px;
     border-color: rgba(4,11,5,0.15);
     border-width: 0.5px;
     border-top-style: solid;

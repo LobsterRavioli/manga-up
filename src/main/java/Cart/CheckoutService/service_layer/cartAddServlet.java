@@ -1,8 +1,10 @@
 package Cart.CheckoutService.service_layer;
 
+import Cart.CheckoutService.dao_layer.UserNotAssociatedException;
 import Cart.CheckoutService.dao_layer.interfaces.CartDAO;
 import Merchandising.MerchandiseService.beans.Manga;
 import Merchandising.MerchandiseService.beans.Product;
+import Merchandising.MerchandiseService.dao_layer.exceptions.NonExistentProductException;
 import User.AccountService.beans.EndUser;
 import utils.AbstractDAOFactory;
 
@@ -26,23 +28,32 @@ public class cartAddServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         EndUser endUser = (EndUser) request.getSession().getAttribute("user");
+        if(endUser==null){
+            request.setAttribute("error","Utente non presente in sessione");
+
+            return;
+        }
         String quantity = request.getParameter("quantity");
         String prod_id = request.getParameter("prod");
         String type = request.getParameter("type");
         response.setContentType("text/plain");
 
-        if(type.equals("M")){
-            if(dao.addElement(endUser.getId(),Integer.parseInt(prod_id),Integer.parseInt(quantity), Manga.class) == true) {
-                response.getWriter().write("OK");
+        try{
+            if(type.equals("M")){
+                if(dao.addElement(endUser.getId(),Integer.parseInt(prod_id),Integer.parseInt(quantity), Manga.class) == true) {
+                    response.getWriter().write("OK");
+                }else{
+                    response.getWriter().write("Problem");
+                }
             }else{
-                response.getWriter().write("Problem");
+                if(dao.addElement(endUser.getId(),Integer.parseInt(prod_id),Integer.parseInt(quantity), Product.class)==true){
+                    response.getWriter().write("OK");
+                }else{
+                    response.getWriter().write("Problem");
+                }
             }
-        }else{
-            if(dao.addElement(endUser.getId(),Integer.parseInt(prod_id),Integer.parseInt(quantity), Product.class)==true){
-                response.getWriter().write("OK");
-            }else{
-                response.getWriter().write("Problem");
-            }
+        }catch (Exception e){
+            request.setAttribute("error",e.getMessage());
         }
     }
 }
