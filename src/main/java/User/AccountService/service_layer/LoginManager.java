@@ -54,7 +54,7 @@ public class LoginManager extends HttpServlet {
                     currentSession.setAttribute("password", manager.getPassword());
 
                     currentSession.setMaxInactiveInterval(5*60); // 5 minuti di inattività massima, dopo cancella la sessione
-// NO SENSE CODE
+
                     if(roleName.equals("USER_MANAGER")) // redirect to user manager homepage
                         response.sendRedirect(getServletContext().getContextPath()+"/profile_view/userManagerHome.jsp");
 
