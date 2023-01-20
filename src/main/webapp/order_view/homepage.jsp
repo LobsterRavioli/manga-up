@@ -14,26 +14,7 @@
 </head>
 <body>
 
-    <div class="logo">
-        <img src="${pageContext.request.contextPath}/images/logo.png" width="125px">
-        <h2>Welcome Francesco</h2>
-
-        <div class="select_role">
-        <form action="#">
-            <label>Role:
-            <select name="usr_role">
-                <option value="ord_mng">Order manager</option>
-                <option value="clg_mng">Catalog manager</option>
-                <option value="usr_mng">User manager</option>
-            </select></label>
-        </form>
-        </div>
-
-        <div class="logout">
-            <a href="#">Log-out</a>
-        </div>
-
-    </div>
+    <jsp:include page="/header_manager_homepage.jsp"/>
 
     <div class="navbar">
         <a href="${pageContext.request.contextPath}/orderServlet">Orders<br><br></a>

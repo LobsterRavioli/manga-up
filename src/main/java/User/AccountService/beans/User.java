@@ -51,6 +51,11 @@ public class User {
             roles.remove(role.getValue());
     }
 
+    public Set getRoles()
+    {
+        return this.roles;
+    }
+
     @Override
     public int hashCode() {
         return super.hashCode();

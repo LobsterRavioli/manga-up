@@ -80,7 +80,6 @@ public class UserRoleDAOImp implements UserRoleDAO {
     }
 
 
-
     private static User map(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.setId(resultSet.getInt("id"));
