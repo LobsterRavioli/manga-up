@@ -4,20 +4,22 @@ import User.AccountService.beans.User;
 import User.AccountService.dao_layer.implementations.UserDAOImp;
 import User.AccountService.dao_layer.interfaces.UserDAO;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
 
-
-@WebServlet("/LoginManager")
-public class LoginManager extends HttpServlet {
+@WebServlet("/switchRole")
+public class SwitchRoleServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       doPost(request, response);
+        doPost(request, response);
     }
 
     @Override
@@ -26,22 +28,24 @@ public class LoginManager extends HttpServlet {
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
         UserDAO dao = new UserDAOImp(ds);
 
-        User manager = new User();
-
-        String login = request.getParameter("username");
-        String pwd = request.getParameter("password");
-        String roleName = request.getParameter("roleName");
-
-        if(login == null || pwd == null || roleName == null)
+        String username = (String)request.getSession().getAttribute("managerName");
+        String password = (String)request.getSession().getAttribute("password");
+        if(username == null || password == null)
+        {
             response.sendRedirect(getServletContext().getContextPath()+"/profile_view/login_manager.jsp");
+            return;
+        }
         else
         {
-            manager.setUsername(login);
-            manager.setPassword(pwd);
+            String role = request.getParameter("usr_role"); // dalla select
+
+            User user = new User();
+            user.setUsername(username);
+            user.setPassword(password);
 
             try {
 
-                if(dao.checkUser(manager, roleName)) // se l'autenticazione va a buon fine
+                if(dao.checkUser(user, role)) // se l'autenticazione va a buon fine
                 {
                     HttpSession oldSession = request.getSession(false);
                     if(oldSession != null)
@@ -49,19 +53,19 @@ public class LoginManager extends HttpServlet {
 
                     HttpSession currentSession = request.getSession(); // crea una nuova sessione
 
-                    currentSession.setAttribute("managerName", manager.getUsername());
-                    currentSession.setAttribute("roleSelected", roleName);
-                    currentSession.setAttribute("password", manager.getPassword());
+                    currentSession.setAttribute("managerName", user.getUsername());
+                    currentSession.setAttribute("roleSelected", role);
+                    currentSession.setAttribute("password", user.getPassword());
 
                     currentSession.setMaxInactiveInterval(5*60); // 5 minuti di inattività massima, dopo cancella la sessione
 
-                    if(roleName.equals("USER_MANAGER")) // redirect to user manager homepage
+                    if(role.equals("USER_MANAGER")) // redirect to user manager homepage
                         response.sendRedirect(getServletContext().getContextPath()+"/profile_view/userManagerHome.jsp");
 
-                    if(roleName.equals("ORDER_MANAGER"))  // redirect to order manager homepage
+                    if(role.equals("ORDER_MANAGER"))  // redirect to order manager homepage
                         response.sendRedirect(getServletContext().getContextPath()+"/order_view/homepage.jsp");
 
-                    if(roleName.equals("CATALOG_MANAGER")) // redirect to catalog manager homepage
+                    if(role.equals("CATALOG_MANAGER")) // redirect to catalog manager homepage
                         response.sendRedirect(getServletContext().getContextPath()+"/ProductsView/catalogManagerHome.jsp");
                 }
                 else

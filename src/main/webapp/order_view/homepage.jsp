@@ -14,7 +14,7 @@
 </head>
 <body>
 
-    <jsp:include page="/header_manager_homepage.jsp" />
+    <jsp:include page="/header_manager_homepage.jsp"/>
 
     <div class="navbar">
         <a href="${pageContext.request.contextPath}/orderServlet">Orders<br><br></a>

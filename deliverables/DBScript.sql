@@ -210,7 +210,12 @@ INSERT INTO user_roles (user_id, user_name, role_name) VALUES (1, 'Tommaso', 'CA
 INSERT INTO user_roles (user_id, user_name, role_name) VALUES (2, 'Alessandro', 'USER_MANAGER');
 
 INSERT INTO user_roles (user_id, user_name, role_name) VALUES (3, 'Giovanni', 'ORDER_MANAGER');
+INSERT INTO user_roles (user_id, user_name, role_name) VALUES (3, 'Giovanni', 'USER_MANAGER');
+INSERT INTO user_roles (user_id, user_name, role_name) VALUES (3, 'Giovanni', 'CATALOG_MANAGER');
+
 INSERT INTO user_roles (user_id, user_name, role_name) VALUES (4, 'Sara', 'ORDER_MANAGER');
+INSERT INTO user_roles (user_id, user_name, role_name) VALUES (4, 'Sara', 'CATALOG_MANAGER');
+
 INSERT INTO user_roles (user_id, user_name, role_name) VALUES (5, 'Francesco', 'ORDER_MANAGER');
 INSERT INTO user_roles (user_id, user_name, role_name) VALUES (6, 'Riccardo', 'ORDER_MANAGER');
 
