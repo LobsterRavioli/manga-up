@@ -16,7 +16,7 @@ import java.sql.SQLException;
 
 @WebServlet("/switchRole")
 public class SwitchRoleServlet extends HttpServlet {
-//
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
