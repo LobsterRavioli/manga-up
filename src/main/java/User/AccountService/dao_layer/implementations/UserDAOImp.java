@@ -21,12 +21,12 @@ public class UserDAOImp implements UserDAO {
     private static final String USER_TABLE = "User";
     private static final String USER_ROLE_TABLE = "user_roles";
 
+    private static final String ROLE_TABLE = "roles";
     private static final String MANAGES_TABLE = "manages";
 
     private static final String CREATE = "INSERT INTO "+USER_TABLE+
             " (id, username, password)"+
             " VALUES (?, ?, ?) ;";
-
     private static final String DELETE = "DELETE FROM "+USER_TABLE+" WHERE id = ? ;";
     private static final String RETRIEVE = "SELECT * FROM "+USER_TABLE+" WHERE id = ? ;";
 
@@ -44,6 +44,10 @@ public class UserDAOImp implements UserDAO {
     private static final String CHECK_USER = "SELECT U.username, U.password, R.role_name "+
                                              "FROM "+USER_TABLE+" AS U, "+USER_ROLE_TABLE+" AS R "+
                                              "WHERE U.id = R.user_id AND U.username = ? AND U.password = ? AND R.role_name = ?";
+
+    private static final String SELECT_ROLE = "SELECT R.role_name "+
+                                              "FROM "+ROLE_TABLE+" AS R, "+USER_ROLE_TABLE+" AS U1, "+USER_TABLE+" AS U2 "+
+                                              "WHERE R.role_name=U1.role_name AND U1.user_name=U2.username AND U2.username=?";
 
     public UserDAOImp(DataSource ds)
     {
@@ -353,5 +357,39 @@ public class UserDAOImp implements UserDAO {
             }
         }
         return user.getId();
+    }
+
+    @Override
+    public Collection<String> getRole(String username) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        Collection<String> roles = new LinkedList<String>();
+
+        try
+        {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(SELECT_ROLE);
+            preparedStatement.setString(1, username);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next())
+                roles.add(rs.getString("role_name"));
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            }
+            finally
+            {
+                if(connection != null)
+                    connection.close();
+            }
+        }
+        return roles;
     }
 }

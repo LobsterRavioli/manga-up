@@ -48,7 +48,7 @@ public class SwitchRoleServlet extends HttpServlet {
                 if(dao.checkUser(user, role)) // se l'autenticazione va a buon fine
                 {
                     HttpSession oldSession = request.getSession(false);
-                    if(oldSession != null)
+                    if (oldSession != null)
                         oldSession.invalidate(); // invalida la sessione se esiste
 
                     HttpSession currentSession = request.getSession(); // crea una nuova sessione
@@ -56,22 +56,18 @@ public class SwitchRoleServlet extends HttpServlet {
                     currentSession.setAttribute("managerName", user.getUsername());
                     currentSession.setAttribute("roleSelected", role);
                     currentSession.setAttribute("password", user.getPassword());
+                    currentSession.setAttribute("otherRoles", dao.getRole(user.getUsername()));
 
-                    currentSession.setMaxInactiveInterval(5*60); // 5 minuti di inattività massima, dopo cancella la sessione
+                    currentSession.setMaxInactiveInterval(5 * 60); // 5 minuti di inattività massima, dopo cancella la sessione
 
-                    if(role.equals("USER_MANAGER")) // redirect to user manager homepage
-                        response.sendRedirect(getServletContext().getContextPath()+"/profile_view/userManagerHome.jsp");
+                    if (role.equals("USER_MANAGER")) // redirect to user manager homepage
+                        response.sendRedirect(getServletContext().getContextPath() + "/profile_view/userManagerHome.jsp");
 
-                    if(role.equals("ORDER_MANAGER"))  // redirect to order manager homepage
-                        response.sendRedirect(getServletContext().getContextPath()+"/order_view/homepage.jsp");
+                    if (role.equals("ORDER_MANAGER"))  // redirect to order manager homepage
+                        response.sendRedirect(getServletContext().getContextPath() + "/order_view/homepage.jsp");
 
-                    if(role.equals("CATALOG_MANAGER")) // redirect to catalog manager homepage
-                        response.sendRedirect(getServletContext().getContextPath()+"/ProductsView/catalogManagerHome.jsp");
-                }
-                else
-                {
-                    request.setAttribute("error", "You are not an authorized user!");
-                    request.getRequestDispatcher("/profile_view/login_manager.jsp").forward(request,response);
+                    if (role.equals("CATALOG_MANAGER")) // redirect to catalog manager homepage
+                        response.sendRedirect(getServletContext().getContextPath() + "/ProductsView/catalogManagerHome.jsp");
                 }
 
             } catch (SQLException e) {

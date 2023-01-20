@@ -24,4 +24,6 @@ public interface UserDAO {
 
     // restituisce l'ID del gestore degli ordini al quale commissionare la gestione di un ordine
     int getTargetOrderManagerId() throws SQLException;
+
+    Collection<String> getRole(String username) throws SQLException;
 }

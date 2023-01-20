@@ -4,8 +4,9 @@
 <%
        String managerName = (String)request.getSession().getAttribute("managerName");
        String managerRole = (String)request.getSession().getAttribute("roleSelected");
+       Collection<String> otherRoles = (Collection<String>)request.getSession().getAttribute("otherRoles");
 
-       if(managerName == null || managerRole == null) {
+       if(managerName == null || managerRole == null || otherRoles == null) {
             response.sendRedirect(getServletContext().getContextPath()+"/LoginManager");
             return;
        }
@@ -46,9 +47,18 @@
             <select name="usr_role" onchange="this.form.submit()">
             <%
                 Map<String, String> roles = new HashMap<String, String>();
-                roles.put("USER_MANAGER", "User manager");
-                roles.put("ORDER_MANAGER", "Order manager");
-                roles.put("CATALOG_MANAGER", "Catalog manager");
+
+                for(String s : otherRoles)
+                {
+                    if(s.equals("USER_MANAGER"))
+                        roles.put("USER_MANAGER", "User manager");
+
+                    if(s.equals("ORDER_MANAGER"))
+                        roles.put("ORDER_MANAGER", "Order manager");
+
+                    if(s.equals("CATALOG_MANAGER"))
+                        roles.put("CATALOG_MANAGER", "Catalog manager");
+                }
 
                 Iterator<String> iterator = roles.keySet().iterator();
 
