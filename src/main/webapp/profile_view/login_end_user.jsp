@@ -10,14 +10,18 @@
         <html>
 <head>
     <title>Login</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css_s/form_style.css">
 </head>
 
 <body>
 
     <form method="post" action="${pageContext.request.contextPath}/LoginEndUserServlet">
+        <fieldset>
+        <legend>Please, log-in to continue</legend>
         <input type="text" name="username"  placeholder="username" required="required" />
         <input type="password" name="password"  placeholder="password" required="required" />
-        <button type="submit">Login</button>
+        <input type="submit" id="sub" value="Login"/>
+        </fieldset>
     </form>
 
 </body>

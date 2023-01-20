@@ -360,7 +360,7 @@ public class UserDAOImp implements UserDAO {
     }
 
     @Override
-    public Collection<String> getRole(String username) throws SQLException {
+    public Collection<String> getRoles(String username) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 

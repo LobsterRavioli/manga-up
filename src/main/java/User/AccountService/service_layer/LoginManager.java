@@ -52,7 +52,7 @@ public class LoginManager extends HttpServlet {
                     currentSession.setAttribute("managerName", manager.getUsername());
                     currentSession.setAttribute("roleSelected", roleName);
                     currentSession.setAttribute("password", manager.getPassword());
-                    currentSession.setAttribute("otherRoles", dao.getRole(manager.getUsername()));
+                    currentSession.setAttribute("otherRoles", dao.getRoles(manager.getUsername()));
 
                     currentSession.setMaxInactiveInterval(5*60); // 5 minuti di inattività massima, dopo cancella la sessione
 

@@ -56,7 +56,7 @@ public class SwitchRoleServlet extends HttpServlet {
                     currentSession.setAttribute("managerName", user.getUsername());
                     currentSession.setAttribute("roleSelected", role);
                     currentSession.setAttribute("password", user.getPassword());
-                    currentSession.setAttribute("otherRoles", dao.getRole(user.getUsername()));
+                    currentSession.setAttribute("otherRoles", dao.getRoles(user.getUsername()));
 
                     currentSession.setMaxInactiveInterval(5 * 60); // 5 minuti di inattività massima, dopo cancella la sessione
 
