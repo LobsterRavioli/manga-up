@@ -201,18 +201,18 @@ INSERT INTO User (username, password) VALUES ('Francesco', 'password5');
 INSERT INTO User (username, password) VALUES ('Riccardo', 'password6');
 
 
-INSERT INTO roles (role_name) VALUES ('GESTORE_CATALOGO');
-INSERT INTO roles (role_name) VALUES ('GESTORE_UTENTI');
-INSERT INTO roles (role_name) VALUES ('GESTORE_ORDINI');
+INSERT INTO roles (role_name) VALUES ('CATALOG_MANAGER');
+INSERT INTO roles (role_name) VALUES ('USER_MANAGER');
+INSERT INTO roles (role_name) VALUES ('ORDER_MANAGER');
 
 
-INSERT INTO user_roles (user_id, user_name, role_name) VALUES (1, 'Tommaso', 'GESTORE_CATALOGO');
-INSERT INTO user_roles (user_id, user_name, role_name) VALUES (2, 'Alessandro', 'GESTORE_UTENTI');
+INSERT INTO user_roles (user_id, user_name, role_name) VALUES (1, 'Tommaso', 'CATALOG_MANAGER');
+INSERT INTO user_roles (user_id, user_name, role_name) VALUES (2, 'Alessandro', 'USER_MANAGER');
 
-INSERT INTO user_roles (user_id, user_name, role_name) VALUES (3, 'Giovanni', 'GESTORE_ORDINI');
-INSERT INTO user_roles (user_id, user_name, role_name) VALUES (4, 'Sara', 'GESTORE_ORDINI');
-INSERT INTO user_roles (user_id, user_name, role_name) VALUES (5, 'Francesco', 'GESTORE_ORDINI');
-INSERT INTO user_roles (user_id, user_name, role_name) VALUES (6, 'Riccardo', 'GESTORE_ORDINI');
+INSERT INTO user_roles (user_id, user_name, role_name) VALUES (3, 'Giovanni', 'ORDER_MANAGER');
+INSERT INTO user_roles (user_id, user_name, role_name) VALUES (4, 'Sara', 'ORDER_MANAGER');
+INSERT INTO user_roles (user_id, user_name, role_name) VALUES (5, 'Francesco', 'ORDER_MANAGER');
+INSERT INTO user_roles (user_id, user_name, role_name) VALUES (6, 'Riccardo', 'ORDER_MANAGER');
 
 
 INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)

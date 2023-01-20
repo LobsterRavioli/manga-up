@@ -1,17 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="java.util.*"%>
 
 <%
        String managerName = (String)request.getSession().getAttribute("managerName"); // recupero lo user-name del manager
-       String managerRole = (String)request.getSession().getAttribute("roleSelected"); // recupero lo specifico ruolo con il quale ha acceduto
 
-       if(managerName == null || managerName.equals("") || managerRole == null || managerRole.equals("")) {
-       	// response.sendRedirect(getServletContext().getContextPath()+"CALL THE LOG-IN SERVLET AND GET THE NAME OF THE MANAGER AND THE ROLE WITH WHICH THEY ARE LOGGED IN");
-      	//	return;
+       if(managerName == null) {
+            response.sendRedirect(getServletContext().getContextPath()+"/LoginManager");
+            return;
        }
-
-       managerName = "Alfonso Maria Giovanni"; // temporaneo, giusto per provare
-       managerRole = "ORDER_MANAGER"; // temporaneo, giusto per provare
 
        if(managerName.length() > 15) {
             managerName = managerName.substring(0,15);
@@ -33,12 +29,31 @@
         <h2>Welcome <%=managerName %></h2>
 
         <div class="select_role">
-        <form action="#">
+        <form action="${pageContext.request.contextPath}/switchRole" method="POST">
             <label>Role:
             <select name="usr_role">
-                <option value="ord_mng">Order manager</option>
-                <option value="clg_mng">Catalog manager</option>
-                <option value="usr_mng">User manager</option>
+            <%
+                Map<String, String> roles = new HashMap<String, String>();
+                roles.put("USER_MANAGER", "User manager");
+                roles.put("ORDER_MANAGER", "Order manager");
+                roles.put("CATALOG_MANAGER", "Catalog manager");
+
+                Iterator<String> iterator = roles.keySet().iterator();
+
+                while(iterator.hasNext()) {
+                    String roleKey = iterator.next();
+                    if(roleKey.equals(managerRole)) {
+            %>
+                        <option value="<%=roleKey %>" selected><%=roles.get(roleKey) %></option>
+            <%
+                    }
+                    else {
+            %>
+                        <option value="<%=roleKey %>"><%=roles.get(roleKey) %></option>
+            <%
+                        }
+                }
+            %>
             </select></label>
         </form>
         </div>

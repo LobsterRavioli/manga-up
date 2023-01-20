@@ -36,14 +36,14 @@ public class UserDAOImp implements UserDAO {
 
     private static final String RETRIEVE_ALL_BEGINNERS = "SELECT * "+
             "FROM "+USER_TABLE+" AS U, "+USER_ROLE_TABLE+" AS R "+
-            "WHERE U.id = R.user_id AND R.role_name = \'GESTORE_ORDINI\' AND U.id NOT IN " +
+            "WHERE U.id = R.user_id AND R.role_name = \'ORDER_MANAGER\' AND U.id NOT IN " +
             "(SELECT man_user_id FROM manages) ;";
 
     private static final String RETRIEVE_MANAGED_SORTED = "SELECT man_user_id, COUNT(*) AS result " +
             "FROM "+MANAGES_TABLE+" GROUP BY man_user_id ORDER BY result";
-    private static final String CHECK_USER = "SELECT username, password "+
-                                             "FROM "+USER_TABLE+" "+
-                                             "WHERE username = ? AND password = ?";
+    private static final String CHECK_USER = "SELECT U.username, U.password, R.role_name "+
+                                             "FROM "+USER_TABLE+" AS U, "+USER_ROLE_TABLE+" AS R "+
+                                             "WHERE U.id = R.user_id AND U.username = ? AND U.password = ? AND R.role_name = ?";
 
     public UserDAOImp(DataSource ds)
     {
@@ -195,7 +195,7 @@ public class UserDAOImp implements UserDAO {
     }
 
     @Override
-    public boolean checkUser(User user) throws SQLException {
+    public boolean checkUser(User user, String roleToLog) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -208,9 +208,10 @@ public class UserDAOImp implements UserDAO {
             preparedStatement = connection.prepareStatement(CHECK_USER);
             preparedStatement.setString(1, user.getUsername());
             preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, roleToLog);
 
             ResultSet rs = preparedStatement.executeQuery();
-            return rs.first(); // true if the cursor is on a valid row; false if there are no rows in the result set
+            return rs.next(); // false if there are no rows in the result set
         }
         finally
         {
@@ -335,7 +336,7 @@ public class UserDAOImp implements UserDAO {
             ResultSet rs = preparedStatement.executeQuery();
 
 
-            if(rs.first())
+            if(rs.next())
                 user.setId(rs.getInt("man_user_id")); // il gestore al quale assegnare il task
         }
         finally

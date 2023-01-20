@@ -1,16 +1,37 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: tommasosorrentino
-  Date: 09/01/23
-  Time: 21:27
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
-<form name="loginForm" method="POST" action="j_security_check">
-    <p>User name: <input type="text" name="j_username" size="20"/></p>
-    <p>Password: <input type="password" size="20" name="j_password"/></p>
-    <p>  <input type="submit" value="Submit"/></p>
-</form>
+    <head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="#">
+    </head>
+
+<body>
+
+    <h1>LOG-IN</h1>
+
+    <form action="${pageContext.request.contextPath}/LoginManager" method="POST">
+        <label for="username">Username:</label><br>
+        <input type="text" placeholder="username" id="username" name="username" required/><br>
+        <label for="password">Password:</label><br>
+        <input type="password" placeholder="password" id="password" name="password" required/><br><br><br>
+        <label for="U_M">User manager:</label>
+        <input type="radio" id="U_M" name="roleName" value="USER_MANAGER" checked="checked"/>
+        <label for="O_M">Order manager:</label>
+        <input type="radio" id="O_M" name="roleName" value="ORDER_MANAGER"/>
+        <label for="C_M">Catalog manager:</label>
+        <input type="radio" id="C_M" name="roleName" value="CATALOG_MANAGER"/><br>
+        <input type="submit" id="sub" value="Login"/>
+
+        <%
+           String errMessage = (String)request.getAttribute("error");
+           if(errMessage != null) {
+        %>
+            <p style='color: red;'><%=errMessage %></p>
+        <% } %>
+
+    </form>
+</body>
 </html>
