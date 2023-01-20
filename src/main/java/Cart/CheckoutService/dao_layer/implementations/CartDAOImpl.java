@@ -3,13 +3,11 @@ package Cart.CheckoutService.dao_layer.implementations;
 import Cart.CheckoutService.dao_layer.UserNotAssociatedException;
 import Cart.CheckoutService.dao_layer.interfaces.CartDAO;
 import Merchandising.MerchandiseService.beans.Manga;
-import Merchandising.MerchandiseService.beans.Product;
 import Merchandising.MerchandiseService.dao_layer.exceptions.InvalidQuantityException;
 import Merchandising.MerchandiseService.dao_layer.exceptions.NonExistentProductException;
 import Merchandising.MerchandiseService.dao_layer.implementations.MangaDAOImpl;
 import Merchandising.MerchandiseService.dao_layer.implementations.ProductDAOImpl;
 import User.AccountService.dao_layer.implementations.EndUserDAOImp;
-import User.AccountService.dao_layer.interfaces.EndUserDAO;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

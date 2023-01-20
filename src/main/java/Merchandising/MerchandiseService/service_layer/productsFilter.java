@@ -1,6 +1,5 @@
 package Merchandising.MerchandiseService.service_layer;
 
-import Merchandising.MerchandiseService.beans.Product;
 import Merchandising.MerchandiseService.dao_layer.implementations.MangaDAOImpl;
 import Merchandising.MerchandiseService.dao_layer.implementations.ProductDAOImpl;
 import utils.AbstractDAOFactory;
@@ -10,7 +9,6 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 @WebServlet(name = "productsFilter", value = "/productsFilter")
 public class productsFilter extends HttpServlet {

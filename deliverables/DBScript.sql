@@ -28,7 +28,7 @@ CREATE TABLE user_roles
 CREATE TABLE END_USER
 (
     id  INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    email Varchar(128) NOT NULL UNIQUE ,
+    email Varchar(128) NOT NULL UNIQUE,
     name VARCHAR(32) NOT NULL,
     surname VARCHAR(128) NOT NULL,
     password VARCHAR(32) NOT NULL,
@@ -36,15 +36,16 @@ CREATE TABLE END_USER
     birth_date date NOT NULL
 );
 
-CREATE TABLE Credit_Card
+CREATE TABLE credit_card
 (
-    number VARCHAR(20) PRIMARY KEY NOT NULL,
-    user_id INT NOT NULL,
-    cvc VARCHAR(3) NOT NULL,
-    nome VARCHAR(128) NOT NULL,
-    cognome VARCHAR(15) NOT NULL,
-    data_scadenza date NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES END_USER(id)
+    crd_id INT AUTO_INCREMENT NOT NULL,
+    crd_number VARCHAR(20) NOT NULL ,
+    usr_id INT NOT NULL,
+    crd_cvc VARCHAR(32) NOT NULL,
+    crd_holder VARCHAR(15) NOT NULL,
+    crd_expirement_date date NOT NULL,
+    PRIMARY KEY (crd_id),
+    FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)
 );
 
 CREATE TABLE Address
@@ -54,7 +55,7 @@ CREATE TABLE Address
     country VARCHAR(64) NOT NULL,
     city VARCHAR(30) NOT NULL,
     street VARCHAR(100) NOT NULL,
-    street_number Int NOT NULL,
+    street_number INT NOT NULL,
     postal_code VARCHAR(5) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES END_USER(id)
 );
@@ -67,8 +68,25 @@ CREATE TABLE Orders
     ord_total_price FLOAT NOT NULL,
     ord_end_user_id INT NOT NULL,
 
+    crd_holder VARCHAR(15) NOT NULL,
+    crd_number VARCHAR(20) NOT NULL,
+
     FOREIGN KEY(ord_end_user_id) REFERENCES END_USER(id) ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY(ord_id)
+);
+
+CREATE TABLE Order_row
+(
+    ord_id INT NOT NULL,
+    user_id INT NOT NULL,
+    manga_name VARCHAR(50) NOT NULL,
+    manga_price DOUBLE NOT NULL,
+    quantity int NOT NULL,
+
+    PRIMARY KEY (ord_id,user_id),
+
+    FOREIGN KEY (ord_id) REFERENCES Orders(id),
+    FOREIGN KEY (user_id) REFERENCES END_USER(id)
 );
 
 CREATE TABLE TO_MANAGE
@@ -98,7 +116,7 @@ CREATE TABLE manages
 );
 
 
-CREATE TABLE Product
+/*CREATE TABLE Product
 (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     name VARCHAR(50) NOT NULL,
@@ -109,12 +127,11 @@ CREATE TABLE Product
     lenght DOUBLE NOT NULL,
     state VARCHAR(20) NOT NULL,
     description VARCHAR(255),
-    collections VARCHAR(30),
     quantity INT NOT NULL,
     image VARCHAR(300) NOT NULL
-);
+);*/
 
-CREATE TABLE HasProductP
+/*CREATE TABLE HasProductP
 (
     product_id int NOT NULL,
     user_id int NOT NULL,
@@ -123,32 +140,35 @@ CREATE TABLE HasProductP
         ON UPDATE cascade ON DELETE cascade,
     FOREIGN KEY (user_id) REFERENCES END_USER(id)
         ON UPDATE cascade ON DELETE cascade
-);
+);*/
 
 CREATE TABLE Manga
 (
     id int auto_increment KEY NOT NULL,
     name VARCHAR(50) NOT NULL,
-    brand VARCHAR(50) NOT NULL,
+    editore VARCHAR(50) NOT NULL,
     price DOUBLE NOT NULL,
     weight DOUBLE NOT NULL,
     height DOUBLE NOT NULL,
     lenght DOUBLE NOT NULL,
     state VARCHAR(5) NOT NULL,
     description VARCHAR(255),
-    collections VARCHAR(50),
     quantity INT NOT NULL,
     ISBN VARCHAR(13) NOT NULL,
     book_binding VARCHAR(30),
     volume VARCHAR(20),
     release_date date NOT NULL,
     page_number int,
-    interior VARCHAR(20) ,
+    interior VARCHAR(20),
     lang VARCHAR(20) NOT NULL,
-    image VARCHAR(300) NOT NULL
+    image VARCHAR(300) NOT NULL,
+    collection_id  VARCHAR(25) NOT NULL,
+    genre_id VARCHAR(15) NOT NULL,
+    storyMaker VARCHAR(25) NOT NULL,
+
 );
 
-CREATE TABLE HasProductM
+CREATE TABLE CART
 (
     manga_id int NOT NULL,
     user_id int NOT NULL,
@@ -159,23 +179,32 @@ CREATE TABLE HasProductM
         ON UPDATE cascade ON DELETE cascade
 );
 
+CREATE TABLE Collection
+(
+  nome VARCHAR(25) NOT NULL
+);
+
+
+
+/*CREATE TABLE HasCollectionP
+(
+    product_id int NOT NULL,
+    user_id int NOT NULL,
+    PRIMARY KEY(product_id,user_id),
+    FOREIGN KEY (product_id) REFERENCES Product(id)
+        ON UPDATE cascade ON DELETE cascade,
+    FOREIGN KEY (user_id) REFERENCES END_USER(id)
+        ON UPDATE cascade ON DELETE cascade
+);*/
+
+
 CREATE TABLE Genre
 (
     nome VARCHAR(15) PRIMARY KEY NOT NULL
 );
 
-CREATE TABLE HasGenre
-(
-    manga_id int NOT NULL,
-    genre_id varchar(15) NOT NULL,
-    PRIMARY KEY(manga_id,genre_id),
-    FOREIGN KEY (manga_id) REFERENCES Manga(id)
-        ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY (genre_id) REFERENCES Genre(nome)
-        ON UPDATE cascade ON DELETE cascade
-);
 
-CREATE TABLE Author
+/*CREATE TABLE Author
 (
     id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
     name VARCHAR(30) NOT NULL,
@@ -191,6 +220,23 @@ CREATE TABLE HasAuthor
         ON UPDATE cascade ON DELETE cascade,
     FOREIGN KEY (author_id) REFERENCES Author(id)
         ON UPDATE cascade ON DELETE cascade
+);*/
+
+CREATE TABLE WAREHOUSE
+(
+    nome VARCHAR(50) PRIMARY KEY NOT NULL
+);
+
+CREATE TABLE HASPRODUCT
+(
+    manga_id int NOT NULL,
+    warehouse_id VARCHAR(50) NOT NULL,
+    quantity int NOT NULL,
+    FOREIGN KEY (manga_id) REFERENCES Manga(id)
+        ON UPDATE cascade ON DELETE cascade,
+    FOREIGN KEY (warehouse_id) REFERENCES WAREHOUSE(nome)
+        ON UPDATE cascade ON DELETE cascade
+
 );
 
 INSERT INTO User (username, password) VALUES ('Tommaso', 'password1');

@@ -1,6 +1,5 @@
 package Merchandising.MerchandiseService.dao_layer.interfaces;
 
-import Merchandising.MerchandiseService.beans.Product;
 import Merchandising.MerchandiseService.dao_layer.exceptions.ExceededLengthException;
 import Merchandising.MerchandiseService.dao_layer.exceptions.InvalidQuantityException;
 import Merchandising.MerchandiseService.dao_layer.exceptions.WrongRangeException;

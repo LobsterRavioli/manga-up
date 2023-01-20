@@ -1,10 +1,8 @@
 package Merchandising.MerchandiseService.service_layer;
 
 import Merchandising.MerchandiseService.beans.Manga;
-import Merchandising.MerchandiseService.beans.Product;
 import Merchandising.MerchandiseService.dao_layer.implementations.MangaDAOImpl;
 import Merchandising.MerchandiseService.dao_layer.implementations.ProductDAOImpl;
-import User.AccountService.dao_layer.interfaces.AddressDAO;
 import utils.AbstractDAOFactory;
 
 import javax.servlet.*;

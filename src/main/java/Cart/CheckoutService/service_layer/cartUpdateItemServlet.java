@@ -2,7 +2,6 @@ package Cart.CheckoutService.service_layer;
 
 import Cart.CheckoutService.dao_layer.interfaces.CartDAO;
 import Merchandising.MerchandiseService.beans.Manga;
-import Merchandising.MerchandiseService.beans.Product;
 import User.AccountService.beans.EndUser;
 import utils.AbstractDAOFactory;
 

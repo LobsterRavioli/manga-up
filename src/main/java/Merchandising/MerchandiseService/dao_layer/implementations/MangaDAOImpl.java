@@ -1,9 +1,7 @@
 package Merchandising.MerchandiseService.dao_layer.implementations;
 
 import Merchandising.MerchandiseService.beans.Manga;
-import Merchandising.MerchandiseService.beans.Product;
 import Merchandising.MerchandiseService.dao_layer.exceptions.*;
-import Merchandising.MerchandiseService.dao_layer.interfaces.GenreDAO;
 import Merchandising.MerchandiseService.dao_layer.interfaces.MangaDAO;
 import Utilities.ConnectionPool;
 
