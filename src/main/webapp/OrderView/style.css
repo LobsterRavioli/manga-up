@@ -1,0 +1,9 @@
+div.navbar {
+    height: 100%;
+    width: 120px;
+    border: 2px solid;
+    border-top: 0px;
+    padding: 10px;
+    padding-top: 30px;
+    background-color: #e0e0e0;
+}
