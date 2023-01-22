@@ -1,4 +1,4 @@
-package Merchandising.MerchandiseService.dao_layer.implementations;
+package Merchandising.MerchandiseService;
 
 import Merchandising.MerchandiseService.beans.Genre;
 import Merchandising.MerchandiseService.dao_layer.interfaces.GenreDAO;

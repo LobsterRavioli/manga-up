@@ -1,4 +1,4 @@
-package Merchandising.MerchandiseService.beans;
+package Merchandising.MerchandiseService;
 
 import java.util.HashMap;
 import java.util.Objects;

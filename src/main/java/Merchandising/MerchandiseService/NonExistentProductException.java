@@ -1,4 +1,4 @@
-package Merchandising.MerchandiseService.dao_layer.exceptions;
+package Merchandising.MerchandiseService;
 
 public class NonExistentProductException extends Exception{
 

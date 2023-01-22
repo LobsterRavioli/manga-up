@@ -1,4 +1,4 @@
-package Merchandising.MerchandiseService.dao_layer.implementations;
+package Merchandising.MerchandiseService;
 
 import Merchandising.MerchandiseService.beans.Manga;
 import Merchandising.MerchandiseService.dao_layer.exceptions.*;
