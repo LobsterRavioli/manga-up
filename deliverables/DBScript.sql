@@ -2,44 +2,35 @@ DROP SCHEMA IF EXISTS MANGA_UP ;
 CREATE SCHEMA MANGA_UP;
 USE MANGA_UP;
 
-CREATE TABLE User
+CREATE TABLE end_user
 (
-    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    username VARCHAR(15) NOT NULL UNIQUE,
-    password varchar(15) NOT NULL
+    usr_id  INT AUTO_INCREMENT NOT NULL,
+    usr_email Varchar(128) NOT NULL UNIQUE,
+    usr_name VARCHAR(32) NOT NULL,
+    usr_surname VARCHAR(32) NOT NULL,
+    usr_password VARCHAR(32) NOT NULL,
+    usr_phone_number VARCHAR(20) NOT NULL,
+    usr_birth_date date NOT NULL,
+    PRIMARY KEY (usr_id)
 );
 
-CREATE TABLE roles
+CREATE TABLE address
 (
-    role_name VARCHAR(20) NOT NULL PRIMARY KEY
-);
-
-CREATE TABLE user_roles
-(
-    user_id INT NOT NULL,
-    user_name VARCHAR(20) NOT NULL,
-    role_name VARCHAR(20) NOT NULL,
-    PRIMARY KEY (user_id, role_name),
-    FOREIGN KEY (user_name) REFERENCES User(username),
-    FOREIGN KEY (user_id) REFERENCES User(id),
-    FOREIGN KEY (role_name) REFERENCES roles(role_name)
-);
-
-CREATE TABLE END_USER
-(
-    id  INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    email Varchar(128) NOT NULL UNIQUE,
-    name VARCHAR(32) NOT NULL,
-    surname VARCHAR(128) NOT NULL,
-    password VARCHAR(32) NOT NULL,
-    phone_number VARCHAR(10) NOT NULL,
-    birth_date date NOT NULL
+    addr_id           INT AUTO_INCREMENT,
+    usr_id            INT          NOT NULL,
+    addr_country      VARCHAR(64)  NOT NULL,
+    addr_city         VARCHAR(30)  NOT NULL,
+    addr_street       VARCHAR(100) NOT NULL,
+    addr_phone_number VARCHAR(15)  NOT NULL,
+    addr_region       VARCHAR(30)  NOT NULL,
+    addr_postal_code  VARCHAR(5)   NOT NULL,
+    PRIMARY KEY (addr_id),
+    FOREIGN KEY (usr_id) REFERENCES end_user (usr_id)
 );
 
 CREATE TABLE credit_card
 (
-    crd_id INT AUTO_INCREMENT NOT NULL,
-    crd_number VARCHAR(20) NOT NULL ,
+    crd_id INT AUTO_INCREMENT NOT NULL,crd_number VARCHAR(20) NOT NULL,
     usr_id INT NOT NULL,
     crd_cvc VARCHAR(32) NOT NULL,
     crd_holder VARCHAR(15) NOT NULL,
@@ -48,16 +39,24 @@ CREATE TABLE credit_card
     FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)
 );
 
-CREATE TABLE Address
+CREATE TABLE users
 (
-    id  INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    user_id INT NOT NULL,
-    country VARCHAR(64) NOT NULL,
-    city VARCHAR(30) NOT NULL,
-    street VARCHAR(100) NOT NULL,
-    street_number INT NOT NULL,
-    postal_code VARCHAR(5) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES END_USER(id)
+    user_name VARCHAR(20) NOT NULL PRIMARY KEY,
+    password VARCHAR(32) NOT NULL);
+
+
+CREATE TABLE roles
+(
+    role_name VARCHAR(20) NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE user_roles
+(
+    user_name VARCHAR(20) NOT NULL,
+    role_name VARCHAR(20) NOT NULL,
+    PRIMARY KEY (user_name, role_name),
+    FOREIGN KEY (user_name) REFERENCES users (user_name),
+    FOREIGN KEY (role_name) REFERENCES roles (role_name)
 );
 
 CREATE TABLE Orders
@@ -71,7 +70,7 @@ CREATE TABLE Orders
     crd_holder VARCHAR(15) NOT NULL,
     crd_number VARCHAR(20) NOT NULL,
 
-    FOREIGN KEY(ord_end_user_id) REFERENCES END_USER(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(ord_end_user_id) REFERENCES END_USER(usr_id) ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY(ord_id)
 );
 
@@ -85,17 +84,17 @@ CREATE TABLE Order_row
 
     PRIMARY KEY (ord_id,user_id),
 
-    FOREIGN KEY (ord_id) REFERENCES Orders(id),
-    FOREIGN KEY (user_id) REFERENCES END_USER(id)
+    FOREIGN KEY (ord_id) REFERENCES Orders(ord_id),
+    FOREIGN KEY (user_id) REFERENCES END_USER(usr_id)
 );
 
 CREATE TABLE TO_MANAGE
 (
-    user_id int NOT NULL,
+    user_id VARCHAR(20) NOT NULL,
     order_id int NOT NULL,
 
     PRIMARY KEY (user_id,order_id),
-    FOREIGN KEY (user_id) REFERENCES User(id)
+    FOREIGN KEY (user_id) REFERENCES Users(user_name)
         ON UPDATE cascade ON DELETE cascade,
     FOREIGN KEY(order_id) REFERENCES Orders(ord_id)
         ON UPDATE cascade ON DELETE cascade
@@ -103,7 +102,7 @@ CREATE TABLE TO_MANAGE
 
 CREATE TABLE manages
 (
-    man_user_id int NOT NULL,
+    man_user_id VARCHAR(20) NOT NULL,
     man_order_id INT NOT NULL,
     PRIMARY KEY(man_user_id, man_order_id),
     man_delivery_date DATE NOT NULL,
@@ -112,35 +111,9 @@ CREATE TABLE manages
     man_shipment_date DATE NOT NULL,
 
     FOREIGN KEY(man_order_id) REFERENCES Orders(ord_id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY(man_user_id) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY(man_user_id) REFERENCES Users(user_name) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-
-/*CREATE TABLE Product
-(
-    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    name VARCHAR(50) NOT NULL,
-    brand VARCHAR(50) NOT NULL,
-    price DOUBLE NOT NULL,
-    weight DOUBLE NOT NULL,
-    height DOUBLE NOT NULL,
-    lenght DOUBLE NOT NULL,
-    state VARCHAR(20) NOT NULL,
-    description VARCHAR(255),
-    quantity INT NOT NULL,
-    image VARCHAR(300) NOT NULL
-);*/
-
-/*CREATE TABLE HasProductP
-(
-    product_id int NOT NULL,
-    user_id int NOT NULL,
-    PRIMARY KEY(product_id,user_id),
-    FOREIGN KEY (product_id) REFERENCES Product(id)
-        ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY (user_id) REFERENCES END_USER(id)
-        ON UPDATE cascade ON DELETE cascade
-);*/
 
 CREATE TABLE Manga
 (
@@ -153,19 +126,18 @@ CREATE TABLE Manga
     lenght DOUBLE NOT NULL,
     state VARCHAR(5) NOT NULL,
     description VARCHAR(255),
-    quantity INT NOT NULL,
     ISBN VARCHAR(13) NOT NULL,
     book_binding VARCHAR(30),
     volume VARCHAR(20),
     release_date date NOT NULL,
     page_number int,
+    quantity int NOT NULL,
     interior VARCHAR(20),
     lang VARCHAR(20) NOT NULL,
     image VARCHAR(300) NOT NULL,
     collection_id  VARCHAR(25) NOT NULL,
     genre_id VARCHAR(15) NOT NULL,
-    storyMaker VARCHAR(25) NOT NULL,
-
+    storyMaker VARCHAR(25) NOT NULL
 );
 
 CREATE TABLE CART
@@ -175,27 +147,15 @@ CREATE TABLE CART
     PRIMARY KEY(manga_id,user_id),
     FOREIGN KEY (manga_id) REFERENCES Manga(id)
         ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY (user_id) REFERENCES END_USER(id)
+    FOREIGN KEY (user_id) REFERENCES END_USER(usr_id)
         ON UPDATE cascade ON DELETE cascade
 );
 
 CREATE TABLE Collection
 (
-  nome VARCHAR(25) NOT NULL
+    nome VARCHAR(25) NOT NULL
 );
 
-
-
-/*CREATE TABLE HasCollectionP
-(
-    product_id int NOT NULL,
-    user_id int NOT NULL,
-    PRIMARY KEY(product_id,user_id),
-    FOREIGN KEY (product_id) REFERENCES Product(id)
-        ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY (user_id) REFERENCES END_USER(id)
-        ON UPDATE cascade ON DELETE cascade
-);*/
 
 
 CREATE TABLE Genre
@@ -204,42 +164,7 @@ CREATE TABLE Genre
 );
 
 
-/*CREATE TABLE Author
-(
-    id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    name VARCHAR(30) NOT NULL,
-    role VARCHAR(20) NOT NULL
-);
-
-CREATE TABLE HasAuthor
-(
-    manga_id int NOT NULL,
-    author_id int NOT NULL,
-    PRIMARY KEY(manga_id,author_id),
-    FOREIGN KEY (manga_id) REFERENCES Manga(id)
-        ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY (author_id) REFERENCES Author(id)
-        ON UPDATE cascade ON DELETE cascade
-);*/
-
-CREATE TABLE WAREHOUSE
-(
-    nome VARCHAR(50) PRIMARY KEY NOT NULL
-);
-
-CREATE TABLE HASPRODUCT
-(
-    manga_id int NOT NULL,
-    warehouse_id VARCHAR(50) NOT NULL,
-    quantity int NOT NULL,
-    FOREIGN KEY (manga_id) REFERENCES Manga(id)
-        ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY (warehouse_id) REFERENCES WAREHOUSE(nome)
-        ON UPDATE cascade ON DELETE cascade
-
-);
-
-INSERT INTO User (username, password) VALUES ('Tommaso', 'password1');
+/*INSERT INTO User (username, password) VALUES ('Tommaso', 'password1');
 INSERT INTO User (username, password) VALUES ('Alessandro', 'password2');
 INSERT INTO User (username, password) VALUES ('Giovanni', 'password3');
 INSERT INTO User (username, password) VALUES ('Sara', 'password4');
@@ -379,4 +304,4 @@ INSERT INTO manages (man_user_id, man_order_id, man_delivery_date, man_tracking_
 VALUES (5, 3, '2007-10-08', 'TRN4', 'DHL', '2007-10-09');
 
 INSERT INTO manages (man_user_id, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
-VALUES (5, 4, '2007-10-08', 'TRN5', 'BRT', '2007-10-09');
+VALUES (5, 4, '2007-10-08', 'TRN5', 'BRT', '2007-10-09');*/
