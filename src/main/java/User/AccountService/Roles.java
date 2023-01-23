@@ -1,4 +1,4 @@
-package User.AccountService.beans;
+package User.AccountService;
 
 public enum Roles {
     END_USER("EU"),

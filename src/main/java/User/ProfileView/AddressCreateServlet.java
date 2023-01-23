@@ -1,21 +1,22 @@
-package User.AccountService.service_layer;
+package User.ProfileView;
 
-import User.AccountService.beans.Address;
-import User.AccountService.beans.ConcreteAddressBuilder;
-import User.AccountService.beans.EndUser;
-import User.AccountService.dao_layer.interfaces.AddressDAO;
-import utils.AbstractDAOFactory;
+import User.AccountService.Address;
+import User.AccountService.AddressDAO;
+import User.AccountService.ConcreteAddressBuilder;
+import User.AccountService.EndUser;
 
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import javax.sql.DataSource;
 import java.io.IOException;
 
 @WebServlet("/AddressCreateServlet")
 public class AddressCreateServlet extends HttpServlet {
-    private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.JDBC);
-    private AddressDAO dao = factory.getAddressDAO();
+
+    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+    private AddressDAO dao = new AddressDAO(ds);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

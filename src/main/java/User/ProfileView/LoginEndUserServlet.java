@@ -1,19 +1,19 @@
-package User.AccountService.service_layer;
+package User.ProfileView;
 
-import User.AccountService.beans.EndUser;
-import User.AccountService.dao_layer.interfaces.EndUserDAO;
-import utils.AbstractDAOFactory;
+import User.AccountService.EndUser;
+import User.AccountService.EndUserDAO;
 
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import javax.sql.DataSource;
 import java.io.IOException;
 
 @WebServlet("/LoginEndUserServlet")
 public class LoginEndUserServlet extends HttpServlet {
-    private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.JDBC);
-    private EndUserDAO dao = factory.getEndUserDAO();
+    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+    private EndUserDAO dao = new EndUserDAO(ds);
 
 
     @Override
@@ -28,16 +28,15 @@ public class LoginEndUserServlet extends HttpServlet {
         response.setContentType("text/html");
         String email = request.getParameter("username");
         String password = request.getParameter("password");
-        EndUser user = dao.find(email,password);
+        EndUser user = dao.login(email,password);
 
         if(user == null){
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/profile_view/login_end_user.jsp"));
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProfileView/login_end_user.jsp"));
             dispatcher.forward(request, response);
             return;
         }
 
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/profile_view/.jsp"));
+        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProfileView/.jsp"));
         dispatcher.forward(request, response);
-
     }
 }

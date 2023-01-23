@@ -1,6 +1,4 @@
-package Cart.CheckoutService.dao_layer;
-
-import User.AccountService.beans.User;
+package Cart.CheckoutService;
 
 public class UserNotAssociatedException extends Exception{
 

@@ -1,4 +1,4 @@
-package Merchandising.MerchandiseService.beans;
+package Merchandising.MerchandiseService;
 
 
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Manga{
-
+/*
 
     public Manga(String isbn, String brand, String binding, String language, String volume, int pages, Date exitDate, int id, String name, String description, double price, double height, double length, double weight, String collections,int quantity, Product.ProductState state,String interior,String imagePath) {
         this.isbn = isbn;
@@ -228,4 +228,6 @@ public class Manga{
     private ArrayList<Autore> autore;
 
     private ArrayList<Genre> genre;
+
+ */
 }

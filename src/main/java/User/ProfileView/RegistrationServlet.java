@@ -1,28 +1,22 @@
-package User.AccountService.service_layer;
+package User.ProfileView;
 
-import User.AccountService.beans.*;
-import User.AccountService.dao_layer.interfaces.AddressDAO;
-import User.AccountService.dao_layer.interfaces.CreditCardDAO;
-import User.AccountService.dao_layer.interfaces.EndUserDAO;
-import com.mysql.cj.util.Util;
-import utils.AbstractDAOFactory;
+import User.AccountService.*;
 import utils.Utils;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import javax.sql.DataSource;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @WebServlet(name = "RegistrationServlet", value = "/RegistrationServlet")
 public class RegistrationServlet extends HttpServlet {
 
     private static final String EMAIL_ERROR = "Email già in uso";
-    private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.JDBC);
-    private EndUserDAO daoEndUser = factory.getEndUserDAO();
-    private AddressDAO daoAddress = factory.getAddressDAO();
-    private CreditCardDAO daoCreditCard = factory.getCreditCardDAO();
+    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+    private EndUserDAO daoEndUser = new EndUserDAO(ds);
+    private AddressDAO daoAddress = new AddressDAO(ds);
+    private CreditCardDAO daoCreditCard = new CreditCardDAO(ds);
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -43,7 +37,7 @@ public class RegistrationServlet extends HttpServlet {
                 .createEndUser();
 
         if(daoEndUser.existEmail(user.getEmail())){
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/profile_view/registrazione_utente.jsp"));
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProfileView/registrazione_utente.jsp"));
             request.setAttribute("error_message", EMAIL_ERROR);
             dispatcher.forward(request, response);
             return;
@@ -71,13 +65,12 @@ public class RegistrationServlet extends HttpServlet {
         card.setEndUser(user);
 
 
-        daoEndUser.create(user);
+        daoEndUser.registration(user);
         daoAddress.create(address);
         daoCreditCard.create(card);
 
         request.getSession().setAttribute("user", user);
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/MerchandisingView/homepage.jsp"));
         dispatcher.forward(request, response);
-
     }
 }

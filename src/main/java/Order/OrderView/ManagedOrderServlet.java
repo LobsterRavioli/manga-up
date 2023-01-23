@@ -1,4 +1,4 @@
-package Order.DispatchService.service_layer;
+package Order.OrderView;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +17,7 @@ public class ManagedOrderServlet extends HttpServlet{
 
         if(ord_id != null)
         {
-            getServletContext().getRequestDispatcher("/order_view/manage_order.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher("/OrderView/manage_order.jsp").forward(request, response);
         }
         else
         {

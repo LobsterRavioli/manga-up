@@ -1,4 +1,4 @@
-package Merchandising.MerchandiseService.beans;
+package Merchandising.MerchandiseService;
 
 public class Autore {
 

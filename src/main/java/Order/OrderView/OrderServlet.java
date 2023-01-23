@@ -1,7 +1,6 @@
-package Order.DispatchService.service_layer;
+package Order.OrderView;
 
-import Order.DispatchService.dao_layer.implementations.OrderDAOImp;
-import Order.DispatchService.dao_layer.interfaces.OrderDAO;
+import Order.DispatchService.OrderDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,23 +17,21 @@ public class OrderServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // RECUPERO L'ID DELL'ORDER MANAGER
-        Integer orderManagerId = (Integer)request.getSession().getAttribute("managerID");
+        // RECUPERO LO USERNAME DELL'ORDER MANAGER
+        String orderManagerName = (String) request.getSession().getAttribute("managerName");
 
-        //CODICE TEMPORANEO TANTO PER TESTARE
-        if(orderManagerId == null)
-            orderManagerId = 4; // recupero gli ordini del gestore avebte ID = 4
-        // CI SERVE UNA QUERY CHE POSSA RECUPERARE GLI ID DEI MANAGER CHE SIANO SOLO GESTORI DEGLI ORDINI
+        if(orderManagerName == null)
+            response.sendRedirect(getServletContext().getContextPath()+"/LoginManager");
 
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-        OrderDAO model = new OrderDAOImp(ds);
+        OrderDAO model = new OrderDAO(ds);
 
         String criteria = request.getParameter("sort");
 
         try
         {
             request.removeAttribute("orders");
-            request.setAttribute("orders", model.doRetrieveAllForSpecificUser(orderManagerId, criteria));
+            request.setAttribute("orders", model.doRetrieveAllForSpecificUser(orderManagerName, criteria));
         }
         catch (SQLException e)
         {
@@ -42,7 +39,7 @@ public class OrderServlet extends HttpServlet {
             request.setAttribute("error", e.getMessage());
         }
 
-        getServletContext().getRequestDispatcher("/order_view/order_list.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/OrderView/order_list.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

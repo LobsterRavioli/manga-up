@@ -1,8 +1,7 @@
-package User.AccountService.service_layer;
+package User.ProfileView;
 
-import User.AccountService.beans.User;
-import User.AccountService.dao_layer.implementations.UserDAOImp;
-import User.AccountService.dao_layer.interfaces.UserDAO;
+import User.AccountService.User;
+import User.AccountService.UserDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,13 +25,13 @@ public class SwitchRoleServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-        UserDAO dao = new UserDAOImp(ds);
+        UserDAO dao = new UserDAO(ds);
 
         String username = (String)request.getSession().getAttribute("managerName");
         String password = (String)request.getSession().getAttribute("password");
         if(username == null || password == null)
         {
-            response.sendRedirect(getServletContext().getContextPath()+"/profile_view/login_manager.jsp");
+            response.sendRedirect(getServletContext().getContextPath()+"/ProfileView/login_manager.jsp");
             return;
         }
         else
@@ -61,10 +60,10 @@ public class SwitchRoleServlet extends HttpServlet {
                     currentSession.setMaxInactiveInterval(5 * 60); // 5 minuti di inattività massima, dopo cancella la sessione
 
                     if (role.equals("USER_MANAGER")) // redirect to user manager homepage
-                        response.sendRedirect(getServletContext().getContextPath() + "/profile_view/userManagerHome.jsp");
+                        response.sendRedirect(getServletContext().getContextPath() + "/ProfileView/userManagerHome.jsp");
 
                     if (role.equals("ORDER_MANAGER"))  // redirect to order manager homepage
-                        response.sendRedirect(getServletContext().getContextPath() + "/order_view/homepage.jsp");
+                        response.sendRedirect(getServletContext().getContextPath() + "/OrderView/homepage.jsp");
 
                     if (role.equals("CATALOG_MANAGER")) // redirect to catalog manager homepage
                         response.sendRedirect(getServletContext().getContextPath() + "/ProductsView/catalogManagerHome.jsp");
@@ -73,7 +72,7 @@ public class SwitchRoleServlet extends HttpServlet {
             } catch (SQLException e) {
                 e.printStackTrace();
                 request.setAttribute("error", e.getMessage());
-                request.getRequestDispatcher("/profile_view/login_manager.jsp").forward(request,response);
+                request.getRequestDispatcher("/ProfileView/login_manager.jsp").forward(request,response);
             }
         }
     }

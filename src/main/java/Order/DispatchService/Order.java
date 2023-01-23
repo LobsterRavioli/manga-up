@@ -1,26 +1,27 @@
-package Order.DispatchService.beans;
+package Order.DispatchService;
 
 import java.sql.Date;
 import java.util.Objects;
 
-import User.AccountService.beans.EndUser;
-import User.AccountService.beans.User;
+import User.AccountService.CreditCard;
+import User.AccountService.EndUser;
 
 public class Order {
 
     public Order()
     {
-        //this.user = new User();
         this.endUser = new EndUser();
+        this.endUserCard = new CreditCard();
     }
 
-    public Order(long id, Date orderDate, double totalPrice, EndUser endUser)
+    public Order(long id, Date orderDate, double totalPrice, EndUser endUser, CreditCard card)
     {
         this.id = id;
         this.orderDate = orderDate;
         this.state = Order.TO_SENT;
         this.totalPrice = totalPrice;
         this.endUser = endUser;
+        this.endUserCard = card;
     }
 
     public long getId()
@@ -93,6 +94,16 @@ public class Order {
         this.endUser.setId(newEndUserID);
     }
 
+    public long getCreditCardEndUser()
+    {
+        return this.endUserCard.getId();
+    }
+
+    public void setCreditCardEndUser(int cardId)
+    {
+        this.endUserCard.setId(cardId);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -111,6 +122,8 @@ public class Order {
     private String state;
     private double totalPrice;
     private EndUser endUser;
+
+    private CreditCard endUserCard;
 
     public static final String TO_SENT = "TO_SEND";
     public static final String SENT = "SENT";

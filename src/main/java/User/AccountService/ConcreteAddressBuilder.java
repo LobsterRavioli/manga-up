@@ -1,4 +1,4 @@
-package User.AccountService.beans;
+package User.AccountService;
 
 public class ConcreteAddressBuilder implements AddressBuilder {
     private int id;

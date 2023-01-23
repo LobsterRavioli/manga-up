@@ -1,3 +1,3 @@
-package Merchandising.MerchandiseService.beans;
+package Merchandising.MerchandiseService;
 
 public enum RuoloAutore{StoryBoarder,StoryMaker}

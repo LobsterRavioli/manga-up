@@ -1,4 +1,4 @@
-package Cart.CheckoutService.beans;
+package Cart.CheckoutService;
 
 import java.util.HashMap;
 

@@ -1,24 +1,23 @@
-package User.AccountService.service_layer;
+package User.ProfileView;
 
-import User.AccountService.beans.CreditCard;
-import User.AccountService.beans.ConcreteCardBuilder;
-import User.AccountService.beans.EndUser;
-import User.AccountService.dao_layer.interfaces.CreditCardDAO;
-import utils.AbstractDAOFactory;
+import User.AccountService.ConcreteCardBuilder;
+import User.AccountService.CreditCard;
+import User.AccountService.CreditCardDAO;
+import User.AccountService.EndUser;
 import utils.Utils;
 
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.Date;
 
 @WebServlet("/CreditCardCreateServlet")
 public class CreditCardCreateServlet extends HttpServlet {
 
-    private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.JDBC);
-    private CreditCardDAO dao = factory.getCreditCardDAO();
+    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+    private CreditCardDAO dao = new CreditCardDAO(ds);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
