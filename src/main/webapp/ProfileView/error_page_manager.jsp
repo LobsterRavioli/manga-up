@@ -12,7 +12,7 @@
 </head>
 <body>
 <h3>Non hai le autorizzazioni necessarie!</h3>
-<a href="${pageContext.request.contextPath}/profile_view/manager_selection.jsp">Click to Login Again</a>
+<a href="${pageContext.request.contextPath}/ProfileView/manager_selection.jsp">Click to Login Again</a>
 
 </body>
 </html>

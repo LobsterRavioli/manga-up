@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<a href="${pageContext.request.contextPath}/profile_view/form_carta_credito.jsp">Servizio di aggiunta di carta di credito.</a>
+<a href="${pageContext.request.contextPath}/ProfileView/form_carta_credito.jsp">Servizio di aggiunta di carta di credito.</a>
 
 <c:if test="${empty cards}">
     <p> Non hai nessuna carta di credito. </p>

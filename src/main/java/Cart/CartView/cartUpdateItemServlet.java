@@ -1,20 +1,19 @@
-package Cart.CheckoutService.service_layer;
+package Cart.CartView;
 
-import Cart.CheckoutService.dao_layer.interfaces.CartDAO;
-import Merchandising.MerchandiseService.beans.Manga;
-import User.AccountService.beans.EndUser;
-import utils.AbstractDAOFactory;
+import Cart.CheckoutService.CartDAO;
+import User.AccountService.EndUser;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import javax.sql.DataSource;
 import java.io.IOException;
 
 @WebServlet(name = "cartDecreaseServlet", value = "/cartDecreaseServlet")
 public class cartUpdateItemServlet extends HttpServlet {
 
-    private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.JDBC);
-    private CartDAO dao = factory.getCartDAO();
+    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+    private CartDAO dao = new CartDAO(ds);
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request,response);
@@ -34,7 +33,7 @@ public class cartUpdateItemServlet extends HttpServlet {
         String prod_id = request.getParameter("prod");
         String type = request.getParameter("type");
         response.setContentType("text/plain");
-
+/*
         try{
             if(type.equals("M")){
                 if(dao.addElement(endUser.getId(),Integer.parseInt(prod_id),Integer.parseInt(quantity), Manga.class) == true) {
@@ -52,5 +51,6 @@ public class cartUpdateItemServlet extends HttpServlet {
         }catch (Exception e){
             request.setAttribute("error",e.getMessage());
         }
+ */
     }
 }

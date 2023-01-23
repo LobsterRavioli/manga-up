@@ -30,11 +30,12 @@ CREATE TABLE address
 
 CREATE TABLE credit_card
 (
-    crd_id INT AUTO_INCREMENT NOT NULL,crd_number VARCHAR(20) NOT NULL,
+    crd_id INT AUTO_INCREMENT NOT NULL,
+    crd_number VARCHAR(16) UNIQUE NOT NULL,
     usr_id INT NOT NULL,
     crd_cvc VARCHAR(32) NOT NULL,
-    crd_holder VARCHAR(15) NOT NULL,
-    crd_expirement_date date NOT NULL,
+    crd_holder VARCHAR(50) NOT NULL,
+    crd_expiration_date date NOT NULL,
     PRIMARY KEY (crd_id),
     FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)
 );
@@ -67,10 +68,10 @@ CREATE TABLE Orders
     ord_total_price FLOAT NOT NULL,
     ord_end_user_id INT NOT NULL,
 
-    crd_holder VARCHAR(15) NOT NULL,
-    crd_number VARCHAR(20) NOT NULL,
+    crd_id INT NOT NULL,
 
-    FOREIGN KEY(ord_end_user_id) REFERENCES END_USER(usr_id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(ord_end_user_id) REFERENCES end_user(usr_id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(crd_id) REFERENCES credit_card(crd_id),
     PRIMARY KEY(ord_id)
 );
 
@@ -85,16 +86,16 @@ CREATE TABLE Order_row
     PRIMARY KEY (ord_id,user_id),
 
     FOREIGN KEY (ord_id) REFERENCES Orders(ord_id),
-    FOREIGN KEY (user_id) REFERENCES END_USER(usr_id)
+    FOREIGN KEY (user_id) REFERENCES end_user(usr_id)
 );
 
 CREATE TABLE TO_MANAGE
 (
-    user_id VARCHAR(20) NOT NULL,
+    user_name VARCHAR(20) NOT NULL,
     order_id int NOT NULL,
 
-    PRIMARY KEY (user_id,order_id),
-    FOREIGN KEY (user_id) REFERENCES Users(user_name)
+    PRIMARY KEY (user_name,order_id),
+    FOREIGN KEY (user_name) REFERENCES users(user_name)
         ON UPDATE cascade ON DELETE cascade,
     FOREIGN KEY(order_id) REFERENCES Orders(ord_id)
         ON UPDATE cascade ON DELETE cascade
@@ -102,16 +103,16 @@ CREATE TABLE TO_MANAGE
 
 CREATE TABLE manages
 (
-    man_user_id VARCHAR(20) NOT NULL,
+    man_user_name VARCHAR(20) NOT NULL,
     man_order_id INT NOT NULL,
-    PRIMARY KEY(man_user_id, man_order_id),
+    PRIMARY KEY(man_user_name, man_order_id),
     man_delivery_date DATE NOT NULL,
     man_tracking_number VARCHAR(20) NOT NULL,
     man_courier VARCHAR(30) NOT NULL,
     man_shipment_date DATE NOT NULL,
 
     FOREIGN KEY(man_order_id) REFERENCES Orders(ord_id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY(man_user_id) REFERENCES Users(user_name) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY(man_user_name) REFERENCES users(user_name) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -147,7 +148,7 @@ CREATE TABLE CART
     PRIMARY KEY(manga_id,user_id),
     FOREIGN KEY (manga_id) REFERENCES Manga(id)
         ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY (user_id) REFERENCES END_USER(usr_id)
+    FOREIGN KEY (user_id) REFERENCES end_user(usr_id)
         ON UPDATE cascade ON DELETE cascade
 );
 
@@ -164,12 +165,12 @@ CREATE TABLE Genre
 );
 
 
-/*INSERT INTO User (username, password) VALUES ('Tommaso', 'password1');
-INSERT INTO User (username, password) VALUES ('Alessandro', 'password2');
-INSERT INTO User (username, password) VALUES ('Giovanni', 'password3');
-INSERT INTO User (username, password) VALUES ('Sara', 'password4');
-INSERT INTO User (username, password) VALUES ('Francesco', 'password5');
-INSERT INTO User (username, password) VALUES ('Riccardo', 'password6');
+INSERT INTO users (user_name, password) VALUES ('Tommaso', 'password1');
+INSERT INTO users (user_name, password) VALUES ('Alessandro', 'password2');
+INSERT INTO users (user_name, password) VALUES ('Giovanni', 'password3');
+INSERT INTO users (user_name, password) VALUES ('Sara', 'password4');
+INSERT INTO users (user_name, password) VALUES ('Francesco', 'password5');
+INSERT INTO users (user_name, password) VALUES ('Riccardo', 'password6');
 
 
 INSERT INTO roles (role_name) VALUES ('CATALOG_MANAGER');
@@ -177,131 +178,131 @@ INSERT INTO roles (role_name) VALUES ('USER_MANAGER');
 INSERT INTO roles (role_name) VALUES ('ORDER_MANAGER');
 
 
-INSERT INTO user_roles (user_id, user_name, role_name) VALUES (1, 'Tommaso', 'CATALOG_MANAGER');
-INSERT INTO user_roles (user_id, user_name, role_name) VALUES (2, 'Alessandro', 'USER_MANAGER');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Tommaso', 'CATALOG_MANAGER');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Alessandro', 'USER_MANAGER');
 
-INSERT INTO user_roles (user_id, user_name, role_name) VALUES (3, 'Giovanni', 'ORDER_MANAGER');
-INSERT INTO user_roles (user_id, user_name, role_name) VALUES (3, 'Giovanni', 'USER_MANAGER');
-INSERT INTO user_roles (user_id, user_name, role_name) VALUES (3, 'Giovanni', 'CATALOG_MANAGER');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Giovanni', 'ORDER_MANAGER');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Giovanni', 'USER_MANAGER');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Giovanni', 'CATALOG_MANAGER');
 
-INSERT INTO user_roles (user_id, user_name, role_name) VALUES (4, 'Sara', 'ORDER_MANAGER');
-INSERT INTO user_roles (user_id, user_name, role_name) VALUES (4, 'Sara', 'CATALOG_MANAGER');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Sara', 'ORDER_MANAGER');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Sara', 'CATALOG_MANAGER');
 
-INSERT INTO user_roles (user_id, user_name, role_name) VALUES (5, 'Francesco', 'ORDER_MANAGER');
-INSERT INTO user_roles (user_id, user_name, role_name) VALUES (6, 'Riccardo', 'ORDER_MANAGER');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Francesco', 'ORDER_MANAGER');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Riccardo', 'ORDER_MANAGER');
 
 
-INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
+INSERT INTO end_user (usr_email, usr_name, usr_surname, usr_password, usr_phone_number, usr_birth_date)
 VALUES ('toms@hotmail.it', 'Tommaso', 'Sorrentino', 'napoli123', '3662968496', '1970-01-15');
 
-INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
+INSERT INTO end_user (usr_email, usr_name, usr_surname, usr_password, usr_phone_number, usr_birth_date)
 VALUES ('fra@hotmail.it', 'Francesco', 'Monzillo', 'dontTypeInGoogle', '3409567346', '1976-03-01');
 
-INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
+INSERT INTO end_user (usr_email, usr_name, usr_surname, usr_password, usr_phone_number, usr_birth_date)
 VALUES ('ale@hotmail.it', 'Alessandro', 'Carnevale', 'passWARUDO', '3201992344', '1975-07-15');
 
-INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
+INSERT INTO end_user (usr_email, usr_name, usr_surname, usr_password, usr_phone_number, usr_birth_date)
 VALUES ('squidditen@blue.it', 'Squidward Quincy', 'Tentacles', 'golDclarinet', '3774890918', '1999-05-01');
 
-INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
+INSERT INTO end_user (usr_email, usr_name, usr_surname, usr_password, usr_phone_number, usr_birth_date)
 VALUES ('mrkrabs@blue.it', 'Eugene Harold', 'Krab', 'IngredientXISNotPlanktons', '3446779921', '1942-11-30');
 
-INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
+INSERT INTO end_user (usr_email, usr_name, usr_surname, usr_password, usr_phone_number, usr_birth_date)
 VALUES ('spongy87@blue.it', 'Spongebob', 'Squarepants', 'spugnaBOBPantaloniQuadrati23', '3449576923', '1986-07-14');
 
-INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
+INSERT INTO end_user (usr_email, usr_name, usr_surname, usr_password, usr_phone_number, usr_birth_date)
 VALUES ('patrik060@blue.it', 'Patrick', 'Star', 'spongibob-uhKrabbyPattySENSEI', '3994058843', '1986-04-22');
 
-INSERT INTO END_USER (email, name, surname, password, phone_number, birth_date)
+INSERT INTO end_user (usr_email, usr_name, usr_surname, usr_password, usr_phone_number, usr_birth_date)
 VALUES ('spike@mars.it', 'Spike', 'Spiegel', 'WhateverHappensHappens', '3998831966', '1944-06-26');
 
 
-INSERT INTO Credit_Card (number, user_id, cvc, nome, cognome, data_scadenza)
-VALUES ('1234990388769210', 8, 297, 'Faye', 'Valentine', '2032-08-03');
+INSERT INTO credit_card (crd_number, usr_id, crd_cvc, crd_holder, crd_expiration_date)
+VALUES ('1234990388769210', 8, 297, 'Faye Valentine', '2032-08-03');
 
-INSERT INTO Credit_Card (number, user_id, cvc, nome, cognome, data_scadenza)
-VALUES ('3234338700228810', 2, 887, 'Francesco', 'Monzillo', '2030-01-09');
+INSERT INTO credit_card (crd_number, usr_id, crd_cvc, crd_holder, crd_expiration_date)
+VALUES ('3234338700228810', 2, 887, 'Francesco Monzillo', '2030-01-09');
 
-INSERT INTO Credit_Card (number, user_id, cvc, nome, cognome, data_scadenza)
-VALUES ('6543388700226254', 4, 885, 'Squidward Quincy', 'Tentacles', '2025-11-10');
+INSERT INTO credit_card (crd_number, usr_id, crd_cvc, crd_holder, crd_expiration_date)
+VALUES ('6543388700226254', 4, 885, 'Squidward Quincy Tentacles', '2025-11-10');
 
-INSERT INTO Credit_Card (number, user_id, cvc, nome, cognome, data_scadenza)
-VALUES ('4567338711779023', 5, 332, 'Spongebob', 'Squarepants', '2023-09-08');
+INSERT INTO credit_card (crd_number, usr_id, crd_cvc, crd_holder, crd_expiration_date)
+VALUES ('4567338711779023', 5, 332, 'Spongebob Squarepants', '2023-09-08');
 
-INSERT INTO Credit_Card (number, user_id, cvc, nome, cognome, data_scadenza)
-VALUES ('3232115522009988', 1, 320, 'Tommaso', 'Sorrentino', '2025-07-10');
+INSERT INTO credit_card (crd_number, usr_id, crd_cvc, crd_holder, crd_expiration_date)
+VALUES ('3232115522009988', 1, 320, 'Tommaso Sorrentino', '2025-07-10');
 
-INSERT INTO Credit_Card (number, user_id, cvc, nome, cognome, data_scadenza)
-VALUES ('4590120000509023', 3, 775, 'Alessandro', 'Carnevale', '2024-12-12');
+INSERT INTO credit_card (crd_number, usr_id, crd_cvc, crd_holder, crd_expiration_date)
+VALUES ('4590120000509023', 3, 775, 'Alessandro Carnevale', '2024-12-12');
 
-INSERT INTO Credit_Card (number, user_id, cvc, nome, cognome, data_scadenza)
-VALUES ('1239888899776534', 6, 266, 'Spongebob', 'Squarepants', '2025-06-10');
+INSERT INTO credit_card (crd_number, usr_id, crd_cvc, crd_holder, crd_expiration_date)
+VALUES ('1239888899776534', 6, 266, 'Spongebob Squarepants', '2025-06-10');
 
-INSERT INTO Credit_Card (number, user_id, cvc, nome, cognome, data_scadenza)
-VALUES ('2900338661198212', 7, 112, 'Patrick', 'Star', '2025-10-02');
-
-
-
-INSERT INTO Address (user_id, country, city, street, street_number, postal_code)
-VALUES (1, 'Italy', 'City1', 'Street1', 36, 84011);
-
-INSERT INTO Address (user_id, country, city, street, street_number, postal_code)
-VALUES (7, 'Italy', 'City2', 'Street2', 22, 84056);
-
-INSERT INTO Address (user_id, country, city, street, street_number, postal_code)
-VALUES (5, 'Italy', 'City3', 'Street3', 12, 84098);
-
-INSERT INTO Address (user_id, country, city, street, street_number, postal_code)
-VALUES (2, 'Italy', 'City4', 'Street4', 9, 84032);
-
-INSERT INTO Address (user_id, country, city, street, street_number, postal_code)
-VALUES (3, 'Italy', 'City5', 'Street5', 2, 84546);
-
-INSERT INTO Address (user_id, country, city, street, street_number, postal_code)
-VALUES (8, 'Italy', 'City6', 'Street6', 34, 84213);
-
-INSERT INTO Address (user_id, country, city, street, street_number, postal_code)
-VALUES (4, 'Italy', 'City7', 'Street7', 28, 84767);
-
-INSERT INTO Address (user_id, country, city, street, street_number, postal_code)
-VALUES (6, 'Italy', 'City8', 'Street8', 19, 84323);
-
-
-INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id)
-VALUES ('2018-10-09', 'TO_SENT', 58.00, 5);
-
-INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id)
-VALUES ('2018-11-02', 'TO_SENT', 100.00, 3);
-
-INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id)
-VALUES ('2018-11-21', 'TO_SENT', 55.00, 2);
-
-INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id)
-VALUES ('2018-09-09', 'TO_SENT', 532.00, 1);
-
-INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id)
-VALUES ('2018-06-04', 'TO_SENT', 21.50, 8);
-
-
-INSERT INTO TO_MANAGE (user_id, order_id) VALUES (3, 5);
-INSERT INTO TO_MANAGE (user_id, order_id) VALUES (4, 4);
-INSERT INTO TO_MANAGE (user_id, order_id) VALUES (4, 1);
-INSERT INTO TO_MANAGE (user_id, order_id) VALUES (3, 2);
-INSERT INTO TO_MANAGE (user_id, order_id) VALUES (5, 3);
+INSERT INTO credit_card (crd_number, usr_id, crd_cvc, crd_holder, crd_expiration_date)
+VALUES ('2900338661198212', 7, 112, 'Patrick Star', '2025-10-02');
 
 
 
-INSERT INTO manages (man_user_id, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
-VALUES (3, 5, '2007-10-08', 'TRN1', 'BRT', '2007-10-09');
+INSERT INTO address (usr_id, addr_country, addr_city, addr_street, addr_phone_number, addr_region, addr_postal_code)
+VALUES (1, 'Italy', 'City1', 'Street1', 1234567890, 'Region1', 84011);
 
-INSERT INTO manages (man_user_id, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
-VALUES (3, 2, '2007-12-08', 'TRN2', 'BRT', '2007-12-09');
+INSERT INTO address (usr_id, addr_country, addr_city, addr_street, addr_phone_number, addr_region, addr_postal_code)
+VALUES (7, 'Italy', 'City2', 'Street2', 9274846890, 'Region2', 84056);
 
-INSERT INTO manages (man_user_id, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
-VALUES (5, 1, '2007-10-08', 'TRN3', 'DHL', '2007-10-09');
+INSERT INTO address (usr_id, addr_country, addr_city, addr_street, addr_phone_number, addr_region, addr_postal_code)
+VALUES (5, 'Italy', 'City3', 'Street3', 6774125997, 'Region3', 84098);
 
-INSERT INTO manages (man_user_id, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
-VALUES (5, 3, '2007-10-08', 'TRN4', 'DHL', '2007-10-09');
+INSERT INTO address (usr_id, addr_country, addr_city, addr_street, addr_phone_number, addr_region, addr_postal_code)
+VALUES (2, 'Italy', 'City4', 'Street4', 1674890111, 'Region4', 84032);
 
-INSERT INTO manages (man_user_id, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
-VALUES (5, 4, '2007-10-08', 'TRN5', 'BRT', '2007-10-09');*/
+INSERT INTO address (usr_id, addr_country, addr_city, addr_street, addr_phone_number, addr_region, addr_postal_code)
+VALUES (3, 'Italy', 'City5', 'Street5', 1552334998, 'Region5', 84546);
+
+INSERT INTO address (usr_id, addr_country, addr_city, addr_street, addr_phone_number, addr_region, addr_postal_code)
+VALUES (8, 'Italy', 'City6', 'Street6', 4333294477, 'Region6', 84213);
+
+INSERT INTO address (usr_id, addr_country, addr_city, addr_street, addr_phone_number, addr_region, addr_postal_code)
+VALUES (4, 'Italy', 'City7', 'Street7', 3401267677, 'Region7', 84767);
+
+INSERT INTO address (usr_id, addr_country, addr_city, addr_street, addr_phone_number, addr_region, addr_postal_code)
+VALUES (6, 'Italy', 'City8', 'Street8', 1563259833, 'Region8', 84323);
+
+
+INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id, crd_id)
+VALUES ('2018-10-09', 'TO_SENT', 58.00, 5, 8);
+
+INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id, crd_id)
+VALUES ('2018-11-02', 'TO_SENT', 100.00, 3, 2);
+
+INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id, crd_id)
+VALUES ('2018-11-21', 'TO_SENT', 55.00, 2, 6);
+
+INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id, crd_id)
+VALUES ('2018-09-09', 'TO_SENT', 532.00, 1, 5);
+
+INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id, crd_id)
+VALUES ('2018-06-04', 'TO_SENT', 21.50, 8, 1);
+
+
+INSERT INTO TO_MANAGE (user_name, order_id) VALUES ('Giovanni', 5);
+INSERT INTO TO_MANAGE (user_name, order_id) VALUES ('Sara', 4);
+INSERT INTO TO_MANAGE (user_name, order_id) VALUES ('Sara', 1);
+INSERT INTO TO_MANAGE (user_name, order_id) VALUES ('Giovanni', 2);
+INSERT INTO TO_MANAGE (user_name, order_id) VALUES ('Francesco', 3);
+
+
+
+INSERT INTO manages (man_user_name, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
+VALUES ('Giovanni', 5, '2007-10-08', 'TRN1', 'BRT', '2007-10-09');
+
+INSERT INTO manages (man_user_name, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
+VALUES ('Giovanni', 2, '2007-12-08', 'TRN2', 'BRT', '2007-12-09');
+
+INSERT INTO manages (man_user_name, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
+VALUES ('Francesco', 1, '2007-10-08', 'TRN3', 'DHL', '2007-10-09');
+
+INSERT INTO manages (man_user_name, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
+VALUES ('Francesco', 3, '2007-10-08', 'TRN4', 'DHL', '2007-10-09');
+
+INSERT INTO manages (man_user_name, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
+VALUES ('Francesco', 4, '2007-10-08', 'TRN5', 'BRT', '2007-10-09');

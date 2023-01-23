@@ -1,12 +1,10 @@
-package Order.DispatchService.service_layer;
+package Order.OrderView;
 
-import Order.DispatchService.beans.Order;
-import Order.DispatchService.beans.ToManage;
-import Order.DispatchService.dao_layer.implementations.ToManageDAOImp;
-import Order.DispatchService.dao_layer.interfaces.ToManageDAO;
-import User.AccountService.beans.User;
-import User.AccountService.dao_layer.implementations.UserDAOImp;
-import User.AccountService.dao_layer.interfaces.UserDAO;
+import Order.DispatchService.Order;
+import Order.DispatchService.ToManage;
+import Order.DispatchService.ToManageDAO;
+import User.AccountService.User;
+import User.AccountService.UserDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,8 +31,8 @@ public class OrderTaskServlet extends HttpServlet {
         }
 
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-        UserDAO userDAO = new UserDAOImp(ds);
-        ToManageDAO toManageDAO = new ToManageDAOImp(ds);
+        UserDAO userDAO = new UserDAO(ds);
+        ToManageDAO toManageDAO = new ToManageDAO(ds);
 
         Collection<User> orderManagers;
 
@@ -48,11 +46,11 @@ public class OrderTaskServlet extends HttpServlet {
             }
             else // RECUPERA I GESTORI CHE HANNO GESTITO ALMENO UN ORDINE E LI RESTITUISCE ORDINATI IN BASE AL NUMERO DI ORIDNI GESTITI
             {
-                int userID = userDAO.getTargetOrderManagerId();
-                if(userID != 0)
+                String userName = userDAO.getTargetOrderManagerUserName();
+                if(userName != null && !userName.equals(""))
                 {
                     User user = new User();
-                    user.setId(userID);
+                    user.setUsername(userName);
 
                     toManageDAO.create(new ToManage(user, orderToMan));
                 }

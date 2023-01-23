@@ -1,22 +1,21 @@
-package Merchandising.MerchandiseService.service_layer;
+package Merchandising.ProductsView;
 
-import Merchandising.MerchandiseService.dao_layer.implementations.MangaDAOImpl;
-import Merchandising.MerchandiseService.dao_layer.implementations.ProductDAOImpl;
-import utils.AbstractDAOFactory;
+import Merchandising.MerchandiseService.MangaDAO;
+import Merchandising.MerchandiseService.ProductDAO;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.ArrayList;
 
 @WebServlet(name = "productsFilter", value = "/productsFilter")
 public class productsFilter extends HttpServlet {
 
-    private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.JDBC);
-    private ProductDAOImpl daoP = factory.getProductDAO();
+    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+    private ProductDAO daoP = new ProductDAO(ds);
 
-    private MangaDAOImpl daoM = factory.getMangaDAO();
+    private MangaDAO daoM = new MangaDAO(ds);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,12 +29,12 @@ public class productsFilter extends HttpServlet {
         String minPrice = request.getParameter("minPrice");
         String maxPrice = request.getParameter("maxPrice");
         String state = request.getParameter("state");
-
-        Product.ProductState ps;
-        if(state.equals("NEW"))
-            ps= Product.ProductState.NEW;
-        else
-            ps= Product.ProductState.USED;
+/*
+        //Product.ProductState ps;
+        if(state.equals("NEW"))  ;
+           // ps= Product.ProductState.NEW;
+        else  ;
+           // ps= Product.ProductState.USED;
 
         ArrayList lista;
 
@@ -47,14 +46,14 @@ public class productsFilter extends HttpServlet {
             if (maxPrice=="")
                 maxPrice="0";
 
-            lista = daoM.retrieveByFilters(name, collections, Float.parseFloat(minPrice), Float.parseFloat(maxPrice), ps);
-            if(lista==null)
-                lista=daoP.retrieveByFilters(name, collections, Float.parseFloat(minPrice), Float.parseFloat(maxPrice), ps);
-            else {
-                listaP = daoP.retrieveByFilters(name, collections, Float.parseFloat(minPrice), Float.parseFloat(maxPrice), ps);
-                if (listaP != null)
-                    lista.addAll(listaP);
-            }
+           // lista = daoM.retrieveByFilters(name, collections, Float.parseFloat(minPrice), Float.parseFloat(maxPrice), ps);
+           // if(lista==null)
+               // lista=daoP.retrieveByFilters(name, collections, Float.parseFloat(minPrice), Float.parseFloat(maxPrice), ps);
+           // else {
+             //   listaP = daoP.retrieveByFilters(name, collections, Float.parseFloat(minPrice), Float.parseFloat(maxPrice), ps);
+               // if (listaP != null)
+             //       lista.addAll(listaP);
+           // }
 
             if(lista==null)
                 lista= new ArrayList();
@@ -67,5 +66,6 @@ public class productsFilter extends HttpServlet {
             System.out.println(e.getMessage()+" errore");
             request.setAttribute("error",e.getMessage());
         }
+ */
     }
 }

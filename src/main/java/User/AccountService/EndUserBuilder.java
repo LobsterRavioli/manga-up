@@ -1,4 +1,4 @@
-package User.AccountService.beans;
+package User.AccountService;
 
 import java.util.Date;
 import java.util.Set;

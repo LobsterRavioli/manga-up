@@ -13,8 +13,8 @@
 </head>
 <body>
 
-<a href="${pageContext.request.contextPath}/profile_view/homepage.jsp">Gestore Utente</a>
-<a href="${pageContext.request.contextPath}/order_view/homepage.jsp">Gestore Ordini</a>
+<a href="${pageContext.request.contextPath}/ProfileView/homepage.jsp">Gestore Utente</a>
+<a href="${pageContext.request.contextPath}/OrderView/homepage.jsp">Gestore Ordini</a>
 <a href="${pageContext.request.contextPath}/MerchandisingView/homepage.jsp">Gestore Catalogo</a>
 
 

@@ -1,4 +1,4 @@
-package User.AccountService.service_layer;
+package User.ProfileView;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,12 +18,11 @@ public class LogoutManagerServlet extends HttpServlet {
         if(session != null) // se esiste
             session.invalidate(); // la invalido
 
-        request.getRequestDispatcher("/profile_view/login_manager.jsp").forward(request,response);
+        request.getRequestDispatcher("/ProfileView/login_manager.jsp").forward(request,response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
-
 }

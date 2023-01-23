@@ -1,23 +1,22 @@
-package User.AccountService.service_layer;
+package User.ProfileView;
 
-import User.AccountService.beans.ConcreteCardBuilder;
-import User.AccountService.beans.EndUser;
-import User.AccountService.beans.CreditCard;
-import User.AccountService.dao_layer.interfaces.CreditCardDAO;
-import utils.AbstractDAOFactory;
-
+import User.AccountService.ConcreteCardBuilder;
+import User.AccountService.CreditCard;
+import User.AccountService.CreditCardDAO;
+import User.AccountService.EndUser;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.ArrayList;
 
 @WebServlet("/CreditCardDashboardServlet")
 public class CreditCardDashboardServlet extends HttpServlet {
 
-    private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.JDBC);
-    private CreditCardDAO dao = factory.getCreditCardDAO();
+    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+    private CreditCardDAO dao = new CreditCardDAO(ds);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -34,7 +33,7 @@ public class CreditCardDashboardServlet extends HttpServlet {
                 .createCreditCard();
         ArrayList<CreditCard> cards = (ArrayList<CreditCard>) dao.findAllByEnduser(userCard);
         request.setAttribute("cards", cards);
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/profile_view/dashboard_carte_di_credito.jsp"));
+        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProfileView/dashboard_carte_di_credito.jsp"));
         dispatcher.forward(request, response);
     }
 }

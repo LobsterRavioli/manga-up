@@ -1,6 +1,6 @@
-package Order.DispatchService.beans;
+package Order.DispatchService;
 
-import User.AccountService.beans.User;
+import User.AccountService.User;
 
 import java.util.Objects;
 
@@ -21,6 +21,16 @@ public class ToManage {
     public long getUserId()
     {
         return this.user.getId();
+    }
+
+    public String getUserName()
+    {
+        return this.user.getUsername();
+    }
+
+    public void setUserName(String newUserName)
+    {
+        this.user.setUsername(newUserName);
     }
 
     public void setUserId(int newUserId)

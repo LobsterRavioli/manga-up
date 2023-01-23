@@ -1,22 +1,21 @@
-package User.AccountService.service_layer;
+package User.ProfileView;
 
-import User.AccountService.beans.EndUser;
-import User.AccountService.beans.ConcreteEndUserBuilder;
-import User.AccountService.dao_layer.interfaces.EndUserDAO;
-import utils.AbstractDAOFactory;
-
+import User.AccountService.ConcreteEndUserBuilder;
+import User.AccountService.EndUser;
+import User.AccountService.EndUserDAO;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 import java.io.IOException;
 
 public class RegistrationInSessionServlet extends HttpServlet {
 
-    private AbstractDAOFactory factory = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.JDBC);
-    private EndUserDAO dao = factory.getEndUserDAO();
+    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+    private EndUserDAO dao = new EndUserDAO(ds);
 
 
     @Override
@@ -39,7 +38,5 @@ public class RegistrationInSessionServlet extends HttpServlet {
         session.setAttribute("user", user);
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/MerchandisingView/homepage.jsp"));
         dispatcher.forward(request, response);
-
     }
-
 }

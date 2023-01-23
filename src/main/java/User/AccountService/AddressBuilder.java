@@ -1,4 +1,4 @@
-package User.AccountService.beans;
+package User.AccountService;
 
 public interface AddressBuilder {
     AddressBuilder setId(int id);

@@ -1,7 +1,9 @@
-package Order.DispatchService.beans;
+package Order.DispatchService;
 
-import User.AccountService.beans.EndUser;
-import User.AccountService.beans.User;
+
+import User.AccountService.CreditCard;
+import User.AccountService.EndUser;
+import User.AccountService.User;
 
 import java.sql.Date;
 import java.util.Objects;
@@ -14,10 +16,10 @@ public class ManagedOrder extends Order {
         this.user = new User();
     }
 
-    public ManagedOrder(long id,Date orderDate, double totalPrice,EndUser endUser,
-                        User user,Date deliveryDate,String trackNumber,String courierName,Date shipmentDate)
+    public ManagedOrder(long id, Date orderDate, double totalPrice, EndUser endUser, CreditCard card,
+                        User user, Date deliveryDate, String trackNumber, String courierName, Date shipmentDate)
     {
-        super(id, orderDate, totalPrice, endUser);
+        super(id, orderDate, totalPrice, endUser, card);
         this.state = Order.SENT;
         this.user = user;
         this.deliveryDate = deliveryDate;
@@ -29,6 +31,16 @@ public class ManagedOrder extends Order {
     public long getUserId()
     {
         return this.user.getId();
+    }
+
+    public String getUserName()
+    {
+        return this.user.getUsername();
+    }
+
+    public void setUserName(String newUserName)
+    {
+        this.user.setUsername(newUserName);
     }
 
     public void setUserId(int newUserId)
