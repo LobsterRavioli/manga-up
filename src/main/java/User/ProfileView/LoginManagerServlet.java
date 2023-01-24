@@ -22,6 +22,8 @@ public class LoginManagerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+
+
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
         UserDAO dao = new UserDAO(ds);
 

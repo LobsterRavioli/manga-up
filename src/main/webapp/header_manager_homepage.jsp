@@ -9,7 +9,7 @@
 
        if(managerName==null || managerRole==null) {
             System.out.println(request.getScheme()+":"+request.getServerName()+request.getServerPort()+request.getContextPath());
-            %><c:redirect url="/LoginManager"/><%
+            %><c:redirect url="${pageContext.request.contextPath}/LoginManager"/><%
        }
 
        if(managerName.length() > 15) {
