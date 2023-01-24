@@ -1,4 +1,8 @@
-<%--
+<%@ page import="Merchandising.MerchandiseService.CollectionDAO" %>
+<%@ page import="Merchandising.MerchandiseService.Collection" %>
+<%@ page import="javax.xml.crypto.Data" %>
+<%@ page import="javax.sql.DataSource" %>
+<%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: Francesco Monzillo
   Date: 04/01/2023
@@ -57,18 +61,29 @@
         <nav class="header__menu mobile-menu">
           <ul>
             <li class="active"><a href="${pageContext.request.contextPath}/index.html">Home</a></li>
-            <li><a href="${pageContext.request.contextPath}/catalogServlet?productsSupply=1&type=Manga">Manga</a></li>
-            <li><a href="${pageContext.request.contextPath}/catalogServlet?productsSupply=1&type=">Catalogo</a></li>
+            <li><a href="${pageContext.request.contextPath}/catalogServlet?productsSupply=1">Catalogo</a></li>
           </ul>
         </nav>
 
         <div class="header__nav__option">
-          <form action="${pageContext.request.contextPath}/productsFilter" method="post" id="filter">
+          <form action="${pageContext.request.contextPath}/productsFilter" method="post" id="filter" style="display: flex;position: relative;right: 7%;">
+            <%CollectionDAO c = new CollectionDAO((DataSource) application.getAttribute("DataSource"));
+              try{
+                ArrayList<Collection> collections = c.retrieveAlL();
+                 %><select id="state" form="filter" name="collection">
+
+                <%for(Collection coll: collections){%>
+                    <option value="<%=coll.getName()%>"><%=coll.getName()%></option>
+                <%}%>
+                </select>
+              <%}catch (Exception e){
+
+              }%>
             <input type="text" form="filter" placeholder="name" name="name" style="width: 100%;font-size: 76%;">
           </form>
-          <a href="${pageContext.request.contextPath}/productsFilter" class="search-switch">
+          <button form="filter" class="search-switch" style="border: none; background: none;bottom: 10px;right: 8px;">
             <img src="${pageContext.request.contextPath}/images/search.png" style="width: 1.18rem; " alt="">
-          </a>
+          </button>
           <a href="#"><img src="${pageContext.request.contextPath}/images/cart.png" alt=""> <span>0</span></a>
           <div class="price">$0.00</div>
         </div>

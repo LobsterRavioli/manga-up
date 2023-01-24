@@ -8,7 +8,7 @@ import java.util.Objects;
 public class Manga{
 
 
-    public Manga(String isbn, String publisher, String binding, String language, String volume, int pages, Date exitDate, int id, String name, String description, double price, double height, double length, double weight, int quantity, String interior, String imagePath, String collection, ProductState state, String storyMaker, Genre genre) {
+    public Manga(String isbn, String publisher, String binding, String language, String volume, int pages, Date exitDate, int id, String name, String description, double price, double height, double length, double weight, int quantity, String interior, String imagePath, Collection collection, ProductState state, String storyMaker, Genre genre) {
         this.isbn = isbn;
         this.publisher = publisher;
         this.binding = binding;
@@ -168,11 +168,11 @@ public class Manga{
         this.imagePath = imagePath;
     }
 
-    public String getCollection() {
+    public Collection getCollection() {
         return collection;
     }
 
-    public void setCollection(String collection) {
+    public void setCollection(Collection collection) {
         this.collection = collection;
     }
 
@@ -213,7 +213,7 @@ public class Manga{
 
     private String imagePath;
 
-    private String collection;
+    private Collection collection;
     private ProductState state;
 
     private String storyMaker;

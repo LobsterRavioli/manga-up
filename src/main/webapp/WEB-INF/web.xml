@@ -83,4 +83,13 @@
         <welcome-file>MerchandisingView/homepage.jsp</welcome-file>>
     </welcome-file-list>
 
+    <servlet>
+        <servlet-name>productsFilter</servlet-name>
+        <servlet-class>Merchandising.ProductsView.productsFilter</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>productsFilter</servlet-name>
+        <url-pattern>/productsFilter</url-pattern>
+    </servlet-mapping>
+
 </web-app>

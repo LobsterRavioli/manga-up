@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="java.util.*"%>
 
@@ -6,9 +7,9 @@
        String managerRole = (String)request.getSession().getAttribute("roleSelected");
        Collection<String> otherRoles = (Collection<String>)request.getSession().getAttribute("otherRoles");
 
-       if(managerName == null || managerRole == null || otherRoles == null) {
-            response.sendRedirect(getServletContext().getContextPath()+"/LoginManager");
-            return;
+       if(managerName==null || managerRole==null) {
+            System.out.println(request.getScheme()+":"+request.getServerName()+request.getServerPort()+request.getContextPath());
+            %><c:redirect url="/LoginManager"/><%
        }
 
        if(managerName.length() > 15) {
@@ -25,14 +26,14 @@
             homePage = getServletContext().getContextPath()+"/OrderView/homepage.jsp";
 
        else if(managerRole.equals("CATALOG_MANAGER"))
-            homePage = getServletContext().getContextPath()+"/ProductsView/catalogManagerHome.jsp";
+            homePage = getServletContext().getContextPath()+"/ProductsView/homepage.jsp";
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Home Page Order Manager</title>
+    <title>Home Page</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style_header_manager.css">
 </head>
 <body>
