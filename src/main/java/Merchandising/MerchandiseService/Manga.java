@@ -1,17 +1,16 @@
 package Merchandising.MerchandiseService;
 
-
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 
 public class Manga{
-/*
 
-    public Manga(String isbn, String brand, String binding, String language, String volume, int pages, Date exitDate, int id, String name, String description, double price, double height, double length, double weight, String collections,int quantity, Product.ProductState state,String interior,String imagePath) {
+
+    public Manga(String isbn, String publisher, String binding, String language, String volume, int pages, Date exitDate, int id, String name, String description, double price, double height, double length, double weight, int quantity, String interior, String imagePath, Collection collection, ProductState state, String storyMaker, Genre genre) {
         this.isbn = isbn;
-        this.brand = brand;
+        this.publisher = publisher;
         this.binding = binding;
         this.language = language;
         this.volume = volume;
@@ -24,37 +23,69 @@ public class Manga{
         this.height = height;
         this.length = length;
         this.weight = weight;
-        this.collections = collections;
         this.quantity = quantity;
+        this.interior = interior;
+        this.imagePath = imagePath;
+        this.collection = collection;
         this.state = state;
-        this.interior = interior;
-        this.imagePath = imagePath;
+        this.storyMaker = storyMaker;
+        this.genre = genre;
     }
 
-
-
-    public String getImagePath() {
-        return imagePath;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
-    public String getInterior() {
-        return interior;
+    public String getPublisher() {
+        return publisher;
     }
 
-    public void setInterior(String interior) {
-        this.interior = interior;
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public String getBinding() {
+        return binding;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setBinding(String binding) {
+        this.binding = binding;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getVolume() {
+        return volume;
+    }
+
+    public void setVolume(String volume) {
+        this.volume = volume;
+    }
+
+    public int getPages() {
+        return pages;
+    }
+
+    public void setPages(int pages) {
+        this.pages = pages;
+    }
+
+    public Date getExitDate() {
+        return exitDate;
+    }
+
+    public void setExitDate(Date exitDate) {
+        this.exitDate = exitDate;
     }
 
     public int getId() {
@@ -113,103 +144,64 @@ public class Manga{
         this.weight = weight;
     }
 
-    public String getCollections() {
-        return collections;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setCollections(String collections) {
-        this.collections = collections;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
-    public Product.ProductState getState() {
+    public String getInterior() {
+        return interior;
+    }
+
+    public void setInterior(String interior) {
+        this.interior = interior;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public Collection getCollection() {
+        return collection;
+    }
+
+    public void setCollection(Collection collection) {
+        this.collection = collection;
+    }
+
+    public ProductState getState() {
         return state;
     }
 
-    public void setState(Product.ProductState state) {
+    public void setState(ProductState state) {
         this.state = state;
     }
 
-
-    public String getIsbn() {
-        return isbn;
+    public String getStoryMaker() {
+        return storyMaker;
     }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+    public void setStoryMaker(String storyMaker) {
+        this.storyMaker = storyMaker;
     }
 
-    public String getBrand() {
-        return brand;
+    public Genre getGenre() {
+        return genre;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getBinding() {
-        return binding;
-    }
-
-    public void setBinding(String binding) {
-        this.binding = binding;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public String getVolume() {
-        return volume;
-    }
-
-    public void setVolume(String volume) {
-        this.volume = volume;
-    }
-
-    public int getPages() {
-        return pages;
-    }
-
-    public void setPages(int pages) {
-        this.pages = pages;
-    }
-
-    public Date getExitDate() {
-        return exitDate;
-    }
-
-    public void setExitDate(Date exitDate) {
-        this.exitDate = exitDate;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Manga)) return false;
-        if (!super.equals(o)) return false;
-        Manga manga = (Manga) o;
-        return volume == manga.volume && pages == manga.pages && Objects.equals(isbn, manga.isbn) && Objects.equals(binding, manga.binding) && Objects.equals(language, manga.language) && Objects.equals(exitDate, manga.exitDate);
-    }
-
-    public void setAutore(ArrayList<Autore> a){
-        autore=a;
-    }
-
-    public void setGenre(ArrayList<Genre> g){
+    public void setGenre(Genre g){
         genre=g;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), isbn, binding, language, volume, pages, exitDate);
-    }
 
-    private String isbn, brand, binding, language,volume;
+    private String isbn, publisher, binding, language,volume;
     private int pages;
     private Date exitDate;
     private int id;
@@ -217,17 +209,15 @@ public class Manga{
     private double price, height, length, weight;
 
     private int quantity;
-
     private String interior;
 
     private String imagePath;
 
-    private String collections;
-    private Product.ProductState state;
+    private Collection collection;
+    private ProductState state;
 
-    private ArrayList<Autore> autore;
+    private String storyMaker;
 
-    private ArrayList<Genre> genre;
-
- */
+    private Genre genre;
 }
+

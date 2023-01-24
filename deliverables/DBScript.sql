@@ -145,9 +145,12 @@ CREATE TABLE CART
 (
     manga_id int NOT NULL,
     user_id int NOT NULL,
+    quantity int NOT NULL,
     PRIMARY KEY(manga_id,user_id),
+
     FOREIGN KEY (manga_id) REFERENCES Manga(id)
         ON UPDATE cascade ON DELETE cascade,
+
     FOREIGN KEY (user_id) REFERENCES end_user(usr_id)
         ON UPDATE cascade ON DELETE cascade
 );

@@ -83,4 +83,31 @@
         <welcome-file>MerchandisingView/homepage.jsp</welcome-file>>
     </welcome-file-list>
 
+    <servlet>
+        <servlet-name>productsFilter</servlet-name>
+        <servlet-class>Merchandising.ProductsView.productsFilter</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>productsFilter</servlet-name>
+        <url-pattern>/productsFilter</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>UserManagerFilter</filter-name>
+        <display-name>UserManagerFilter</display-name>
+        <description>filterForUserManagers</description>
+        <filter-class>filters.UserManagerFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>UserManagerFilter</filter-name>
+        <url-pattern>/ProductsView/addProducts.jsp</url-pattern>
+        <url-pattern>/ProductsView/homepage.jsp</url-pattern>
+        <url-pattern>/OrderView/homepage.jsp</url-pattern>
+        <url-pattern>/OrderView/manageOrder.jsp</url-pattern>
+        <url-pattern>/OrderView/order_list.jsp</url-pattern>
+        <url-pattern>/ProfileView/homepage.jsp</url-pattern>
+        <url-pattern>/ProfileView/dashboard_lista_utenti.jsp</url-pattern>
+    </filter-mapping>
+
 </web-app>

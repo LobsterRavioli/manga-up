@@ -66,7 +66,7 @@ public class SwitchRoleServlet extends HttpServlet {
                         response.sendRedirect(getServletContext().getContextPath() + "/OrderView/homepage.jsp");
 
                     if (role.equals("CATALOG_MANAGER")) // redirect to catalog manager homepage
-                        response.sendRedirect(getServletContext().getContextPath() + "/ProductsView/catalogManagerHome.jsp");
+                        response.sendRedirect(getServletContext().getContextPath() + "/ProductsView/homepage.jsp");
                 }
 
             } catch (SQLException e) {

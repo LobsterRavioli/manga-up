@@ -1,12 +1,11 @@
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="Merchandising.MerchandiseService.beans.Manga" %>
-<%@ page import="Merchandising.MerchandiseService.beans.Product" %><%--
+<%@ page import="Merchandising.MerchandiseService.Manga" %><!--
   Created by IntelliJ IDEA.
   User: Francesco Monzillo
   Date: 08/01/2023
   Time: 21:31
   To change this template use File | Settings | File Templates.
---%>
+-->
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -44,7 +43,7 @@
 <div class="toppane"></div>
 <div class="leftpane">
 <div class="filterForm">
-        <p class="formMainLabel">Filtri:<p>
+        <!--<p class="formMainLabel">Filtri:<p>
         <p class="widthAppropriate formMainLabel">
             <label for="collections" class="filterinput">Collezione:</label><br>
             <input type="text"  form="filter" id="collections" name="collections" placeholder="nome collezione" class="filterinput"><br>
@@ -60,17 +59,17 @@
             </select>
 
         <input type="submit" form="filter" value="Submit">
-        </p>
+        </p>-->
 
 </div>
 
 </div>
 <div class="container mydiv x" id="paginated-list">
-    <% ArrayList list = (ArrayList) request.getAttribute("listaElementi");
-    boolean b = false;
+    <% ArrayList<Manga>list = (ArrayList<Manga>) request.getAttribute("listaElementi");
+    if(list!=null){
+        boolean b = false;
        for(int i=0;i<list.size();i++){
            Manga m = null;
-           Product p = null;
            if(i % 3 == 0){
                if(b){%>
                     </div>
@@ -78,24 +77,23 @@
                 <%b=true;%>
                     <div class="row fulll" id="idkidk">
             <%}
-           if(list.get(i) instanceof Manga){
                 m = (Manga) list.get(i);
                %>
                         <div class="col-md-4">
                             <!-- bbb_deals -->
                             <div class="bbb_deals">
-                                <div class="bbb_deals_title"><p class="p_title"><%=m.getCollections()%></p></div>
+                                <div class="bbb_deals_title"><p class="p_title"><%=m.getCollection().getName()%></p></div>
                                 <div class="bbb_deals_slider_container">
                                     <div class=" bbb_deals_item">
                                         <div class="bbb_deals_image"><img src="https://i.imgur.com/9UYzfny.png" alt=""></div>
 
                                         <div class="bbb_deals_content">
                                             <!--<div class="bbb_deals_info_line d-flex flex-row justify-content-start">-->
-                                            <div class="bbb_deals_item_category"><a href="#"><%=m.getBrand()%></a></div>
+                                            <div class="bbb_deals_item_category"><a href="#"><%=m.getPublisher()%></a></div>
                                             <!--<div class="bbb_deals_item_price_a ml-auto"><strike>€<%=m.getPrice()%></strike></div>-->
                                         </div>
                                         <!--<div class="bbb_deals_info_line d-flex flex-row justify-content-start">-->
-                                        <div class="bbb_deals_item_name"><a class="prodAnchor" href="${pageContext.request.contextPath}/productE_U?prodId=<%=m.getId()%>&prodType=M">
+                                        <div class="bbb_deals_item_name"><a class="prodAnchor" href="${pageContext.request.contextPath}/productE_U?prodId=<%=m.getId()%>">
                                             <p class="prodName"> <%=m.getName()%></p>
                                         </a>
                                         </div>
@@ -113,46 +111,10 @@
                                 <div class="available_bar"><span style="width:17%"></span></div>
                             </div>
                         </div>
-           <%}else{
-               p = (Product) list.get(i);%>
-                        <div class="col-md-4">
-                            <!-- bbb_deals -->
-                            <div class="bbb_deals">
-                                <div class="bbb_deals_title"><p class="p_title"><%=p.getCollections()%></p></div>
-                                <div class="bbb_deals_slider_container">
-                                    <div class=" bbb_deals_item">
-                                        <div class="bbb_deals_image"><img src="https://i.imgur.com/9UYzfny.png" alt=""></div>
-
-                                        <div class="bbb_deals_content">
-                                            <!--<div class="bbb_deals_info_line d-flex flex-row justify-content-start">-->
-                                            <div class="bbb_deals_item_category"><a href="#"><%=p.getProducer()%></a></div>
-                                            <!--<div class="bbb_deals_item_price_a ml-auto"><strike>€<%=p.getPrice()%></strike></div>-->
-                                        </div>
-                                        <!--<div class="bbb_deals_info_line d-flex flex-row justify-content-start">-->
-                                        <div class="bbb_deals_item_name"><a class="prodAnchor" href="${pageContext.request.contextPath}/productE_U?prodId=<%=p.getId()%>&prodType=P">
-                                            <p class="prodName"> <%=p.getName()%></p>
-                                        </a>
-                                        </div>
-
-                                    </div>
-                                        </div>
-
-                                    </div>
-                            <div class="bbb_deals_item_price ml-auto">€<%=p.getPrice()%></div>
-                            <div class="available">
-
-                                <div class="available_title">Disponibili: <span><%=p.getQuantity()%></span></div>
-                                <!--<div class="sold_stars ml-auto"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div>
-                            </div>-->
-                                <div class="available_bar"><span style="width:17%"></span></div>
-                            </div>
-                                </div>
-
-
-
            <%}
-
-       }%>
+    }else{%>
+                        <p> Non è stato trovato alcun elemento <p>
+                                <%}%>
 
     </div>
 

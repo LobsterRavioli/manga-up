@@ -22,6 +22,8 @@ public class LoginManagerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+
+
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
         UserDAO dao = new UserDAO(ds);
 
@@ -30,10 +32,14 @@ public class LoginManagerServlet extends HttpServlet {
         String login = request.getParameter("username");
         String pwd = request.getParameter("password");
         String roleName = request.getParameter("roleName");
+        System.out.println(login+"\n"+pwd);
 
-        if(login == null || pwd == null || roleName == null)
-            response.sendRedirect(getServletContext().getContextPath()+"/ProfileView/login_manager.jsp");
-        else
+        System.out.println(request.getServerName());
+
+        if(login==null || pwd==null || roleName.equals("") ){
+            System.out.println("x");
+            response.sendRedirect(getServletContext().getContextPath() + "/ProfileView/login_manager.jsp");
+        }else
         {
             manager.setUsername(login);
             manager.setPassword(pwd);
@@ -62,7 +68,7 @@ public class LoginManagerServlet extends HttpServlet {
                         response.sendRedirect(getServletContext().getContextPath()+"/OrderView/homepage.jsp");
 
                     if(roleName.equals("CATALOG_MANAGER")) // redirect to catalog manager homepage
-                        response.sendRedirect(getServletContext().getContextPath()+"/ProductsView/catalogManagerHome.jsp");
+                        response.sendRedirect(getServletContext().getContextPath()+"/ProductsView/homepage.jsp");
                 }
                 else
                 {
