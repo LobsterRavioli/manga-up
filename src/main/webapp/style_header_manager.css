@@ -1,24 +1,32 @@
-div.logo {
-    height: 80px;
-    width: 100%;
-    border: 2px solid;
-    padding: 10px;
-    display: flex;
-    align-items: center;
+.header {
+	width: 100%;
+	padding: 0 2px;
+	background: #f7efef;
+	border: 2px solid;
+}
+
+.main {
+	position: relative;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 20px 0;
+}
+
+.main #logout {
+	text-decoration: none;
+	color: #3f51b5;
+	margin: 10px 20px;
+}
+
+.logo {
+	display: flex;
+	align-items: center;
 }
 
 .select_role {
-    position: absolute;
-    left: 600px;
-    top: 54px;
-}
-
-.logout {
-    position: absolute;
-    right: 0;
-    padding: 10px;
-}
-
-div.logo img {
-    margin-right: 20px;
+	position: absolute;
+	margin: auto;
+	left: 50%;
 }

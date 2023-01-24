@@ -32,15 +32,17 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Home Page Order Manager</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style_header_manager.css">
 </head>
 <body>
 
-    <div class="logo">
-        <a href="<%=homePage %>"><img src="${pageContext.request.contextPath}/images/logo.png" width="125px"></a>
-        <h2>Welcome <%=managerName %></h2>
-
+    <div class="header">
+    <nav class="main">
+    	<div class=logo>
+        	<a href="<%=homePage %>"><img src="${pageContext.request.contextPath}/images/logo.png" width="125px"></a>
+        	<h2>Welcome <%=managerName %></h2>
+		</div>
+        
         <div class="select_role">
         <form action="${pageContext.request.contextPath}/switchRole" method="POST">
             <label>Role:
@@ -80,10 +82,8 @@
         </form>
         </div>
 
-        <div class="logout">
-            <a href="${pageContext.request.contextPath}/logout">Log-out</a>
-        </div>
-
+        <a href="${pageContext.request.contextPath}/logout" id="logout">Log-out</a>
+	</nav>
     </div>
 
 </body>
