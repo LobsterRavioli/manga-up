@@ -60,7 +60,7 @@ public class SwitchRoleServlet extends HttpServlet {
                     currentSession.setMaxInactiveInterval(5 * 60); // 5 minuti di inattività massima, dopo cancella la sessione
 
                     if (role.equals("USER_MANAGER")) // redirect to user manager homepage
-                        response.sendRedirect(getServletContext().getContextPath() + "/ProfileView/userManagerHome.jsp");
+                        response.sendRedirect(getServletContext().getContextPath() + "/ProfileView/homepage.jsp");
 
                     if (role.equals("ORDER_MANAGER"))  // redirect to order manager homepage
                         response.sendRedirect(getServletContext().getContextPath() + "/OrderView/homepage.jsp");

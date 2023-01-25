@@ -19,13 +19,13 @@
        String homePage = "";
 
        if(managerRole.equals("USER_MANAGER"))
-            homePage = getServletContext().getContextPath()+"/ProfileView/userManagerHome.jsp";
+            homePage = getServletContext().getContextPath()+"/ProfileView/homepage.jsp";
 
        else if(managerRole.equals("ORDER_MANAGER"))
             homePage = getServletContext().getContextPath()+"/OrderView/homepage.jsp";
 
        else if(managerRole.equals("CATALOG_MANAGER"))
-            homePage = getServletContext().getContextPath()+"/ProductsView/catalogManagerHome.jsp";
+            homePage = getServletContext().getContextPath()+"/ProductsView/homepage.jsp";
 %>
 
 <!DOCTYPE html>

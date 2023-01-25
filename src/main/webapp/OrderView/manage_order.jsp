@@ -22,17 +22,19 @@
 	<form action="${pageContext.request.contextPath}/manageServlet" method="post">
 		<input type="hidden" name="action" value="insert">
 
-		<label for="name">Name:</label><br>
-		<input name="name" type="text" maxlength="20" required placeholder="enter name"><br>
+		<input type="hidden" name="orderID" value="<%=ord_id %>">
 
-		<label for="description">Description:</label><br>
-		<textarea name="description" maxlength="100" rows="3" required placeholder="enter description"></textarea><br>
+		<label for="deliveryDate">Delivery date:</label><br>
+		<input name="deliveryDate" type="date" required placeholder="enter delivery date"><br>
 
-		<label for="price">Price:</label><br>
-		<input name="price" type="number" min="0" value="0" required><br>
+		<label for="trackingNumber">Tracking number:</label><br>
+		<input name="trackingNumber" type="text" maxlength="50" required placeholder="enter tracking number"></textarea><br>
 
-		<label for="quantity">Quantity:</label><br>
-		<input name="quantity" type="number" min="1" value="1" required><br>
+		<label for="courier">Courier name:</label><br>
+		<input name="courier" type="text" required placeholder="enter courier name"><br>
+
+		<label for="shipmentDate">Delivery date:</label><br>
+        <input name="shipmentDate" type="date" required placeholder="enter shipment date"><br>
 
 		<input type="submit" value="Add"><input type="reset" value="Reset">
 

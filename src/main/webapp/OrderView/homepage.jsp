@@ -14,7 +14,6 @@
 	<nav id=items>
     	<div>
         	<a href="${pageContext.request.contextPath}/orderServlet" id="orders">Orders<br><br></a>
-        	<a href="manage_order_list.jsp" id="managed">Managed Orders<br></a>
     	</div>
     </nav>
     </div>

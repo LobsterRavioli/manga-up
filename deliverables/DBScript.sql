@@ -294,7 +294,7 @@ INSERT INTO TO_MANAGE (user_name, order_id) VALUES ('Giovanni', 2);
 INSERT INTO TO_MANAGE (user_name, order_id) VALUES ('Francesco', 3);
 
 
-
+/*
 INSERT INTO manages (man_user_name, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
 VALUES ('Giovanni', 5, '2007-10-08', 'TRN1', 'BRT', '2007-10-09');
 
@@ -309,3 +309,4 @@ VALUES ('Francesco', 3, '2007-10-08', 'TRN4', 'DHL', '2007-10-09');
 
 INSERT INTO manages (man_user_name, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
 VALUES ('Francesco', 4, '2007-10-08', 'TRN5', 'BRT', '2007-10-09');
+*/
