@@ -32,6 +32,10 @@ public class Manga{
         this.genre = genre;
     }
 
+    public Manga(int id){
+        this.id=id;
+    }
+
     public String getIsbn() {
         return isbn;
     }

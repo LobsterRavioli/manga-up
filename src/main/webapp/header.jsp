@@ -2,7 +2,12 @@
 <%@ page import="Merchandising.MerchandiseService.Collection" %>
 <%@ page import="javax.xml.crypto.Data" %>
 <%@ page import="javax.sql.DataSource" %>
-<%@ page import="java.util.ArrayList" %><%--
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="User.AccountService.EndUser" %>
+<%@ page import="Merchandising.MerchandiseService.Manga"%>
+<%@ page import="java.util.Map"%>
+<%@ page import="Cart.CheckoutService.Cart"%>
+<%--
   Created by IntelliJ IDEA.
   User: Francesco Monzillo
   Date: 04/01/2023
@@ -33,6 +38,7 @@
 
 
 <header class="header">
+  <%if(request.getSession(false)==null || request.getSession(false).getAttribute("user")==null){%>
   <div class="header__top">
     <div class="container">
       <div class="row widdd">
@@ -43,14 +49,15 @@
         <div class="col-lg-6 col-md-5">
           <div class="header__top__right">
             <div class="header__top__links">
-              <a href="${pageContext.request.contextPath}/ProfileView/NoAuthorView/login.jsp">Sign in</a>
-              <a href="${pageContext.request.contextPath}/signUp.jsp">Sign up</a>
+              <a href="${pageContext.request.contextPath}/visualizeCartServlet">Sign in</a>
+              <a href="${pageContext.request.contextPath}/ProfileView/registrazione_utente.jsp">Sign up</a>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <%}%>
   <div class="container frat">
     <div class="row">
       <div class="principal">
@@ -81,11 +88,26 @@
               }%>
             <input type="text" form="filter" placeholder="name" name="name" style="width: 100%;font-size: 76%;">
           </form>
-          <button form="filter" class="search-switch" style="border: none; background: none;bottom: 10px;right: 8px;">
-            <img src="${pageContext.request.contextPath}/images/search.png" style="width: 1.18rem; " alt="">
+          <button form="filter" class="search-switch" style="border: none;background: none;bottom: 3%;right: 8px;position: relative;">
+            <img src="${pageContext.request.contextPath}/images/search.png" style="width: 1.18rem;position: relative;bottom: 15%;" alt="">
           </button>
-          <a href="#"><img src="${pageContext.request.contextPath}/images/cart.png" alt=""> <span>0</span></a>
-          <div class="price">$0.00</div>
+          <% HttpSession s = request.getSession(false);
+            if(s==null || s.getAttribute("user")==null){%>
+          <%}else{
+              EndUser user = (EndUser) s.getAttribute("user");
+              Cart carrello = (Cart) s.getAttribute("cart");
+              double totalPrice = 0;
+              int totalSize = 0;
+              for (Map.Entry<Manga,Integer> set : carrello.getProdotti().entrySet()) {
+                totalPrice = totalPrice + (set.getKey().getPrice() * set.getValue());
+                totalSize = totalSize + (set.getValue());
+              }%>
+                <a href="${pageContext.request.contextPath}/visualizeCartServlet" style="right: -2%;bottom: -10%;">
+                  <img src="${pageContext.request.contextPath}/images/cart.png" alt="">
+                  <span id="count" ><%=totalSize%></span>
+                </a>
+                <div class="price" style="left: 2%;"><%=String.format("%.2f", totalPrice).replace(',', '.')%></div>
+          <%}%>
         </div>
       </div>
       <!--<div class="col-lg-6 col-md-6">

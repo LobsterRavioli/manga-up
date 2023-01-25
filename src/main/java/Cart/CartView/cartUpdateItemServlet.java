@@ -1,6 +1,7 @@
 package Cart.CartView;
 
 import Cart.CheckoutService.CartDAO;
+import Merchandising.MerchandiseService.Manga;
 import User.AccountService.EndUser;
 
 import javax.servlet.*;
@@ -11,9 +12,6 @@ import java.io.IOException;
 
 @WebServlet(name = "cartDecreaseServlet", value = "/cartDecreaseServlet")
 public class cartUpdateItemServlet extends HttpServlet {
-
-    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-    private CartDAO dao = new CartDAO(ds);
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request,response);
@@ -21,36 +19,40 @@ public class cartUpdateItemServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        EndUser endUser = (EndUser) request.getSession().getAttribute("user");
-        if(endUser==null){
-            request.setAttribute("error","Utente non presente in sessione");
-            response.sendRedirect(getServletContext().getContextPath()+"/loginServlet");
+        DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+        System.out.println("Sono LA UPDATE");
+        CartDAO dao = new CartDAO(ds);
+        response.setContentType("text/plain");
+        HttpSession s = request.getSession(false);
+        if (s == null){
+            response.setStatus(201);
+            return;
+        }else if(s.getAttribute("user")==null){
+            response.setStatus(201);
             return;
         }
-
-
+        EndUser endUser = (EndUser) s.getAttribute("user");
         String quantity = request.getParameter("quantity");
-        String prod_id = request.getParameter("prod");
-        String type = request.getParameter("type");
-        response.setContentType("text/plain");
-/*
+        String prod_id = request.getParameter("id");
+        String maxQ = request.getParameter("maxQ");
+        Manga m =new Manga(Integer.parseInt(prod_id));
         try{
-            if(type.equals("M")){
-                if(dao.addElement(endUser.getId(),Integer.parseInt(prod_id),Integer.parseInt(quantity), Manga.class) == true) {
-                    response.getWriter().write("OK");
-                }else{
-                    response.getWriter().write("Problem");
+            m.setQuantity(Integer.parseInt(maxQ));
+            dao.updateProduct(m,Integer.parseInt(quantity),endUser);
+            response.setStatus(200);
+            response.getWriter().write(quantity);
+            return;
+            }catch (Exception e){
+                if(e.getMessage().equals("utente non esistente")){
+                response.setStatus(201);
                 }
-            }else{
-                if(dao.addElement(endUser.getId(),Integer.parseInt(prod_id),Integer.parseInt(quantity), Product.class)==true){
-                    response.getWriter().write("OK");
-                }else{
-                    response.getWriter().write("Problem");
+                else if (e.getMessage().equals("prodotto non esistente")) {
+                    response.setStatus(202);
+
+                }else if(e.getMessage().equals("quantità inserita non valida")){
+                    response.setStatus(203);
                 }
-            }
-        }catch (Exception e){
-            request.setAttribute("error",e.getMessage());
+                return;
         }
- */
     }
 }
