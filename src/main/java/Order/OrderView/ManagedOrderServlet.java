@@ -61,7 +61,7 @@ public class ManagedOrderServlet extends HttpServlet{
 
                     managed.setState(Order.SENT);
                     orderDAO.update(managed); // modifico lo stato dell'ordine
-                    managedOrderDAO.create(managed); // aggiungo l'ordine alla tabbella degli ordini gestit
+                    managedOrderDAO.create(managed); // aggiungo l'ordine alla tabbella degli ordini gestiti
 
                     ToManage toManage = new ToManage();
                     toManage.setUserName(userName);
