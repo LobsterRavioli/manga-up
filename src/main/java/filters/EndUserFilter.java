@@ -3,12 +3,13 @@ package filters;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(filterName = "FilterLogin", urlPatterns = { "/profile_view/dashboard_carte_di_credito.jsp", "/profile_view/dashboard_utente.jsp",
-        "/profile_view/dashboard_indirizzi.jsp", "/profile_view/creazione_carta_di_credito.jsp", "/profile_view/creazione_indirizzo.jsp"
-        ,"/AddressCreateServlet","/CreditCardCreateServlet","/AddressDeleteServlet","/CreditCardDeleteServlet"})
+@WebFilter(filterName = "FilterLogin", urlPatterns = { "/ProfileView/dashboard_carte_di_credito.jsp", "/ProfileView/dashboard_utente.jsp",
+        "/ProfileView/dashboard_indirizzi.jsp", "/ProfileView/creazione_carta_di_credito.jsp", "/ProfileView/creazione_indirizzo.jsp"
+        ,"/AddressCreateServlet","/CreditCardCreateServlet","/AddressDeleteServlet","/CreditCardDeleteServlet","/cartAddServlet","/cartRemoveServlet","/cartUpdateItemServlet","/visualizeCartServlet","/CartView/cart.jsp"})
 public class EndUserFilter implements Filter {
     public void init(FilterConfig config) {
     }
@@ -20,9 +21,11 @@ public class EndUserFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         HttpServletRequest newRequest = (HttpServletRequest) request;
-        HttpSession session = newRequest.getSession();
-        if (session.getAttribute("utente") == null) {
-            request.setAttribute("error", "necessario il login per procedere");
+        HttpSession session = newRequest.getSession(false);
+        HttpServletResponse resp= (HttpServletResponse) response;
+        if(session == null){
+            resp.sendRedirect("/ProfileView/login_end_user.jsp");
+        }else if(session.getAttribute("user") == null) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/profile_view/login_end_user.jsp");
             dispatcher.forward(request, response);
             return;

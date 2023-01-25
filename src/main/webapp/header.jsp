@@ -84,7 +84,7 @@
           <button form="filter" class="search-switch" style="border: none; background: none;bottom: 10px;right: 8px;">
             <img src="${pageContext.request.contextPath}/images/search.png" style="width: 1.18rem; " alt="">
           </button>
-          <a href="#"><img src="${pageContext.request.contextPath}/images/cart.png" alt=""> <span>0</span></a>
+          <a href="/visualizeCartServlet"><img src="${pageContext.request.contextPath}/images/cart.png" alt=""> <span>0</span></a>
           <div class="price">$0.00</div>
         </div>
       </div>

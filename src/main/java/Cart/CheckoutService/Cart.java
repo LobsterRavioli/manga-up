@@ -1,28 +1,30 @@
 package Cart.CheckoutService;
 
+import Merchandising.MerchandiseService.Manga;
+
 import java.util.HashMap;
 
 public class Cart {
 
-    HashMap<Object,Integer> prodotti;
+    HashMap<Manga,Integer> prodotti;
 
-    public Cart(HashMap<Object,Integer> prod){
+    public Cart(HashMap<Manga,Integer> prod){
         prodotti = prod;
     }
 
-    public void addToCart(Object prod,int quantity){
+    public void addToCart(Manga prod, int quantity){
         prodotti.put(prod,quantity);
     }
 
-    public void removeFromCart(Object prod){
+    public void removeFromCart(Manga prod){
         prodotti.remove(prod);
     }
 
-    public HashMap<Object, Integer> getProdotti() {
+    public HashMap<Manga, Integer> getProdotti() {
         return prodotti;
     }
 
-    public void setProdotti(HashMap<Object, Integer> prodotti) {
+    public void setProdotti(HashMap<Manga, Integer> prodotti) {
         this.prodotti = prodotti;
     }
 }

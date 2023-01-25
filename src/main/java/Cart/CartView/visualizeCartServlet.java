@@ -2,6 +2,7 @@ package Cart.CartView;
 
 import Cart.CheckoutService.Cart;
 import Cart.CheckoutService.CartDAO;
+import Merchandising.MerchandiseService.Manga;
 import User.AccountService.EndUser;
 
 
@@ -10,6 +11,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.HashMap;
 
 @WebServlet(name = "visualizeCartServlet", value = "/visualizeCartServlet")
 public class visualizeCartServlet extends HttpServlet {
@@ -24,9 +26,11 @@ public class visualizeCartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession s = request.getSession();
-        EndUser u = (EndUser) request.getSession().getAttribute("user");
-        Cart c;
+        Cart c = new Cart((HashMap<Manga, Integer>) request.getSession().getAttribute("cart"));
+        request.setAttribute("listaProdottiCart",c);
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/cart.jsp");
+        rd.forward(request,response);
+        return;
         /*
         try{
             if(s.getAttribute("cart")==null){
@@ -45,6 +49,6 @@ public class visualizeCartServlet extends HttpServlet {
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/CartView/cart.jsp"));
             dispatcher.forward(request, response);
         }
-         */
+
     }
 }

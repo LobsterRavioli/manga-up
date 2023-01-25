@@ -7,12 +7,11 @@
 --%>
 <%@ page language="java" contentType="text/html;charset=UTF-8"
          pageEncoding="ISO-8859-1" import="java.util.ArrayList"%>
-<%@ page import="Cart.CheckoutService.dao_layer.interfaces.CartDAO" %>
-<%@ page import="Cart.CheckoutService.beans.Cart" %>
+<%@ page import="Cart.CheckoutService.CartDAO" %>
+<%@ page import="Cart.CheckoutService.Cart" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="Merchandising.MerchandiseService.beans.Product" %>
-<%@ page import="Merchandising.MerchandiseService.beans.Manga" %>
+<%@ page import="Merchandising.MerchandiseService.Manga" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,9 +47,8 @@
           <div class="cart_items" id="cart_items">
             <ul class="cart_list" id="cart_list">
 
-              <%Cart c = (Cart) request.getAttribute("cart");
+              <%Cart cart = (Cart) request.getAttribute("cart");
                 HashMap<Object,Integer> map= new HashMap<Object,Integer>();
-                map.put(new Manga("isbn","brand","","","",0,null,0,"name","description",3.3,0.0,0.0,0.0,"collections",-1, Product.ProductState.NEW,"interior",""),3);
                 if(map.size()>0){
                   int i=0;
                   int j;
@@ -61,8 +59,6 @@
                     Object currentObj=set.getKey();
                     Manga m;
                     currentObj=new Manga("isbn","brand","","","",0,null,0,"name","description",3.3,0.0,0.0,0.0,"collections",-1, Product.ProductState.NEW,"interior","");
-                    Product p;
-                    if(currentObj instanceof Manga){
                       m = (Manga)currentObj;%>
               <div>
                 <li class="cart_item clearfix">
@@ -110,59 +106,12 @@
             </div>
             <div class="cart_buttons"> <button type="button" onclick="redirect()" class="button cart_button_clear">Continue Shopping</button> <button type="button" class="button cart_button_checkout">Proceed to Checkout</button> </div>
           </div>
-                    <%}else{
-                     p = (Product) currentObj;%>
-              <div>
-                <li class="cart_item clearfix">
-                  <div class="cart_item_image"><img src="/images/<%=p.getImagePath()%>.jpg">" alt=""></img></div>
-                  <div class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
-                    <div class="cart_item_name cart_info_col">
-                      <div class="cart_item_title">Nome</div>
-                      <div class="cart_item_text"><%=p.getName()%></div>
-                    </div>
-                    <div class="cart_item_quantity cart_info_col">
-                      <div class="cart_item_title">Quantita'</div>
-                      <div class="cart_item_text" id="<%=i %>">
-                        <p class=item_Quant><%=p.getQuantity()%></p>
-                        <button class="inc_Dec" onclick="increase(this)">+</button>
-                        <button class="inc_Dec" onclick="decrease(this)">-</button>
-                      </div>
-                    </div>
-                    <div class="cart_item_price cart_info_col">
-                      <div class="cart_item_title">Prezzo</div>
-                      <div class="cart_item_text">
-                        <p class="item_Quant3"><%= String.format("%.2f", p.getPrice()).replace(',', '.') %></p>
-                        <p class="item_Quant4"> &euro;</p>
-                        <p class="to_be_hidden"><%= String.format("%.2f", p.getPrice()).replace(',', '.') %></p>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <%if(i+1!=map.size()){%>
-                <div id="hor_line"><hr></div>
-                <% sum=sum+(set.getValue()*p.getPrice());%>
-              </div>
-            </ul>
-          </div>
-          <div id="totalContainer">
-            <div class="order_total">
-              <div class="order_total_content text-md-right">
-                <div class="order_total_title">Totale:</div>
 
-                <div class="order_total_amount" id="order_total_amount">
-                  <p class="item_Quant3"><%= String.format("%.2f",sum).replace(',', '.') %></p>
-                  <p class="item_Quant4"> &euro;</p>
-                </div>
-              </div>
-            </div>
-            <div class="cart_buttons"> <button type="button" onclick="redirect()" class="button cart_button_clear">Continue Shopping</button> <button type="button" class="button cart_button_checkout">Proceed to Checkout</button> </div>
-          </div>
-        <%}%>
 
         </div>
       </div>
     </div>
-    <%}}}else{ %>
+    <%}}else{ %>
     <p class="f-text" id="f-text">Non hai inserito alcun elemento nel tuo carrello</p>
     <%}%>
   </div>
