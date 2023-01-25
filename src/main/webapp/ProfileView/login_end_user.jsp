@@ -18,7 +18,7 @@
     <form method="post" action="${pageContext.request.contextPath}/LoginEndUserServlet">
         <fieldset>
         <legend>Please, log-in to continue</legend>
-        <input type="text" name="username"  placeholder="username" required="required" />
+        <input type="text" name="username"  placeholder="E-mail" required="required" />
         <input type="password" name="password"  placeholder="password" required="required" />
         <input type="submit" id="sub" value="Login"/>
         </fieldset>

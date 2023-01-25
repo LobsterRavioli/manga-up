@@ -16,7 +16,7 @@
 <html>
 <head>
   <meta charset="ISO-8859-1">
-  <title>Arbor Vitae</title>
+  <title>Cart</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" rel="stylesheet">
@@ -37,6 +37,8 @@
   }
 
 </script>
+
+<body>
 <%@ include file="/header.jsp" %>
 <div class="cart_section">
   <div class="container-fluid" id="container-fluid">
@@ -44,26 +46,24 @@
       <div class="col-lg-10 offset-lg-1">
         <div class="cart_container">
           <div class="cart_title">Carrello</div>
-          <div class="cart_items" id="cart_items">
-            <ul class="cart_list" id="cart_list">
 
-              <%Cart cart = (Cart) request.getAttribute("cart");
-                HashMap<Object,Integer> map= new HashMap<Object,Integer>();
-                if(map.size()>0){
+              <%Cart cart = (Cart) session.getAttribute("cart");
+                if(cart.getProdotti().size()>0){
                   int i=0;
                   int j;
                   String previous="";
                   double sum=0;
-                  for (Map.Entry<Object,Integer> set : map.entrySet()) {
+                  for (Map.Entry<Manga,Integer> set : cart.getProdotti().entrySet()) {
                     i++;
-                    Object currentObj=set.getKey();
-                    Manga m;
-                    currentObj=new Manga("isbn","brand","","","",0,null,0,"name","description",3.3,0.0,0.0,0.0,"collections",-1, Product.ProductState.NEW,"interior","");
-                      m = (Manga)currentObj;%>
+                    Manga m = set.getKey();
+                    //currentObj=new Manga("isbn","brand","","","",0,null,0,"name","description",3.3,0.0,0.0,0.0,"collections",-1, Product.ProductState.NEW,"interior","");;%>
               <div>
+                <div class="cart_items" id="cart_items">
+                  <ul class="cart_list" id="cart_list">
                 <li class="cart_item clearfix">
-                  <div class="cart_item_image"><img src="/images/<%=m.getName()%>.jpg" alt=""></img></div>
                   <div class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
+                    <div class="cart_item_image" style="width: 25%;height: 32%;display: flex;justify-content: center;">
+                      <img src="${pageContext.request.contextPath}/images/products/<%=m.getImagePath()%>" style="height: 94px;object-fit: contain;max-height: 69%;"></img></div>
                     <div class="cart_item_name cart_info_col">
                       <div class="cart_item_title">Nome</div>
                       <div class="cart_item_text"><%=m.getName()%></div>
@@ -79,20 +79,18 @@
                     <div class="cart_item_price cart_info_col">
                       <div class="cart_item_title">Prezzo</div>
                       <div class="cart_item_text">
-                        <p class="item_Quant3"><%= String.format("%.2f", m.getPrice()).replace(',', '.') %></p>
-                        <p class="item_Quant4"> &euro;</p>
-                        <p class="to_be_hidden"><%= String.format("%.2f", m.getPrice()).replace(',', '.') %></p>
+                        <p class="item_Quant3"><%= String.format("%.2f", m.getPrice()).replace(',', '.') %> &euro;</p>
+                        <!--<p class="item_Quant4"> &euro;</p>
+                        <p class="to_be_hidden"><%= String.format("%.2f", m.getPrice()).replace(',', '.') %></p>-->
                       </div>
                     </div>
                   </div>
                 </li>
-                <%if(i+1!=map.size()){%>
-                <div id="hor_line"><hr></div>
-                <%}%>
                 <% sum=sum+(set.getValue()*m.getPrice());%>
               </div>
             </ul>
           </div>
+          <%}%>
           <div id="totalContainer">
             <div class="order_total">
               <div class="order_total_content text-md-right">
@@ -110,13 +108,15 @@
 
         </div>
       </div>
+      </div>
+        </ul>
     </div>
-    <%}}else{ %>
+    <%}else{ %>
     <p class="f-text" id="f-text">Non hai inserito alcun elemento nel tuo carrello</p>
     <%}%>
   </div>
 </div>
-
+</body>
 <script>
   function redirect(){
     window.location.replace("http://localhost:8080/ArborVitae/catalogoServlet?ordinamento=1");

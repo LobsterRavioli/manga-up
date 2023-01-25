@@ -150,7 +150,7 @@
 
 
 .bbb_deals {
-    width: 88%;
+    width: 77%;
     margin-right: 7%;
     padding-top: 0px !important;
     padding-left: 0 !important;
@@ -167,10 +167,6 @@
     justify-content: center!important;
 }
 
-.bbb_deals_image img {
-    max-width: 75% !important;
-    max-height: 100% !important;
-}
 
 .bbb_deals_content {
     padding: 0% 3% 3% 3% !important;

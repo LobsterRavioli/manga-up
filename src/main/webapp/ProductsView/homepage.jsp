@@ -24,7 +24,6 @@
 <jsp:include page="/header_manager_homepage.jsp"/>
 
 <div class="navbar">
-    <a class="select" href="${pageContext.request.contextPath}/manageProducts">Manage products<br><br></a>
     <a class="select"href="${pageContext.request.contextPath}/ProductsView/addProducts.jsp">Add Product<br></a>
 </div>
 

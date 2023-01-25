@@ -17,8 +17,6 @@ import java.util.HashMap;
 
 @WebServlet("/LoginEndUserServlet")
 public class LoginEndUserServlet extends HttpServlet {
-    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-    private EndUserDAO dao = new EndUserDAO(ds);
 
 
     @Override
@@ -29,7 +27,8 @@ public class LoginEndUserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+        EndUserDAO dao = new EndUserDAO(ds);
         response.setContentType("text/html");
         String email = request.getParameter("username");
         String password = request.getParameter("password");

@@ -1,0 +1,15 @@
+.displayer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: content;
+    float: right;
+    width: 74%;
+    overflow-y: scroll;
+    height: 100%;
+}
+
+
+div.navbar{
+    display: inline-block;
+}

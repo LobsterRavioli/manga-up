@@ -29,9 +29,22 @@ body{
 }
 
 
-ul{
-    list-style: none;
-    margin-bottom: 0px
+.cart_list{
+    list-style: none !important;
+    margin-bottom: 0px;
+}
+
+.cart_items{
+    border: 3px solid #8c1b1b;
+    margin: 1% 0;
+}
+
+.header__nav__option{
+    top: 5% !important;
+    position: relative;
+}
+
+#filter{
 }
 
 .button{
