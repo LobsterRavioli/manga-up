@@ -24,7 +24,7 @@ public class ManagedOrderServlet extends HttpServlet{
         ToManageDAO toManageDAO = new ToManageDAO(ds);
 
         String action = request.getParameter("action");
-        String ord_id = request.getParameter("manage"); // id dell'ordine da gestire
+        String ord_id = request.getParameter("manage");
 
         if (action == null) {
 
@@ -45,10 +45,6 @@ public class ManagedOrderServlet extends HttpServlet{
                     String trackingNumber = request.getParameter("trackingNumber");
                     String courierName = request.getParameter("courier");
                     Date shipmentDate = Date.valueOf(request.getParameter("shipmentDate"));
-
-                    /*
-                    * Controllare i dati ricevuti dal form
-                    */
 
                     ManagedOrder managed = new ManagedOrder();
 

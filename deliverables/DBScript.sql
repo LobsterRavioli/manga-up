@@ -107,7 +107,7 @@ CREATE TABLE manages
     man_order_id INT NOT NULL,
     PRIMARY KEY(man_user_name, man_order_id),
     man_delivery_date DATE NOT NULL,
-    man_tracking_number VARCHAR(20) NOT NULL,
+    man_tracking_number VARCHAR(20) UNIQUE NOT NULL,
     man_courier VARCHAR(30) NOT NULL,
     man_shipment_date DATE NOT NULL,
 
