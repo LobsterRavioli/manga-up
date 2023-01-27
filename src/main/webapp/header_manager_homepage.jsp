@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="java.util.*"%>
 
@@ -7,9 +6,9 @@
        String managerRole = (String)request.getSession().getAttribute("roleSelected");
        Collection<String> otherRoles = (Collection<String>)request.getSession().getAttribute("otherRoles");
 
-       if(managerName==null || managerRole==null) {
-            System.out.println(request.getScheme()+":"+request.getServerName()+request.getServerPort()+request.getContextPath());
-            %><c:redirect url="${pageContext.request.contextPath}/LoginManager"/><%
+       if(managerName == null || managerRole == null || otherRoles == null) {
+            response.sendRedirect(getServletContext().getContextPath()+"/LoginManager");
+            return;
        }
 
        if(managerName.length() > 15) {
@@ -20,7 +19,7 @@
        String homePage = "";
 
        if(managerRole.equals("USER_MANAGER"))
-            homePage = getServletContext().getContextPath()+"/ProfileView/userManagerHome.jsp";
+            homePage = getServletContext().getContextPath()+"/ProfileView/homepage.jsp";
 
        else if(managerRole.equals("ORDER_MANAGER"))
             homePage = getServletContext().getContextPath()+"/OrderView/homepage.jsp";
@@ -33,15 +32,17 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Home Page</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style_header_manager.css">
 </head>
 <body>
 
-    <div class="logo">
-        <a href="<%=homePage %>"><img src="${pageContext.request.contextPath}/images/logo.png" width="125px"></a>
-        <h2>Welcome <%=managerName %></h2>
-
+    <div class="header">
+    <nav class="main">
+    	<div class=logo>
+        	<a href="<%=homePage %>"><img src="${pageContext.request.contextPath}/images/logo.png" width="125px"></a>
+        	<h2>Welcome <%=managerName %></h2>
+		</div>
+        
         <div class="select_role">
         <form action="${pageContext.request.contextPath}/switchRole" method="POST">
             <label>Role:
@@ -81,10 +82,8 @@
         </form>
         </div>
 
-        <div class="logout">
-            <a href="${pageContext.request.contextPath}/logout">Log-out</a>
-        </div>
-
+        <a href="${pageContext.request.contextPath}/logout" id="logout">Log-out</a>
+	</nav>
     </div>
 
 </body>

@@ -9,9 +9,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Home Page User Manager</title>
 </head>
 <body>
+
+    <jsp:include page="/header_manager_homepage.jsp"/>
+
+    <p>TO DO</p>
 
 </body>
 </html>

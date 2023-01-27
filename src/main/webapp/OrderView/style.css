@@ -1,3 +1,27 @@
+.orderHome {
+	position: absolute;
+	top: 124px;
+	left: 8px;
+	height: 100%;
+	width: 200px;
+	padding: 0 2px;
+	background: #f7efef;
+	border: 2px solid;
+	border-top: none;
+}
+
+#items {
+	height: 100%;
+	display: flex;
+	justify-content: space-between;
+	padding: 20px 0;
+}
+
+#items, #orders, #managed {
+	text-decoration: none;
+	color: #3f51b5;
+	margin: 10px 10px;
+}
 div.navbar {
     height: 100%;
     width: 120px;
@@ -7,3 +31,5 @@ div.navbar {
     padding-top: 30px;
     background-color: #e0e0e0;
 }
+
+a

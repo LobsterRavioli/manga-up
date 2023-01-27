@@ -47,7 +47,7 @@ public class ManagedOrderDAO {
             if(affectedRows == 0)
                 throw new DAOException("Creating managed order failed, no rows affected.");
 
-            connection.commit();
+           // connection.commit();
         }
         finally
         {

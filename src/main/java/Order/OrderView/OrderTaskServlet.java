@@ -20,9 +20,9 @@ public class OrderTaskServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // RECUPERARE L'ORIDNE DA GESTIRE (DA DOVE ? DALLA SESSIONE ?)
+        // ********* RECUPERARE L'ORIDNE DA GESTIRE E ASSEGNARLO A orderToMan *********
 
-        Order orderToMan = (Order)request.getSession().getAttribute("order_to_manage");
+        Order orderToMan = null;
 
         if(orderToMan == null) // ********* fittizio, giusto per provare *********
         {

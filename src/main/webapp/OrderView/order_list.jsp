@@ -48,7 +48,7 @@
 				    <td><%=bean.getState() %></td>
 				    <td><%=bean.getTotalPrice() %></td>
 				    <td><%=bean.getEndUserID() %></td>
-				    <td><a href="${pageContext.request.contextPath}/manageServlet?manage=<%=bean.getId()%>">Manage order</a></td>
+				    <td><a href="${pageContext.request.contextPath}/manageServlet?manage=<%=bean.getId()%>&ord_date=<%=bean.getOrderDate()%>">Manage order</a></td>
 			    </tr>
 	    <%
 		    	}

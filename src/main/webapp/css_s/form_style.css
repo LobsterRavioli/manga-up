@@ -1,4 +1,4 @@
-input[type=text], input[type=password] {
+input[type= text], input[type= password], input[type= date]{
     font-size: 120%;
     color: #5a5854;
     background-color: #f2f2f2;
@@ -12,7 +12,7 @@ input[type=text], input[type=password] {
     margin-bottom: 10px;
 }
 
-input[type="submit"] {
+input[type= submit], input[type= reset] {
   background-color: #f2f2f2;
   border: none;
   color: black;
@@ -39,4 +39,31 @@ fieldset {
 legend {
     padding: 5px 10px;
     text-align: center;
+}
+
+.input-control input:focus {
+    outline: 0;
+}
+
+.input-control.success input {
+    border-color: #09c372;
+}
+
+.input-control.error input {
+    border-color: #ff3860;
+}
+
+.input-control.error {
+    color: #ff3860;
+    font-size: 13px;
+}
+
+.input-control {
+    position: relative;
+    top: 5px;
+}
+
+.courier-div {
+    position: relative;
+    bottom: 15px;
 }
