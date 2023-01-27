@@ -3,6 +3,7 @@ package Cart.CheckoutService;
 import Merchandising.MerchandiseService.Manga;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Cart {
 
@@ -20,11 +21,20 @@ public class Cart {
         prodotti.remove(prod);
     }
 
-    public HashMap<Manga, Integer> getProdotti() {
+    public HashMap<Manga,Integer> getProdotti() {
         return prodotti;
     }
 
     public void setProdotti(HashMap<Manga, Integer> prodotti) {
         this.prodotti = prodotti;
+    }
+
+    public void updateProdotto(Manga m,int quantity) {
+        for (Map.Entry<Manga, Integer> set : prodotti.entrySet()) {
+            Manga inCart = set.getKey();
+            if (inCart.getId() == m.getId()) {
+                set.setValue(set.getValue()+quantity);
+            }
+        }
     }
 }

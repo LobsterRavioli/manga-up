@@ -9,7 +9,7 @@ import java.io.IOException;
 
 @WebFilter(filterName = "FilterLogin", urlPatterns = { "/ProfileView/dashboard_carte_di_credito.jsp", "/ProfileView/dashboard_utente.jsp",
         "/ProfileView/dashboard_indirizzi.jsp", "/ProfileView/creazione_carta_di_credito.jsp", "/ProfileView/creazione_indirizzo.jsp"
-        ,"/AddressCreateServlet","/CreditCardCreateServlet","/AddressDeleteServlet","/CreditCardDeleteServlet"/*,"/cartAddServlet"*/,"/cartRemoveServlet","/cartUpdateItemServlet"/*,"/visualizeCartServlet"*/,"/CartView/cart.jsp"})
+        ,"/AddressCreateServlet","/CreditCardCreateServlet","/AddressDeleteServlet","/CreditCardDeleteServlet"/*,"/cartAddServlet"*/,"/cartRemoveServlet"/*,"/cartUpdateItemServlet"*//*,"/visualizeCartServlet"*/,"/CartView/cart.jsp"})
 public class EndUserFilter implements Filter {
     public void init(FilterConfig config) {
     }

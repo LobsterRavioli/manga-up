@@ -28,6 +28,7 @@ public class catalogServlet extends HttpServlet {
             RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/catalog.jsp");
             rD.forward(request,response);
         }catch (Exception e){
+            System.out.println(e.getMessage());
             request.setAttribute("listaElementi",null);
             RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/catalog.jsp");
             rD.forward(request,response);

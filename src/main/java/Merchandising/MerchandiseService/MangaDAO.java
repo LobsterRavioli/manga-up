@@ -40,7 +40,7 @@ public class MangaDAO {
             throw new Exception("il volume passato risulta nullo");
 
         if(manga.getExitDate() == null || manga.getExitDate().after(new java.util.Date()))
-            throw new Exception("la data passata non risulta valida");
+            throw new Exception("la data passata non risulta valida"+ manga.getExitDate());
 
         if(manga.getPages()<1)
             throw new Exception("numero di pagine non corretto");
@@ -68,7 +68,7 @@ public class MangaDAO {
 
         PreparedStatement pr = null;
         try(Connection conn = ds.getConnection()){
-            pr = conn.prepareStatement("INSERT INTO Manga VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            pr = conn.prepareStatement("INSERT INTO Manga (name,editore,price,weight,height,lenght,state,description,ISBN,book_binding,volume,release_date,page_number,quantity,interior,lang,image,collection_id,genre_id,storyMaker) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             pr.setString(1,manga.getName());
             pr.setString(2,manga.getPublisher());
             pr.setDouble(3,manga.getPrice());
@@ -97,7 +97,7 @@ public class MangaDAO {
 
             pr.executeUpdate();
         }catch (SQLException e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }finally{
             try{
                 pr.close();
@@ -292,7 +292,7 @@ public class MangaDAO {
 
         try(Connection conn = ds.getConnection()) {
 
-            ricerca = "SELECT * FROM Manga AS m WHERE m.name LIKE '%" + name + "%' AND m.collections LIKE '%" + collection + "%' AND m.price BETWEEN ? AND ";
+            ricerca = "SELECT * FROM Manga AS m WHERE m.name LIKE '%" + name + "%' AND m.collection_id LIKE '%" + collection + "%' AND m.price BETWEEN ? AND ";
             if (max_price <= 0) {
                 ricerca = ricerca + "99999999999 ";
                 pr = conn.prepareStatement(ricerca);
@@ -368,6 +368,7 @@ public class MangaDAO {
             else return lista;
 
         }catch (SQLException e){
+            System.out.println(e.getMessage());
             System.out.println(ricerca);
             return null;
         }finally {

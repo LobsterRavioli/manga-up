@@ -16,7 +16,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Home Page Order Manager</title>
+    <title>Home Page Catalog Manager</title>
     <link rel="stylesheet" href="../OrderView/style.css">
 </head>
 <body>
@@ -24,7 +24,8 @@
 <jsp:include page="/header_manager_homepage.jsp"/>
 
 <div class="navbar">
-    <a class="select"href="${pageContext.request.contextPath}/ProductsView/addProducts.jsp">Add Product<br></a>
+    <a class="select" href="${pageContext.request.contextPath}/ProductsView/addProducts.jsp">Add Product<br></a>
+    <a class="select" href="${pageContext.request.contextPath}/ProductsView/prodManagement.jsp">Manage Product<br></a>
 </div>
 
 </body>

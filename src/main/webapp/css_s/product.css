@@ -21,34 +21,35 @@
 }
 
 .img-fluid{
-    margin-left: 22%;
     object-fit: contain;
+    max-width: 350px;
+    position: relative
 }
 
 .statesss{
-    color: #af1414;
-    font-size: 25px;
-    font-weight: 700;
+color: #af1414;
+font-size: 25px;
+font-weight: 700;
 }
 
 .none_center{
-    text-align: unset !important;
-    width: 100%;
-    overflow-wrap: break-word;
-    font-size: 14px;
-    font-weight: 100;
+text-align: unset !important;
+width: 100%;
+overflow-wrap: break-word;
+font-size: 14px;
+font-weight: 100;
 }
 
 .addInfs{
-    justify-content: center;
-    display:block;
+justify-content: center;
+display:block;
 }
 
 /*
 ul.inL li{
-    width: auto;
-    float: left;
-    list-style-position: inside;
+width: auto;
+float: left;
+list-style-position: inside;
 }*/
 
 

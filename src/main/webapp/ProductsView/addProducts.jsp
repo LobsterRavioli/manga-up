@@ -22,7 +22,7 @@
             <div class="toppane"></div>
             <div class="leftpane"></div>
 
-        <form id="addProductForm" action="<${pageContext.request.contextPath}/addProductServlet" method="post">
+        <form id="addProductForm" action="${pageContext.request.contextPath}/ProductsView/processProductInsertion" method="post" enctype="multipart/form-data">
 
                 <div class="container">
 
@@ -41,7 +41,7 @@
 
                     <p class="price_error"></p>
                     <label for="prezzo"><b>Prezzo</b></label>
-                    <input type="text" placeholder="Inserisci il prezzo" name="prezzo" id="prezzo"  pattern="[0-9]*.[0-9]{2}" title="Rispettare il formato: Euro.Centesimi" required>
+                    <input type="text" placeholder="Inserisci il prezzo" name="prezzo" id="prezzo"  pattern="[0-9]*[.[0-9]{2}]" title="Rispettare il formato: Euro.Centesimi" required>
 
                     <p class="weight_error"></p>
                     <label for="peso"><b>Peso</b></label>
@@ -53,7 +53,7 @@
                     <br>
                     <p class="length_error"></p>
                     <label for="larghezza"><b>Larghezza</b></label>
-                    <input type="number" placeholder="Inserisci cognome" name="larghezza" id="larghezza" min="1" required>
+                    <input type="number" placeholder="Inserisci la larghezza" name="larghezza" id="larghezza" min="1" required>
 
                     <p class="state_error"></p>
                     <label for="stato"><b>Stato</b></label>
@@ -63,13 +63,13 @@
                     </select>
 
                         <p class="description_error"></p>
-                        <label for="descrizione"><b>Descrizione </b></label>
+                        <label for="descrizione"><b>Descrizione</b></label>
                         <textarea rows="4" cols="50" name="descrizione" id="descrizione">Inserisci una descrizione del prodotto
                         </textarea>
                         <br>
                         <p class="isbn_error"></p>
                         <label for="isbn"><b>ISBN</b></label>
-                        <input type="text"  placeholder="Inserisci l'isbn" name="isbn" id="isbn" pattern="[0-9]" required>
+                        <input type="text"  placeholder="Inserisci l'isbn" name="isbn" id="isbn" pattern="[0-9]{13}" required>
                         <br>
 
                         <p class="book_binding_error"></p>
@@ -86,16 +86,16 @@
                         <input type="date" placeholder="Inserire la data di uscita" name="data_uscita" id="data_uscita" required>
                         <br>
                         <p class="page_number_error"></p>
-                        <label for="country"><b>Numero di Pagine</b></label>
-                        <input type="text" placeholder="Inserire il numero di pagine" name="country" id="country" pattern="^[0-9]" required>
+                        <label for="numPagine"><b>Numero di Pagine</b></label>
+                        <input type="text" placeholder="Inserire il numero di pagine" name="numPagine" id="numPagine" pattern="[0-9]*" required>
                         <br>
                         <p class="quantity_error"></p>
                         <label for="quantity"><b>Quantità da immagazzinare</b></label>
-                        <input type="text"  placeholder="Inserire la quantità" name="quantity" id="quantity" min="1" required>
+                        <input type="text"  placeholder="Inserire la quantità" name="quantity" id="quantity" min="1" pattern="[0-9]*" required>
                         <br>
                         <p class="interior_error"></p>
                         <label for="interni"><b>Colore degli Interni</b></label>
-                        <input type="text" placeholder="Inserire il colore degli interni" name="interni" id="interni" required>
+                        <input type="text" placeholder="Inserire il colore degli interni" name="interni" id="interni" pattern="^(?![ ]+$)[a-zA-Z ]*$"  required>
                         <br>
 
                         <p class="language_error"></p>
@@ -124,7 +124,7 @@
                                 ArrayList<Genre> collections = g.retrieveAlL();
                         %>
                         <p class="collection_error"></p>
-                        <select id="state" name="collection">
+                        <select id="state" name="genere">
 
                             <%for(Genre gen: collections){%>
                             <option value="<%=gen.getName()%>"><%=gen.getName()%></option>
@@ -150,7 +150,7 @@
                 </div>
 
                 <br>
-                <button class="fry" type="submit" onclick="check_registration_format()">Inserisci</button>
+                <button class="fry" type="submit" onclick="check_registration_format()" value="">Inserisci</button>
 
         </form>
         </div>

@@ -55,7 +55,7 @@
       <!--Grid column-->
       <div class="col-md-6 mb-4" style="padding: 4% 0 0 5%;">
 
-        <img src="${pageContext.request.contextPath}/images/products/MANGA2.jpg" class="img-fluid" alt="">
+        <img src="${pageContext.request.contextPath}/images/products/<%=m.getImagePath()%>" class="img-fluid" alt="">
 
       </div>
       <!--Grid column-->
@@ -78,7 +78,7 @@
           <p class="lead font-weight-bold">Prezzo</p>
 
           <p class="lead">
-            <span>€<%=m.getPrice()%></span>
+            <span>€<%= String.format("%.2f", m.getPrice()).replace(',', '.') %></span>
           </p>
 
           <p class="thin font-weight-bold">Publisher</p>

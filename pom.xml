@@ -36,6 +36,13 @@
             <scope>test</scope>
         </dependency>
 
+
+        <dependency>
+            <groupId>com.efsavage.jquery</groupId>
+            <artifactId>jquery-maven</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.dbunit/dbunit -->
         <dependency>
             <groupId>org.dbunit</groupId>

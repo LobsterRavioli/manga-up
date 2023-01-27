@@ -53,7 +53,7 @@ public class cartAddServlet extends HttpServlet {
                 try {
                     dao.updateProduct(m, Integer.parseInt(quantity), endUser);
                     pw=response.getWriter();
-                    pw.print("Quantità correttamente incrementata nel carrello");
+                    pw.print("Quantità correttamente aggiornata nel carrello");
                     response.setStatus(200);
                     return;
                 }catch (Exception e){

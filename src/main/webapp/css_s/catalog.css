@@ -225,9 +225,6 @@ body{
 
 
 .contxxx{
-    border-color: rgba(4,11,5,0.15);
-    border-width: 0.5px;
-    border-top-style: solid;
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;

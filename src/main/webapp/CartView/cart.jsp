@@ -21,6 +21,7 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css_s/cart.css">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 </head>
 
 <style>
@@ -62,26 +63,29 @@
                   <ul class="cart_list" id="cart_list">
                 <li class="cart_item clearfix">
                   <div class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
-                    <div class="cart_item_image" style="width: 25%;height: 32%;display: flex;justify-content: center;">
+                    <div class="cart_item_image childflex" style="width: 25%;height: 32%;display: flex;justify-content: center;">
                       <img src="${pageContext.request.contextPath}/images/products/<%=m.getImagePath()%>" style="height: 94px;object-fit: contain;max-height: 69%;"></img></div>
-                    <div class="cart_item_name cart_info_col">
+                    <div class="cart_item_name cart_info_col childflex">
                       <div class="cart_item_title">Nome</div>
                       <div class="cart_item_text"><%=m.getName()%></div>
                     </div>
-                    <div class="cart_item_quantity cart_info_col">
+                    <div class="cart_item_quantity cart_info_col childflex">
                       <div class="cart_item_title">Quantita'</div>
-                      <div class="cart_item_text" id="<%=i %>">
-                        <p class=item_Quant><%=set.getValue()%></p>
-                        <button class="inc_Dec" onclick="increase(this)">+</button>
-                        <button class="inc_Dec" onclick="decrease(this)">-</button>
-                      </div>
+                      <form action="">
+                        <div class="cart_item_text" id="<%=m.getId() %>">
+                          <input type="number" value="<%=set.getValue()%>" min="0" max="<%=m.getQuantity()%>" aria-label="Search" class="form-control" id="countProducts<%=m.getId()%>" style="width: 100px">
+                          <button class="btn btn-primary btn-md my-0 p waves-effect waves-light" type="button" onclick="updateElement(<%=m.getId()%>)">Change quantity
+                          <i class="fas fa-shopping-cart ml-1"></i>
+                        </button>
+                        </div>
+                      </form>
                     </div>
-                    <div class="cart_item_price cart_info_col">
+                    <div class="cart_item_price cart_info_col childflex">
                       <div class="cart_item_title">Prezzo</div>
                       <div class="cart_item_text">
                         <p class="item_Quant3"><%= String.format("%.2f", m.getPrice()).replace(',', '.') %> &euro;</p>
                         <!--<p class="item_Quant4"> &euro;</p>
-                        <p class="to_be_hidden"><%= String.format("%.2f", m.getPrice()).replace(',', '.') %></p>-->
+                       <p class="to_be_hidden"><%= String.format("%.2f", m.getPrice()).replace(',', '.') %></p>-->
                       </div>
                     </div>
                   </div>
@@ -118,8 +122,17 @@
 </div>
 </body>
 <script>
-  function redirect(){
-    window.location.replace("http://localhost:8080/ArborVitae/catalogoServlet?ordinamento=1");
+  function redirect(string){
+    window.location.replace("http://localhost:8080"+string);
+  }
+
+  function updateElement(y){
+    console.log(y);
+    let stringToQuery = "#countProducts"+y
+    console.log(stringToQuery)
+    let x = $(stringToQuery).attr('value');
+    let max = $(stringToQuery).attr('max');
+    redirect("${pageContext.request.contextPath}/cartUpdateItemServlet?add=true&maxQ="+encodeURIComponent(max)+"&quantity="+encodeURIComponent(x)+"&id="+encodeURIComponent(y));
   }
 
   function increase(x){

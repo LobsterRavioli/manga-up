@@ -280,9 +280,6 @@ ol {
 
 .header {
     background: #ffffff;
-    border-color: rgba(4,11,5,0.15);
-    border-width: 0.5px;
-    border-bottom-style: solid;
 }
 
 .header__top {
@@ -3698,6 +3695,9 @@ ol {
 .principal{
     width: 100%;
     display: flex;
+    border-color: rgba(4,11,5,0.15);
+    border-width: 0.5px;
+    border-bottom-style: solid;
 }
 
 

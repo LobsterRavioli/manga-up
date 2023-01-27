@@ -85,7 +85,7 @@
                                 <div class="bbb_deals_title"><p class="p_title"><%=m.getCollection().getName()%></p></div>
                                 <div class="bbb_deals_slider_container">
                                     <div class=" bbb_deals_item">
-                                        <div class="bbb_deals_image"><img src="${pageContext.request.contextPath}/images/products/MANGA2.jpg" alt="" style="height: 180px"></div>
+                                        <div class="bbb_deals_image"><img src="${pageContext.request.contextPath}/images/products/<%=m.getImagePath()%>" alt="" style="height: 180px"></div>
 
                                         <div class="bbb_deals_content">
                                             <!--<div class="bbb_deals_info_line d-flex flex-row justify-content-start">-->
@@ -102,7 +102,7 @@
                                 </div>
 
                             </div>
-                            <div class="bbb_deals_item_price ml-auto">€<%=m.getPrice()%></div>
+                            <div class="bbb_deals_item_price ml-auto"><%=String.format("%.2f", m.getPrice()).replace(',', '.') %> &euro;</div>
                             <div class="available">
 
                                 <div class="available_title">Disponibili: <span><%=m.getQuantity()%></span></div>

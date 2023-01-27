@@ -47,6 +47,11 @@ body{
 #filter{
 }
 
+.childflex{
+    flex: 1 0 21%;
+    margin: 5px;
+}
+
 .button{
     display: inline-block;
     background: #46dd2c;

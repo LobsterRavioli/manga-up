@@ -1,5 +1,6 @@
 package Cart.CartView;
 
+import Cart.CheckoutService.Cart;
 import Cart.CheckoutService.CartDAO;
 import Merchandising.MerchandiseService.Manga;
 import User.AccountService.EndUser;
@@ -10,7 +11,7 @@ import javax.servlet.annotation.*;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-@WebServlet(name = "cartDecreaseServlet", value = "/cartDecreaseServlet")
+@WebServlet(name = "cartUpdateItemServlet", value = "/cartUpdateItemServlet")
 public class cartUpdateItemServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -22,7 +23,7 @@ public class cartUpdateItemServlet extends HttpServlet {
         DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
         System.out.println("Sono LA UPDATE");
         CartDAO dao = new CartDAO(ds);
-        response.setContentType("text/plain");
+        String aggiunta = request.getParameter("add");
         HttpSession s = request.getSession(false);
         if (s == null){
             response.setStatus(201);
@@ -39,6 +40,14 @@ public class cartUpdateItemServlet extends HttpServlet {
         try{
             m.setQuantity(Integer.parseInt(maxQ));
             dao.updateProduct(m,Integer.parseInt(quantity),endUser);
+            Cart c = (Cart) request.getSession().getAttribute("cart");
+            c.updateProdotto(m,Integer.parseInt(quantity));
+            if(aggiunta.equals("true")){
+                System.out.println("non so perchè");
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/cart.jsp");
+                rd.forward(request, response);
+                return;
+            }
             response.setStatus(200);
             response.getWriter().write(quantity);
             return;

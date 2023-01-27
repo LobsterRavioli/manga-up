@@ -36,7 +36,9 @@ public class CartDAO {
             throw new UserNotAssociatedException();
 
         PreparedStatement pr = null;
+        Manga actual = null;
         ResultSet rs = null;
+        MangaDAO man = new MangaDAO(ds);
         HashMap<Manga,Integer> mappa = new HashMap<Manga,Integer>();
         try(Connection conn = ds.getConnection()){
             pr = conn.prepareStatement("SELECT m.id,m.name,m.editore,m.price,m.ISBN,m.quantity,c.quantity,m.image FROM CART AS c,Manga AS m where c.user_id=? AND m.id=c.manga_id");
@@ -50,6 +52,12 @@ public class CartDAO {
                 String isbn = rs.getString(5);
                 int quantitym = rs.getInt(6);
                 int quantityc= rs.getInt(7);
+
+                if(quantityc>quantitym){
+                    int temp = quantityc;
+                    quantityc=quantitym;
+                    updateProduct(new Manga(id),quantityc-temp,user);
+                }
                 String imagep= rs.getString(8);
                 Manga m = new Manga(isbn,brand,"","","",0,null,id, name,"description", price,0.0,0.0,0.0, quantitym,"",imagep,null,null,"",null);
                 mappa.put(m,quantityc);
@@ -120,6 +128,7 @@ public class CartDAO {
         EndUserDAO eD = new EndUserDAO(ds);
         MangaDAO m = new MangaDAO(ds);
 
+
         if(eD.findById(user.getId())==null){
             throw new Exception("utente non esistente");
         }
@@ -159,6 +168,23 @@ public class CartDAO {
         EndUserDAO eD = new EndUserDAO(ds);
         MangaDAO m = new MangaDAO(ds);
 
+        HashMap<Manga,Integer> mappa = retrieveByUser(user);
+
+        boolean b = false;
+        int qInCart=0;
+        for (Map.Entry <Manga, Integer> set : mappa.entrySet()) {
+            if(set.getKey().getId()==manga.getId()) {
+                qInCart= set.getValue();
+                b = true;
+                break;
+            }
+        }
+
+        if(!b){
+            addProduct(manga,quantity,user);
+            return;
+        }
+
         if(eD.findById(user.getId())==null){
             throw new Exception("utente non esistente");
         }
@@ -166,8 +192,12 @@ public class CartDAO {
         if(m.retrieveById(manga.getId())==null)
             throw new Exception("prodotto non esistente");
 
+        if(quantity==0){
+            removeProduct(manga,user);
+            return;
+        }
 
-        if(quantity<0 || quantity> manga.getQuantity()){
+        if(quantity>manga.getQuantity()){
             throw new Exception("quantità inserita non valida");
         }
 
@@ -177,7 +207,7 @@ public class CartDAO {
         ResultSet rs = null;
         try(Connection conn = ds.getConnection()){
 
-            pr = conn.prepareStatement("UPDATE CART SET quantity=quantity+? WHERE user_id=? AND manga_id=?");
+            pr = conn.prepareStatement("UPDATE CART SET quantity=? WHERE user_id=? AND manga_id=?");
 
             pr.setInt(1,quantity);
             pr.setInt(2,user.getId());
@@ -190,7 +220,7 @@ public class CartDAO {
                 rs.close();
                 pr.close();
             }catch (SQLException e){
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
         }
     }
