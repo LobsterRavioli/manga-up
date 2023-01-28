@@ -93,10 +93,10 @@ public class CreditCardDAO {
         return null;
     }
 
-    public Collection findAllByEnduser(CreditCard userCard) {
+    public Collection findAssociatedCards(EndUser user) {
         List<CreditCard> creditCards = new ArrayList<>();
         Object[] values = {
-                userCard.getId()
+                user.getId()
         };
         try (
                 Connection connection = ds.getConnection();

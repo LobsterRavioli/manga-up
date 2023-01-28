@@ -9,9 +9,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Titolo</title>
+    <title>Dashboard lista utenti</title>
 </head>
 <body>
+
+    <c:forEach items="${users}" var="user">
+        <p>${user.username} </p>
+        <c:forEach items="${user.roles}" var="role">
+            <p> ${role}</p>
+        </c:forEach>
+        <form action="${pageContext.request.contextPath}/UserDeleteServlet" method="post">
+            <input type="hidden" name="username" value=${user.username} />
+            <input type="submit" value="elimina" name="act" id="box_button" class="accept">
+        </form>
+    </c:forEach>
 
 </body>
 </html>

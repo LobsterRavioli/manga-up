@@ -32,7 +32,7 @@ public class CartDAO {
 
         EndUserDAO ed = new EndUserDAO(ds);
 
-        if(ed.findById(user.getId())==null)
+        if(ed.findById(user.getId()) == null)
             throw new UserNotAssociatedException();
 
         PreparedStatement pr = null;
@@ -58,6 +58,7 @@ public class CartDAO {
                     quantityc=quantitym;
                     updateProduct(new Manga(id),quantityc-temp,user);
                 }
+
                 String imagep= rs.getString(8);
                 Manga m = new Manga(isbn,brand,"","","",0,null,id, name,"description", price,0.0,0.0,0.0, quantitym,"",imagep,null,null,"",null);
                 mappa.put(m,quantityc);

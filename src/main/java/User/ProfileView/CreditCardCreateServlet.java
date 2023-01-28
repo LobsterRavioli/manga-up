@@ -38,7 +38,7 @@ public class CreditCardCreateServlet extends HttpServlet {
 
         card.setEndUser(user);
         dao.create(card);
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/"));
+        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/CreditCardDashboardServlet"));
         dispatcher.forward(request, response);
     }
 }

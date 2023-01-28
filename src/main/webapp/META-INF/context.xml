@@ -6,6 +6,7 @@
               driverClassName="com.mysql.jdbc.Driver"
               type="javax.sql.DataSource"
               username="root"
-              password="alessandro7"
+              password="napoli123"
+              defaultAutoCommit="true"
               url="jdbc:mysql://localhost:3306/MANGA_UP?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
 </Context>

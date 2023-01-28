@@ -15,7 +15,10 @@
 
     <jsp:include page="/header_manager_homepage.jsp"/>
 
-    <p>TO DO</p>
+    <a href="${pageContext.request.contextPath}/UserListServlet">Lista utenti</a>
+    <a href="creazione_utente.jsp">Crea nuovo utente</a>
+
+    <hr>
 
 </body>
 </html>

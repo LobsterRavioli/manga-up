@@ -41,14 +41,14 @@ public class User {
         this.password = password;
     }
 
-    public void addRole(Roles role){
-        if(!roles.contains(role.getValue()))
-            roles.add(role.getValue());
+    public void addRole(String role){
+        if(!roles.contains(role))
+            roles.add(role);
     }
 
-    public void removeRole(Roles role){
-        if(roles.contains(role.getValue()))
-            roles.remove(role.getValue());
+    public void removeRole(String role){
+        if(roles.contains(role))
+            roles.remove(role);
     }
 
     public Set getRoles()
@@ -74,5 +74,9 @@ public class User {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public void setRoles(Set roles) {
+        this.roles = roles;
     }
 }

@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import static utils.DAOUtil.prepareStatement;
 
@@ -28,8 +30,8 @@ public class UserRoleDAO {
     private static String REMOVE_ALL_ROLES = "DELETE FROM user_roles WHERE user_name = ?";
 
 
-    public Collection getRoles(User user) {
-        ArrayList<String> roles = new ArrayList<>();
+    public Set<String> getRoles(User user) {
+        HashSet<String> roles = new HashSet<String>();
         Object values[] = {user.getUsername()};
         try (
                 Connection connection = ds.getConnection();
@@ -46,7 +48,7 @@ public class UserRoleDAO {
         return roles;
     }
 
-    public void setRoles(User user, Collection roles) {
+    public void setRoles(User user, String [] roles) {
         removeAllRoles(user);
         for (Object role : roles) {
             Object values[] = {user.getUsername(), role};

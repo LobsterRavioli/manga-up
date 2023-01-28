@@ -87,10 +87,10 @@ public class AddressDAO {
         }
     }
 
-    public Collection findAllByEnduser(Address address) {
+    public Collection findAssociatedAddresses(EndUser user) {
         List<Address> addresses = new ArrayList<>();
         Object[] values = {
-                address.getEndUser().getId()
+                user.getId()
         };
         try (
                 Connection connection = ds.getConnection();

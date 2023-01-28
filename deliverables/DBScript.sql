@@ -56,8 +56,8 @@ CREATE TABLE user_roles
     user_name VARCHAR(20) NOT NULL,
     role_name VARCHAR(20) NOT NULL,
     PRIMARY KEY (user_name, role_name),
-    FOREIGN KEY (user_name) REFERENCES users (user_name),
-    FOREIGN KEY (role_name) REFERENCES roles (role_name)
+    FOREIGN KEY (user_name) REFERENCES users (user_name) ON DELETE CASCADE,
+    FOREIGN KEY (role_name) REFERENCES roles (role_name) ON DELETE CASCADE
 );
 
 CREATE TABLE Orders

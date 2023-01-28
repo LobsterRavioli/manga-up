@@ -22,7 +22,7 @@ public class UserDAO {
     private static final String MANAGES_TABLE = "manages";
 
     private static final String CREATE = "INSERT INTO "+USER_TABLE+
-            " (username, password)"+
+            " (user_name, password)"+
             " VALUES (?, ?) ;";
     private static final String DELETE = "DELETE FROM "+USER_TABLE+" WHERE user_name = ? ;";
     private static final String RETRIEVE = "SELECT * FROM "+USER_TABLE+" WHERE user_name = ? ;";
@@ -45,6 +45,8 @@ public class UserDAO {
                                               "FROM "+ROLE_TABLE+" AS R, "+USER_ROLE_TABLE+" AS U1, "+USER_TABLE+" AS U2 "+
                                               "WHERE R.role_name=U1.role_name AND U1.user_name=U2.user_name AND U2.user_name=?";
 
+    private static final String SELECT_ALL = "SELECT ";
+
     public UserDAO(DataSource ds)
     {
         this.ds = ds;
@@ -65,8 +67,6 @@ public class UserDAO {
             int affectedRows = preparedStatement.executeUpdate();
             if(affectedRows == 0)
                 throw new DAOException("Creating user failed, no rows affected");
-
-            connection.commit();
         }
         finally
         {
@@ -141,11 +141,15 @@ public class UserDAO {
             {
                 User userBean = new User();
 
-                userBean.setUsername(rs.getString("username"));
+                userBean.setUsername(rs.getString("user_name"));
                 userBean.setPassword(rs.getString("password"));
 
                 users.add(userBean);
             }
+        }
+        catch (SQLException e)
+        {
+            throw new DAOException(e);
         }
         finally
         {
@@ -160,6 +164,7 @@ public class UserDAO {
                     connection.close();
             }
         }
+
 
         return users;
     }
@@ -180,7 +185,7 @@ public class UserDAO {
             {
                 User userBean = new User();
 
-                userBean.setUsername(rs.getString("username"));
+                userBean.setUsername(rs.getString("user_name"));
                 userBean.setPassword(rs.getString("password"));
 
                 users.add(userBean);
@@ -282,7 +287,7 @@ public class UserDAO {
 
             while(rs.next())
             {
-                userBean.setUsername(rs.getString("username"));
+                userBean.setUsername(rs.getString("user_name"));
                 userBean.setPassword(rs.getString("password"));
             }
         }
@@ -339,4 +344,10 @@ public class UserDAO {
             }
         }
     }
+
+
+
+
+
+
 }
