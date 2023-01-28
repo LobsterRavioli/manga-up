@@ -18,7 +18,7 @@
         <servlet-name>productsFilter</servlet-name>
         <url-pattern>/productsFilter</url-pattern>
     </servlet-mapping>
-    <!--Your comment
+
     <filter-mapping>
         <filter-name>UserManagerFilter</filter-name>
         <url-pattern>/ProductsView/addProducts.jsp</url-pattern>
@@ -30,6 +30,6 @@
         <url-pattern>/ProfileView/homepage.jsp</url-pattern>
         <url-pattern>/ProfileView/dashboard_lista_utenti.jsp</url-pattern>
     </filter-mapping>
-    -->
+
 
 </web-app>

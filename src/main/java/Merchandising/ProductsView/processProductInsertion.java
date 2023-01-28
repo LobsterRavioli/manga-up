@@ -65,13 +65,14 @@ public class processProductInsertion extends HttpServlet {
             final byte[] bytes = new byte[1024];
 
             Manga m = new Manga(prodISBN,prodPublisher,prodBinding,prodLanguage,prodVolume,Integer.parseInt(prodPageNumber),(java.sql.Date)data,0,prodName,prodDescription,Float.parseFloat(prodPrice),Integer.parseInt(prodHeight),Integer.parseInt(prodLength),Integer.parseInt(prodWeight),Integer.parseInt(prodQuantity),prodInterior,prodName.trim()+".jpeg",new Collection(prodCollection),ps,prodStoryMaker,new Genre(prodGenre));
-            rD.forward(request,response);
             try{
                 daoM.create(m);
                 while ((read = filecontent.read(bytes)) != -1) {
                     out.write(bytes, 0, read);
-                    System.out.println("New file " + prodName + " created at " + "C:\\Users\\Francesco Monzillo\\Dropbox\\Il mio PC (LAPTOP-AMUDE4IL)\\Desktop\\Uni\\Corsi\\3° anno\\Primo Semestre\\Ingegneria del Software\\Progetto\\Implementation\\manga-up\\src\\main\\webapp\\images\\products" + File.separator + prodName);
                 }
+                System.out.println("New file " + prodName + " created at " + "C:\\Users\\Francesco Monzillo\\Dropbox\\Il mio PC (LAPTOP-AMUDE4IL)\\Desktop\\Uni\\Corsi\\3° anno\\Primo Semestre\\Ingegneria del Software\\Progetto\\Implementation\\manga-up\\src\\main\\webapp\\images\\products" + File.separator + prodName);
+                rD.forward(request,response);
+                return;
             }catch (Exception e){
                 System.out.println(e.getMessage());
                 request.setAttribute("error","prodotto già esistente");
