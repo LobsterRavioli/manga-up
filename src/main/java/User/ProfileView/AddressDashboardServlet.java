@@ -30,10 +30,7 @@ public class AddressDashboardServlet extends HttpServlet {
         HttpSession session = request.getSession();
         EndUser user = (EndUser) session.getAttribute("user");
 
-        Address address = new ConcreteAddressBuilder()
-                .setEndUser(user)
-                .createAddress();
-        ArrayList addresses = (ArrayList) dao.findAllByEnduser(address);
+        ArrayList addresses = (ArrayList) dao.findAssociatedAddresses(user);
         request.setAttribute("addresses", addresses);
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProfileView/dashboard_indirizzi.jsp"));
         dispatcher.forward(request, response);

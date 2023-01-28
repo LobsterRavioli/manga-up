@@ -43,7 +43,7 @@ public class EndUserDAO {
 
     private static final String SQL_LIST_ORDER_BY_ID = "SELECT * FROM end_user ORDER BY usr_id;";
 
-    public void registration(EndUser user) throws IllegalArgumentException, DAOException {
+    public void create(EndUser user) throws IllegalArgumentException, DAOException {
         if (user.getId() != 0) {
             throw new IllegalArgumentException("User is already created, the user ID is not null.");
         }

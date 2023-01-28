@@ -28,10 +28,8 @@ public class CreditCardDashboardServlet extends HttpServlet {
         HttpSession session = request.getSession();
         EndUser user = (EndUser) session.getAttribute("user");
         response.setContentType("text/html");
-        CreditCard userCard = new ConcreteCardBuilder()
-                .setEndUser(user)
-                .createCreditCard();
-        ArrayList<CreditCard> cards = (ArrayList<CreditCard>) dao.findAllByEnduser(userCard);
+
+        ArrayList<CreditCard> cards = (ArrayList<CreditCard>) dao.findAssociatedCards(user);
         request.setAttribute("cards", cards);
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProfileView/dashboard_carte_di_credito.jsp"));
         dispatcher.forward(request, response);

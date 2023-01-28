@@ -34,7 +34,6 @@
             <p class="card_holder_error"></p>
             <label for="card_holder"><b>Nome proprietario</b></label>
             <input type="text" placeholder="Campo obbligatorio" name="card_holder" id="card_holder" required>
-
             <hr>
         </div>
         <button class="fry" type="submit" onclick="check_card_format()">Crea carta di credito</button>

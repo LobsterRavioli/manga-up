@@ -3,7 +3,7 @@ package Merchandising.ProductsView;
 import Merchandising.MerchandiseService.Manga;
 import Merchandising.MerchandiseService.MangaDAO;
 
-import javax.faces.application.Application;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;

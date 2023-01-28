@@ -4,7 +4,6 @@ import Cart.CheckoutService.Cart;
 import Cart.CheckoutService.CartDAO;
 import Merchandising.MerchandiseService.Manga;
 import User.AccountService.EndUser;
-import org.jboss.weld.context.http.Http;
 
 import javax.servlet.*;
 import javax.servlet.http.*;

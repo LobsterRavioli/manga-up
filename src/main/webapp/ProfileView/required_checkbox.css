@@ -1,0 +1,28 @@
+:root {
+    font: 400 16px/1 Consolas
+}
+
+input,
+label {
+    display: inline-block;
+    font: inherit;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    vertical-align: middle
+}
+
+[type=submit] {
+    float: right
+}
+
+#req {
+    display: none;
+    position: relative;
+    z-index: 1;
+    background: #fed;
+    width: 200px;
+    padding: 10px;
+    bottom: 100px;
+    left: 175px;
+    text-align: center;
+}

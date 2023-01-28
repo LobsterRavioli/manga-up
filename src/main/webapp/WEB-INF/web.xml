@@ -3,85 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
-
     <context-param>
         <param-name>javax.faces.CONFIG_FILES</param-name>
         <param-value>/faces-config.xml</param-value>
     </context-param>
 
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>RISORSE PER USER_MANAGER</web-resource-name>
 
-            <!--<url-pattern>/profile_view/homepage.jsp</url-pattern>
-            -->
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>USER_MANAGER</role-name>
-        </auth-constraint>
-        <user-data-constraint>
-            <!-- transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE -->
-            <transport-guarantee>NONE</transport-guarantee>
-        </user-data-constraint>
-    </security-constraint>
-
-
-
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>RISORSE PER ORDER_MANAGER</web-resource-name>
-
-            <!-- <url-pattern>/order_view/homepage.jsp</url-pattern>
-
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-            -->
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>ORDER_MANAGER</role-name>
-        </auth-constraint>
-        <user-data-constraint>
-            <!-- transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE -->
-            <transport-guarantee>NONE</transport-guarantee>
-        </user-data-constraint>
-    </security-constraint>
-
-
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>RISORSE PER CATALOG_MANAGER</web-resource-name>
-            <!--<url-pattern>/MerchandisingView/homepage.jsp</url-pattern>
-
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-            -->
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>CATALOG_MANAGER</role-name>
-        </auth-constraint>
-        <user-data-constraint>
-            <!-- transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE -->
-            <transport-guarantee>NONE</transport-guarantee>
-        </user-data-constraint>
-    </security-constraint>
-
-
-
-
-    <login-config>
-        <auth-method>FORM</auth-method>
-        <form-login-config>
-            <form-login-page>/profile_view/login_manager.jsp</form-login-page>
-            <url-pattern>/profile_view/homepage.jsp</url-pattern>
-            <form-error-page>/profile_view/error_page_manager.jsp</form-error-page>
-        </form-login-config>
-    </login-config>
-
-    <welcome-file-list>
-        <welcome-file>MerchandisingView/homepage.jsp</welcome-file>>
-    </welcome-file-list>
 
     <servlet>
         <servlet-name>productsFilter</servlet-name>
@@ -91,14 +18,7 @@
         <servlet-name>productsFilter</servlet-name>
         <url-pattern>/productsFilter</url-pattern>
     </servlet-mapping>
-
-    <filter>
-        <filter-name>UserManagerFilter</filter-name>
-        <display-name>UserManagerFilter</display-name>
-        <description>filterForUserManagers</description>
-        <filter-class>filters.UserManagerFilter</filter-class>
-    </filter>
-
+    <!--Your comment
     <filter-mapping>
         <filter-name>UserManagerFilter</filter-name>
         <url-pattern>/ProductsView/addProducts.jsp</url-pattern>
@@ -110,5 +30,6 @@
         <url-pattern>/ProfileView/homepage.jsp</url-pattern>
         <url-pattern>/ProfileView/dashboard_lista_utenti.jsp</url-pattern>
     </filter-mapping>
+    -->
 
 </web-app>

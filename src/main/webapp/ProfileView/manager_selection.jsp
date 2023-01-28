@@ -13,11 +13,9 @@
 </head>
 <body>
 
-<a href="${pageContext.request.contextPath}/ProfileView/homepage.jsp">Gestore Utente</a>
-<a href="${pageContext.request.contextPath}/OrderView/homepage.jsp">Gestore Ordini</a>
-<a href="${pageContext.request.contextPath}/MerchandisingView/homepage.jsp">Gestore Catalogo</a>
-
-
+    <a href="${pageContext.request.contextPath}/ProfileView/homepage.jsp">Gestore Utente</a>
+    <a href="${pageContext.request.contextPath}/OrderView/homepage.jsp">Gestore Ordini</a>
+    <a href="${pageContext.request.contextPath}/MerchandisingView/homepage.jsp">Gestore Catalogo</a>
 
 </body>
 </html>
