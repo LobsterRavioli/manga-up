@@ -51,6 +51,7 @@ public class productsFilter extends HttpServlet {
                 request.setAttribute("listaElementi", lista);
                 RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/prodManagement.jsp");
                 rD.forward(request,response);
+                return;
             }catch (Exception e){
                 request.setAttribute("listaElementi",null);
                 request.setAttribute("errore","errore");
@@ -64,11 +65,13 @@ public class productsFilter extends HttpServlet {
             request.setAttribute("listaElementi",lista);
             RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/catalog.jsp");
             rD.forward(request,response);
+            return;
         }catch (Exception e){
             System.out.println(e.getMessage()+" errore");
             request.setAttribute("listaElementi",null);
             RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/catalog.jsp");
             rD.forward(request,response);
+            return;
         }
     }
 }

@@ -33,7 +33,7 @@ public class CartDAO {
         EndUserDAO ed = new EndUserDAO(ds);
 
         if(ed.findById(user.getId())==null)
-            throw new UserNotAssociatedException();
+            throw new Exception();
 
         PreparedStatement pr = null;
         Manga actual = null;

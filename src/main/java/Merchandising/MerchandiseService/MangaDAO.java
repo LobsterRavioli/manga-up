@@ -108,11 +108,11 @@ public class MangaDAO {
     }
 
     public void delete(int id) throws Exception {
-        if(retrieveById(id)!=null)
+        if(retrieveById(id)==null)
             throw new Exception("prodotto selezionato non esistente");
 
         PreparedStatement pr = null;
-        try(Connection conn = ConnectionPool.getConnection()){
+        try(Connection conn = ds.getConnection()){
             pr = conn.prepareStatement("DELETE FROM Manga as p WHERE p.id=?");
             pr.setInt(1,id);
             pr.executeUpdate();

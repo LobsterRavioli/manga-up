@@ -28,5 +28,13 @@
     <a class="select" href="${pageContext.request.contextPath}/ProductsView/prodManagement.jsp">Manage Product<br></a>
 </div>
 
+<%String errore = (String)request.getAttribute("error");
+    if(errore!=null){
+        if(errore.equals("prodotto già esistente")){%>
+
+            <p> Non è possibile inserire il prodotto indicato   Motivo->(Esiste già un prodotto con lo stesso nome... riprovare con un altro)</p>
+
+<%}}%>
+
 </body>
 </html>

@@ -124,7 +124,6 @@ public class Order {
     private EndUser endUser;
 
     private CreditCard endUserCard;
-
     public static final String TO_SENT = "TO_SEND";
     public static final String SENT = "SENT";
 }

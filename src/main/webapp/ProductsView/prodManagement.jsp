@@ -95,19 +95,52 @@
                             <td><%=String.format("%.2f", m.getPrice()).replace(',', '.') %> &euro;</td>
                             <td><%=m.getCollection().getName()%></td>
                             <td><%=m.getQuantity()%></td>
-                            <td><!--<a href="#" class="change"></a>--><button>Modifica</button></td>
-                            <td><!--<a href="#" class="close"></a>--><button>Rimuovi</button></td>
+                            <td><!--<a href="#" class="change"></a>--><button form="manageProducts" value="modify">Modifica</button></td>
+                            <td><!--<a href="#" class="close"></a>--><button onclick="confirmation('<%=m.getId()%>','<%=m.getName()%>')"> Rimuovi</button></td>
                         </tr>
                         <%}%>
                     </table>
                 </div>
           <%}else if(request.getAttribute("error")!=null){%>
                 <p> Non sono stati trovati elementi conformi ai parametri di ricerca... Riprovare con altri</p>
+          <%}else if(request.getAttribute("goodEnding")!=null){
+                String ending = (String) request.getAttribute("goodEnding");
+                if(ending.equals("true")){%>
+                    <p> Prodotto rimosso con successo</p>
+                <%}else{%>
+                    <p> Non è stato possibile rimuovere il prodotto selezionato... Ci deve essere stato un problema</p>
+                <%}%>
           <%}%>
 
     </div>
 </div>
 
-
+<form action="${pageContext.request.contextPath}/productsManagement" id="manageProducts"></form>
 </body>
+
+<script>
+
+    function redirect(string){
+        window.location.replace("http://localhost:8080"+string);
+    }
+
+    function confirmation(mangaID,mangaName){
+        booleanValue = confirm("Sei sicuro di voler procedere con la rimozione del prodotto di nome '"+mangaName+"'");
+        let xhrObj=new XMLHttpRequest();
+        xhrObj.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                redirect("${pageContext.request.contextPath}/productsRemoval?goodEnding=true")
+            }else if(this.readyState==4 && this.status == 201){
+                redirect("${pageContext.request.contextPath}/productsRemoval?goodEnding=false")
+            }
+        }
+        if(booleanValue){
+            xhrObj.open("POST","${pageContext.request.contextPath}/productsRemoval?id="+encodeURIComponent(""+mangaID),true);
+            xhrObj.send();
+        }
+    }
+
+</script>
+
 </html>
+

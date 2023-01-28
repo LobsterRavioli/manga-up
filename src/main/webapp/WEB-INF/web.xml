@@ -103,6 +103,7 @@
         <filter-name>UserManagerFilter</filter-name>
         <url-pattern>/ProductsView/addProducts.jsp</url-pattern>
         <url-pattern>/ProductsView/homepage.jsp</url-pattern>
+        <url-pattern>/ProductsView/prodManagement.jsp</url-pattern>
         <url-pattern>/OrderView/homepage.jsp</url-pattern>
         <url-pattern>/OrderView/manageOrder.jsp</url-pattern>
         <url-pattern>/OrderView/order_list.jsp</url-pattern>

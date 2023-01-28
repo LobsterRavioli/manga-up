@@ -185,6 +185,11 @@ public class UserDAO {
 
                 users.add(userBean);
             }
+            if(users.size()==0){
+                return null;
+            }else{
+                return users;
+            }
         }
         finally
         {
@@ -199,7 +204,6 @@ public class UserDAO {
                     connection.close();
             }
         }
-        return users;
     }
 
     public String getTargetOrderManagerUserName() throws SQLException {
@@ -217,7 +221,10 @@ public class UserDAO {
 
             if(rs.next())
                 user.setUsername(rs.getString("man_user_name")); // il gestore al quale assegnare il task
+
+            return user.getUsername();
         }
+
         finally
         {
             try
@@ -231,7 +238,6 @@ public class UserDAO {
                     connection.close();
             }
         }
-        return user.getUsername();
     }
 
     public Collection<String> getRoles(String username) throws SQLException {
