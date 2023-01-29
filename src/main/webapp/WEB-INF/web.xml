@@ -9,6 +9,9 @@
     </context-param>
 
 
+    <welcome-file-list>
+        <welcome-file>ProductsView/endUserHomepage.jsp</welcome-file>
+    </welcome-file-list>
 
     <servlet>
         <servlet-name>productsFilter</servlet-name>

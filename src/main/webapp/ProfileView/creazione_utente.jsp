@@ -9,37 +9,40 @@
 <html>
 <head>
     <title>Crea utente</title>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css_s/createUserFormStyle.css">
   <link rel="stylesheet" href="required_checkbox.css">
 </head>
 <body>
 
+<jsp:include page="/header_manager_homepage.jsp"/>
 
 <p>${error_message}</p>
 
   <form name= "form" action="${pageContext.request.contextPath}/UserCreateServlet" method="post">
-    <p>Crea utente</p>
-    <hr>
+  <fieldset>
+    <legend><h2>Crea utente</h2></legend>
 
-    <label for="username"><b>Username</b></label>
+    <label for="username">Username:</label>
     <input type="text" placeholder="Campo obbligatorio" name="username" id="username" required>
     <br>
     <p class="password"></p>
-    <label for="password"><b>Password</b></label>
+    <label for="password">Password:</label>
     <input type="password"  placeholder="Campo obbligatorio" name="password" id="password" required>
     <br>
 
     <div>
-      <label for="r1"><b>USER MANAGER</b></label>
-      <input type="checkbox" name="roles" id="r1"  value= "USER_MANAGER">
-      <label for="r2"><b>ORDER MANAGER</b></label>
-      <input type="checkbox" name="roles" id="r2"  value= "ORDER_MANAGER">
-      <label for="r2"><b>CATALOG MANAGER</b></label>
+      <label for="r1">USER MANAGER</label>
+      <input type="checkbox" name="roles" id="r1" value= "USER_MANAGER">
+      <label for="r2">ORDER MANAGER</label>
+      <input type="checkbox" name="roles" id="r2" value= "ORDER_MANAGER">
+      <label for="r2">CATALOG MANAGER</label>
       <input type="checkbox" name="roles" id= "r3" value= "CATALOG_MANAGER">
     </div>
     <br>
     <output id='req'>Scegli almeno una checkbox.</output>
 
     <input type="submit" id="checkBtn">
+  </fieldset>
   </form>
 
 
@@ -47,19 +50,6 @@
 
 <script type="text/javascript">
 
-  let form = document.forms['form']
-  form.onsubmit = validate;
-  function validate(e) {
-    e.preventDefault();
-    let ui = this.elements;
-    let chx = Array.from(ui.roles);
-    for (let c of chx) {
-      if (c.checked) {
-        this.submit();
-      }
-    }
-    ui.req.style.display = 'block';
-  }
 
 </script>
 </html>

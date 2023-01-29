@@ -10,15 +10,19 @@
 <html>
 <head>
     <title>Home Page User Manager</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css_s/homeManagerStyle.css">
 </head>
 <body>
 
     <jsp:include page="/header_manager_homepage.jsp"/>
 
-    <a href="${pageContext.request.contextPath}/UserListServlet">Lista utenti</a>
-    <a href="creazione_utente.jsp">Crea nuovo utente</a>
-
-    <hr>
-
+    <div class="home">
+    <nav id=items>
+        <div>
+            <a href="${pageContext.request.contextPath}/UserListServlet">Lista utenti<br><br></a>
+            <a href="creazione_utente.jsp">Crea nuovo utente<br><br></a>
+        </div>
+    </nav>
+    </div>
 </body>
 </html>

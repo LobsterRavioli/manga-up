@@ -33,11 +33,13 @@ public class LoginEndUserServlet extends HttpServlet {
         String password = request.getParameter("password");
         EndUser user = dao.login(email,password);
         HttpSession session = request.getSession();
+
         if(user == null){
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProfileView/login_end_user.jsp"));
             dispatcher.forward(request, response);
             return;
         }
+
         session.setAttribute("user",user);
         try{
             CartDAO cD = new CartDAO(ds);

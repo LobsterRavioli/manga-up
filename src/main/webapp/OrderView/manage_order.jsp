@@ -26,6 +26,8 @@
 </head>
 <body>
 
+    <jsp:include page="/header_manager_homepage.jsp"/>
+
 	<form id="form" action="${pageContext.request.contextPath}/manageServlet" method="post" onsubmit="return checkForm(this);">
 	<fieldset>
 	<% if(errorMessage == null) { %>

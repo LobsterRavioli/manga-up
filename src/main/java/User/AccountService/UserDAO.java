@@ -45,7 +45,7 @@ public class UserDAO {
                                               "FROM "+ROLE_TABLE+" AS R, "+USER_ROLE_TABLE+" AS U1, "+USER_TABLE+" AS U2 "+
                                               "WHERE R.role_name=U1.role_name AND U1.user_name=U2.user_name AND U2.user_name=?";
 
-    private static final String SELECT_ALL = "SELECT ";
+    private static final String EXISTS_USERNAME = "SELECT user_name FROM users WHERE user_name = ? ";
 
     public UserDAO(DataSource ds)
     {
@@ -281,7 +281,7 @@ public class UserDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
-        User userBean = new User();
+        User userBean = null;
 
         try
         {
@@ -293,9 +293,11 @@ public class UserDAO {
 
             while(rs.next())
             {
+                userBean = new User();
                 userBean.setUsername(rs.getString("user_name"));
                 userBean.setPassword(rs.getString("password"));
             }
+
         }
         finally
         {
@@ -350,7 +352,38 @@ public class UserDAO {
             }
         }
     }
+    public boolean existsUsername(String username) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
 
+        if(username == null)
+            return false;
+
+        boolean exists = false;
+
+        try
+        {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(EXISTS_USERNAME);
+            preparedStatement.setString(1, username);
+            ResultSet rs = preparedStatement.executeQuery();
+            return rs.next(); // false if there are no rows in the result set
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            }
+            finally
+            {
+                if(connection != null)
+                    connection.close();
+            }
+        }
+
+    }
 
 
 

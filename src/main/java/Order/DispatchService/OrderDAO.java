@@ -37,7 +37,7 @@ public class OrderDAO
         try
         {
             connection = ds.getConnection();
-            preparedStatement = connection.prepareStatement(CREATE);
+            preparedStatement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, order.getId());
             preparedStatement.setDate(2, order.getOrderDate());
             preparedStatement.setString(3, order.getState());
@@ -49,6 +49,13 @@ public class OrderDAO
             if(affectedRows == 0)
                 throw new DAOException("Creating order failed, no rows affected.");
 
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    order.setId(generatedKeys.getInt(1));
+                } else {
+                    throw new DAOException("Creating user failed, no generated key obtained.");
+                }
+            }
             connection.commit();
         }
         finally

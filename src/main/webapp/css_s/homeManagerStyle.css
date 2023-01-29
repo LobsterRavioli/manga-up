@@ -1,4 +1,4 @@
-.orderHome {
+.home {
 	position: absolute;
 	top: 124px;
 	left: 8px;
@@ -32,4 +32,7 @@ div.navbar {
     background-color: #e0e0e0;
 }
 
-a
+a {
+	text-decoration: none;
+	color: #3f51b5;
+}

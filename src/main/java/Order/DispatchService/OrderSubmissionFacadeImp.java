@@ -39,7 +39,6 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
         }
 
         List<User> beginnerUDs= (List<User>) uD.getAllBeginnerOrderManagers();
-
         if(beginnerUDs!=null){
             User selectedBeginner = beginnerUDs.get(0);
             tD.create(new ToManage(selectedBeginner,order));

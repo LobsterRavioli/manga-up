@@ -597,4 +597,52 @@ public class MangaDAO {
         }
     }
     */
+
+
+    public boolean checkQuantity(Manga manga){
+        PreparedStatement pr = null;
+        ResultSet rs = null;
+        boolean result = true;
+        try(Connection conn = ds.getConnection()){
+            pr = conn.prepareStatement("SELECT quantity FROM Manga WHERE id=?");
+            pr.setInt(1,manga.getId());
+            rs = pr.executeQuery();
+            if(rs.next()){
+                int quantity = rs.getInt(1);
+                if(manga.getQuantity() > quantity){
+                    result = false;
+                }
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            try{
+                rs.close();
+                pr.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public void updateQuantity(Manga manga){
+        PreparedStatement pr = null;
+        ResultSet rs = null;
+        try(Connection conn = ds.getConnection()){
+            pr = conn.prepareStatement("UPDATE Manga SET quantity=? WHERE id=?");
+            pr.setInt(1,manga.getQuantity());
+            pr.setInt(2,manga.getId());
+            pr.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            try{
+                rs.close();
+                pr.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
 }
