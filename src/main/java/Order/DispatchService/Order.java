@@ -85,7 +85,7 @@ public class Order {
         this.user.setUsername(newUserName);
     }
 */
-    public long getEndUserID() {
+    public int getEndUserID() {
         return this.endUser.getId();
     }
 
@@ -110,6 +110,22 @@ public class Order {
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
         return id == order.id && Double.compare(order.totalPrice, totalPrice) == 0 && Objects.equals(orderDate, order.orderDate) && Objects.equals(state, order.state) && Objects.equals(endUser, order.endUser);
+    }
+
+    public EndUser getEndUser() {
+        return endUser;
+    }
+
+    public void setEndUser(EndUser endUser) {
+        this.endUser = endUser;
+    }
+
+    public CreditCard getEndUserCard() {
+        return endUserCard;
+    }
+
+    public void setEndUserCard(CreditCard endUserCard) {
+        this.endUserCard = endUserCard;
     }
 
     @Override

@@ -27,6 +27,7 @@ public class visualizeCartServlet extends HttpServlet {
         /*Cart c = new Cart((HashMap<Manga, Integer>) request.getSession().getAttribute("cart"));
         request.setAttribute("listaProdottiCart", c);/*
          */
+
         DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
         CartDAO dao = new CartDAO(ds);
         EndUser user = new EndUser(1,"francesco","M.1234");

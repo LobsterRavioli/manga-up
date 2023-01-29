@@ -98,7 +98,7 @@ public class EndUserDAO {
     }
 
     public EndUser login(String email, String password) {
-        return find(SQL_FIND_BY_EMAIL_AND_PASSWORD,email, Utils.hash(password));
+        return find(SQL_FIND_BY_EMAIL_AND_PASSWORD,email, password);
     }
 
     public EndUser findById(int id) { return find(SQL_FIND_BY_ID, id); }

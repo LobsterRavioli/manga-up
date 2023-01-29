@@ -9,11 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 @WebServlet("/UserCreateServlet")
 public class UserCreateServlet extends HttpServlet {
@@ -37,12 +35,10 @@ public class UserCreateServlet extends HttpServlet {
         user.setPassword(req.getParameter("password"));
         String[] roles = req.getParameterValues("roles");
         try {
-
-            if(userDao.getUserByUsername(user.getUsername()) != null){
+            if(userDao.existsUsername(user.getUsername())){
                 req.setAttribute("error_message", "Username già esistente");
                 RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(resp.encodeURL("/ProfileView/creazione_utente.jsp"));
                 dispatcher.forward(req, resp);
-
                 return;
             }
 

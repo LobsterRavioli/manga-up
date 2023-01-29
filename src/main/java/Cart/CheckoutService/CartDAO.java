@@ -30,11 +30,6 @@ public class CartDAO {
 
     public HashMap<Manga,Integer> retrieveByUser(EndUser user) throws Exception{
 
-        EndUserDAO ed = new EndUserDAO(ds);
-
-        if(ed.findById(user.getId())==null)
-            throw new Exception();
-
         PreparedStatement pr = null;
         Manga actual = null;
         ResultSet rs = null;
@@ -53,7 +48,7 @@ public class CartDAO {
                 int quantitym = rs.getInt(6);
                 int quantityc= rs.getInt(7);
 
-                if(quantityc>quantitym){
+                if(quantityc > quantitym){
                     int temp = quantityc;
                     quantityc=quantitym;
                     updateProduct(new Manga(id),quantityc-temp,user);
@@ -224,6 +219,7 @@ public class CartDAO {
             }
         }
     }
+
 
     public void toEmptyCart(EndUser user) throws Exception {
         EndUserDAO ed = new EndUserDAO(ds);

@@ -1,13 +1,12 @@
 package Order.DispatchService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import Cart.CheckoutService.Cart;
+import static java.util.Map.Entry;
+
 import Cart.CheckoutService.CartDAO;
 import Merchandising.MerchandiseService.Manga;
+import Merchandising.MerchandiseService.MangaDAO;
 import User.AccountService.EndUser;
 import User.AccountService.UserDAO;
 import User.AccountService.User;
@@ -16,37 +15,77 @@ import javax.sql.DataSource;
 public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
 
     private DataSource ds;
-    private OrderDAO oD;
-    private UserDAO uD;
-    private ToManageDAO tD;
-    private CartDAO cD;
+    private OrderDAO orderDAO;
+    private UserDAO userDAO;
+    private ToManageDAO assignmentDAO;
+    private CartDAO cartDAO;
+    private MangaDAO mangaDAO;
+    private OrderRowDAO orderRowDAO;
+
     public OrderSubmissionFacadeImp(DataSource ds){
         this.ds = ds;
-        this.oD = new OrderDAO(ds);
-        this.uD = new UserDAO(ds);
-        this.tD = new ToManageDAO(ds);
-        this.cD = new CartDAO(ds);
+        this.orderDAO = new OrderDAO(ds);
+        this.userDAO = new UserDAO(ds);
+        this.assignmentDAO = new ToManageDAO(ds);
+        this.cartDAO = new CartDAO(ds);
+        this.orderRowDAO = new OrderRowDAO(ds);
     }
 
     @Override
     public void OrderCreation(Order order) throws Exception{
-        oD.create(order);
 
-        HashMap<Manga,Integer> productsMap = cD.retrieveByUser(new EndUser((int)order.getEndUserID()));
+        OrderRow orderRow;
+        ToManage orderToAssign;
+        int storeQuantity;
+        EndUser user = order.getEndUser();
+        User orderManagerChosen = new User();
+        List<User> orderManagersCandidates = (List<User>) userDAO.getAllBeginnerOrderManagers();
+        HashMap<Manga,Integer> cart = cartDAO.retrieveByUser(user);
+        orderDAO.create(order);
+        List<Manga> cartProducts = new LinkedList<Manga>(cart.keySet());
 
-        for (Map.Entry <Manga, Integer> set : productsMap.entrySet()) {
-            //oD.createRow(order,set); Chiamata di un metodo da aggiungere in OrdineDAO che si occupa di inserire una riga d'ordine
+        if(!checkAvailability(cartProducts)){
+            cartDAO.toEmptyCart(user);
+            return;
         }
 
-        List<User> beginnerUDs= (List<User>) uD.getAllBeginnerOrderManagers();
-        if(beginnerUDs!=null){
-            User selectedBeginner = beginnerUDs.get(0);
-            tD.create(new ToManage(selectedBeginner,order));
-        }else{
-            String targetUserUsername = uD.getTargetOrderManagerUserName();
-            tD.create(new ToManage(new User(targetUserUsername,""),order));
+        for (Manga cartProduct : cartProducts) {
+            storeQuantity = mangaDAO.retrieveById(cartProduct.getId()).getQuantity();
+            orderRow = new OrderRow();
+            orderRow.setMangaName(cartProduct.getName());
+            orderRow.setMangaPrice(cartProduct.getPrice());
+            orderRow.setQuantity(cartProduct.getQuantity());
+            orderRow.setOrderId(order.getId());
+            orderRowDAO.create(orderRow);
+            cartProduct.setQuantity(storeQuantity - cartProduct.getQuantity());
+            mangaDAO.updateQuantity(cartProduct);
         }
-        cD.toEmptyCart(new EndUser((int)order.getEndUserID())); //Attenzione a problemi di underflow data la conversione a int...
+
+        if(orderManagersCandidates != null){
+            orderManagerChosen = orderManagersCandidates.get(0);
+        }
+        else {
+            String orderManagerUsernameCandidate = userDAO.getTargetOrderManagerUserName();
+            orderManagerChosen.setUsername(orderManagerUsernameCandidate);
+        }
+
+        orderToAssign = new ToManage(orderManagerChosen,order);
+        assignmentDAO.create(orderToAssign);
+        cartDAO.toEmptyCart(user);
     }
+
+    public boolean checkAvailability(List<Manga> mangas) throws Exception{
+        for(Manga manga: mangas)
+            if(mangaDAO.checkQuantity(manga)) return false;
+        return true;
+
+    }
+
+
+
+
+
+
+
 
 }

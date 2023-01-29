@@ -1,5 +1,6 @@
 package Order.DispatchService;
 
+import Merchandising.MerchandiseService.Manga;
 import utils.DAOException;
 
 import javax.sql.DataSource;
