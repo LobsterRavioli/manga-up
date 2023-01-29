@@ -24,9 +24,8 @@ public class visualizeCartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        /*Cart c = new Cart((HashMap<Manga, Integer>) request.getSession().getAttribute("cart"));
-        request.setAttribute("listaProdottiCart", c);/*
-         */
+        Cart c = (Cart) request.getSession(false).getAttribute("cart");
+        request.setAttribute("listaProdottiCart", c);
 
         DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
         CartDAO dao = new CartDAO(ds);

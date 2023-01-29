@@ -46,7 +46,7 @@ public class LoginEndUserServlet extends HttpServlet {
             Cart c= new Cart(cD.retrieveByUser(user));
             session.setAttribute("cart",c);
         }catch (Exception e){
-           session.setAttribute("cart",new HashMap<Manga,Integer>());
+           session.setAttribute("cart",new Cart(new HashMap<Manga,Integer>()));
         }
 
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/index.jsp"));
