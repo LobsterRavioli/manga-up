@@ -15,12 +15,12 @@
 
 <a href="${pageContext.request.contextPath}/ProfileView/form_carta_credito.jsp">Servizio di aggiunta di carta di credito.</a>
 
-<c:if test="${empty cards}">
+<c:if test="${cards == null}">
     <p> Non hai nessuna carta di credito. </p>
 </c:if>
 
 <c:forEach items="${cards}" var="card">
-    <p>Numero Carta: ${card.cardNumber}, Proprietario: ${card.cardHolder}, Data di scadenza:${card.expirementDate} </p><br/>
+    <p>Numero Carta: ${card.cardNumber}, Proprietario: ${card.cardHolder}, Data di scadenza: ${card.expirementDate} </p><br/>
 <form action="${pageContext.request.contextPath}/CreditCardDeleteServlet" method="post">
     <input type="hidden" name="credit_card_id" value=${card.id}/>
     <input type="submit" value="elimina" name="act" id="box_button" class="accept">

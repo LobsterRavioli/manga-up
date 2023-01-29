@@ -15,7 +15,6 @@
 
 <a href="${pageContext.request.contextPath}/AddressServletDashboardServlet">Lista indirizzi</a>
 <a href="${pageContext.request.contextPath}/CreditCardDashboardServlet">Lista carte di pagamento</a>
-<a href="${pageContext.request.contextPath}/">Lista carte di pagamento</a>
 
 </body>
 </html>

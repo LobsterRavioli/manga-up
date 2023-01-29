@@ -22,7 +22,7 @@
 </c:if>
 
 <c:forEach items="${addresses}" var="address">
-    <p>${address.country}, ${address.city}, ${address.street}, ${address.postalCode}, ${address.phoneNumber}, ${address.region} </p> <br/>
+    <p>Paese: ${address.country}, Città: ${address.city}, Via: ${address.street}, postal code: ${address.postalCode}, phoneNumber ${address.phoneNumber}, Regione: ${address.region} </p> <br/>
 
 <form action="${pageContext.request.contextPath}/AddressDeleteServlet" method="post">
 

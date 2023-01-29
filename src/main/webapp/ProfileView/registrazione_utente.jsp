@@ -99,8 +99,8 @@
             <input type="text" placeholder="Campo obbligatorio" name="city" id="city" required>
             <br>
 
-            <p class="phone_number_card_error"></p>
-            <label for="phone_number_address"><b>Numero di cellulare carta</b></label>
+            <p class="phone_number_address_error"></p>
+            <label for="phone_number_address"><b>Numero di cellulare indirizzo</b></label>
             <input type="text" placeholder="Campo obbligatorio" name="phone_number_address" id="phone_number_address" required>
             <br>
 

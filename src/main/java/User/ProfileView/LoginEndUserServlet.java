@@ -42,9 +42,13 @@ public class LoginEndUserServlet extends HttpServlet {
 
         session.setAttribute("user",user);
         try{
+
             CartDAO cD = new CartDAO(ds);
+
             Cart c= new Cart(cD.retrieveByUser(user));
+
             session.setAttribute("cart",c);
+
         }catch (Exception e){
            session.setAttribute("cart",new Cart(new HashMap<Manga,Integer>()));
         }

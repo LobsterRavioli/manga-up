@@ -29,7 +29,6 @@ public class CartDAO {
 
 
     public HashMap<Manga,Integer> retrieveByUser(EndUser user) throws Exception{
-
         PreparedStatement pr = null;
         Manga actual = null;
         ResultSet rs = null;

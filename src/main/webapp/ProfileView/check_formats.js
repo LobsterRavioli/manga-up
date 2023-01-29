@@ -210,7 +210,6 @@ function check_registration_format(){
         document.querySelector(".street_error").innerHTML = "Inserire una via valida";
         document.querySelector(".street_error").style.display = "block";
         event.preventDefault();
-
     }
     else {
         document.querySelector(".street_error").innerHTML = "";
@@ -219,8 +218,8 @@ function check_registration_format(){
     }
 
     if(!phone_number_format.test(phone_number_address)) {
-        document.querySelector(".phone_number_error").innerHTML = "Inserire un numero di telefono valido";
-        document.querySelector(".phone_number_error").style.display = "block";
+        document.querySelector(".phone_number_address_error").innerHTML = "Inserire un numero di telefono valido";
+        document.querySelector(".phone_number_address_error").style.display = "block";
         event.preventDefault();
 
     }
@@ -249,8 +248,8 @@ function check_registration_format(){
 
     }
     else {
-        document.querySelector(".phone_number_card_error").innerHTML = "";
-        document.querySelector(".phone_number_card_error").style.display = "block";
+        document.querySelector(".phone_number_address_error").innerHTML = "Inserire numero di telefono valido";
+        document.querySelector(".phone_number_address_error").style.display = "block";
         event.preventDefault();
     }
 

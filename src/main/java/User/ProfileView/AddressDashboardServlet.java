@@ -12,6 +12,7 @@ import javax.servlet.annotation.*;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 @WebServlet("/AddressServletDashboardServlet")
 public class AddressDashboardServlet extends HttpServlet {
@@ -30,7 +31,7 @@ public class AddressDashboardServlet extends HttpServlet {
         HttpSession session = request.getSession();
         EndUser user = (EndUser) session.getAttribute("user");
 
-        ArrayList addresses = (ArrayList) dao.findAssociatedAddresses(user);
+        Collection addresses = dao.findAssociatedAddresses(user);
         request.setAttribute("addresses", addresses);
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProfileView/dashboard_indirizzi.jsp"));
         dispatcher.forward(request, response);

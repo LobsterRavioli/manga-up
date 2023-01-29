@@ -93,7 +93,7 @@ public class CreditCardDAO {
         return null;
     }
 
-    public Collection findAssociatedCards(EndUser user) {
+    public List findAssociatedCards(EndUser user) {
         List<CreditCard> creditCards = new ArrayList<>();
         Object[] values = {
                 user.getId()
@@ -104,7 +104,9 @@ public class CreditCardDAO {
                 ResultSet resultSet = statement.executeQuery()
         ) {
             while (resultSet.next()) {
-                creditCards.add(map(resultSet));
+                CreditCard card = map(resultSet);
+                card.setEndUser(user);
+                creditCards.add(card);
             }
         } catch (SQLException e) {
             throw new DAOException(e);
@@ -114,9 +116,13 @@ public class CreditCardDAO {
     }
 
     private static CreditCard map(ResultSet resultSet) throws SQLException {
-        DateFormat format =  new SimpleDateFormat("yyyy-mm-dd");
-        String date = format.format(resultSet.getDate("crd_expiration_date"));
-        return null;
+        CreditCard card = new CreditCard();
+        card.setId(resultSet.getInt("crd_id"));
+        card.setCardNumber(resultSet.getString("crd_number"));
+        card.setCvv(resultSet.getString("crd_cvc"));
+        card.setCardHolder(resultSet.getString("crd_holder"));
+        card.setExpirementDate(resultSet.getDate("crd_expiration_date"));
+        return card;
     }
 
 /*
