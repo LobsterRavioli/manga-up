@@ -37,6 +37,13 @@
     quantityDiv.innerHtml=(parseInt(quantityDiv.innerHtml)+1).toString();
   }
 
+  function controlValue(input){
+    if(parseInt(input.value)>parseInt(input.max)){
+      input.value = input.max;
+      alert("Quantità massima per questo prodotto: "+input.max);
+    }
+  }
+
 </script>
 
 <body>
@@ -73,7 +80,7 @@
                       <div class="cart_item_title">Quantita'</div>
                       <form action="">
                         <div class="cart_item_text" id="<%=m.getId() %>">
-                          <input type="number" value="<%=set.getValue()%>" min="0" max="<%=m.getQuantity()%>" aria-label="Search" class="form-control" id="countProducts<%=m.getId()%>" style="width: 100px">
+                          <input type="number" form="updateProd" value="<%=set.getValue()%>" min="0" max="<%=m.getQuantity()%>" oninput="controlvalue(this);" title="Quantità massima inseribile:<%=m.getQuantity()%>" aria-label="Search" class="form-control" id="countProducts<%=m.getId()%>" style="width: 100px">
                           <button class="btn btn-primary btn-md my-0 p waves-effect waves-light" type="button" onclick="updateElement(<%=m.getId()%>)">Change quantity
                           <i class="fas fa-shopping-cart ml-1"></i>
                         </button>
@@ -109,6 +116,7 @@
             <div class="cart_buttons"> <button type="button" onclick="redirect()" class="button cart_button_clear">Continue Shopping</button> <button type="button" class="button cart_button_checkout">Proceed to Checkout</button> </div>
           </div>
 
+    <form id="updateProd"></form>
 
         </div>
       </div>

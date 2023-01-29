@@ -49,7 +49,7 @@
         <div class="col-lg-6 col-md-5">
           <div class="header__top__right">
             <div class="header__top__links">
-              <a href="${pageContext.request.contextPath}/visualizeCartServlet">Sign in</a>
+              <a href="${pageContext.request.contextPath}/LoginEndUserServlet">Sign in</a>
               <a href="${pageContext.request.contextPath}/ProfileView/registrazione_utente.jsp">Sign up</a>
             </div>
           </div>

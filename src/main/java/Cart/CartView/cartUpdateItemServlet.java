@@ -24,6 +24,7 @@ public class cartUpdateItemServlet extends HttpServlet {
         System.out.println("Sono LA UPDATE");
         CartDAO dao = new CartDAO(ds);
         String aggiunta = request.getParameter("add");
+        System.out.println(aggiunta);
         HttpSession s = request.getSession(false);
         if (s == null){
             response.setStatus(201);
@@ -39,11 +40,16 @@ public class cartUpdateItemServlet extends HttpServlet {
         Manga m =new Manga(Integer.parseInt(prod_id));
         try{
             m.setQuantity(Integer.parseInt(maxQ));
+            if(quantity.equals("0")){
+                dao.removeProduct(m,endUser);
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/cart.jsp");
+                rd.forward(request, response);
+                return;
+            }
             dao.updateProduct(m,Integer.parseInt(quantity),endUser);
             Cart c = (Cart) request.getSession().getAttribute("cart");
             c.updateProdotto(m,Integer.parseInt(quantity));
             if(aggiunta.equals("true")){
-                System.out.println("non so perchè");
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/cart.jsp");
                 rd.forward(request, response);
                 return;
@@ -52,6 +58,7 @@ public class cartUpdateItemServlet extends HttpServlet {
             response.getWriter().write(quantity);
             return;
             }catch (Exception e){
+                System.out.println(e.getMessage());
                 if(e.getMessage().equals("utente non esistente")){
                 response.setStatus(201);
                 }

@@ -95,7 +95,7 @@ public class CartDAO {
         HashMap<Manga,Integer> mappa = retrieveByUser(user);
         boolean b = false;
         for (Map.Entry <Manga, Integer> set : mappa.entrySet()) {
-            if(set.getKey().getId()!=manga.getId()) {
+            if(set.getKey().getId()==manga.getId()) {
                 b = true;
                 break;
             }
@@ -106,7 +106,6 @@ public class CartDAO {
         }
 
         PreparedStatement pr = null;
-        ResultSet rs = null;
         try(Connection conn = ds.getConnection()){
             pr = conn.prepareStatement("DELETE FROM CART AS C WHERE C.user_id=? AND C.manga_id=?");
             pr.setInt(1,user.getId());
@@ -116,7 +115,6 @@ public class CartDAO {
             e.printStackTrace();
         }finally {
             try{
-                rs.close();
                 pr.close();
             }catch (SQLException e){
                 e.printStackTrace();
@@ -167,7 +165,7 @@ public class CartDAO {
 
         EndUserDAO eD = new EndUserDAO(ds);
         MangaDAO m = new MangaDAO(ds);
-
+        System.out.println(quantity);
         HashMap<Manga,Integer> mappa = retrieveByUser(user);
 
         boolean b = false;
@@ -192,9 +190,8 @@ public class CartDAO {
         if(m.retrieveById(manga.getId())==null)
             throw new Exception("prodotto non esistente");
 
-        if(quantity==0){
-            removeProduct(manga,user);
-            return;
+        if(quantity<=0){
+            throw new Exception("quantità inserita non valida");
         }
 
         if(quantity>manga.getQuantity()){
@@ -204,7 +201,6 @@ public class CartDAO {
 
 
         PreparedStatement pr = null;
-        ResultSet rs = null;
         try(Connection conn = ds.getConnection()){
 
             pr = conn.prepareStatement("UPDATE CART SET quantity=? WHERE user_id=? AND manga_id=?");
@@ -214,10 +210,10 @@ public class CartDAO {
             pr.setInt(3,manga.getId());
             pr.executeUpdate();
         }catch (SQLException e){
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }finally {
             try{
-                rs.close();
                 pr.close();
             }catch (SQLException e){
                 System.out.println(e.getMessage());

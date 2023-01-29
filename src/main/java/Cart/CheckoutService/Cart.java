@@ -33,7 +33,7 @@ public class Cart {
         for (Map.Entry<Manga, Integer> set : prodotti.entrySet()) {
             Manga inCart = set.getKey();
             if (inCart.getId() == m.getId()) {
-                set.setValue(set.getValue()+quantity);
+                set.setValue(quantity);
             }
         }
     }
