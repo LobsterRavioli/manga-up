@@ -16,8 +16,6 @@ import java.io.IOException;
 @WebServlet("/CreditCardCreateServlet")
 public class CreditCardCreateServlet extends HttpServlet {
 
-    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-    private CreditCardDAO dao = new CreditCardDAO(ds);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -26,6 +24,8 @@ public class CreditCardCreateServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+        CreditCardDAO dao = new CreditCardDAO(ds);
         HttpSession session = request.getSession();
         EndUser user = (EndUser) session.getAttribute("user");
         response.setContentType("text/html");

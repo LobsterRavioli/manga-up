@@ -10,8 +10,6 @@ import java.io.IOException;
 
 @WebServlet("/CreditCardDeleteServlet")
 public class CreditCardDeleteServlet extends HttpServlet {
-    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-    private CreditCardDAO dao = new CreditCardDAO(ds);
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -19,6 +17,8 @@ public class CreditCardDeleteServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+        CreditCardDAO dao = new CreditCardDAO(ds);
         int id = Integer.valueOf(request.getParameter("credit_card_id"));
         CreditCard card = new CreditCard();
         card.setId(id);

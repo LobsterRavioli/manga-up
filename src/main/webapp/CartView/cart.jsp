@@ -113,7 +113,9 @@
                 </div>
               </div>
             </div>
-            <div class="cart_buttons"> <button type="button" onclick="redirect()" class="button cart_button_clear">Continue Shopping</button> <button type="button" class="button cart_button_checkout">Proceed to Checkout</button> </div>
+            <div class="cart_buttons">
+              <button type="button" onclick="redirect('${pageContext.request.contextPath}/checkoutPreparationServlet')" class="button cart_button_clear">Continue Shopping</button>
+              <button type="button" onclick="redirect('${pageContext.request.contextPath}/checkoutPreparationServlet')" class="button cart_button_checkout">Proceed to Checkout</button> </div>
           </div>
 
     <form id="updateProd"></form>

@@ -14,8 +14,6 @@ import java.io.IOException;
 
 public class RegistrationInSessionServlet extends HttpServlet {
 
-    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-    private EndUserDAO dao = new EndUserDAO(ds);
 
 
     @Override
@@ -26,6 +24,8 @@ public class RegistrationInSessionServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+        EndUserDAO dao = new EndUserDAO(ds);
         response.setContentType("text/html");
         EndUser user = new ConcreteEndUserBuilder()
                 .setEmail(request.getParameter("username"))

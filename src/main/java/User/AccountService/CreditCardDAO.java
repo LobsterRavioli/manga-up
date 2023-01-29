@@ -23,7 +23,7 @@ public class CreditCardDAO {
             "SELECT cvc FROM credit_card WHERE crd_cvc = ?";
 
     DataSource ds;
-    private static final String SQL_INSERT = "INSERT INTO credit_card (crd_cvc, crd_number, usr_id, crd_holder, crd_expirement_date) VALUES (?, ?, ?, ? ,?)";
+    private static final String SQL_INSERT = "INSERT INTO credit_card (crd_cvc, crd_number, usr_id, crd_holder, crd_expiration_date) VALUES (?, ?, ?, ? ,?)";
 
     private static final String SQL_DELETE = "DELETE FROM credit_card WHERE crd_id = ?";
 
@@ -31,7 +31,7 @@ public class CreditCardDAO {
             "usr_id = ?1 " +
             "AND crd_number = ?2 " +
             "AND crd_holder = ?3 " +
-            "AND crd_expirement_date = ?4 " +
+            "AND crd_expiration_date = ?4 " +
             "AND crd_cvc = ?5 ;";
     private static final String SQL_FIND_ALL_BY_ENDUSER = "SELECT * FROM credit_card WHERE usr_id = ?;";
 
@@ -115,7 +115,7 @@ public class CreditCardDAO {
 
     private static CreditCard map(ResultSet resultSet) throws SQLException {
         DateFormat format =  new SimpleDateFormat("yyyy-mm-dd");
-        String date = format.format(resultSet.getDate("crd_expirement_date"));
+        String date = format.format(resultSet.getDate("crd_expiration_date"));
         return null;
     }
 

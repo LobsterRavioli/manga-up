@@ -14,8 +14,6 @@ import java.io.IOException;
 @WebServlet("/AddressDeleteServlet")
 public class AddressDeleteServlet extends HttpServlet {
 
-    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-    private AddressDAO dao = new AddressDAO(ds);
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -23,6 +21,8 @@ public class AddressDeleteServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+        AddressDAO dao = new AddressDAO(ds);
         response.setContentType("text/html");
         EndUser user = (EndUser) request.getSession().getAttribute("user");
         Address address = new ConcreteAddressBuilder().setId(Integer.valueOf(request.getParameter("address_id"))).setEndUser(user).createAddress();

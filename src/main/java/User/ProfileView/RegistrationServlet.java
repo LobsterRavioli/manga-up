@@ -13,10 +13,6 @@ import java.io.IOException;
 public class RegistrationServlet extends HttpServlet {
 
     private static final String EMAIL_ERROR = "Email già in uso";
-    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-    private EndUserDAO daoEndUser = new EndUserDAO(ds);
-    private AddressDAO daoAddress = new AddressDAO(ds);
-    private CreditCardDAO daoCreditCard = new CreditCardDAO(ds);
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -25,6 +21,10 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+        EndUserDAO daoEndUser = new EndUserDAO(ds);
+        AddressDAO daoAddress = new AddressDAO(ds);
+        CreditCardDAO daoCreditCard = new CreditCardDAO(ds);
         System.out.println(request.getParameter("surname"));
 
         EndUser user = new ConcreteEndUserBuilder()

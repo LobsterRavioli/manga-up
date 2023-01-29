@@ -15,8 +15,6 @@ import java.io.IOException;
 @WebServlet("/AddressCreateServlet")
 public class AddressCreateServlet extends HttpServlet {
 
-    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-    private AddressDAO dao = new AddressDAO(ds);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -25,7 +23,8 @@ public class AddressCreateServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+        AddressDAO dao = new AddressDAO(ds);
         response.setContentType("text/html");
         EndUser user = (EndUser) request.getSession().getAttribute("user");
         Address address = new ConcreteAddressBuilder()

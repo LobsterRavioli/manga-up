@@ -16,8 +16,6 @@ import java.util.ArrayList;
 @WebServlet("/AddressServletDashboardServlet")
 public class AddressDashboardServlet extends HttpServlet {
 
-    DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-    private AddressDAO dao = new AddressDAO(ds);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -26,6 +24,8 @@ public class AddressDashboardServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+        AddressDAO dao = new AddressDAO(ds);
         response.setContentType("text/html");
         HttpSession session = request.getSession();
         EndUser user = (EndUser) session.getAttribute("user");

@@ -49,7 +49,7 @@ public class LoginEndUserServlet extends HttpServlet {
            session.setAttribute("cart",new Cart(new HashMap<Manga,Integer>()));
         }
 
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/index.jsp"));
+        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProductsView/endUserHomepage.jsp"));
         dispatcher.forward(request, response);
     }
 }
