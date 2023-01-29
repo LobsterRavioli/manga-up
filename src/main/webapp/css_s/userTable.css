@@ -1,0 +1,15 @@
+.extTable, th.extTable, td.extTable {
+  border: 1px solid;
+  border-collapse: collapse;
+}
+
+th {
+  height: 70px;
+}
+
+ th, td {
+  padding: 10px;
+  text-align: center;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2;}
