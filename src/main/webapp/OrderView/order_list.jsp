@@ -33,6 +33,8 @@
 		    <th>Order state</th>
 		    <th>Total price <a href="${pageContext.request.contextPath}/orderServlet?sort=ord_total_price">Sort</a></th>
 		    <th>End-user ID</th>
+		    <th>Address info</th>
+		    <th>Credit card info</th>
 		    <th>Action</th>
 	    </tr>
 	    <%
@@ -48,6 +50,8 @@
 				    <td><%=bean.getState() %></td>
 				    <td><%=bean.getTotalPrice() %></td>
 				    <td><%=bean.getEndUserID() %></td>
+				    <td><%=bean.getCreditCardEndUserInfo() %></td>
+				    <td><%=bean.getAddressEndUserInfo() %></td>
 				    <td><a href="${pageContext.request.contextPath}/manageServlet?manage=<%=bean.getId()%>&ord_date=<%=bean.getOrderDate()%>">Manage order</a></td>
 			    </tr>
 	    <%

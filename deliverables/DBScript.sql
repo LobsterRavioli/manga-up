@@ -69,7 +69,6 @@ CREATE TABLE Orders
     ord_end_user_id INT NOT NULL,
     ord_address VARCHAR(100) NOT NULL,
     ord_card VARCHAR(100) NOT NULL,
-    crd_id INT NOT NULL,
 
     FOREIGN KEY(ord_end_user_id) REFERENCES end_user(usr_id) ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY(ord_id)
@@ -271,20 +270,20 @@ INSERT INTO address (usr_id, addr_country, addr_city, addr_street, addr_phone_nu
 VALUES (6, 'Italy', 'City8', 'Street8', 1563259833, 'Region8', 84323);
 
 
-INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id, crd_id)
-VALUES ('2018-10-09', 'TO_SENT', 58.00, 5, 8);
+INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id, ord_address, ord_card)
+VALUES('2018-10-09', 'TO_SENT', 58.00, 5, 'ADDRESS_INFO1', 'CREDITCARD_INFO1');
 
-INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id, crd_id)
-VALUES ('2018-11-02', 'TO_SENT', 100.00, 3, 2);
+INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id, ord_address, ord_card)
+VALUES ('2018-11-02', 'TO_SENT', 100.00, 3, 'ADDRESS_INFO2', 'CREDITCARD_INFO2');
 
-INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id, crd_id)
-VALUES ('2018-11-21', 'TO_SENT', 55.00, 2, 6);
+INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id, ord_address, ord_card)
+VALUES ('2018-11-21', 'TO_SENT', 55.00, 2, 'ADDRESS_INFO3', 'CREDITCARD_INFO3');
 
-INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id, crd_id)
-VALUES ('2018-09-09', 'TO_SENT', 532.00, 1, 5);
+INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id, ord_address, ord_card)
+VALUES ('2018-09-09', 'TO_SENT', 532.00, 1, 'ADDRESS_INFO4', 'CREDITCARD_INFO4');
 
-INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id, crd_id)
-VALUES ('2018-06-04', 'TO_SENT', 21.50, 8, 1);
+INSERT INTO Orders (ord_date, ord_state, ord_total_price, ord_end_user_id, ord_address, ord_card)
+VALUES ('2018-06-04', 'TO_SENT', 21.50, 8, 'ADDRESS_INFO5', 'CREDITCARD_INFO5');
 
 
 INSERT INTO TO_MANAGE (user_name, order_id) VALUES ('Giovanni', 5);

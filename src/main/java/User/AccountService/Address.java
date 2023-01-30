@@ -86,17 +86,14 @@ public class Address {
                 oldEndUser.removeAddress(this);
         }
     }
-
     @Override
-    public String toString() {
-        return "Address{" +
-                "id=" + id +
-                ", endUser=" + endUser.getId() +
-                ", country='" + country + '\'' +
-                ", city='" + city + '\'' +
-                ", street='" + street + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                '}';
+    public String toString()
+    {
+        return "Address[country="+country
+                +",region="+region
+                +",city="+city
+                +",street="+street
+                +",postalCode="+postalCode+"]";
     }
 
 

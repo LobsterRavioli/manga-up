@@ -39,14 +39,10 @@ public class CreditCard {
 
     @Override
     public String toString() {
-        return "CreditCard{" +
-                "id=" + id +
-                ", cvv='" + cvv + '\'' +
-                ", endUser=" + endUser.getId() +
-                ", cardNumber='" + cardNumber + '\'' +
-                ", cardHolder='" + cardHolder + '\'' +
-                ", expirementDate=" + expirementDate +
-                '}';
+        return "CreditCard[cardNumber="+cardNumber
+                +",cvv="+cvv
+                +",cardHolder="+cardHolder
+                +",expirationDate="+expirementDate+"]";
     }
 
     public int getId() {
