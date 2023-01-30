@@ -294,6 +294,14 @@ INSERT INTO TO_MANAGE (user_name, order_id) VALUES ('Giovanni', 2);
 INSERT INTO TO_MANAGE (user_name, order_id) VALUES ('Francesco', 3);
 
 
+
+INSERT INTO Manga (id, name, editore, price, weight, height, lenght, state, description, ISBN, book_binding, volume, release_date, page_number, quantity, interior, lang, image, collection_id, genre_id, storyMaker)
+VALUES (1, 'd', 'f', 1, 1, 1, 1, 'd', 'd', 'd', 'd', 'd', '2023-01-17', 1, 32, 'd', 'd', 'd', '1', 'd', 'd');
+
+INSERT INTO CART (manga_id, user_id, quantity) VALUES (1, 3, 32);
+
+
+
 /*
 INSERT INTO manages (man_user_name, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)
 VALUES ('Giovanni', 5, '2007-10-08', 'TRN1', 'BRT', '2007-10-09');
