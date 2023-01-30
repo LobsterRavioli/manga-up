@@ -1,6 +1,5 @@
 package Order.DispatchService;
 
-import User.AccountService.CreditCard;
 import utils.DAOException;
 
 import javax.sql.DataSource;
@@ -20,7 +19,7 @@ public class OrderDAO
     private static final String ORDER_TABLE = "Orders";
 
     private static final String CREATE = "INSERT INTO "+ORDER_TABLE+
-            " (ord_id, ord_date, ord_state, ord_total_price, ord_end_user_id, crd_id)"+
+            " (ord_date, ord_state, ord_total_price, ord_end_user_id, ord_address, ord_card)"+
             " VALUES (?, ?, ?, ?, ?, ?) ;";
 
     private static final String DELETE = "DELETE FROM "+ORDER_TABLE+" WHERE ord_id = ? ;";
@@ -38,12 +37,12 @@ public class OrderDAO
         {
             connection = ds.getConnection();
             preparedStatement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setLong(1, order.getId());
-            preparedStatement.setDate(2, order.getOrderDate());
-            preparedStatement.setString(3, order.getState());
-            preparedStatement.setDouble(4, order.getTotalPrice());
-            preparedStatement.setLong(5, order.getEndUserID());
-            preparedStatement.setLong(6, order.getCreditCardEndUser());
+            preparedStatement.setDate(1, order.getOrderDate());
+            preparedStatement.setString(2, order.getState());
+            preparedStatement.setDouble(3, order.getTotalPrice());
+            preparedStatement.setLong(4, order.getEndUserID());
+            preparedStatement.setString(5, order.getAddressEndUserInfo());
+            preparedStatement.setString(6, order.getCreditCardEndUserInfo());
 
             int affectedRows = preparedStatement.executeUpdate();
             if(affectedRows == 0)
@@ -156,7 +155,8 @@ public class OrderDAO
                 orderBean.setState(rs.getString("ord_state"));
                 orderBean.setTotalPrice(rs.getDouble("ord_total_price"));
                 orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
-                orderBean.setCreditCardEndUser(rs.getInt("crd_id"));
+                orderBean.setCreditCardEndUserInfo(rs.getString("ord_address"));
+                orderBean.setAddressEndUserInfo(rs.getString("ord_card"));
             }
         }
         finally
@@ -204,7 +204,8 @@ public class OrderDAO
                 orderBean.setState(rs.getString("ord_state"));
                 orderBean.setTotalPrice(rs.getDouble("ord_total_price"));
                 orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
-                orderBean.setCreditCardEndUser(rs.getInt("crd_id"));
+                orderBean.setCreditCardEndUserInfo(rs.getString("ord_address"));
+                orderBean.setAddressEndUserInfo(rs.getString("ord_card"));
 
                 orders.add(orderBean);
             }
@@ -253,7 +254,8 @@ public class OrderDAO
                 orderBean.setState(rs.getString("ord_state"));
                 orderBean.setTotalPrice(rs.getDouble("ord_total_price"));
                 orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
-                orderBean.setCreditCardEndUser(rs.getInt("crd_id"));
+                orderBean.setCreditCardEndUserInfo(rs.getString("ord_address"));
+                orderBean.setAddressEndUserInfo(rs.getString("ord_card"));
 
                 orders.add(orderBean);
             }
