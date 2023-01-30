@@ -35,7 +35,8 @@ public class CartDAO {
         MangaDAO man = new MangaDAO(ds);
         HashMap<Manga,Integer> mappa = new HashMap<Manga,Integer>();
         try(Connection conn = ds.getConnection()){
-            pr = conn.prepareStatement("SELECT m.id,m.name,m.editore,m.price,m.ISBN,m.quantity,c.quantity,m.image FROM CART AS c,Manga AS m where c.user_id=? AND m.id=c.manga_id");
+
+            pr = conn.prepareStatement("SELECT m.id,m.name,m.editore,m.price,m.ISBN,m.quantity/* quantità del magazzino */,c.quantity /* quantità del carrello */,m.image FROM CART AS c,Manga AS m where c.user_id=? AND m.id=c.manga_id");
             pr.setInt(1,user.getId());
             rs = pr.executeQuery();
             while(rs.next()){
@@ -44,18 +45,11 @@ public class CartDAO {
                 String brand = rs.getString(3);
                 double price = rs.getDouble(4);
                 String isbn = rs.getString(5);
-                int quantitym = rs.getInt(6);
-                int quantityc= rs.getInt(7);
-
-                if(quantityc > quantitym){
-                    int temp = quantityc;
-                    quantityc=quantitym;
-                    updateProduct(new Manga(id),quantityc-temp,user);
-                }
+                int mangaQuantityFromWarehouse = rs.getInt(6);
+                int mangaQuantityFromCart= rs.getInt(7);
                 String imagep= rs.getString(8);
-                Manga m = new Manga(isbn,brand,"","","",0,null,id, name,"description", price,0.0,0.0,0.0, quantitym,"",imagep,null,null,"",null);
-                mappa.put(m,quantityc);
-                System.out.println("Sono qui");
+                Manga m = new Manga(isbn,brand,"","","",0,null,id, name,"description", price,0.0,0.0,0.0, mangaQuantityFromWarehouse,"",imagep,null,null,"",null);
+                mappa.put(m,mangaQuantityFromCart);
             }
             if(mappa.size()==0){
                 throw new Exception("nessun Elemento presente nel carrello");

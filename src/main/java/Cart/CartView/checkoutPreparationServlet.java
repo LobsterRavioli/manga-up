@@ -45,8 +45,8 @@ public class checkoutPreparationServlet extends HttpServlet {
         }
 
 
-        request.setAttribute("carte",listaCarte);
-        request.setAttribute("indirizzi",listaAddresses);
+        request.setAttribute("cards",listaCarte);
+        request.setAttribute("addresses",listaAddresses);
 
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/checkout.jsp");
         rd.forward(request, response);

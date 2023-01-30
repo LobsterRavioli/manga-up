@@ -67,11 +67,11 @@ CREATE TABLE Orders
     ord_state VARCHAR(50) NOT NULL,
     ord_total_price FLOAT NOT NULL,
     ord_end_user_id INT NOT NULL,
-
+    ord_address VARCHAR(100) NOT NULL,
+    ord_card VARCHAR(100) NOT NULL,
     crd_id INT NOT NULL,
 
     FOREIGN KEY(ord_end_user_id) REFERENCES end_user(usr_id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY(crd_id) REFERENCES credit_card(crd_id),
     PRIMARY KEY(ord_id)
 );
 
@@ -155,7 +155,7 @@ CREATE TABLE CART
         ON UPDATE cascade ON DELETE cascade
 );
 
-CREATE TABLE Collection
+CREATE TABLE COLLECTION
 (
     nome VARCHAR(25) NOT NULL
 );

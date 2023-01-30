@@ -24,6 +24,11 @@ public class Order {
         this.endUserCard = card;
     }
 
+    public Order(EndUser endUser, CreditCard endUserCard) {
+        this.endUser = endUser;
+        this.endUserCard = endUserCard;
+    }
+
     public long getId()
     {
         return this.id;

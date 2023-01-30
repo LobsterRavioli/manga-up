@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="User.AccountService.CreditCard" %>
 <%@ page import="User.AccountService.Address" %>
 <%@ page import="User.AccountService.AddressDAO" %>
@@ -17,52 +18,43 @@
 
 <%@ include file="/header.jsp" %>
 
-<%ArrayList<CreditCard> listaCarte = (ArrayList<CreditCard>) request.getAttribute("carte");
-  ArrayList<Address> listaAddresses = (ArrayList<Address>) request.getAttribute("indirizzi");
-  /*  for(int i=0;i<listaCarte.size();i++)
-        System.out.println(listaCarte.get(i));*/
-    listaCarte.set(1,new CreditCard());
-    listaAddresses.set(1,new Address());
-%>
-
-<div>
-    <table id="productVisualizer" class="productVisualizer">
-        <tr>
-            <th class="fontMinus">Nome</th>
-            <th class="fontMinus">Costo Unitario</th>
-            <th class="fontMinus">Quantità</th>
-        </tr>
-        <%Cart carrello = (Cart) request.getSession(false).getAttribute("cart");%>
-        <%int totalProducts=0;%>
-        <%for (Map.Entry <Manga, Integer> set : carrello.getProdotti().entrySet()){
-                Manga currManga = set.getKey();
-                int currQuantity = set.getValue();
-                totalProducts = totalProducts + set.getValue();%>
-            <tr id="productInspector" class="productInspector">
-                <td><%=currManga.getName()%></td>
-                <td><%=currManga.getPrice()%></td>
-                <td><%=currQuantity%></td>
-            </tr>
-        <%}%>
-    </table>
-    <p>Quantità totale di prodotti nel carrello: <%=totalProducts%></p>
-</div>
+    <form id="checkoutForm" method="post" action="/checkoutServlet">
+        <c:forEach items="${addresses}" var="address">
+            <input type="radio" form="checkoutForm" id="address${address.id}" name="address" value="${address}">
+            <label for="address${address.id}">Paese: ${address.country}, Città: ${address.city}, Via: ${address.street}, postal code: ${address.postalCode}, phoneNumber ${address.phoneNumber}, Regione: ${address.region} </label>
+        </c:forEach>
 
 
+        <c:forEach items="${cards}" var="card">
+            <label for="carta${card.id}">Numero Carta: ${card.cardNumber}, Proprietario: ${card.cardHolder}, Data di scadenza: ${card.expirementDate} </label><br/>
+            <input type="radio" form="checkoutForm" id="carta${address.id}" name="card" value="${address.id}">
+        </c:forEach>
 
 
-<%int i=0;%>
-<form id ="checkoutForm" action="" method="post">
-    <div>
-  <%for(;i<listaCarte.size();i++){
-    CreditCard currentCard = (CreditCard) listaCarte.get(i);%>
-        <input type="radio" form="checkoutForm" id="carta<%=currentCard.getId()%>" name="carte" value="<%=currentCard.getId()%>">
-      <%}%>
-    </div>
-    <%for(;i<listaAddresses.size();i++){
-        Address currentAddress = (Address) listaAddresses.get(i);%>
-    <input type="radio" form="checkoutForm" id="indirizzo<%=currentAddress.getId()%>" name="indirizzo" value="<%=currentAddress.getId()%>">
-    <%}%>
-</form>
+        <div>
+            <table id="productVisualizer" class="productVisualizer">
+                <tr>
+                    <th class="fontMinus">Nome</th>
+                    <th class="fontMinus">Costo Unitario</th>
+                    <th class="fontMinus">Quantità</th>
+                </tr>
+                <%Cart carrello = (Cart) request.getSession(false).getAttribute("cart");%>
+                <%int totalProducts=0;%>
+                <%for (Map.Entry <Manga, Integer> set : carrello.getProdotti().entrySet()){
+                        Manga currManga = set.getKey();
+                        int currQuantity = set.getValue();
+                        totalProducts = totalProducts + set.getValue();%>
+                <tr id="productInspector" class="productInspector">
+                    <td><%=currManga.getName()%></td>
+                    <td><%=currManga.getPrice()%></td>
+                    <td><%=currQuantity%></td>
+                </tr>
+                <%}%>
+            </table>
+            <p>Quantità totale di prodotti nel carrello: <%=totalProducts%></p>
+        </div>
+
+        <button type="submit">Checkout</button>
+    </form>
 </body>
 </html>
