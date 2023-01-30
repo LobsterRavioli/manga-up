@@ -89,11 +89,11 @@ public class Address {
     @Override
     public String toString()
     {
-        return "Address[country="+country
+        return "country="+country
                 +",region="+region
                 +",city="+city
                 +",street="+street
-                +",postalCode="+postalCode+"]";
+                +",postalCode="+postalCode;
     }
 
 

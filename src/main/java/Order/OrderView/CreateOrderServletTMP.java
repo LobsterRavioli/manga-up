@@ -7,6 +7,7 @@ import User.AccountService.CreditCard;
 import User.AccountService.EndUser;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,9 +15,11 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class createOrderServletTMP extends HttpServlet {
+@WebServlet(name = "createOrderServlet", value = "/createOrderServlet")
+public class CreateOrderServletTMP extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -89,19 +92,22 @@ public class createOrderServletTMP extends HttpServlet {
              * Create an order for each EndUser
              */
             Order newOrder = null;
+            ArrayList<Order> orders = new ArrayList<>();
             for(int i = 0; i < endUsers.size(); i++)
             {
                 newOrder = new Order(endUsers.get(i), addresses.get(i), cards.get(i));
+                newOrder.setOrderDate(Date.valueOf(LocalDate.now())); // current date
+                orders.add(newOrder);
 
                 synchronized (newOrder) {
                     model.create(newOrder);
                 }
-
-                request.removeAttribute("taskOrder");
-                request.setAttribute("taskOrder", newOrder); // l'ordine da assegnare
             }
 
+            request.removeAttribute("taskOrders");
+            request.setAttribute("taskOrders", orders); // gli ordini da assegnare
 
+            request.getServletContext().getRequestDispatcher("/orderTask").forward(request,response); // assegno l'ordine creato
         }
         catch (SQLException e)
         {
