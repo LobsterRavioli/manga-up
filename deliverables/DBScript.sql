@@ -155,7 +155,7 @@ CREATE TABLE CART
         ON UPDATE cascade ON DELETE cascade
 );
 
-CREATE TABLE Collection
+CREATE TABLE COLLECTION
 (
     nome VARCHAR(25) NOT NULL
 );
@@ -292,6 +292,14 @@ INSERT INTO TO_MANAGE (user_name, order_id) VALUES ('Sara', 4);
 INSERT INTO TO_MANAGE (user_name, order_id) VALUES ('Sara', 1);
 INSERT INTO TO_MANAGE (user_name, order_id) VALUES ('Giovanni', 2);
 INSERT INTO TO_MANAGE (user_name, order_id) VALUES ('Francesco', 3);
+
+
+
+INSERT INTO Manga (id, name, editore, price, weight, height, lenght, state, description, ISBN, book_binding, volume, release_date, page_number, quantity, interior, lang, image, collection_id, genre_id, storyMaker)
+VALUES (1, 'd', 'f', 1, 1, 1, 1, 'd', 'd', 'd', 'd', 'd', '2023-01-17', 1, 32, 'd', 'd', 'd', '1', 'd', 'd');
+
+INSERT INTO CART (manga_id, user_id, quantity) VALUES (1, 3, 32);
+
 
 
 /*

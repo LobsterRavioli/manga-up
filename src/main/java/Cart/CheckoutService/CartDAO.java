@@ -48,9 +48,11 @@ public class CartDAO {
                 int quantityc= rs.getInt(7);
 
                 if(quantityc > quantitym){
-                    int temp = quantityc;
+                    ;
+                    /*int temp = quantityc;
                     quantityc=quantitym;
                     updateProduct(new Manga(id),quantityc-temp,user);
+                     */
                 }
                 String imagep= rs.getString(8);
                 Manga m = new Manga(isbn,brand,"","","",0,null,id, name,"description", price,0.0,0.0,0.0, quantitym,"",imagep,null,null,"",null);
