@@ -17,6 +17,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Home Page Catalog Manager</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css_s/homeManagerStyle.css">
     <link rel="stylesheet" href="../OrderView/style.css">
 </head>
 <body>
@@ -29,16 +30,33 @@
 
 </script>
 
-<div class="navbar">
-    <a class="select" href="${pageContext.request.contextPath}/ProductsView/addProducts.jsp">Add Product<br></a>
-    <a class="select" href="${pageContext.request.contextPath}/ProductsView/prodManagement.jsp">Manage Product<br></a>
+
+<div class="home">
+    <nav id="items">
+        <div>
+            <a class="select" href="${pageContext.request.contextPath}/ProductsView/addProducts.jsp">Add Product<br><br></a>
+            <a class="select" href="${pageContext.request.contextPath}/ProductsView/prodManagement.jsp">Manage Product<br><br></a>
+        </div>
+    </nav>
 </div>
+
+<!--<div class="navbar">
+
+</div>-->
 <%String errore = (String)request.getAttribute("error");
     if(errore!=null){%>
         <script>
             errore('<%=errore%>');
         </script>
     <%}%>
+
+
+<%String success = (String)request.getAttribute("success");
+    if(success!=null){%>
+<script>
+    errore('<%=success%>');
+</script>
+<%}%>
 
 
 </body>

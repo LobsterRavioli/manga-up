@@ -295,6 +295,20 @@ public class MangaDAO {
             ricerca = "SELECT * FROM Manga AS m WHERE m.name LIKE '%" + name + "%' AND m.collection_id LIKE '%" + collection + "%' AND m.price BETWEEN ? AND ";
             if (max_price <= 0) {
                 ricerca = ricerca + "99999999999 ";
+
+                if(orderSubject){
+                    ricerca = ricerca+"ORDER BY m.name";
+                }else{
+                    ricerca = ricerca+"ORDER BY m.price";
+                }
+
+
+                if(order_criteria){
+                    ricerca = ricerca + " ASC";
+                }else {
+                    ricerca = ricerca + " DESC";
+                }
+
                 pr = conn.prepareStatement(ricerca);
                 if (min_price <= 0)
                     pr.setFloat(1, 0);
@@ -303,6 +317,20 @@ public class MangaDAO {
                 }
             } else {
                 ricerca = ricerca + "? ";
+
+                if(orderSubject){
+                    ricerca = ricerca+"ORDER BY m.name";
+                }else{
+                    ricerca = ricerca+"ORDER BY m.price";
+                }
+
+
+                if(order_criteria){
+                    ricerca = ricerca + " ASC";
+                }else {
+                    ricerca = ricerca + " DESC";
+                }
+
                 pr = conn.prepareStatement(ricerca);
                 if (min_price <= 0)
                     pr.setFloat(1, 0);
@@ -310,18 +338,6 @@ public class MangaDAO {
                     pr.setFloat(1, min_price);
                 }
                 pr.setFloat(2, max_price);
-            }
-
-            if(orderSubject){
-                ricerca = ricerca+"ORDER BY m.name";
-            }else{
-                ricerca = ricerca+"ORDER BY m.collection_id";
-            }
-
-            if(order_criteria){
-                ricerca = ricerca + " ASC";
-            }else {
-                ricerca = ricerca + " DESC";
             }
 
             ArrayList<Manga> lista = new ArrayList<Manga>();
@@ -360,6 +376,7 @@ public class MangaDAO {
                 Manga m = new Manga(ISBN,publisher,binding,language,volume,p_number,exit_date,iD,n,description,price,height,lenght,weight,quantity,interior,imagePath,coll,pS,storyMaker,genre);
                 lista.add(m);
             }
+
             System.out.println(lista.size()+" Sono il filtro per gestori");
 
             if (lista.size() == 0) {
@@ -629,6 +646,7 @@ public class MangaDAO {
     public void updateQuantity(Manga manga){
         PreparedStatement pr = null;
         ResultSet rs = null;
+        Manga m = retrieveById(manga.getId());
         try(Connection conn = ds.getConnection()){
             pr = conn.prepareStatement("UPDATE Manga SET quantity=? WHERE id=?");
             pr.setInt(1,manga.getQuantity());
