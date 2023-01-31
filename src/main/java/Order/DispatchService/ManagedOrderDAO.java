@@ -18,7 +18,7 @@ public class ManagedOrderDAO {
     private static final String MANAGED_ORDER_TABLE = "manages";
 
     private static final String CREATE = "INSERT INTO "+MANAGED_ORDER_TABLE+
-            " (man_user_name, man_order_id, man_delivery_date, man_tracking_number, man_courier, man_shipment_date)"+
+            " (man_user_name, man_order_id, man_shipment_date, man_tracking_number, man_courier, man_delivery_date)"+
             " VALUES (?, ?, ?, ?, ?, ?) ;";
 
     private static final String DELETE = "DELETE FROM "+MANAGED_ORDER_TABLE+" WHERE man_order_id = ? AND man_user_name = ? ;";
@@ -38,10 +38,10 @@ public class ManagedOrderDAO {
             preparedStatement = connection.prepareStatement(CREATE);
             preparedStatement.setString(1, managedOrder.getUserName());
             preparedStatement.setLong(2, managedOrder.getId());
-            preparedStatement.setDate(3, managedOrder.getDeliveryDate());
+            preparedStatement.setDate(3, managedOrder.getShipmentDate());
             preparedStatement.setString(4, managedOrder.getTrackNumber());
             preparedStatement.setString(5, managedOrder.getCourierName());
-            preparedStatement.setDate(6, managedOrder.getShipmentDate());
+            preparedStatement.setDate(6, managedOrder.getDeliveryDate());
 
             int affectedRows = preparedStatement.executeUpdate();
             if(affectedRows == 0)

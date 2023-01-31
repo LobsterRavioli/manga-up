@@ -69,20 +69,20 @@ public class ManagedOrderServlet extends HttpServlet{
                 if (action.equalsIgnoreCase("insert")) {
                     String userName = (String) request.getSession().getAttribute("managerName");
                     int orderId = Integer.parseInt(request.getParameter("orderID"));
-                    Date deliveryDate = Date.valueOf(request.getParameter("deliveryDate"));
+                    Date shipmentDate = Date.valueOf(request.getParameter("shipmentDate"));
                     String trackingNumber = request.getParameter("trackingNumber");
                     String courierName = request.getParameter("courier");
-                    Date shipmentDate = Date.valueOf(request.getParameter("shipmentDate"));
+                    Date deliveryDate = Date.valueOf(request.getParameter("deliveryDate"));
 
                     // Costruisco l'ordine gestito prelevando i dati che mi sono arrivati dal form
                     ManagedOrder managed = new ManagedOrder();
 
                     managed.setUserName(userName);
                     managed.setId(orderId);
-                    managed.setDeliveryDate(deliveryDate);
+                    managed.setShipmentDate(shipmentDate);
                     managed.setTrackNumber(trackingNumber);
                     managed.setCourierName(courierName);
-                    managed.setShipmentDate(shipmentDate);
+                    managed.setDeliveryDate(deliveryDate);
 
                     /*
                     managedOrderDAO.create(managed); // aggiungo l'ordine alla tabbella degli ordini gestiti
