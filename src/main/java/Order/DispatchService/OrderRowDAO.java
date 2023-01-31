@@ -6,7 +6,10 @@ import utils.DAOException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.LinkedList;
 
 public class OrderRowDAO {
 
@@ -56,5 +59,47 @@ public class OrderRowDAO {
                     connection.close();
             }
         }
+    }
+
+
+    public Collection<OrderRow> retrieveOrderRowAssociatedToOrder(Order order) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        Collection<OrderRow> orders = new LinkedList<OrderRow>();
+        String selectQuery = "SELECT * FROM Order_row o WHERE o.ord_id = ?;";
+
+        try
+        {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(selectQuery);
+
+            preparedStatement.setLong(1, order.getId());
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next())
+            {
+                OrderRow orderBean = new OrderRow();
+
+                orderBean.setOrderId(rs.getLong("ord_id"));
+                orderBean.setUserId(rs.getLong("user_id"));
+                orderBean.setMangaName(rs.getString("manga_name"));
+                orderBean.setMangaPrice(rs.getDouble("manga_price"));
+                orderBean.setQuantity(rs.getInt("quantity"));
+
+                orders.add(orderBean);
+            }
+
+        } finally {
+            try {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            } finally {
+                if(connection != null)
+                    connection.close();
+            }
+        }
+
+        return orders;
     }
 }

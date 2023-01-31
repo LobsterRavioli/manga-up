@@ -1,6 +1,7 @@
 package Order.DispatchService;
 
 import Merchandising.MerchandiseService.Manga;
+import User.AccountService.EndUser;
 import utils.DAOException;
 
 import javax.sql.DataSource;
@@ -271,7 +272,49 @@ public class OrderDAO
         return orders;
     }
 
+    public Collection retrieveOrdersAssociatedToUsers(EndUser user) throws SQLException {
 
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        Collection<Order> orders = new LinkedList<Order>();
+        String selectQuery = "SELECT * FROM Orders o WHERE o.ord_end_user_id = ?;";
+
+        try
+        {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(selectQuery);
+
+            preparedStatement.setInt(1, user.getId());
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next())
+            {
+                Order orderBean = new Order();
+
+                orderBean.setId(rs.getLong("ord_id"));
+                orderBean.setOrderDate(rs.getDate("ord_date"));
+                orderBean.setState(rs.getString("ord_state"));
+                orderBean.setTotalPrice(rs.getDouble("ord_total_price"));
+                orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
+                orderBean.setCreditCardEndUserInfo(rs.getString("ord_address"));
+                orderBean.setAddressEndUserInfo(rs.getString("ord_card"));
+                orders.add(orderBean);
+            }
+
+        } finally {
+            try {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            } finally {
+                if(connection != null)
+                    connection.close();
+            }
+        }
+
+        return orders;
+
+    }
 
 
 

@@ -24,6 +24,17 @@
 <body>
 <%@ include file="/header.jsp" %>
 
+
+  <c:forEach items="${orders}" var="order">
+    <p>Prezzo totale: ${order.totalPrice}, Data: ${order.orderDate} </p><br/>
+    <form action="${pageContext.request.contextPath}/Orde" method="post">
+      <input type="hidden" name="credit_card_id" value=${order.id}/>
+      <input type="submit" value="elimina" name="act" id="box_button" class="accept">
+    </form>
+  </c:forEach>
+
+
+<!--  <div class="container">
 <section class="h-100 gradient-custom">
   <div class="container py-5 h-100">
     <br><br><br><br>
@@ -39,8 +50,6 @@
               <p class="lead fw-normal mb-0" style="color: #46dd2c;">Ricevute</p>
             </div>
 
-            <c:forEach items="orders">
-
               <div class="card shadow border mb-4">
 
                 <div class="card-body">
@@ -52,23 +61,23 @@
                     </div>
 
                     <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="info">${order.id}</p>
+                      <p class="info"></p>
                     </div>
 
                     <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="info">${order.id}</p>
+                      <p class="info"></p>
                     </div>
 
                     <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="info">${order.id}</p>
+                      <p class="info"></p>
                     </div>
 
                     <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="info">${order.id}</p>
+                      <p class="info"></p>
                     </div>
 
                     <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="info">${order.id}</p>
+                      <p class="info"></p>
                     </div>
 
                   </div>
@@ -76,7 +85,7 @@
 
               </div>
 
-            </c:forEach>
+
 
             <hr class="mb-4" style="background-color: #46dd2c ; opacity: 1;">
 
@@ -86,5 +95,7 @@
     </div>
   </div>
 </section>
+
+-->
 </body>
 </html>
