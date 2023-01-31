@@ -71,7 +71,7 @@
                 </div>
 
                 <div class="input-control">
-        		    <label for="shipmentDate">Delivery date:</label><br>
+        		    <label for="shipmentDate">Shipment date:</label><br>
                     <input name="shipmentDate" type="date" id="shipmentDate" required><br>
                     <div class="error"></div>
                 </div>
