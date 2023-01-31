@@ -1,9 +1,11 @@
 package Order.DispatchService;
 
+import Merchandising.MerchandiseService.Manga;
 import utils.DAOException;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -234,7 +236,7 @@ public class OrderDAO
 
         if(ordCriteria != null && !ordCriteria.equals(""))
         {
-            selectQuery += " ORDER BY "+ordCriteria;
+            selectQuery += " ORDER BY "+ ordCriteria;
         }
 
         try
@@ -242,13 +244,11 @@ public class OrderDAO
             connection = ds.getConnection();
             preparedStatement = connection.prepareStatement(selectQuery);
             preparedStatement.setString(1, orderManagerUserName);
-
             ResultSet rs = preparedStatement.executeQuery();
 
             while(rs.next())
             {
                 Order orderBean = new Order();
-
                 orderBean.setId(rs.getLong("ord_id"));
                 orderBean.setOrderDate(rs.getDate("ord_date"));
                 orderBean.setState(rs.getString("ord_state"));
@@ -256,7 +256,6 @@ public class OrderDAO
                 orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
                 orderBean.setCreditCardEndUserInfo(rs.getString("ord_address"));
                 orderBean.setAddressEndUserInfo(rs.getString("ord_card"));
-
                 orders.add(orderBean);
             }
         } finally {
@@ -271,4 +270,9 @@ public class OrderDAO
 
         return orders;
     }
+
+
+
+
+
 }

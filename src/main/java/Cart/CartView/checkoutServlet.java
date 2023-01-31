@@ -4,9 +4,11 @@ import Cart.CheckoutService.CartDAO;
 import Merchandising.MerchandiseService.Manga;
 import Merchandising.MerchandiseService.MangaDAO;
 import Order.DispatchService.Order;
-import User.AccountService.CreditCard;
-import User.AccountService.EndUser;
+import Order.DispatchService.OrderSubmissionFacade;
+import Order.DispatchService.OrderSubmissionFacadeImp;
+import User.AccountService.*;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import static java.util.Map.Entry;
 
@@ -31,17 +34,21 @@ public class checkoutServlet extends HttpServlet {
         try {
             int mangaQuantityFromWarehouse, mangaQuantityFromCart;
             DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
-            String addressInfo = req.getParameter("address");
-            String creditCardInfo = req.getParameter("creditCard");
+            EndUser endUser = (EndUser) req.getSession(false).getAttribute("user");
 
-
+            int addressId = Integer.parseInt(req.getParameter("address"));
+            int creditCardId = Integer.parseInt(req.getParameter("creditCard"));
+            CreditCard userCard = new CreditCardDAO(ds).findById(creditCardId);
+            Address addressEndUser = new AddressDAO(ds).findById(addressId);
             CartDAO cartDAO = new CartDAO(ds);
             MangaDAO mangaDAO = new MangaDAO(ds);
-            EndUser user = (EndUser) req.getSession(false).getAttribute("user");
-            HashMap<Manga, Integer> map = cartDAO.retrieveByUser(user);
+            HashMap<Manga, Integer> map = cartDAO.retrieveByUser(endUser);
 
             if(!isAvailableProducts(map)){
-                // redirect to error page
+                req.setAttribute("error","Quantità prodotti non disponibili");
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/cart.jsp");
+                rd.forward(req, resp);
+                return;
             }
 
             for (Entry<Manga, Integer> entry : map.entrySet()) {
@@ -57,16 +64,20 @@ public class checkoutServlet extends HttpServlet {
                 manga.setQuantity(mangaQuantityFromCart);
             }
 
-            // Order order = new Order(user);
+            Order order = new Order(endUser, addressEndUser, userCard);
 
+            OrderSubmissionFacade facade = (OrderSubmissionFacade) getServletContext().getAttribute(OrderSubmissionFacade.ORDER_SUBMISSION_FACADE);
 
+            facade.createOrder(order, new ArrayList<Manga>(map.keySet()));
 
+            cartDAO.toEmptyCart(order.getEndUser());
 
+            req.getSession(false).removeAttribute("cart");
 
-            // creare l'ordine e assegnarlo al manager
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/homepage.jsp");
 
-            resp.sendRedirect("/CartView/checkout.jsp");
-
+            rd.forward(req, resp);
+            return;
 
         } catch (Exception e) {
             throw new RuntimeException(e);

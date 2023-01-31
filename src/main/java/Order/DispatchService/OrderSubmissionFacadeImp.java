@@ -19,6 +19,7 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
     private OrderDAO orderDAO;
     private UserDAO uD;
     private ToManageDAO assignDAO;
+    private CartDAO cartDAO;
 
     private OrderRowDAO orderRowDAO;
     private CartDAO cD;
@@ -30,23 +31,16 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
 
 
 
-    public void submitOrder(Order order, ArrayList<Manga> products) throws Exception{
+    public void createOrder(Order order, ArrayList<Manga> products) throws Exception{
 
-        User selectedManager = new User();
-        int user_id;
-        int card_id;
+        User selectedManager;
         OrderRow orderRow;
-
         orderDAO.create(order);
-
         for (Manga manga : products) {
              orderRow = new OrderRow(order, order.getEndUser(), manga, manga.getQuantity());
              orderRowDAO.create(orderRow);
-            //oD.createRow(order,set); Chiamata di un metodo da aggiungere in OrdineDAO che si occupa di inserire una riga d'ordine
         }
-
         List<User> candidatesManagers = (List<User>) uD.getAllBeginnerOrderManagers();
-
         if(candidatesManagers!=null){
             selectedManager = candidatesManagers.get(0);
             assignDAO.create(new ToManage(selectedManager,order));
@@ -55,16 +49,6 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
             assignDAO.create(new ToManage(new User(targetUserUsername,""),order));
         }
 
-        // assignDAO.create(new ToManage(new User(user_id,""),order));
-
-        // associa all'enduser
-        // associa al manager
-
     }
 
-
-    @Override
-    public void OrderCreation(Order order) throws Exception {
-
-    }
 }

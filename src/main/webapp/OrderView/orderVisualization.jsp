@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Francesco Monzillo
@@ -32,36 +33,50 @@
           <div class="card-header px-4 py-5">
             <h5 class="text-muted mb-0">I miei ordini</h5>
           </div>
+
           <div class="card-body p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
               <p class="lead fw-normal mb-0" style="color: #46dd2c;">Ricevute</p>
             </div>
-            <div class="card shadow border mb-4">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-2">
-                    <img src="${pageContext.request.contextPath}/img/trees_img/anacardo1.png"
-                         class="img-fluid" alt="name tree">
-                  </div>
-                  <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                    <p class="info">Paese</p>
-                  </div>
-                  <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                    <p class="info">co2</p>
-                  </div>
-                  <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                    <p class="info">1</p>
-                  </div>
-                  <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                    <p class="info">prezzo</p>
-                  </div>
-                  <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                    <p class="info">Nome</p>
+
+            <c:forEach items="orders">
+
+              <div class="card shadow border mb-4">
+
+                <div class="card-body">
+                  <div class="row">
+
+                    <div class="col-md-2">
+                      <img src="${pageContext.request.contextPath}/img/trees_img/anacardo1.png"
+                           class="img-fluid" alt="name tree">
+                    </div>
+
+                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                      <p class="info">${order.id}</p>
+                    </div>
+
+                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                      <p class="info">${order.id}</p>
+                    </div>
+
+                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                      <p class="info">${order.id}</p>
+                    </div>
+
+                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                      <p class="info">${order.id}</p>
+                    </div>
+
+                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                      <p class="info">${order.id}</p>
+                    </div>
+
                   </div>
                 </div>
-              </div>
-            </div>
 
+              </div>
+
+            </c:forEach>
 
             <hr class="mb-4" style="background-color: #46dd2c ; opacity: 1;">
 

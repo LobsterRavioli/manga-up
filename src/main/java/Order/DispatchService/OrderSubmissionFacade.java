@@ -1,7 +1,11 @@
 package Order.DispatchService;
 
+import Merchandising.MerchandiseService.Manga;
+
+import java.util.ArrayList;
+
 public interface OrderSubmissionFacade {
-    void OrderCreation(Order order) throws Exception;
+    void createOrder(Order order, ArrayList<Manga> products) throws Exception;
 
     public static final String ORDER_SUBMISSION_FACADE = "ORDER_SUBMISSION_FACADE";
 }
