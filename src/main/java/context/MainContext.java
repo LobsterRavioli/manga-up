@@ -1,6 +1,11 @@
 package context;
 
 
+import Order.DispatchService.OrderSubmissionFacade;
+import Order.DispatchService.OrderSubmissionFacadeImp;
+import User.AccountService.ManagerSelectionFacade;
+import User.AccountService.ManagerSelectionFacadeImp;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -29,12 +34,13 @@ public class MainContext implements ServletContextListener {
 			} catch (SQLException e){
 				System.out.println(e);
 			}
-
+			context.setAttribute(OrderSubmissionFacade.ORDER_SUBMISSION_FACADE,new OrderSubmissionFacadeImp(ds));
 			context.setAttribute("DataSource", ds);
 		} catch (NamingException e) {
 			System.out.println(e.getMessage());
 		}
-
+		context.setAttribute(OrderSubmissionFacade.ORDER_SUBMISSION_FACADE,new OrderSubmissionFacadeImp(ds));
+		context.setAttribute(ManagerSelectionFacade.MANAGER_SELECTION_FACADE,new ManagerSelectionFacadeImp(ds));
 		context.setAttribute("DataSource", ds);
 	}
 

@@ -1,5 +1,7 @@
 package Cart.CartView;
 
+
+import Cart.CheckoutService.Cart;
 import Cart.CheckoutService.CartDAO;
 import Merchandising.MerchandiseService.Manga;
 import Merchandising.MerchandiseService.MangaDAO;
@@ -37,14 +39,17 @@ public class checkoutServlet extends HttpServlet {
             EndUser endUser = (EndUser) req.getSession(false).getAttribute("user");
 
             int addressId = Integer.parseInt(req.getParameter("address"));
-            int creditCardId = Integer.parseInt(req.getParameter("creditCard"));
+            int creditCardId = Integer.parseInt(req.getParameter("card"));
             CreditCard userCard = new CreditCardDAO(ds).findById(creditCardId);
+            if(userCard==null)
+                System.out.println("Problema null");
             Address addressEndUser = new AddressDAO(ds).findById(addressId);
             CartDAO cartDAO = new CartDAO(ds);
             MangaDAO mangaDAO = new MangaDAO(ds);
             HashMap<Manga, Integer> map = cartDAO.retrieveByUser(endUser);
 
             if(!isAvailableProducts(map)){
+                cartDAO.toEmptyCart(endUser);
                 req.setAttribute("error","Quantità prodotti non disponibili");
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/cart.jsp");
                 rd.forward(req, resp);
@@ -67,19 +72,21 @@ public class checkoutServlet extends HttpServlet {
             Order order = new Order(endUser, addressEndUser, userCard);
 
             OrderSubmissionFacade facade = (OrderSubmissionFacade) getServletContext().getAttribute(OrderSubmissionFacade.ORDER_SUBMISSION_FACADE);
+            ManagerSelectionFacade facadeUser = (ManagerSelectionFacade) getServletContext().getAttribute(ManagerSelectionFacade.MANAGER_SELECTION_FACADE);
 
-            facade.createOrder(order, new ArrayList<Manga>(map.keySet()));
+            facade.createOrder(order, new ArrayList<Manga>(map.keySet()),facadeUser.managerEngagement());
 
             cartDAO.toEmptyCart(order.getEndUser());
 
-            req.getSession(false).removeAttribute("cart");
+            req.getSession(false).setAttribute("cart",new Cart(new HashMap<Manga,Integer>()));
 
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/homepage.jsp");
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/cart.jsp"); //Andrebbe rimandato a order_detail_listServlet
 
             rd.forward(req, resp);
             return;
 
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
 

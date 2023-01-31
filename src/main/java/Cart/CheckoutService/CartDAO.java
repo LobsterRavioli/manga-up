@@ -217,18 +217,15 @@ public class CartDAO {
             throw new Exception("utente non esistente");
 
         PreparedStatement pr = null;
-        ResultSet rs = null;
-        HashMap<Manga, Integer> mappa = new HashMap<Manga, Integer>();
         try (Connection conn = ds.getConnection()) {
-            pr = conn.prepareStatement("DELTE FROM CART AS C WHERE c.user_id=?");
+            pr = conn.prepareStatement("DELETE FROM CART AS C WHERE c.user_id=?");
             pr.setInt(1, user.getId());
-            rs = pr.executeQuery();
+            pr.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
-                rs.close();
                 pr.close();
             } catch (SQLException e) {
                 e.printStackTrace();

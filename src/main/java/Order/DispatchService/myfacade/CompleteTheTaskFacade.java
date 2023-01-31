@@ -1,7 +1,6 @@
 package Order.DispatchService.myfacade;
 
 import Order.DispatchService.*;
-import User.AccountService.User;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;

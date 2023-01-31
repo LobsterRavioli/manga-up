@@ -67,7 +67,7 @@
 
         <nav class="header__menu mobile-menu">
           <ul>
-            <li class="active"><a href="${pageContext.request.contextPath}/index.html">Home</a></li>
+            <li class="active"><a href="${pageContext.request.contextPath}/ProductsView/endUserHomepage.jsp">Home</a></li>
             <li><a href="${pageContext.request.contextPath}/catalogServlet?productsSupply=1">Catalogo</a></li>
           </ul>
         </nav>

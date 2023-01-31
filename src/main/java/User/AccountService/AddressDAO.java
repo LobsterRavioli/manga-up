@@ -108,7 +108,7 @@ public class AddressDAO {
     }
 
     public Address findById(int id) {
-        return find(SQL_FIND_BY_ADDRESS_ID);
+        return find(SQL_FIND_BY_ADDRESS_ID,id);
     }
 
     private static Address map(ResultSet resultSet) throws SQLException {

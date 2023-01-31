@@ -36,6 +36,7 @@ public class ToManageDAO {
         try
         {
             connection = ds.getConnection();
+            connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(CREATE);
             preparedStatement.setString(1, order.getUserName());
             preparedStatement.setLong(2, order.getOrderId());
@@ -45,6 +46,7 @@ public class ToManageDAO {
                 throw new DAOException("Creation of the order to be managed failed, no rows affected.");
 
             connection.commit();
+            connection.setAutoCommit(true);
         }
         finally
         {

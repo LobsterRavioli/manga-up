@@ -645,7 +645,6 @@ public class MangaDAO {
 
     public void updateQuantity(Manga manga){
         PreparedStatement pr = null;
-        ResultSet rs = null;
         Manga m = retrieveById(manga.getId());
         try(Connection conn = ds.getConnection()){
             pr = conn.prepareStatement("UPDATE Manga SET quantity=? WHERE id=?");
@@ -656,7 +655,6 @@ public class MangaDAO {
             e.printStackTrace();
         }finally {
             try{
-                rs.close();
                 pr.close();
             }catch (SQLException e){
                 e.printStackTrace();

@@ -33,6 +33,7 @@ public class OrderRowDAO {
         try
         {
             connection = ds.getConnection();
+            connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(CREATE);
             preparedStatement.setLong(1, row.getOrderID());
             preparedStatement.setLong(2, row.getUserId());
@@ -45,6 +46,8 @@ public class OrderRowDAO {
                 throw new DAOException("Creating order failed, no rows affected.");
 
             connection.commit();
+
+            connection.setAutoCommit(true);
         }
         finally
         {

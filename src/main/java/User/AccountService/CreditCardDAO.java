@@ -34,6 +34,7 @@ public class CreditCardDAO {
             "AND crd_expiration_date = ?4 " +
             "AND crd_cvc = ?5 ;";
     private static final String SQL_FIND_ALL_BY_ENDUSER = "SELECT * FROM credit_card WHERE usr_id = ?;";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM credit_card WHERE crd_id = ?;";
 
     public CreditCardDAO(DataSource ds){
         this.ds = ds;
@@ -90,7 +91,24 @@ public class CreditCardDAO {
     }
 
     public CreditCard findById(int id) {
-        return null;
+        return find(CreditCardDAO.SQL_FIND_BY_ID,id);
+    }
+
+    private CreditCard find(String sql, Object... values) throws DAOException {
+        CreditCard creditCard = null;
+
+        try (
+                Connection connection = ds.getConnection();
+                PreparedStatement statement = prepareStatement(connection, sql, false, values);
+                ResultSet resultSet = statement.executeQuery()
+        ) {
+            if (resultSet.next()) {
+                creditCard = map(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+        return creditCard;
     }
 
     public List findAssociatedCards(EndUser user) {
