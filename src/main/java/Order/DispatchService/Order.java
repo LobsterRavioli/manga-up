@@ -18,8 +18,9 @@ public class Order {
 
         this.endUserCard = new CreditCard();
         this.creditCardInfo = endUserCard.toString();
-    }
 
+        this.state = Order.TO_SENT;
+    }
 
     public Order(EndUser endUser, Address endUserAddress, CreditCard endUserCard) {
         this.endUser = endUser;
@@ -29,6 +30,8 @@ public class Order {
 
         this.endUserCard = endUserCard;
         this.creditCardInfo = endUserCard.toString();
+
+        this.state = Order.TO_SENT;
     }
 
     public Order(long id, Date orderDate, double totalPrice, EndUser endUser, CreditCard card)
@@ -95,7 +98,7 @@ public class Order {
         this.endUserCard = endUserCard;
     }
 
-    private static String formatInfo(String info)
+    public static String formatInfo(String info)
     {
         String[] splitData = info.split(",");
 
@@ -109,10 +112,12 @@ public class Order {
                 splitData[i] += ".";
             }
 
-            splitData[i] += "\n";
+            //splitData[i] += "\n";
         }
 
-        return String.join(",", splitData);
+        String tmp = String.join(",\n", splitData);
+        System.out.println(tmp);
+        return tmp;
     }
 
     public void setCreditCardEndUserInfo(String endUserCardInfo)
@@ -122,7 +127,7 @@ public class Order {
 
     public String getCreditCardEndUserInfo()
     {
-        return creditCardInfo == null ? Order.formatInfo(this.endUserCard.toString()) : creditCardInfo;
+        return creditCardInfo == null ? this.endUserCard.toString() : creditCardInfo;
     }
 
     public void setEndUserAddress(Address endUserAddress)
@@ -135,7 +140,7 @@ public class Order {
     }
 
     public String getAddressEndUserInfo() {
-        return addressInfo == null ? Order.formatInfo(this.endUserAddress.toString()) : addressInfo;
+        return addressInfo == null ? this.endUserAddress.toString() : addressInfo;
     }
 
 

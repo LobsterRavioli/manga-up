@@ -32,7 +32,7 @@ public class UserDAO {
 
     private static final String RETRIEVE_ALL_BEGINNERS = "SELECT * "+
             "FROM "+USER_TABLE+" AS U, "+USER_ROLE_TABLE+" AS R "+
-            "WHERE U.user_name = R.user_name AND R.role_name = \'ORDER_MANAGER\' AND U.name NOT IN " +
+            "WHERE U.user_name = R.user_name AND R.role_name = \'ORDER_MANAGER\' AND U.user_name NOT IN " +
             "(SELECT man_user_name FROM manages) ;";
 
     private static final String RETRIEVE_MANAGED_SORTED = "SELECT man_user_name, COUNT(*) AS result " +

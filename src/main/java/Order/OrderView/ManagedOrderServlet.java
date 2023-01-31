@@ -1,6 +1,7 @@
 package Order.OrderView;
 
 import Order.DispatchService.*;
+import Order.DispatchService.myfacade.CompleteTheTaskFacade;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,14 +24,21 @@ public class ManagedOrderServlet extends HttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+        CompleteTheTaskFacade completeTheTask = new CompleteTheTaskFacade(ds);
+
+        /*
         ManagedOrderDAO managedOrderDAO = new ManagedOrderDAO(ds);
         OrderDAO orderDAO = new OrderDAO(ds);
         ToManageDAO toManageDAO = new ToManageDAO(ds);
+        */
 
         String action = request.getParameter("action");
         String ord_id = request.getParameter("manage");
         String ord_date = request.getParameter("ord_date");
 
+        /*
+        * L'insieme di tutti i corrieri disponibili nel sistema (non abbiamo una tabella, quindi li istanzio)
+        */
         HashSet<String> couriers = new HashSet<>();
         couriers.add("BRT");
         couriers.add("DHL");
@@ -66,6 +74,7 @@ public class ManagedOrderServlet extends HttpServlet{
                     String courierName = request.getParameter("courier");
                     Date shipmentDate = Date.valueOf(request.getParameter("shipmentDate"));
 
+                    // Costruisco l'ordine gestito prelevando i dati che mi sono arrivati dal form
                     ManagedOrder managed = new ManagedOrder();
 
                     managed.setUserName(userName);
@@ -75,6 +84,7 @@ public class ManagedOrderServlet extends HttpServlet{
                     managed.setCourierName(courierName);
                     managed.setShipmentDate(shipmentDate);
 
+                    /*
                     managedOrderDAO.create(managed); // aggiungo l'ordine alla tabbella degli ordini gestiti
                     managed.setState(Order.SENT);
                     orderDAO.update(managed); // modifico lo stato dell'ordine
@@ -82,7 +92,13 @@ public class ManagedOrderServlet extends HttpServlet{
                     ToManage toManage = new ToManage();
                     toManage.setUserName(userName);
                     toManage.setOrderId(orderId);
+
                     toManageDAO.delete(toManage); // elimino l'ordine gestito dalla lista degli ordini da gestire
+                    */
+
+                    // invoco il facade che utilizza i DAO per mantenere la coerenza delle info nel DB
+                    completeTheTask.executeTask(managed);
+
                     response.sendRedirect(getServletContext().getContextPath()+"/OrderView/order_list.jsp");
                 }
             }

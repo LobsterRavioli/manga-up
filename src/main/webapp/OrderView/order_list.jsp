@@ -50,8 +50,8 @@
 				    <td><%=bean.getState() %></td>
 				    <td><%=bean.getTotalPrice() %></td>
 				    <td><%=bean.getEndUserID() %></td>
-				    <td><%=bean.getCreditCardEndUserInfo() %></td>
-				    <td><%=bean.getAddressEndUserInfo() %></td>
+				    <td><%=Order.formatInfo(bean.getCreditCardEndUserInfo()) %></td>
+				    <td><%=Order.formatInfo(bean.getAddressEndUserInfo()) %></td>
 				    <td><a href="${pageContext.request.contextPath}/manageServlet?manage=<%=bean.getId()%>&ord_date=<%=bean.getOrderDate()%>">Manage order</a></td>
 			    </tr>
 	    <%
@@ -60,7 +60,7 @@
 		    else {
 	    %>
 		    <tr>
-			    <td colspan="6">No orders available</td>
+			    <td colspan="8">No orders available</td>
 		    </tr>
 	    <%	} %>
     </table>

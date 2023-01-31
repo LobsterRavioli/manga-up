@@ -1,1 +1,1 @@
-<a href="#">Create Order</a>
+<a href="${pageContext.request.contextPath}/createOrderServlet">Create Order</a>

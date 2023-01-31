@@ -7,28 +7,23 @@ import User.AccountService.User;
 import User.AccountService.UserDAO;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 
-
+@WebServlet(name = "orderTask", value = "/orderTask")
 public class OrderTaskServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         // ********* RECUPERARE L'ORIDNE DA GESTIRE E ASSEGNARLO A orderToMan *********
-
-        Order orderToMan = null;
-
-        if(orderToMan == null) // ********* fittizio, giusto per provare *********
-        {
-            orderToMan = new Order();
-            orderToMan.setId(6);
-        }
+        ArrayList<Order> tasks = (ArrayList<Order>) request.getAttribute("taskOrders");
 
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
         UserDAO userDAO = new UserDAO(ds);
@@ -36,31 +31,45 @@ public class OrderTaskServlet extends HttpServlet {
 
         Collection<User> orderManagers;
 
-        try
-        {
-            orderManagers = userDAO.getAllBeginnerOrderManagers(); //RECUPERO I GESTORI DEGLI ORDINI CHE HANNO GESTITO 0 ORDINI
 
-            if(orderManagers != null)
+        if(tasks != null)
+            for(Order o : tasks)
             {
-                toManageDAO.create(new ToManage(orderManagers.iterator().next(), orderToMan)); // assegna un task a uno qualsiasi di loro (il plrimo)
-            }
-            else // RECUPERA I GESTORI CHE HANNO GESTITO ALMENO UN ORDINE E LI RESTITUISCE ORDINATI IN BASE AL NUMERO DI ORIDNI GESTITI
-            {
-                String userName = userDAO.getTargetOrderManagerUserName();
-                if(userName != null && !userName.equals(""))
+                Order orderToMan = o;
+
+                /*
+                if(orderToMan == null) // ********* fittizio, giusto per provare *********
                 {
-                    User user = new User();
-                    user.setUsername(userName);
+                    orderToMan = new Order();
+                    orderToMan.setId(6);
+                }
+                 */
+                try
+                {
+                    orderManagers = userDAO.getAllBeginnerOrderManagers(); //RECUPERO I GESTORI DEGLI ORDINI CHE HANNO GESTITO 0 ORDINI
 
-                    toManageDAO.create(new ToManage(user, orderToMan));
+                    if(orderManagers != null)
+                    {
+                        toManageDAO.create(new ToManage(orderManagers.iterator().next(), orderToMan)); // assegna un task a uno qualsiasi di loro (il plrimo)
+                    }
+                    else // RECUPERA I GESTORI CHE HANNO GESTITO ALMENO UN ORDINE E LI RESTITUISCE ORDINATI IN BASE AL NUMERO DI ORIDNI GESTITI
+                    {
+                        String userName = userDAO.getTargetOrderManagerUserName();
+                        if(userName != null && !userName.equals(""))
+                        {
+                            User user = new User();
+                            user.setUsername(userName);
+
+                            toManageDAO.create(new ToManage(user, orderToMan));
+                        }
+                    }
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                    request.setAttribute("error", e.getMessage());
                 }
             }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-            request.setAttribute("error", e.getMessage());
-        }
     }
 
     @Override

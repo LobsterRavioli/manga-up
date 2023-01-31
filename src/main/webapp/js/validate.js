@@ -53,5 +53,10 @@ validateInputs = () => {
 		result = true;
 	}
 
+	if((orderD <= deliveryD) && (orderD <= shipmentD) && (deliveryD <= shipmentD))
+	    result = true;
+	else
+	    result = false;
+
 	return result;
 };
