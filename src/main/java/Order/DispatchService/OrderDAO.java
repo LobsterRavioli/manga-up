@@ -38,6 +38,7 @@ public class OrderDAO
         try
         {
             connection = ds.getConnection();
+            connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setDate(1, order.getOrderDate());
             preparedStatement.setString(2, order.getState());
@@ -58,6 +59,7 @@ public class OrderDAO
                 }
             }
             connection.commit();
+            connection.setAutoCommit(true);
         }
         finally
         {

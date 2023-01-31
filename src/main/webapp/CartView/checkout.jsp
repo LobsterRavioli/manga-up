@@ -18,16 +18,16 @@
 
 <%@ include file="/header.jsp" %>
 
-    <form id="checkoutForm" method="post" action="/checkoutServlet">
+    <form id="checkoutForm" method="post" action="${pageContext.request.contextPath}/checkoutServlet">
         <c:forEach items="${addresses}" var="address">
-            <input type="radio" form="checkoutForm" id="address${address.id}" name="address" value="${address.id}">
+            <input type="radio" form="checkoutForm" id="address${address.id}" name="address" value="${address.id}" required>
             <label for="address${address.id}">Paese: ${address.country}, Città: ${address.city}, Via: ${address.street}, postal code: ${address.postalCode}, phoneNumber ${address.phoneNumber}, Regione: ${address.region} </label>
         </c:forEach>
 
 
         <c:forEach items="${cards}" var="card">
             <label for="carta${card.id}">Numero Carta: ${card.cardNumber}, Proprietario: ${card.cardHolder}, Data di scadenza: ${card.expirementDate} </label><br/>
-            <input type="radio" form="checkoutForm" id="carta${address.id}" name="card" value="${card.id}">
+            <input type="radio" form="checkoutForm" id="carta${address.id}" name="card" value="${card.id}" required>
         </c:forEach>
 
 

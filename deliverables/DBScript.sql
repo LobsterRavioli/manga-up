@@ -76,13 +76,14 @@ CREATE TABLE Orders
 
 CREATE TABLE Order_row
 (
+    id INT AUTO_INCREMENT NOT NULL,
     ord_id INT NOT NULL,
     user_id INT NOT NULL,
     manga_name VARCHAR(50) NOT NULL,
     manga_price DOUBLE NOT NULL,
     quantity int NOT NULL,
 
-    PRIMARY KEY (ord_id,user_id),
+    PRIMARY KEY (id,ord_id,user_id),
 
     FOREIGN KEY (ord_id) REFERENCES Orders(ord_id),
     FOREIGN KEY (user_id) REFERENCES end_user(usr_id)
