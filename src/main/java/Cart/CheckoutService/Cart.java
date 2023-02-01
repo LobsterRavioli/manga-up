@@ -18,7 +18,12 @@ public class Cart {
     }
 
     public void removeFromCart(Manga prod){
-        prodotti.remove(prod);
+        for (Map.Entry<Manga, Integer> set : prodotti.entrySet()) {
+            Manga inCart = set.getKey();
+            if (inCart.getId() == prod.getId()) {
+                prodotti.remove(inCart);
+            }
+        }
     }
 
     public HashMap<Manga,Integer> getProdotti() {

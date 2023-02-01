@@ -51,8 +51,7 @@ public class cartAddServlet extends HttpServlet {
             if (inCart.getId() == m.getId()) {
                 try {
                     dao.updateProduct(m, Integer.parseInt(quantity), endUser);
-                    pw=response.getWriter();
-                    pw.print("Quantità correttamente aggiornata nel carrello");
+                    c.updateProdotto(m,Integer.parseInt(quantity));
                     response.setStatus(200);
                     return;
                 }catch (Exception e){
@@ -72,8 +71,9 @@ public class cartAddServlet extends HttpServlet {
         try{
             m.setQuantity(Integer.parseInt(maxQ));
             dao.addProduct(m,Integer.parseInt(quantity),endUser);
-            pw=response.getWriter();
-            pw.print("Prodotto correttamente inserito nel carrello");
+            System.out.println("Aggiunta");
+            c.addToCart(m,Integer.parseInt(quantity));
+            s.setAttribute("cart",c);
             response.setStatus(200);
             return;
         }catch (Exception e){

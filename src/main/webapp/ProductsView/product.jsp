@@ -89,6 +89,8 @@
 
           <p style="margin-bottom: 2rem;"><%=m.getCollection().getName()%></p>
 
+          <p class="thin font-weight-bold">Unità Disponibili: <%=m.getQuantity()%></p>
+
           <form class="d-flex justify-content-left">
             <!-- Default input -->
             <input type="number" value="1" min="1" max="<%=m.getQuantity()%>" aria-label="Search" class="form-control" id="countProducts" style="width: 100px">
@@ -102,7 +104,12 @@
             <div class="" type="submit" style="font-size: 15px;background-color: darksalmon;color: darkred;">
               Errore con la quantità inserita precedentemente...Il prodotto è stato modificato
             </div>
+          <%}else if(request.getAttribute("success")!=null){%>
+              <div class="" type="submit" style="font-size: 15px;background-color: darksalmon;color: darkred;" >
+                Il prodotto corrente è stato correttamente inserito nel carrello con la quantità specificata
+              </div>
           <%}else{
+
           }%>
         </div>
 
@@ -202,7 +209,7 @@
     console.log(x);
     req.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
-        window.location.replace(window.location.href + "&success=tr");
+        window.location.replace(window.location.pathname + "?prodId="+encodeURIComponent('<%=m.getId()%>')+"&success=tr");
       } else if (this.readyState == 4 && (this.status == 201)) {
         window.location.replace("http://localhost:8080/${pageContext.request.contextPath}/ProfileView/login_end_user.jsp");
         return;
@@ -210,7 +217,7 @@
         window.location.replace("http://localhost:8080/${pageContext.request.contextPath}/catalogServlet?productsSupply=1");
         return;
       } else if (this.readyState == 4 && (this.status == 203)) {
-        window.location.replace(window.location.href + "&err=tr");
+        window.location.replace(window.location.pathname + "?prodId="+encodeURIComponent('<%=m.getId()%>')+"&err=tr");
         return;
       }
     }

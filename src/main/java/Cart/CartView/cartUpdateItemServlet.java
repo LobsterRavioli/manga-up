@@ -38,20 +38,20 @@ public class cartUpdateItemServlet extends HttpServlet {
         String prod_id = request.getParameter("id");
         String maxQ = request.getParameter("maxQ");
         Manga m =new Manga(Integer.parseInt(prod_id));
+        Cart ca = (Cart) s.getAttribute("cart");
         try{
             m.setQuantity(Integer.parseInt(maxQ));
             if(quantity.equals("0")){
                 dao.removeProduct(m,endUser);
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/cart.jsp");
-                rd.forward(request, response);
+                ca.removeFromCart(m);
+                s.setAttribute("cart",ca);
+                response.sendRedirect(request.getContextPath() + "/CartView/cart.jsp?agg=true");
                 return;
             }
             dao.updateProduct(m,Integer.parseInt(quantity),endUser);
-            Cart c = (Cart) request.getSession().getAttribute("cart");
-            c.updateProdotto(m,Integer.parseInt(quantity));
+            ca.updateProdotto(m,Integer.parseInt(quantity));
             if(aggiunta.equals("true")){
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/cart.jsp");
-                rd.forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/CartView/cart.jsp?agg=true");
                 return;
             }
             response.setStatus(200);

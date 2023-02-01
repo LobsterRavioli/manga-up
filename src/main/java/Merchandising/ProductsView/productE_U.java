@@ -25,6 +25,10 @@ public class productE_U extends HttpServlet {
         if(err!=null){
             request.setAttribute("error",true);
         }
+        String success = request.getParameter("success");
+        if(success!=null){
+            request.setAttribute("success",true);
+        }
         try{
             Manga m = daoM.retrieveById(Integer.parseInt(id));
             request.setAttribute("prod",m);

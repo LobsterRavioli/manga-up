@@ -48,6 +48,9 @@
 
 <body>
 <%@ include file="/header.jsp" %>
+<%if(request.getParameter("agg")!=null){%>
+  <p style="text-align: center;">Il carrello è stato aggiornato con successo</p>
+<%}%>
 <div class="cart_section">
   <div class="container-fluid" id="container-fluid">
     <div class="row">

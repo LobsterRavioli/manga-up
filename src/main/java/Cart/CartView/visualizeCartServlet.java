@@ -36,7 +36,7 @@ public class visualizeCartServlet extends HttpServlet {
         }catch (Exception e){
             request.getSession().setAttribute("cart",new Cart(new HashMap<Manga,Integer>()));
         }
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/cart.jsp");
-        rd.forward(request, response);
+        response.sendRedirect(request.getContextPath()+"/CartView/cart.jsp");
+        return;
     }
 }

@@ -129,7 +129,6 @@ public class CartDAO {
 
 
         PreparedStatement pr = null;
-        ResultSet rs = null;
         try(Connection conn = ds.getConnection()){
             pr = conn.prepareStatement("INSERT INTO CART (user_id,manga_id,quantity) VALUES (?,?,?)");
 
@@ -141,7 +140,6 @@ public class CartDAO {
             e.printStackTrace();
         }finally {
             try{
-                rs.close();
                 pr.close();
             }catch (SQLException e){
                 e.printStackTrace();
