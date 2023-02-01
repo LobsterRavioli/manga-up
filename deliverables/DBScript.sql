@@ -106,10 +106,10 @@ CREATE TABLE manages
     man_user_name VARCHAR(20) NOT NULL,
     man_order_id INT NOT NULL,
     PRIMARY KEY(man_user_name, man_order_id),
-    man_delivery_date DATE NOT NULL,
+    man_shipment_date DATE NOT NULL,
     man_tracking_number VARCHAR(20) UNIQUE NOT NULL,
     man_courier VARCHAR(30) NOT NULL,
-    man_shipment_date DATE NOT NULL,
+    man_delivery_date DATE NOT NULL,
 
     FOREIGN KEY(man_order_id) REFERENCES Orders(ord_id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY(man_user_name) REFERENCES users(user_name) ON UPDATE CASCADE ON DELETE CASCADE

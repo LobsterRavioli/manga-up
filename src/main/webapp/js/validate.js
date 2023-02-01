@@ -1,7 +1,7 @@
 const form = document.getElementById('form');
 const oDate = document.getElementById('orderDate');
-const dDate = document.getElementById('deliveryDate');
 const sDate = document.getElementById('shipmentDate');
+const dDate = document.getElementById('deliveryDate');
 
 function checkForm(form)
 {
@@ -32,19 +32,10 @@ validateInputs = () => {
 	var result = false;
 
 	const orderD = Date.parse(oDate.value);
-	const deliveryD = new Date(dDate.value);
 	const shipmentD = new Date(sDate.value);
+	const deliveryD = new Date(dDate.value);
 	
-	if(deliveryD < orderD) {
-		setError(deliveryDate, 'The delivery date is incorrect');
-		result = false;
-	}
-	else {
-		setSuccess(deliveryDate);
-		result = true;
-	}
-	
-	if(shipmentD < orderD || shipmentD < deliveryD) {
+	if(shipmentD < orderD) {
 		setError(shipmentDate, 'The shipment date is incorrect');
 		result = false;
 	}
@@ -52,11 +43,22 @@ validateInputs = () => {
 		setSuccess(shipmentDate);
 		result = true;
 	}
+	
+	if(deliveryD < orderD || deliveryD < shipmentD) {
+		setError(deliveryDate, 'The delivery date is incorrect');
+		result = false;
+	}
+	else {
+		setSuccess(deliveryDate);
+		result = true;
+	}
 
-	if((orderD <= deliveryD) && (orderD <= shipmentD) && (deliveryD <= shipmentD))
+	if((orderD <= shipmentD) && (orderD <= deliveryD) && (shipmentD <= deliveryD)) {
 	    result = true;
-	else
+	}
+	else {
 	    result = false;
+	}
 
 	return result;
 };

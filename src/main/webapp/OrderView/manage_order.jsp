@@ -43,8 +43,8 @@
 		<input type="hidden" id="orderDate" name="orderDate" value="<%=ord_date %>">
 
         <div class="input-control">
-        		    <label for="deliveryDate">Delivery date:</label><br>
-        		    <input name="deliveryDate" type="date" id="deliveryDate" required><br>
+        		    <label for="shipmentDate">Shipment date:</label><br>
+        		    <input name="shipmentDate" type="date" id="shipmentDate" required><br>
         		    <div class="error"></div>
         		</div>
 
@@ -71,8 +71,8 @@
                 </div>
 
                 <div class="input-control">
-        		    <label for="shipmentDate">Shipment date:</label><br>
-                    <input name="shipmentDate" type="date" id="shipmentDate" required><br>
+        		    <label for="deliveryDate">Delivery date:</label><br>
+                    <input name="deliveryDate" type="date" id="deliveryDate" required><br>
                     <div class="error"></div>
                 </div>
 
