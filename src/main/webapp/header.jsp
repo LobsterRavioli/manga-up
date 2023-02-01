@@ -103,10 +103,13 @@
                 totalSize = totalSize + (set.getValue());
               }%>
                 <a href="${pageContext.request.contextPath}/visualizeCartServlet" style="right: -2%;bottom: -10%;">
-                  <img src="${pageContext.request.contextPath}/images/cart.png" alt="">
-                  <span id="count" ><%=totalSize%></span>
+                  <img src="${pageContext.request.contextPath}/images/cart.png" alt="" style="width: 17px;">
+                  <p id="count" style="position: absolute;bottom: 1px;font-size: 10px;left: 5px;"><%=totalSize%></p>
                 </a>
                 <div class="price" style="left: 2%;"><%=String.format("%.2f", totalPrice).replace(',', '.')%></div>
+                <a href="${pageContext.request.contextPath}/ProfileView/dashboard_end_user.jsp">
+                  <img src="${pageContext.request.contextPath}/images/login.png" style="max-width: 47px;position: relative;bottom: 14%;padding-left: 9px;" alt="">
+                </a>
           <%}%>
         </div>
       </div>

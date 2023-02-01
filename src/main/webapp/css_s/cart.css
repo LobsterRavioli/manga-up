@@ -6,6 +6,10 @@
     text-shadow: #ffffff 0 0 1px;
 }
 
+#count{
+    bottom: -6px !important;
+}
+
 .inc_Dec{
     display:inline;
     width: 12px;

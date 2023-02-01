@@ -202,13 +202,12 @@
     console.log(x);
     req.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
-        console.log(this.status);
-        console.log(this.responseText);
+        window.location.replace(window.location.href + "&success=tr");
       } else if (this.readyState == 4 && (this.status == 201)) {
-        window.location.replace("http://localhost:8080/manga_up_war/ProfileView/login_end_user.jsp");
+        window.location.replace("http://localhost:8080/${pageContext.request.contextPath}/ProfileView/login_end_user.jsp");
         return;
       } else if (this.readyState == 4 && (this.status == 202)) {
-        window.location.replace("http://localhost:8080/manga_up_war/catalogServlet?productsSupply=1");
+        window.location.replace("http://localhost:8080/${pageContext.request.contextPath}/catalogServlet?productsSupply=1");
         return;
       } else if (this.readyState == 4 && (this.status == 203)) {
         window.location.replace(window.location.href + "&err=tr");

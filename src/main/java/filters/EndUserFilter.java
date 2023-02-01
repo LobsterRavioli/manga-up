@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(filterName = "FilterLogin", urlPatterns = { "/ProfileView/dashboard_carte_di_credito.jsp", "/ProfileView/dashboard_utente.jsp",
+@WebFilter(filterName = "FilterLogin", urlPatterns = { "/ProfileView/dashboard_carte_di_credito.jsp", "/ProfileView/dashboard_end_user.jsp",
         "/ProfileView/dashboard_indirizzi.jsp", "/ProfileView/creazione_carta_di_credito.jsp", "/ProfileView/creazione_indirizzo.jsp"
         ,"/AddressCreateServlet","/CreditCardCreateServlet","/CreditCardDashboardServlet","/AddressDeleteServlet","/CreditCardDeleteServlet"/*,"/cartAddServlet"*/,"/cartRemoveServlet"/*,"/cartUpdateItemServlet"*//*,"/visualizeCartServlet"*/,"/CartView/cart.jsp"})
 public class EndUserFilter implements Filter {
