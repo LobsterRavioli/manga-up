@@ -38,7 +38,7 @@ public class AddressCreateServlet extends HttpServlet {
 
         address.setEndUser(user);
         dao.create(address);
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/AddressDashBoardServlet"));
+        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/AddressDashboardServlet"));
             dispatcher.forward(request, response);
     }
 }
