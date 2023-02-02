@@ -106,6 +106,11 @@
                                             </div>
 
                                             <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                <p class="info">${card.expirementDate}</p>
+                                            </div>
+
+
+                                            <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
                                                 <p class="info">${card.cardHolder}</p>
                                             </div>
 
@@ -114,10 +119,6 @@
                                                     <input type="hidden" name="credit_card_id" value="${card.id}"/>
                                                     <input type="submit" value="elimina" name="act" id="box_button" class="accept">
                                                 </form>
-                                            </div>
-
-                                            <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                                <p class="info"></p>
                                             </div>
 
                                             <div class="col-md-2 text-center d-flex justify-content-center align-items-center">

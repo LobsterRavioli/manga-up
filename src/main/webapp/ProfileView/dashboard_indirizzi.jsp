@@ -61,7 +61,7 @@
 
                                         <div class="col-md-2">
                                             <img src="${pageContext.request.contextPath}/images/list.png"
-                                                 class="img-fluid" alt="name tree" width="50" height="50">
+                                                 class="img-fluid" alt="name tree" width="40" height="40">
                                         </div>
 
                                         <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
