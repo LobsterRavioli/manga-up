@@ -12,6 +12,7 @@
     <title>Inserimento indirizzo di spedizione</title>
 </head>
 <body>
+<%@ include file="/header.jsp" %>
     <form action="${pageContext.request.contextPath}/AddressCreateServlet" method="POST">
         <div class="container">
             <h1>Crea il tuo indirizzo</h1>

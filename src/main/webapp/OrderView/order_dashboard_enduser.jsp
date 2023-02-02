@@ -12,7 +12,7 @@
 <html>
 <head>
   <meta charset="ISO-8859-1">
-  <title>Arbor Vitae</title>
+  <title>Dashboard ordine</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css_s/ordini.css">

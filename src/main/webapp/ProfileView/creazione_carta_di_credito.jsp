@@ -12,6 +12,7 @@
     <title>Inserimento carta di credito</title>
 </head>
 <body>
+<%@ include file="/header.jsp" %>
     <form action="${pageContext.request.contextPath}/CreditCardCreateServlet" method="POST">
         <div class="container">
 
