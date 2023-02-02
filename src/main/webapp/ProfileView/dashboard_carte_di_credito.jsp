@@ -41,7 +41,7 @@
                 <div class="col-lg-8 col-xl-10">
                     <div class="card" style="border-radius: 10px;">
                         <div class="card-header px-4 py-5">
-                            <h5 class="text-muted mb-0">I miei ordini</h5>
+                            <h5 class="text-muted mb-0">Le mie carte</h5>
                         </div>
 
 
@@ -53,7 +53,7 @@
 
                         <div class="card-body p-4">
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <p class="lead fw-normal mb-0" style="color: #46dd2c;">Ricevute</p>
+                                <p class="lead fw-normal mb-0" style="color: #46dd2c;">Carte</p>
                             </div>
 
                             <div class="card shadow border mb-4">

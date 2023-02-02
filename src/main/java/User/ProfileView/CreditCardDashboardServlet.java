@@ -1,6 +1,5 @@
 package User.ProfileView;
 
-import User.AccountService.ConcreteCardBuilder;
 import User.AccountService.CreditCard;
 import User.AccountService.CreditCardDAO;
 import User.AccountService.EndUser;

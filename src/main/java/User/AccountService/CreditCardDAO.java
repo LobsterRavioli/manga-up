@@ -19,8 +19,8 @@ import static utils.DAOUtil.prepareStatement;
 
 public class CreditCardDAO {
 
-    private static final String SQL_EXIST_CVC =
-            "SELECT cvc FROM credit_card WHERE crd_cvc = ?";
+    private static final String SQL_EXIST_CREDIT_CARD_NUMBER =
+            "SELECT * FROM credit_card WHERE crd_number = ?";
 
     DataSource ds;
     private static final String SQL_INSERT = "INSERT INTO credit_card (crd_cvc, crd_number, usr_id, crd_holder, crd_expiration_date) VALUES (?, ?, ?, ? ,?)";
@@ -143,17 +143,13 @@ public class CreditCardDAO {
         return card;
     }
 
-/*
-    @Override
-    public boolean existsCvc(String cvc) {
-        Object[] values = {
-                cvc
-        };
+
+    public boolean existsCreditCardNumber(String creditCardNumber) {
         boolean exist;
 
         try (
                 Connection connection = ds.getConnection();
-                PreparedStatement statement = prepareStatement(connection, SQL_EXIST_CVC, false, values);
+                PreparedStatement statement = prepareStatement(connection, SQL_EXIST_CREDIT_CARD_NUMBER, false, creditCardNumber);
                 ResultSet resultSet = statement.executeQuery()
         ) {
             exist = resultSet.next();
@@ -166,30 +162,4 @@ public class CreditCardDAO {
     }
 
 
-
-
-    @Override
-    public Collection findSingleByEnduser(CreditCard userCard) {
-        List<CreditCard> creditCards = new ArrayList<>();
-        Object[] values = {
-                userCard.getEndUser().getId(),
-                userCard.getCardNumber(),
-                userCard.getCardHolder(),
-                userCard.getExpirementDate()
-        };
-        try (
-                Connection connection = ds.getConnection();
-                PreparedStatement statement = prepareStatement(connection, SQL_FIND_SINGLE_BY_ENDUSER, false, values);
-                ResultSet resultSet = statement.executeQuery()
-        ) {
-            while (resultSet.next()) {
-                creditCards.add(map(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        }
-
-        return creditCards;
-    }
- */
 }

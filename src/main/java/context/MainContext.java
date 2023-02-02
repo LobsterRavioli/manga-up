@@ -3,8 +3,8 @@ package context;
 
 import Order.DispatchService.OrderSubmissionFacade;
 import Order.DispatchService.OrderSubmissionFacadeImp;
-import User.AccountService.ManagerSelectionFacade;
-import User.AccountService.ManagerSelectionFacadeImp;
+import User.AccountService.UserFacade;
+import User.AccountService.UserFacadeImp;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -40,7 +40,7 @@ public class MainContext implements ServletContextListener {
 			System.out.println(e.getMessage());
 		}
 		context.setAttribute(OrderSubmissionFacade.ORDER_SUBMISSION_FACADE,new OrderSubmissionFacadeImp(ds));
-		context.setAttribute(ManagerSelectionFacade.MANAGER_SELECTION_FACADE,new ManagerSelectionFacadeImp(ds));
+		context.setAttribute(UserFacade.USER_FACADE,new UserFacadeImp(ds));
 		context.setAttribute("DataSource", ds);
 	}
 

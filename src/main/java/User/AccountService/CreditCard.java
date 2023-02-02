@@ -19,7 +19,7 @@ public class CreditCard {
             EndUser oldEndUser = endUser;
             endUser = newEndUser;
             if(newEndUser != null)
-                newEndUser.addCards(this);
+                newEndUser.addCard(this);
             if(oldEndUser != null)
                 oldEndUser.removeCards(this);
         }

@@ -1,6 +1,7 @@
 package Order.DispatchService;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +23,8 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
     private UserDAO uD;
     private ToManageDAO assignDAO;
 
+    private ManagedOrderDAO managedOrderDAO;
+
     private OrderRowDAO orderRowDAO;
     public OrderSubmissionFacadeImp(DataSource ds){
         this.ds = ds;
@@ -29,9 +32,9 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
         this.orderRowDAO = new OrderRowDAO(ds);
         this.uD = new UserDAO(ds);
         this.assignDAO = new ToManageDAO(ds);
+        this.managedOrderDAO = new ManagedOrderDAO(ds);
 
     }
-
 
 
     public void createOrder(Order order, ArrayList<Manga> products,User selectedManager) throws Exception{
@@ -43,6 +46,18 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
              orderRowDAO.create(orderRow);
         }
             assignDAO.create(new ToManage(selectedManager,order));
+    }
+
+    public void executeTask(ManagedOrder managedOrder) throws SQLException
+    {
+        managedOrderDAO.create(managedOrder); // aggiungo l'ordine alla tabbella degli ordini gestiti
+        managedOrder.setState(Order.SENT);
+        orderDAO.update(managedOrder); // modifico lo stato dell'ordine nella tabella Orders
+        ToManage toManage = new ToManage();
+        toManage.setUserName(managedOrder.getUserName());
+        toManage.setOrderId(managedOrder.getId());
+
+        assignDAO.delete(toManage); // elimino l'ordine gestito dalla lista degli ordini da gestire (task completato)
     }
 
 }

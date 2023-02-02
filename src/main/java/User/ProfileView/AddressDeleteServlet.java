@@ -2,7 +2,7 @@ package User.ProfileView;
 
 import User.AccountService.Address;
 import User.AccountService.AddressDAO;
-import User.AccountService.ConcreteAddressBuilder;
+
 import User.AccountService.EndUser;
 
 import javax.servlet.*;
@@ -25,7 +25,9 @@ public class AddressDeleteServlet extends HttpServlet {
         AddressDAO dao = new AddressDAO(ds);
         response.setContentType("text/html");
         EndUser user = (EndUser) request.getSession().getAttribute("user");
-        Address address = new ConcreteAddressBuilder().setId(Integer.valueOf(request.getParameter("address_id"))).setEndUser(user).createAddress();
+        Address address = new Address();
+        address.setId(Integer.parseInt(request.getParameter("address_id")));
+        address.setEndUser(user);
         dao.delete(address);
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/AddressDashboardServlet"));
         dispatcher.forward(request, response);

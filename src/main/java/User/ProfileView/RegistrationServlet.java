@@ -1,5 +1,8 @@
 package User.ProfileView;
 
+import Cart.CheckoutService.Cart;
+import Cart.CheckoutService.CartDAO;
+import Merchandising.MerchandiseService.Manga;
 import User.AccountService.*;
 import utils.Utils;
 
@@ -8,11 +11,13 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.HashMap;
 
 @WebServlet(name = "RegistrationServlet", value = "/RegistrationServlet")
 public class RegistrationServlet extends HttpServlet {
 
     private static final String EMAIL_ERROR = "Email già in uso";
+    private static final String CARD_ERROR = "Numero carta di credito già in uso";
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -20,55 +25,68 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String errorMessage = "";
+        boolean error = false;
 
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
         EndUserDAO daoEndUser = new EndUserDAO(ds);
         AddressDAO daoAddress = new AddressDAO(ds);
+        CartDAO daoCart = new CartDAO(ds);
         CreditCardDAO daoCreditCard = new CreditCardDAO(ds);
-        System.out.println(request.getParameter("surname"));
 
-        EndUser user = new ConcreteEndUserBuilder()
-                .setName(request.getParameter("name"))
-                .setSurname(request.getParameter("surname"))
-                .setEmail(request.getParameter("email"))
-                .setPhoneNumber(request.getParameter("phone_number"))
-                .setPassword(request.getParameter("password"))
-                .setBirthdate(Utils.parseDate(request.getParameter("birth_date")))
-                .createEndUser();
+        EndUser user = new EndUser();
+        user.setName(request.getParameter("name"));
+        user.setSurname(request.getParameter("surname"));
+        user.setEmail(request.getParameter("email"));
+        user.setPhoneNumber(request.getParameter("phone_number"));
+        user.setPassword(request.getParameter("password"));
+        user.setBirthdate(Utils.parseDate(request.getParameter("birth_date")));
+
+        Address address = new Address();
+        address.setStreet(request.getParameter("street"));
+        address.setCity(request.getParameter("city"));
+        address.setCountry(request.getParameter("country"));
+        address.setPostalCode(request.getParameter("postal_code"));
+        address.setRegion(request.getParameter("region"));
+        address.setPhoneNumber(request.getParameter("phone_number_address"));
+
+
+        CreditCard card = new CreditCard();
+        card.setCardNumber(request.getParameter("card_number"));
+        card.setCardHolder(request.getParameter("card_holder"));
+        card.setExpirementDate(Utils.parseDate(request.getParameter("expirement_date")));
+        card.setCvv(request.getParameter("cvc"));
 
         if(daoEndUser.existEmail(user.getEmail())){
+            error = true;
+            errorMessage += EMAIL_ERROR + " ";
+        }
+
+        if(daoCreditCard.existsCreditCardNumber(card.getCardNumber())){
+            error = true;
+            errorMessage += CARD_ERROR;
+        }
+
+        if(error){
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProfileView/registrazione_utente.jsp"));
-            request.setAttribute("error_message", EMAIL_ERROR);
+            request.setAttribute("error_message", errorMessage);
             dispatcher.forward(request, response);
             return;
         }
+        user.addAddress(address);
+        user.addCard(card);
+        UserFacade facadeUser = (UserFacade) getServletContext().getAttribute(UserFacade.USER_FACADE);
+        try {
+            facadeUser.registration(user);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-        Address address = new ConcreteAddressBuilder()
-                .setStreet(request.getParameter("street"))
-                .setCity(request.getParameter("city"))
-                .setCountry(request.getParameter("country"))
-                .setPostalCode(request.getParameter("postal_code"))
-                .setRegion(request.getParameter("region"))
-                .setPhoneNumber(request.getParameter("phone_number_address"))
-                .createAddress();
-
-        CreditCard card = new ConcreteCardBuilder()
-                .setCardNumber(request.getParameter("card_number"))
-                .setCardHolder(request.getParameter("card_holder"))
-                .setExpirationDate(Utils.parseDate(request.getParameter("expirement_date")))
-                .setCvv(request.getParameter("cvc"))
-                .createCreditCard();
-
-
-
-        address.setEndUser(user);
-        card.setEndUser(user);
-        daoEndUser.create(user);
-        daoAddress.create(address);
-        daoCreditCard.create(card);
+        request.getSession().setAttribute("cart",new Cart(new HashMap<Manga,Integer>()));
 
         request.getSession().setAttribute("user", user);
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/MerchandisingView/homepage.jsp"));
+        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProductsView/endUserHomepage.jsp"));
         dispatcher.forward(request, response);
+
     }
 }

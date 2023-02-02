@@ -2,7 +2,6 @@ package User.ProfileView;
 
 import User.AccountService.Address;
 import User.AccountService.AddressDAO;
-import User.AccountService.ConcreteAddressBuilder;
 import User.AccountService.EndUser;
 
 
@@ -27,14 +26,15 @@ public class AddressCreateServlet extends HttpServlet {
         AddressDAO dao = new AddressDAO(ds);
         response.setContentType("text/html");
         EndUser user = (EndUser) request.getSession().getAttribute("user");
-        Address address = new ConcreteAddressBuilder()
-                .setStreet(request.getParameter("street"))
-                .setCity(request.getParameter("city"))
-                .setCountry(request.getParameter("country"))
-                .setPostalCode(request.getParameter("postal_code"))
-                .setRegion(request.getParameter("region"))
-                .setPhoneNumber(request.getParameter("phone_number"))
-                .createAddress();
+
+        Address address = new Address();
+        address.setStreet(request.getParameter("street"));
+        address.setCity(request.getParameter("city"));
+        address.setCountry(request.getParameter("country"));
+        address.setPostalCode(request.getParameter("postal_code"));
+        address.setRegion(request.getParameter("region"));
+        address.setPhoneNumber(request.getParameter("phone_number"));
+
 
         address.setEndUser(user);
         dao.create(address);

@@ -127,7 +127,7 @@ public class EndUser{
     }
 
 
-    public void addCards(CreditCard card){
+    public void addCard(CreditCard card){
         getCards().add(card);
         card.setEndUser(this);
     }

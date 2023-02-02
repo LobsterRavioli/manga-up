@@ -112,6 +112,20 @@ public class AddressDAO {
     }
 
     private static Address map(ResultSet resultSet) throws SQLException {
+        Address address = new Address();
+        address.setId(resultSet.getInt("addr_id"));
+        address.setStreet(resultSet.getString("addr_street"));
+        address.setCountry(resultSet.getString("addr_country"));
+        address.setCity(resultSet.getString("addr_city"));
+        address.setPostalCode(resultSet.getString("addr_postal_code"));
+        address.setPhoneNumber(resultSet.getString("addr_phone_number"));
+        address.setRegion(resultSet.getString("addr_region"));
+        EndUser user = new EndUser();
+        user.setId(resultSet.getInt("usr_id"));
+        address.setEndUser(user);
+        return address;
+
+        /*
         Address address = new ConcreteAddressBuilder().setStreet(resultSet.getString("addr_street"))
                 .setCountry(resultSet.getString("addr_country"))
                 .setCity(resultSet.getString("addr_city"))
@@ -123,6 +137,7 @@ public class AddressDAO {
                 .setId(resultSet.getInt("addr_id"))
                 .createAddress();
         return address;
+        */
     }
 
 

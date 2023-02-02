@@ -8,13 +8,13 @@ function check_registration_format(){
 
     let card_number_format = /^[0-9]{13,16}$/;
     let cvc_format = /^[0-9]{3,5}$/;
-    let card_holder_format = /^[a-zA-Z]{1,40}$/;
+    let card_holder_format = /^[a-zA-Z\-\s]{1,40}$/;
     let expirement_date_format = /^\d{4}-\d{2}-\d{2}$/;
 
     let country_format = /^[a-zA-Z]{1,56}$/;
     let region_format = /^[a-zA-Z]{1,30}$/;
     let city_format = /^[a-zA-Z]{1,163}$/;
-    let street_format = /^[a-zA-Z]{1,44}$/;
+    let street_format = /^[a-zA-Z0-9\-\s]{1,40}$/;
     let phone_number_format = /^[0-9]{13,15}$/;
     let postal_code_format = /^[0-9]{5}$/;
 

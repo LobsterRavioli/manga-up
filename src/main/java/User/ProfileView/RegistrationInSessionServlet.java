@@ -1,6 +1,5 @@
 package User.ProfileView;
 
-import User.AccountService.ConcreteEndUserBuilder;
 import User.AccountService.EndUser;
 import User.AccountService.EndUserDAO;
 import javax.servlet.RequestDispatcher;
@@ -27,12 +26,9 @@ public class RegistrationInSessionServlet extends HttpServlet {
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
         EndUserDAO dao = new EndUserDAO(ds);
         response.setContentType("text/html");
-        EndUser user = new ConcreteEndUserBuilder()
-                .setEmail(request.getParameter("username"))
-                .setPassword(request.getParameter("password"))
-                .createEndUser();
-
-
+        EndUser user = new EndUser();
+        user.setEmail(request.getParameter("username"));
+        user.setPassword(request.getParameter("password"));
 
         HttpSession session = request.getSession();
         session.setAttribute("user", user);

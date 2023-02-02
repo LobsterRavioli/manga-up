@@ -128,7 +128,7 @@ public class EndUserDAO {
      * @throws SQLException If something fails at database level.
      */
     private static EndUser map(ResultSet resultSet) throws SQLException {
-        EndUser user = new ConcreteEndUserBuilder().createEndUser();
+        EndUser user = new EndUser();
         user.setId(resultSet.getInt("usr_id"));
         user.setEmail(resultSet.getString("usr_email"));
         user.setPassword(resultSet.getString("usr_password"));
@@ -137,6 +137,7 @@ public class EndUserDAO {
         user.setSurname(resultSet.getString("usr_surname"));
         user.setBirthdate(resultSet.getDate("usr_birth_date"));
         return user;
+        
     }
 
     /*

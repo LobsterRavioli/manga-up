@@ -37,7 +37,6 @@ public class CompleteTheTaskFacade {
         managedOrderDAO.create(managedOrder); // aggiungo l'ordine alla tabbella degli ordini gestiti
         managedOrder.setState(Order.SENT);
         orderDAO.update(managedOrder); // modifico lo stato dell'ordine nella tabella Orders
-
         ToManage toManage = new ToManage();
         toManage.setUserName(managedOrder.getUserName());
         toManage.setOrderId(managedOrder.getId());

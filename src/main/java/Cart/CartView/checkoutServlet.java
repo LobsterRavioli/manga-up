@@ -7,7 +7,6 @@ import Merchandising.MerchandiseService.Manga;
 import Merchandising.MerchandiseService.MangaDAO;
 import Order.DispatchService.Order;
 import Order.DispatchService.OrderSubmissionFacade;
-import Order.DispatchService.OrderSubmissionFacadeImp;
 import User.AccountService.*;
 
 import javax.servlet.RequestDispatcher;
@@ -72,7 +71,7 @@ public class checkoutServlet extends HttpServlet {
             Order order = new Order(endUser, addressEndUser, userCard);
 
             OrderSubmissionFacade facade = (OrderSubmissionFacade) getServletContext().getAttribute(OrderSubmissionFacade.ORDER_SUBMISSION_FACADE);
-            ManagerSelectionFacade facadeUser = (ManagerSelectionFacade) getServletContext().getAttribute(ManagerSelectionFacade.MANAGER_SELECTION_FACADE);
+            UserFacade facadeUser = (UserFacade) getServletContext().getAttribute(UserFacade.USER_FACADE);
 
             facade.createOrder(order, new ArrayList<Manga>(map.keySet()),facadeUser.managerEngagement());
 

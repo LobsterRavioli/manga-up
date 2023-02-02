@@ -24,7 +24,7 @@ public class ManagedOrderServlet extends HttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-        CompleteTheTaskFacade completeTheTask = new CompleteTheTaskFacade(ds);
+        OrderSubmissionFacade orderSubmissionFacade = (OrderSubmissionFacade) this.getServletContext().getAttribute(OrderSubmissionFacade.ORDER_SUBMISSION_FACADE);
 
         /*
         ManagedOrderDAO managedOrderDAO = new ManagedOrderDAO(ds);
@@ -97,7 +97,7 @@ public class ManagedOrderServlet extends HttpServlet{
                     */
 
                     // invoco il facade che utilizza i DAO per mantenere la coerenza delle info nel DB
-                    completeTheTask.executeTask(managed);
+                    orderSubmissionFacade.executeTask(managed);
 
                     response.sendRedirect(getServletContext().getContextPath()+"/OrderView/order_list.jsp");
                 }
