@@ -1,7 +1,10 @@
 package User.AccountService;
 
 import javax.sql.DataSource;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 public class UserFacadeImp implements UserFacade {
 
@@ -21,12 +24,31 @@ public class UserFacadeImp implements UserFacade {
     }
 
 
+    private static User getRandomOrderManager(Collection<User> orderManagers)
+    {
+        Random random = new Random();
+
+        int randomNumber = random.nextInt(orderManagers.size());
+        User randomManager = null;
+
+        Iterator<User> iterator = orderManagers.iterator();
+
+        for(int currentIndex = 0; iterator.hasNext(); currentIndex++)
+        {
+            randomManager = iterator.next();
+
+            if(currentIndex == randomNumber)
+                break;
+        }
+        return randomManager;
+    }
+
     public User managerEngagement(){
         try {
             User selectedManager;
             List<User> candidatesManagers = (List<User>) userDAO.getAllBeginnerOrderManagers();
             if (candidatesManagers != null) {
-                selectedManager = candidatesManagers.get(0);
+                selectedManager = getRandomOrderManager(candidatesManagers);
                 return selectedManager;
             } else {
                 String targetUserUsername = userDAO.getTargetOrderManagerUserName();
@@ -46,5 +68,4 @@ public class UserFacadeImp implements UserFacade {
         addressDAO.create(userAddress);
         creditCardDAO.create(userCard);
     }
-
 }
