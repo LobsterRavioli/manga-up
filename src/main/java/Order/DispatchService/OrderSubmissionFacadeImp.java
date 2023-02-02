@@ -35,7 +35,6 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
 
 
     public void createOrder(Order order, ArrayList<Manga> products,User selectedManager) throws Exception{
-
         OrderRow orderRow;
         order.setOrderDate(Date.valueOf(LocalDate.now()));
         orderDAO.create(order);

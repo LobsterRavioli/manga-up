@@ -1,6 +1,7 @@
 package Order.OrderView;
 
 
+import Order.DispatchService.Order;
 import Order.DispatchService.OrderDAO;
 import User.AccountService.EndUser;
 
@@ -24,18 +25,19 @@ public class OrderListServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
-
         try
         {
             EndUser user = (EndUser) request.getSession().getAttribute("user");
             DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
             OrderDAO dao = new OrderDAO(ds);
-            Collection order = dao.retrieveOrdersAssociatedToUsers(user);
-            request.setAttribute("order", order);
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProductsView/endUserHomepage.jsp"));
-            dispatcher.forward(request, response);
+            Collection<Order>order = dao.retrieveOrdersAssociatedToUsers(user);
+            request.setAttribute("orders", order);
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/OrderView/order_dashboard_enduser.jsp"));
+            for (Order o : order) {
+                System.out.println(o);
+            }
 
+            dispatcher.forward(request, response);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

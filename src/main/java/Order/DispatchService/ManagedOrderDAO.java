@@ -26,6 +26,7 @@ public class ManagedOrderDAO {
     private static final String UPDATE = "UPDATE "+MANAGED_ORDER_TABLE+" SET man_tracking_number = ? WHERE man_order_id = ? AND man_user_name = ? ;";
 
     private static final String RETRIEVE = "SELECT * FROM "+MANAGED_ORDER_TABLE+" WHERE man_order_id = ? AND man_user_name = ? ;";
+    private static final String RETRIEVE_BY_ORDER = "SELECT * FROM "+MANAGED_ORDER_TABLE+" WHERE man_order_id = ?;";
 
     public void create(ManagedOrder managedOrder) throws SQLException
     {
@@ -105,6 +106,48 @@ public class ManagedOrderDAO {
         return managedOrderBean;
     }
 
+
+    public ManagedOrder retrieveByOrder(int ordId) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        ManagedOrder managedOrderBean = new ManagedOrder();
+
+        try
+        {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(RETRIEVE_BY_ORDER);
+            preparedStatement.setLong(1, ordId);
+
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next())
+            {
+                managedOrderBean.setUserName(rs.getString("man_user_name"));
+                managedOrderBean.setId(rs.getLong("man_order_id"));
+                managedOrderBean.setDeliveryDate(rs.getDate("man_delivery_date"));
+                managedOrderBean.setTrackNumber(rs.getString("man_tracking_number"));
+                managedOrderBean.setCourierName(rs.getString("man_courier"));
+                managedOrderBean.setShipmentDate(rs.getDate("man_shipment_date"));
+            }
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            }
+            finally
+            {
+                if(connection != null)
+                    preparedStatement.close();
+            }
+        }
+        return managedOrderBean;
+    }
+
     public void update(ManagedOrder managedOrder) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -135,6 +178,7 @@ public class ManagedOrderDAO {
             }
         }
     }
+
 
     public void delete(ManagedOrder managedOrder) throws SQLException {
         Connection connection = null;

@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: Francesco Monzillo
@@ -7,6 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,16 +26,9 @@
 <%@ include file="/header.jsp" %>
 
 
-  <c:forEach items="${orders}" var="order">
-    <p>Prezzo totale: ${order.totalPrice}, Data: ${order.orderDate} </p><br/>
-    <form action="${pageContext.request.contextPath}/Orde" method="post">
-      <input type="hidden" name="credit_card_id" value=${order.id}/>
-      <input type="submit" value="elimina" name="act" id="box_button" class="accept">
-    </form>
-  </c:forEach>
 
 
-<!--  <div class="container">
+  <div class="container">
 <section class="h-100 gradient-custom">
   <div class="container py-5 h-100">
     <br><br><br><br>
@@ -45,27 +39,36 @@
             <h5 class="text-muted mb-0">I miei ordini</h5>
           </div>
 
+
+
+
+
+
+
+
           <div class="card-body p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-              <p class="lead fw-normal mb-0" style="color: #46dd2c;">Ricevute</p>
+              <p class="lead fw-normal mb-0" style="color: #46dd2c;">Ordini</p>
             </div>
 
               <div class="card shadow border mb-4">
 
                 <div class="card-body">
+
+
                   <div class="row">
 
                     <div class="col-md-2">
-                      <img src="${pageContext.request.contextPath}/img/trees_img/anacardo1.png"
-                           class="img-fluid" alt="name tree">
+                      <img src="${pageContext.request.contextPath}/images/list.png"
+                           class="img-fluid" alt="name tree" width="40" height="40">
                     </div>
 
                     <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="info"></p>
+                      <p class="info">Prezzo totale</p>
                     </div>
 
                     <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="info"></p>
+                      <p class="info">Data</p>
                     </div>
 
                     <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
@@ -81,6 +84,49 @@
                     </div>
 
                   </div>
+
+
+
+
+                  <c:forEach items="${orders}" var="order">
+                    <div class="row">
+
+                      <div class="col-md-2">
+                        <img src="${pageContext.request.contextPath}/images/shopping-bag.png"
+                             class="img-fluid" alt="name tree" width="40" height="40">
+                      </div>
+
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="info">${order.totalPrice}</p>
+                      </div>
+
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="info">${order.orderDate}</p>
+                      </div>
+
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <form action="${pageContext.request.contextPath}/OrderDetailServlet" method="post">
+                          <input type="hidden" name="order_id" value="${order.id}" />
+
+                          <input type="submit" value="dettagli ordine" name="act" id="box_button" class="accept">
+                        </form>
+                      </div>
+
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="info"></p>
+                      </div>
+
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="info"></p>
+                      </div>
+
+                    </div>
+
+                  </c:forEach>
+
+
+
+
                 </div>
 
               </div>
@@ -88,14 +134,23 @@
 
 
             <hr class="mb-4" style="background-color: #46dd2c ; opacity: 1;">
-
           </div>
+
+
+
+
+
+
+
+
+
+
         </div>
       </div>
     </div>
   </div>
 </section>
+  </div>
 
--->
 </body>
 </html>

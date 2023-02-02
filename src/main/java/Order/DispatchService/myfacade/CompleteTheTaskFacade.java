@@ -31,6 +31,7 @@ public class CompleteTheTaskFacade {
     * tracking number, delivery date ecc..)
     * ed utilizza i DAO per mantenere la coerenza delle info nel DB.
     */
+
     public void executeTask(ManagedOrder managedOrder) throws SQLException
     {
         managedOrderDAO.create(managedOrder); // aggiungo l'ordine alla tabbella degli ordini gestiti

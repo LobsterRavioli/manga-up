@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@WebServlet("/AddressServletDashboardServlet")
+@WebServlet("/AddressDashboardServlet")
 public class AddressDashboardServlet extends HttpServlet {
 
 

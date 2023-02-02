@@ -23,6 +23,6 @@ public class CreditCardDeleteServlet extends HttpServlet {
         CreditCard card = new CreditCard();
         card.setId(id);
         dao.delete(card);
-        response.sendRedirect("CreditCardListServlet");
+        response.sendRedirect("CreditCardDashboardServlet");
     }
 }

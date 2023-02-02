@@ -202,4 +202,19 @@ public class Order {
 
     public static final String TO_SENT = "TO_SEND";
     public static final String SENT = "SENT";
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", orderDate=" + orderDate +
+                ", state='" + state + '\'' +
+                ", totalPrice=" + totalPrice +
+                ", endUser=" + endUser +
+                ", endUserAddress=" + endUserAddress +
+                ", addressInfo='" + addressInfo + '\'' +
+                ", endUserCard=" + endUserCard +
+                ", creditCardInfo='" + creditCardInfo + '\'' +
+                '}';
+    }
 }

@@ -12,9 +12,12 @@
     <title>DashBoard</title>
 </head>
 <body>
-
-<a href="${pageContext.request.contextPath}/AddressServletDashboardServlet">Lista indirizzi</a>
-<a href="${pageContext.request.contextPath}/CreditCardDashboardServlet">Lista carte di pagamento</a>
+<%@ include file="/header.jsp" %>
+<ul>
+    <li><a href="${pageContext.request.contextPath}/AddressDashboardServlet">Lista indirizzi</a></li>
+    <li><a href="${pageContext.request.contextPath}/CreditCardDashboardServlet">Lista carte di pagamento</a></li>
+    <li><a href="${pageContext.request.contextPath}/OrderListServlet">Storico degli ordini</a></li>
+</ul>
 
 </body>
 </html>

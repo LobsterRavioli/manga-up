@@ -83,7 +83,6 @@ public class OrderRowDAO {
             while(rs.next())
             {
                 OrderRow orderBean = new OrderRow();
-
                 orderBean.setOrderId(rs.getLong("ord_id"));
                 orderBean.setUserId(rs.getLong("user_id"));
                 orderBean.setMangaName(rs.getString("manga_name"));

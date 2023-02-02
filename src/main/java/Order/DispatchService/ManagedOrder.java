@@ -100,6 +100,18 @@ public class ManagedOrder extends Order {
         return Objects.hash(super.hashCode(), user, deliveryDate, shipmentDate, trackNumber, state, courierName);
     }
 
+    @Override
+    public String toString() {
+        return "ManagedOrder{" +
+                "user=" + user +
+                ", deliveryDate=" + deliveryDate +
+                ", shipmentDate=" + shipmentDate +
+                ", trackNumber='" + trackNumber + '\'' +
+                ", state='" + state + '\'' +
+                ", courierName='" + courierName + '\'' +
+                '}';
+    }
+
     private User user;
     private Date deliveryDate, shipmentDate;
     private String trackNumber, state, courierName;

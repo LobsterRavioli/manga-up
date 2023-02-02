@@ -9,7 +9,10 @@ public class OrderRow {
 
     public OrderRow()
     {
-        ;
+        this.order = new Order();
+        this.manga = new Manga(0);
+        this.user = new EndUser();
+
     }
 
     public OrderRow(Order order, EndUser user, Manga manga, int quantity)
@@ -87,4 +90,16 @@ public class OrderRow {
     private EndUser user;
     private Manga manga;
     private int quantity;
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public void setUser(EndUser user) {
+        this.user = user;
+    }
 }

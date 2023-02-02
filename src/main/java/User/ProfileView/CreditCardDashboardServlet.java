@@ -31,9 +31,6 @@ public class CreditCardDashboardServlet extends HttpServlet {
         EndUser user = (EndUser) session.getAttribute("user");
 
         ArrayList<CreditCard> cards = (ArrayList<CreditCard>)  dao.findAssociatedCards(user);
-        for(CreditCard c : cards){
-            System.out.println(c);
-        }
         request.setAttribute("cards", cards);
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProfileView/dashboard_carte_di_credito.jsp"));
         dispatcher.forward(request, response);
