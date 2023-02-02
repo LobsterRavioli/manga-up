@@ -22,13 +22,13 @@ public class AddressDAO {
         this.ds = ds;
     }
     private static final String CREATE_QUERY = "INSERT INTO address (addr_street, addr_country, addr_city, addr_postal_code, addr_phone_number, addr_region,usr_id) VALUES (?, ?, ?, ?, ?, ?, ?);";
-    private static final String DELETE_QUERY = "DELETE FROM ADDRESS WHERE addr_id = ?;";
+    private static final String DELETE_QUERY = "DELETE FROM address WHERE addr_id = ?;";
 
     private static final String SQL_LIST_ORDER_BY_ORDER_ID =
             "SELECT * FROM address ORDER BY addr_id";
     private static final String SQL_FIND_BY_ADDRESS_ID = "SELECT * FROM address WHERE usr_id = ?;";
-    private static final String SQL_FIND_ALL_BY_ENDUSER = "SELECT * FROM ADDRESS WHERE usr_id = ?;";
-    private static final String SQL_FIND_SINGLE_BY_ENDUSER = "SELECT *  FROM MANGA_UP.address WHERE addr_id = ?1\n" +
+    private static final String SQL_FIND_ALL_BY_ENDUSER = "SELECT * FROM address WHERE usr_id = ?;";
+    private static final String SQL_FIND_SINGLE_BY_ENDUSER = "SELECT * FROM address WHERE addr_id = ?1\n" +
             "    AND addr_city = ?1\n" +
             "    AND addr_country = ?2\n" +
             "    AND addr_postal_code = ?3\n" +
