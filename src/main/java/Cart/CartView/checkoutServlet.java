@@ -79,7 +79,7 @@ public class checkoutServlet extends HttpServlet {
 
             req.getSession(false).setAttribute("cart",new Cart(new HashMap<Manga,Integer>()));
 
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/cart.jsp"); //Andrebbe rimandato a order_detail_listServlet
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/OrderDetailServlet?order_id="+order.getId()); //Andrebbe rimandato a order_detail_listServlet
 
             rd.forward(req, resp);
             return;
