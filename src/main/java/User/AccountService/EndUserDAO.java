@@ -44,8 +44,10 @@ public class EndUserDAO {
     private static final String SQL_LIST_ORDER_BY_ID = "SELECT * FROM end_user ORDER BY usr_id;";
 
     public void create(EndUser user) throws IllegalArgumentException, DAOException {
-        if (user.getId() != 0) {
-            throw new IllegalArgumentException("User is already created, the user ID is not null.");
+
+
+        if (!EndUser.validate(user)) {
+            throw new IllegalArgumentException("Invalid data.");
         }
 
         Object[] values = {
@@ -79,14 +81,14 @@ public class EndUserDAO {
     }
 
     public boolean existEmail(String email) throws DAOException {
-        Object[] values = {
-                email
-        };
+        if (email == null || email.isEmpty() || email.length() > 50) {
+            throw new IllegalArgumentException("Email is null");
+        }
         boolean exist;
 
         try (
                 Connection connection = ds.getConnection();
-                PreparedStatement statement = prepareStatement(connection, SQL_EXIST_EMAIL, false, values);
+                PreparedStatement statement = prepareStatement(connection, SQL_EXIST_EMAIL, false, email);
                 ResultSet resultSet = statement.executeQuery()
         ) {
             exist = resultSet.next();
@@ -98,7 +100,10 @@ public class EndUserDAO {
     }
 
     public EndUser login(String email, String password) {
-        return find(SQL_FIND_BY_EMAIL_AND_PASSWORD,email, password);
+        if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("Invalid input");
+        }
+        return find(SQL_FIND_BY_EMAIL_AND_PASSWORD,email, Utils.hash(password));
     }
 
     public EndUser findById(int id) { return find(SQL_FIND_BY_ID, id); }
@@ -137,7 +142,7 @@ public class EndUserDAO {
         user.setSurname(resultSet.getString("usr_surname"));
         user.setBirthdate(resultSet.getDate("usr_birth_date"));
         return user;
-        
+
     }
 
     /*

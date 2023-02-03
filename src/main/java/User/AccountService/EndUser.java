@@ -13,6 +13,28 @@ public class EndUser{
     private Date birthdate;
     private int id;
 
+    public EndUser(String name, String surname, String email, String phoneNumber, String password, Date birthdate) {
+        this.addresses = new HashSet();
+        this.cards = new HashSet();
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.birthdate = birthdate;
+    }
+
+
+    public EndUser(String name, String surname, String email, String phoneNumber, String password, Date birthdate, int id) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.birthdate = birthdate;
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
@@ -150,5 +172,22 @@ public class EndUser{
                 ", birthdate=" + getBirthdate() +
                 ", id=" + getId() +
                 '}';
+    }
+
+    public static boolean validate(EndUser endUser){
+        if (endUser == null) return false;
+        if (endUser.getName() == null || endUser.getName().equals("")) return false;
+        if (endUser.getSurname() == null || endUser.getSurname().equals("")) return false;
+        if (endUser.getEmail() == null || endUser.getEmail().equals("")) return false;
+        if (endUser.getPhoneNumber() == null || endUser.getPhoneNumber().equals("")) return false;
+        if (endUser.getPassword() == null || endUser.getPassword().equals("")) return false;
+        if (endUser.getBirthdate() == null) return false;
+        if(endUser.getName().length() > 32) return false;
+        if(endUser.getSurname().length() > 32) return false;
+        if(endUser.getEmail().length() > 128) return false;
+        if(endUser.getPhoneNumber().length() > 20) return false;
+        if(endUser.getPassword().length() > 64) return false;
+
+        return true;
     }
 }

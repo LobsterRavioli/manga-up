@@ -5,6 +5,7 @@ import Order.DispatchService.ToManage;
 import Order.DispatchService.ToManageDAO;
 import User.AccountService.User;
 import User.AccountService.UserDAO;
+import User.AccountService.UserFacade;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,6 +30,8 @@ public class OrderTaskServlet extends HttpServlet {
         UserDAO userDAO = new UserDAO(ds);
         ToManageDAO toManageDAO = new ToManageDAO(ds);
 
+        UserFacade facadeUser = (UserFacade) getServletContext().getAttribute(UserFacade.USER_FACADE);
+
         Collection<User> orderManagers;
 
 
@@ -50,7 +53,7 @@ public class OrderTaskServlet extends HttpServlet {
 
                     if(orderManagers != null)
                     {
-                        toManageDAO.create(new ToManage(orderManagers.iterator().next(), orderToMan)); // assegna un task a uno qualsiasi di loro (il plrimo)
+                        toManageDAO.create(new ToManage(facadeUser.managerEngagement(), orderToMan)); // assegna un task a uno qualsiasi di loro
                     }
                     else // RECUPERA I GESTORI CHE HANNO GESTITO ALMENO UN ORDINE E LI RESTITUISCE ORDINATI IN BASE AL NUMERO DI ORIDNI GESTITI
                     {

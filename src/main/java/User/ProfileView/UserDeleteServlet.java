@@ -29,7 +29,6 @@ public class UserDeleteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-
         UserDAO dao = new UserDAO(ds);
         try {
             String username = request.getParameter("username");

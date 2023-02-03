@@ -111,13 +111,9 @@ public class Order {
                 splitData[i] = splitData[i].substring(0,50);
                 splitData[i] += ".";
             }
-
-            //splitData[i] += "\n";
         }
 
-        String tmp = String.join(",\n", splitData);
-        System.out.println(tmp);
-        return tmp;
+        return String.join(",\n", splitData);
     }
 
     public void setCreditCardEndUserInfo(String endUserCardInfo)

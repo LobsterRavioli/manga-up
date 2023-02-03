@@ -1,7 +1,6 @@
 package Order.OrderView;
 
 import Order.DispatchService.*;
-import Order.DispatchService.myfacade.CompleteTheTaskFacade;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +13,6 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Collection;
 import java.util.HashSet;
 
 @WebServlet(name = "manageServlet", value = "/manageServlet")
