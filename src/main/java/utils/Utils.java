@@ -16,22 +16,7 @@ public class Utils {
 
 
     public static String hash(String string) {
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("MD5");
-
-            md.update(string.getBytes());
-            byte[] digest = md.digest();
-            StringBuffer sb = new StringBuffer();
-            for (byte b : digest) {
-                sb.append(String.format("%02x", b & 0xff));
-            }
-
-            return sb.toString();
-
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        return org.apache.commons.codec.digest.DigestUtils.sha256Hex(string);
     }
 
 
