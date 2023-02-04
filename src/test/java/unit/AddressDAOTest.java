@@ -1,5 +1,8 @@
-package User.AccountService;
+package unit;
 
+import User.AccountService.Address;
+import User.AccountService.AddressDAO;
+import User.AccountService.EndUser;
 import org.dbunit.Assertion;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
@@ -9,14 +12,10 @@ import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.jupiter.api.*;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import javax.sql.DataSource;
 
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AddressDAOTest {
     private static IDatabaseTester tester;

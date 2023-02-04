@@ -25,7 +25,6 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String errorMessage = "";
         boolean error = false;
 
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
@@ -59,17 +58,16 @@ public class RegistrationServlet extends HttpServlet {
 
         if(daoEndUser.existEmail(user.getEmail())){
             error = true;
-            errorMessage += EMAIL_ERROR + " ";
+            request.setAttribute("error_email_message", EMAIL_ERROR);
         }
 
         if(daoCreditCard.existsCreditCardNumber(card.getCardNumber())){
             error = true;
-            errorMessage += CARD_ERROR;
+            request.setAttribute("error_credit_card_message", CARD_ERROR);
         }
 
         if(error){
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProfileView/registrazione_utente.jsp"));
-            request.setAttribute("error_message", errorMessage);
             dispatcher.forward(request, response);
             return;
         }
