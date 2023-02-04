@@ -45,7 +45,7 @@ function check_registration_format(){
 
 
     if(!email_format.test(email)) {
-        document.querySelector(".email_error").innerHTML = "Inserire una email valida";
+        document.querySelector(".email_error").innerHTML = "Indirizzo email deve rispettare il seguente formato: x@dominio.x";
         document.querySelector(".email_error").style.display = "block";
         event.preventDefault();
 
@@ -83,7 +83,7 @@ function check_registration_format(){
     }
 
     if(!password_format.test(password)) {
-        document.querySelector(".password_error").innerHTML = "Inserire una password valida";
+        document.querySelector(".password_error").innerHTML = "Campo non valido: il campo password è obbligatorio e deve contenere minimo 8 caratteri, almeno 1 lettera, 1 numero e un carattere speciale.";
         document.querySelector(".password_error").style.display = "block";
         event.preventDefault();
 
@@ -97,7 +97,7 @@ function check_registration_format(){
 
 
     if(password !== psw_repeat) {
-        document.querySelector(".psw-repeat_error").innerHTML = "Le password non coincidono";
+        document.querySelector(".psw-repeat_error").innerHTML = "Le password inserite non sono identiche";
         document.querySelector(".psw-repeat_error").style.display = "block";
         event.preventDefault();
 
@@ -207,7 +207,7 @@ function check_registration_format(){
     }
 
     if(!street_format.test(street)) {
-        document.querySelector(".street_error").innerHTML = "Inserire una via valida";
+        document.querySelector(".street_error").innerHTML = "Campo non valido: il campo via è obbligatorio e La lunghezza deve essere compresa tra 1 e 40  i cui caratteri sono esclusivamente alfanumerici";
         document.querySelector(".street_error").style.display = "block";
         event.preventDefault();
     }
@@ -218,20 +218,21 @@ function check_registration_format(){
     }
 
     if(!phone_number_format.test(phone_number_address)) {
-        document.querySelector(".phone_number_address_error").innerHTML = "Inserire un numero di telefono valido";
+        document.querySelector(".phone_number_address_error").innerHTML = "Campo non valido: il campo numero di cellulare  è obbligatorio e la lunghezza del numero cellulare non deve essere compresa tra 13 e 15 e il formato: +39–XXX-XXXXXXX di cui le x sono caratteri numerici.";
         document.querySelector(".phone_number_address_error").style.display = "block";
         event.preventDefault();
 
     }
     else {
-        document.querySelector(".phone_number_error").innerHTML = "";
-        document.querySelector(".phone_number_error").style.display = "block";
+        document.querySelector(".phone_number_address_error").innerHTML = "";
+        document.querySelector(".phone_number_address_error").style.display = "block";
         event.preventDefault();
     }
 
     if(!postal_code_format.test(postal_code)) {
-        document.querySelector(".postal_code_error").innerHTML = "Inserire un codice postale valido";
+        document.querySelector(".postal_code_error").innerHTML = "Campo non valido: Il campo CAP è obbligatorio e la lunghezza del CAP deve essere 5";
         document.querySelector(".postal_code_error").style.display = "block";
+        document.querySelector(".postal_code_error").style.color = "red";
         event.preventDefault();
 
     }
@@ -242,14 +243,14 @@ function check_registration_format(){
     }
 
     if(!phone_number_format.test(phone_number)) {
-        document.querySelector(".phone_number_error").innerHTML = "Inserire un numero valido";
+        document.querySelector(".phone_number_error").innerHTML = "Campo non valido: il campo numero di cellulare  è obbligatorio e la lunghezza del numero cellulare non deve essere compresa tra 13 e 15 e il formato: +39–XXX-XXXXXXX di cui le x sono caratteri numerici";
         document.querySelector(".phone_number_error").style.display = "block";
         event.preventDefault();
 
     }
     else {
-        document.querySelector(".phone_number_address_error").innerHTML = "Inserire numero di telefono valido";
-        document.querySelector(".phone_number_address_error").style.display = "block";
+        document.querySelector(".phone_number_error").innerHTML = "";
+        document.querySelector(".phone_number_error").style.display = "block";
         event.preventDefault();
     }
 
@@ -260,7 +261,7 @@ function check_registration_format(){
         && country_format.test(country) && expirement_date_format.test(expirement_date)
         && card_holder_format.test(card_holder) && cvc_format.test(cvc) && card_number_format.test(card_number)
         && birth_date_format.test(birth_date) && password_format.test(password) && surname_format.test(surname)
-        && name_format.test(name) && email_format.test(email) && phone_number_format.test(phone_number_address) && (password == psw_repeat)){
+        && name_format.test(name) && email_format.test(email) && phone_number_format.test(phone_number_address) && (password == psw_repeat) ){
         document.getElementById("registration_form").submit();
     }
 
@@ -299,7 +300,7 @@ function check_address_format(){
     }
 
     if(!region_format.test(region)) {
-        document.querySelector(".region_error").innerHTML = "Inserire una regione valida";
+        document.querySelector(".region_error").innerHTML = "Campo non valido: il campo regione è obbligatorio e i caratteri alfabetici la cui lunghezza deve essere inferiore a 30";
         document.querySelector(".region_error").style.display = "block";
         event.preventDefault();
 
@@ -382,7 +383,7 @@ function check_card_format(){
 
 
     if(!card_number_format.test(card_number)) {
-        document.querySelector(".card_number_error").innerHTML = "Inserire una carta di credito valida";
+        document.querySelector(".card_number_error").innerHTML = "Campo non valido: il campo proprietario carta deve contenere esclusivamente caratteri alfabetici";
         document.querySelector(".card_number_error").style.display = "block";
         event.preventDefault();
 
@@ -419,7 +420,7 @@ function check_card_format(){
 
 
     if(!expirement_date_format.test(expirement_date)) {
-        document.querySelector(".expirement_date_error").innerHTML = "Inserire una data di scadenza valida";
+        document.querySelector(".expirement_date_error").innerHTML = "Campo non valido: Il campo expiration date è obbligatorio e deve rispettare il seguente formato xx-xx-xxxx";
         document.querySelector(".expirement_date_error").style.display = "block";
         event.preventDefault();
 
