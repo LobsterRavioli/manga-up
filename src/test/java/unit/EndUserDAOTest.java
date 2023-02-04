@@ -1,5 +1,7 @@
-package User.AccountService;
+package unit;
 
+import User.AccountService.EndUser;
+import User.AccountService.EndUserDAO;
 import org.dbunit.Assertion;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
@@ -99,7 +101,7 @@ class EndUserDAOTest {
         String cryptPassword = Utils.hash(user.getPassword());
         endUserDAO.create(user);
         IDataSet expectedDataSet = new FlatXmlDataSetBuilder()
-                .build(AddressDAOTest.class.getClassLoader().getResourceAsStream("enduser_dao/create_pass.xml"));
+                .build(EndUserDAO.class.getClassLoader().getResourceAsStream("enduser_dao/create_pass.xml"));
         String[] ignoreCol = new String[2];
         ignoreCol[0] = "usr_id";
         ignoreCol[1] = "usr_password";

@@ -109,7 +109,7 @@ function check_registration_format(){
     }
 
     if(!birth_date_format.test(birth_date)) {
-        document.querySelector(".birth_date_error").innerHTML = "Inserire una data di nascita valida";
+        document.querySelector(".birth_date_error").innerHTML = "Campo non valido la data di nascita deve rispettare il seguente formato \"XX-XX-XXXX\" dove X è un carattere numerico.";
         document.querySelector(".birth_date_error").style.display = "block";
         event.preventDefault();
 
@@ -122,7 +122,7 @@ function check_registration_format(){
     }
 
     if(!card_number_format.test(card_number)) {
-        document.querySelector(".card_number_error").innerHTML = "Inserire una carta di credito valida";
+        document.querySelector(".card_number_error").innerHTML = "Campo non valido: Il campo carta di credito è obbligatorio e la lunghezza della carta deve essere compresa tra 13 e 16 e deve contenere esclusivamente caratteri numerici";
         document.querySelector(".card_number_error").style.display = "block";
         event.preventDefault();
 
@@ -135,7 +135,7 @@ function check_registration_format(){
     }
 
     if(!cvc_format.test(cvc)) {
-        document.querySelector(".cvc_error").innerHTML = "Inserire un cvc valido";
+        document.querySelector(".cvc_error").innerHTML = "Campo non valido: Il campo cvv è obbligatorio e la lunghezza la cui lunghezza deve essere compresa tra 3 e 5 contenente caratteri numeri";
         document.querySelector(".cvc_error").style.display = "block";
         event.preventDefault();
     }
@@ -159,7 +159,7 @@ function check_registration_format(){
 
 
     if(!expirement_date_format.test(expirement_date)) {
-        document.querySelector(".expirement_date_error").innerHTML = "Inserire una data di scadenza valida";
+        document.querySelector(".expirement_date_error").innerHTML = "Campo non valido: Il campo expiration date è obbligatorio e deve rispettare il seguente formato xx-xx-xxxx";
         document.querySelector(".expirement_date_error").style.display = "block";
         event.preventDefault();
 
@@ -171,7 +171,7 @@ function check_registration_format(){
     }
 
     if(!country_format.test(country)) {
-        document.querySelector(".country_error").innerHTML = "Inserire un paese valido";
+        document.querySelector(".country_error").innerHTML = "Campo non valido: Il campo Paese è obbligatorio e la lunghezza del paese deve essere inferiore a 57 i cui caratteri sono esclusivamente alfabetici";
         document.querySelector(".country_error").style.display = "block";
         event.preventDefault();
 
@@ -183,7 +183,7 @@ function check_registration_format(){
     }
 
     if(!region_format.test(region)) {
-        document.querySelector(".region_error").innerHTML = "Inserire una regione valida";
+        document.querySelector(".region_error").innerHTML = "Campo non valido: il campo regione è obbligatorio e i caratteri alfabetici la cui lunghezza deve essere inferiore a 30";
         document.querySelector(".region_error").style.display = "block";
         event.preventDefault();
 
@@ -195,7 +195,7 @@ function check_registration_format(){
     }
 
     if(!city_format.test(city)) {
-        document.querySelector(".city_error").innerHTML = "Inserire una città valida";
+        document.querySelector(".city_error").innerHTML = "Campo non valido: Il campo città è obbligatorio i cui caratteri sono esclusivamente alfabetici";
         document.querySelector(".city_error").style.display = "block";
         event.preventDefault();
 
@@ -218,7 +218,7 @@ function check_registration_format(){
     }
 
     if(!phone_number_format.test(phone_number_address)) {
-        document.querySelector(".phone_number_address_error").innerHTML = "Campo non valido: il campo numero di cellulare  è obbligatorio e la lunghezza del numero cellulare non deve essere compresa tra 13 e 15 e il formato: +39–XXX-XXXXXXX di cui le x sono caratteri numerici.";
+        document.querySelector(".phone_number_address_error").innerHTML = "Campo non valido: il campo numero di cellulare è obbligatorio e la lunghezza del numero cellulare non deve essere compresa tra 13 e 15 e il formato: +39–XXX-XXXXXXX di cui le x sono caratteri numerici";
         document.querySelector(".phone_number_address_error").style.display = "block";
         event.preventDefault();
 
@@ -230,7 +230,7 @@ function check_registration_format(){
     }
 
     if(!postal_code_format.test(postal_code)) {
-        document.querySelector(".postal_code_error").innerHTML = "Campo non valido: Il campo CAP è obbligatorio e la lunghezza del CAP deve essere 5";
+        document.querySelector(".postal_code_error").innerHTML = "Campo non valido: Il campo CAP è obbligatorio e la lunghezza del CAP deve essere 5, i cui caratteri sono esclusivamente numerici";
         document.querySelector(".postal_code_error").style.display = "block";
         document.querySelector(".postal_code_error").style.color = "red";
         event.preventDefault();
@@ -254,6 +254,21 @@ function check_registration_format(){
         event.preventDefault();
     }
 
+    current_date = new Date();
+    card_date = new Date(expirement_date);
+
+    if(card_date < current_date) {
+        document.querySelector(".expirement_current_date_error").innerHTML = "La data di scadenza della carta non può essere inferiore alla data odierna";
+        document.querySelector(".expirement_current_date_error").style.display = "block";
+        event.preventDefault();
+
+    }
+    else {
+        document.querySelector(".expirement_current_date_error").innerHTML = "";
+        document.querySelector(".expirement_current_date_error").style.display = "block";
+        event.preventDefault();
+    }
+
 
 
     if (postal_code_format.test(postal_code) && phone_number_format.test(phone_number)
@@ -261,7 +276,7 @@ function check_registration_format(){
         && country_format.test(country) && expirement_date_format.test(expirement_date)
         && card_holder_format.test(card_holder) && cvc_format.test(cvc) && card_number_format.test(card_number)
         && birth_date_format.test(birth_date) && password_format.test(password) && surname_format.test(surname)
-        && name_format.test(name) && email_format.test(email) && phone_number_format.test(phone_number_address) && (password == psw_repeat) ){
+        && name_format.test(name) && email_format.test(email) && phone_number_format.test(phone_number_address) && (password == psw_repeat) && (card_date > current_date)) {
         document.getElementById("registration_form").submit();
     }
 
@@ -324,7 +339,7 @@ function check_address_format(){
     }
 
     if(!street_format.test(street)) {
-        document.querySelector(".street_error").innerHTML = "Inserire una via valida";
+        document.querySelector(".street_error").innerHTML = "Campo non valido: il campo via è obbligatorio e La lunghezza deve essere compresa tra 1 e 40 i cui caratteri sono esclusivamente alfanumerici";
         document.querySelector(".street_error").style.display = "block";
         event.preventDefault();
 
@@ -336,7 +351,7 @@ function check_address_format(){
     }
 
     if(!phone_number_format.test(phone_number)) {
-        document.querySelector(".phone_number_error").innerHTML = "Inserire un numero di telefono valido";
+        document.querySelector(".phone_number_error").innerHTML = "Campo non valido: il campo numero di cellulare è obbligatorio e la lunghezza del numero cellulare non deve essere compresa tra 13 e 15 e il formato: +39–XXX-XXXXXXX di cui le x sono caratteri numerici";
         document.querySelector(".phone_number_error").style.display = "block";
         event.preventDefault();
 
@@ -396,7 +411,7 @@ function check_card_format(){
     }
 
     if(!cvc_format.test(cvc)) {
-        document.querySelector(".cvc_error").innerHTML = "Inserire un cvc valido";
+        document.querySelector(".cvc_error").innerHTML = "Campo non valido: Il campo cvv è obbligatorio e la lunghezza la cui lunghezza deve essere compresa tra 3 e 5 contenente caratteri numeri";
         document.querySelector(".cvc_error").style.display = "block";
         event.preventDefault();
     }

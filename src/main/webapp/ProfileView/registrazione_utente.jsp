@@ -21,7 +21,9 @@
         <h1>Form di registrazione.</h1>
         <p>Riempi il seguente form per registrarti.</p>
 
-        <p id="error_message">${error_message}</p>
+        <p id="error_credit_card_message">${error_credit_card_message}</p>
+        <br>
+        <p id="error_email_message">${error_email_message}</p>
         <hr>
         <p class="email_error" id="email_error"></p>
         <label for="email"><b>Email</b></label>
@@ -39,14 +41,14 @@
         <label for="name"><b>Nome</b></label>
         <input type="text" placeholder="Inserisci nome" name="name" id="name" required>
 
-        <p class="phone_number_error" id="phone_number_error"></p>
-        <label for="phone_number"><b>Numero di cellulare</b></label>
-        <input type="tel" placeholder="Campo obbligatorio" name="phone_number" id="phone_number" required>
-        <br>
         <p class="surname_error" id="surname_error"></p>
         <label for="surname"><b>Cognome</b></label>
         <input type="text" placeholder="Inserisci cognome" name="surname" id="surname" required>
 
+        <p class="phone_number_error" id="phone_number_error"></p>
+        <label for="phone_number"><b>Numero di cellulare</b></label>
+        <input type="tel" placeholder="Campo obbligatorio" name="phone_number" id="phone_number" required>
+        <br>
         <p class="birth_date_error" id="birth_date_error"></p>
         <label for="birth_date" ><b>Data di nascita</b></label>
         <input type="date" placeholder="Inserisci data di nascita" name="birth_date" id="birth_date" required>
@@ -58,19 +60,18 @@
             <h1>Inserisci la tua carta di credito</h1>
             <p>Completa il form per poter inserire una carta di credito</p>
             <hr>
-            <p class="card_number_error"></p>
-            <label for="card_number" id="card_number_error"><b>Numero Carta </b></label>
+            <p class="card_number_error" id="card_number_error" ></p>
+            <label for="card_number" ><b>Numero Carta </b></label>
             <input type="text" placeholder="Campo obbligatorio" name="card_number" id="card_number" required>
             <br>
-            <p class="expirement_date_error"></p>
-
-            <label for="expirement_date" id="expirement_date_error"><b>Data scadenza</b></label>
-
+            <p class="expirement_date_error" id="expirement_date_error"></p>
+            <p class="expirement_current_date_error" id="expirement_current_date_error"></p>
+            <label for="expirement_date" ><b>Data scadenza</b></label>
             <input type="date"  placeholder="Campo obbligatorio" name="expirement_date" id="expirement_date" required>
             <br>
 
-            <p class="cvc_error"></p>
-            <label for="cvc" id="cvc_error"><b>cvc</b></label>
+            <p class="cvc_error" id="cvc_error"></p>
+            <label for="cvc" ><b>cvc</b></label>
             <input type="password" placeholder="Campo obbligatorio" name="cvc" id="cvc" size="3" required>
             <br>
 
@@ -93,9 +94,11 @@
             <label for="country"><b>Nazione</b></label>
             <input type="text" placeholder="Campo obbligatorio" name="country" id="country" required>
             <br>
+
             <p class="region_error" id="region_error"></p>
             <label for="region"><b>Regione</b></label>
             <input type="text"  placeholder="Campo obbligatorio" name="region" id="region" required>
+
             <br>
             <p class="city_error" id="city_error"></p>
             <label for="city"><b>Città</b></label>
