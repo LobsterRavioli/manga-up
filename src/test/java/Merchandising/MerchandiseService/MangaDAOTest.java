@@ -194,15 +194,30 @@ class MangaDAOTest {
 
 
     @Test
-    void create() {
+    void deleteNotPassed() {
+        Manga manga = new Manga(15);
+        System.out.println(Assert.assertThrows(Exception.class, () ->m.delete(manga.getId())).getMessage());
+    }
+
+
+    @Test
+    void deletePassed() throws Exception{
+        Manga manga = new Manga(20);
+        m.delete(manga.getId());
+        ITable actualTable = tester.getConnection().createDataSet().getTable("MANGA");
+        Assert.assertTrue(actualTable.getRowCount()==0);
     }
 
     @Test
-    void delete() {
+    void retrieveByIdNotNull() {
+        Manga manga = new Manga(20);
+        Assert.assertNotNull(m.retrieveById(manga.getId()));
     }
 
     @Test
-    void retrieveById() {
+    void retrieveByIdNull(){
+        Manga manga = new Manga(15);
+        Assert.assertNull(m.retrieveById(manga.getId()));
     }
 
     @Test
@@ -210,14 +225,110 @@ class MangaDAOTest {
     }
 
     @Test
-    void retrieveAll() {
+    void retrieveAllExistingElements() throws Exception {
+        Assert.assertTrue(m.retrieveAll().get(0).getId()==20);
     }
+
+    @Test
+    void retrieveAllNotExistingElements() throws Exception{
+        m.delete(20);
+        System.out.println(Assert.assertThrows(Exception.class, () ->m.retrieveAll()).getMessage());
+    }
+
 
     @Test
     void filterForEndUsers() {
     }
 
     @Test
-    void updateQuantity() {
+    void updateQuantityInvalidQuantity() throws Exception {
+        Assert.assertThrows(Exception.class, () ->m.updateQuantity(0,20));
+    }
+
+    @Test
+    void updateQuantityInvalidId() {
+        Assert.assertThrows(Exception.class, () ->m.updateQuantity(20,15));
+    }
+
+    @Test
+    void updateQuantitySuccess() throws Exception{
+        m.updateQuantity(15,20);
+        ITable actualTable = tester.getConnection().createDataSet().getTable("MANGA");
+        Assert.assertEquals((int) actualTable.getValue(0,"quantity"),18);
+    }
+
+    @Test
+    void filterTestNotExistentCollection() throws Exception {
+        Assert.assertThrows(Exception.class, () -> m.filterForEndUsers("Sanctuary 3","Meclasd"));
+    }
+
+    @Test
+    void filterTestNoMatchingProducts() throws Exception {
+        Assert.assertThrows(Exception.class, () -> m.filterForEndUsers("Sanctuar655","Mecha"));
+    }
+
+    @Test
+    void filterTestMatchingProducts() throws Exception {
+        Assert.assertTrue(m.filterForEndUsers("Sanctuary 3","Mecha").size()>=1);
+    }
+
+    @ParameterizedTest(name = "{index} - {0} (parametri: {1}, {2})")
+    @MethodSource("filterTestUserSDefaultsProvider")
+    void filterTestUserSDefaults(String testName, String name, String collection_name,float min_price,float max_price) throws Exception {
+        Assert.assertEquals(m.filterForUsers(name,min_price,max_price,collection_name,true,true).size(),1);
+    }
+
+    private static Stream<Arguments> filterTestUserSDefaultsProvider() {
+
+        return Stream.of(
+
+                //Controllo nome
+                Arguments.of("Test case filtra prodotto User... Restituisci tutti i prodotti", null,null,0,0),
+                Arguments.of("Test case filtra prodotto User... Restituisci tutti i prodotti", "",null,0,0),
+                Arguments.of("Test case filtra prodotto User... Restituisci tutti i prodotti", null,"",0,0),
+                Arguments.of("Test case filtra prodotto User... Restituisci tutti i prodotti", "","",0,0)
+
+        );
+    }
+
+    @Test
+    void filterTestUserNotExistingCollection(){
+        System.out.println(Assert.assertThrows(Exception.class, () -> m.filterForUsers("Sanctuary 3",0,100,"Meclasd",true,true)).getMessage());
+    }
+
+    @Test
+    void filterTestUserNotValidRange(){
+        System.out.println(Assert.assertThrows(Exception.class, () -> m.filterForUsers("Sanctuary 3",20,10,"Mecha",true,true)).getMessage());
+    }
+
+    @Test
+    void filterTestUserFoundProducts() throws Exception{
+        Assert.assertTrue( m.filterForUsers("Sanctuary 3",0,100,"Mecha",true,true).size()>=1);
+    }
+
+    @Test
+    void filterTestUserNotFoundProducts() throws Exception{
+        System.out.println(Assert.assertThrows(Exception.class,()-> m.filterForUsers("Sanctuardsasdd",0,100,"Mecha",true,true)).getMessage());
+        System.out.println(Assert.assertThrows(Exception.class,()-> m.filterForUsers("Sanctuary 3",0,10,"Mecha",true,true)).getMessage());
+    }
+
+
+    @ParameterizedTest(name = "{index} - {0} (parametri: {1}, {2})")
+    @MethodSource("filterTestCollectionOrNameNullProvider")
+    void filterTestCollectionOrNameNull(String testName, String name, String collection_name) throws Exception {
+        Assert.assertEquals(m.filterForEndUsers(name,collection_name).size(),1);
+    }
+
+    private static Stream<Arguments> filterTestCollectionOrNameNullProvider() {
+
+        return Stream.of(
+
+                //Controllo nome
+                Arguments.of("Test case filtra prodotto End User... Restituisci tutti i prodotti", null,null),
+                Arguments.of("Test case filtra prodotto End User... Restituisci tutti i prodotti", "",null),
+                Arguments.of("Test case filtra prodotto End User... Restituisci tutti i prodotti", null,""),
+                Arguments.of("Test case filtra prodotto End User... Restituisci tutti i prodotti", "","")
+
+        );
     }
 }

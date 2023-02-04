@@ -161,11 +161,19 @@ public class MangaDAO {
     }
 
     public void delete(int id) throws Exception {
-        if(retrieveById(id)==null)
-            throw new Exception("prodotto selezionato non esistente");
-
+        Connection conn = ds.getConnection();
         PreparedStatement pr = null;
-        try(Connection conn = ds.getConnection()){
+        ResultSet rs = null;
+        pr = conn.prepareStatement("SELECT * from Manga as m WHERE m.id=?");
+        pr.setInt(1,id);
+        rs = pr.executeQuery();
+        if(rs.next()){
+            ;
+        }else{
+            throw new Exception("Il prodotto selezionato per la rimozione non è presente nel db");
+        }
+
+        try{
             pr = conn.prepareStatement("DELETE FROM Manga as p WHERE p.id=?");
             pr.setInt(1,id);
             pr.executeUpdate();
@@ -174,6 +182,8 @@ public class MangaDAO {
         }finally {
             try{
                 pr.close();
+                rs.close();
+                conn.close();
             }catch (SQLException e){
                 e.printStackTrace();
             }
@@ -182,14 +192,23 @@ public class MangaDAO {
 
     public void updateQuantity(int quantity,int id) throws Exception {
 
-        if(retrieveById(id)==null)
-            throw new Exception("prodotto inserito non esistente");
+        Connection conn = ds.getConnection();
+        PreparedStatement pr = null;
+        ResultSet rs = null;
+        pr = conn.prepareStatement("SELECT * from Manga as m WHERE m.id=?");
+        pr.setInt(1,id);
+        rs = pr.executeQuery();
+        if(rs.next()){
+            ;
+        }else{
+            throw new Exception("Il prodotto selezionato per l'aggiornamento non è presente nel db'");
+        }
+
 
         if(quantity<=0)
             throw new Exception("quantità inserita non valida");
 
-        PreparedStatement pr = null;
-        try(Connection conn = ds.getConnection()){
+        try{
             pr = conn.prepareStatement("UPDATE Manga AS m SET m.quantity = m.quantity + ? WHERE m.id=?");
             pr.setInt(1,quantity);
             pr.setInt(2,id);
@@ -199,6 +218,8 @@ public class MangaDAO {
         }finally{
             try{
                 pr.close();
+                rs.close();
+                conn.close();
             }catch(SQLException e){
                 e.printStackTrace();
             }
@@ -324,27 +345,33 @@ public class MangaDAO {
         if((name==null || name.equals("")) && (collection==null || collection.equals("")) && min_price==0 && max_price==0)
             return retrieveAll();
 
-        if(max_price>0 && max_price<min_price)
+        if(max_price>=0 && max_price<min_price)
             throw new Exception("range di valori inserito non corretto");
 
         if(name==null)
             name="";
 
-        if(collection==null)
-            collection="";
 
-        CollectionDAO c = new CollectionDAO(ds);
-        if(c.retrieve(collection)==null)
-            throw new Exception("collezione inserita non valida");
-
+        Connection conn = ds.getConnection();
 
         PreparedStatement pr = null;
         ResultSet rs = null;
 
+        pr = conn.prepareStatement("SELECT * FROM COLLECTION AS c WHERE c.nome=?");
+        pr.setString(1,collection);
+
+        rs=pr.executeQuery();
+
+        if(rs.next()) {
+        }else{
+            throw new Exception("Collezione inserita non esistente nel db");
+        }
+
+
+
         String ricerca = null;
 
-        try(Connection conn = ds.getConnection()) {
-
+        try{
             ricerca = "SELECT * FROM Manga AS m WHERE m.name LIKE '%" + name + "%' AND m.collection_id LIKE '%" + collection + "%' AND m.price BETWEEN ? AND ";
             if (max_price <= 0) {
                 ricerca = ricerca + "99999999999 ";
@@ -445,6 +472,7 @@ public class MangaDAO {
             try{
                 rs.close();
                 pr.close();
+                conn.close();
             }catch (SQLException e){
                 e.printStackTrace();
             }
@@ -518,22 +546,28 @@ public class MangaDAO {
         if(name==null)
             name="";
 
-        if(collection==null)
-            collection="";
 
-        CollectionDAO c = new CollectionDAO(ds);
-        if(c.retrieve(collection)==null)
-            throw new Exception("collezione inserita non valida");
-
+        Connection conn = ds.getConnection();
 
         PreparedStatement pr = null;
         ResultSet rs = null;
 
+        pr = conn.prepareStatement("SELECT * FROM COLLECTION AS c WHERE c.nome=?");
+        pr.setString(1,collection);
+
+        rs=pr.executeQuery();
+
+        if(rs.next()) {
+        }else{
+            throw new Exception("Collezione inserita non esistente nel db");
+        }
+
+
         String ricerca = null;
 
-        try(Connection conn = ds.getConnection()) {
+        try{
 
-            ricerca = "SELECT * FROM Manga AS m WHERE m.name LIKE '%" + name + "%' AND m.collection_id LIKE '%" + collection + "%'";
+            ricerca = "SELECT * FROM Manga AS m WHERE m.name LIKE '%" + name + "%' AND m.collection_id ='"+collection+"'";
 
             pr = conn.prepareStatement(ricerca);
 
@@ -589,6 +623,7 @@ public class MangaDAO {
             try{
                 rs.close();
                 pr.close();
+                conn.close();
             }catch (SQLException e){
                 e.printStackTrace();
             }
