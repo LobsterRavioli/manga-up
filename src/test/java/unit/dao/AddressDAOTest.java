@@ -1,4 +1,4 @@
-package unit;
+package unit.dao;
 
 import User.AccountService.Address;
 import User.AccountService.AddressDAO;

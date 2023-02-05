@@ -18,7 +18,6 @@ function check_registration_format(){
     let phone_number_format = /^[0-9]{13,15}$/;
     let postal_code_format = /^[0-9]{5}$/;
 
-
     let email = document.getElementById("email").value;
     let name = document.getElementById("name").value;
     let surname = document.getElementById("surname").value;
@@ -27,14 +26,11 @@ function check_registration_format(){
     let birth_date = document.getElementById("birth_date").value;
     let phone_number = document.getElementById("phone_number").value;
 
-
     let card_number = document.getElementById("card_number").value;
     let cvc = document.getElementById("cvc").value;
     let card_holder = document.getElementById("card_holder").value;
     let expirement_date = document.getElementById("expirement_date").value;
     let phone_number_address = document.getElementById("phone_number_address").value;
-
-
 
     let country = document.getElementById("country").value;
     let region = document.getElementById("region").value;

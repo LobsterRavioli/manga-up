@@ -14,7 +14,6 @@ import java.util.LinkedList;
 public class OrderRowDAO {
 
     private DataSource ds;
-
     private static final String ORDER_ROW_TABLE = "Order_row";
 
     private static final String CREATE = "INSERT INTO "+ORDER_ROW_TABLE+
