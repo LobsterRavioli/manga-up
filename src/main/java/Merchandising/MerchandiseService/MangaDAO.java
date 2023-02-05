@@ -14,18 +14,45 @@ public class MangaDAO {
         this.ds = ds;
     }
     public void create(Manga manga) throws Exception {
+        Connection conn = ds.getConnection();
+        PreparedStatement pr = null;
+        ResultSet rs = null;
+
         if(manga == null)
             throw new Exception("il manga passato come parametro è nullo");
 
         if(manga.getName()==null || manga.getName().equals("") || manga.getName().length()>50)
             throw new Exception("il nome del manga è nullo");
 
-        if(retrieveByName(manga.getName())!=null){
-            throw new Exception("esiste già un manga con lo stesso nome nel db");
-        }
 
-        if(manga.getPublisher()==null || manga.getPublisher().equals(""))
+            try {
+                pr = conn.prepareStatement("SELECT * from Manga as m WHERE m.name=?");
+                pr.setString(1, manga.getName());
+                rs = pr.executeQuery();
+                if (rs.next())
+                    throw new Exception("esiste già un manga con lo stesso nome nel db");
+            }catch(SQLException e){
+                throw e;
+            }
+
+
+        if(manga.getPublisher()==null || manga.getPublisher().equals("") || manga.getPublisher().length()>50)
             throw new Exception("l'editore del manga risulta nullo");
+
+        if(manga.getPrice()<=0)
+            throw new Exception("il prezzo inserito deve essere maggiore di 0");
+
+        if(manga.getWeight()<1)
+            throw new Exception("il peso inserito deve essere maggiore o uguale a 1");
+
+        if(manga.getLength()<1)
+            throw new Exception("la lunghezza inserita deve essere maggiore o uguale a 1");
+
+        if(manga.getHeight()<1)
+            throw new Exception("l'altezza inserita deve essere maggiore o uguale a 1");
+
+        if(manga.getState()==null || (!manga.getState().equals(ProductState.USED) && !manga.getState().equals(ProductState.NEW)))
+            throw new Exception("lo stato inserito non risulta corretto");
 
         if(manga.getDescription()==null || manga.getDescription().length()>255)
             throw new Exception("La descrizione inserita non risulta valida");
@@ -33,14 +60,14 @@ public class MangaDAO {
         if(manga.getIsbn() == null || manga.getIsbn().length()!=13)
             throw new Exception("L'isbn passato come parametro non risulta valido");
 
-        if(manga.getBinding() == null || manga.getBinding().equals(""))
+        if(manga.getBinding() == null || manga.getBinding().equals("") || manga.getBinding().length()>30)
             throw new Exception("la rilegatura passata risulta nulla");
 
-        if(manga.getVolume() == null || manga.getVolume().equals(""))
+        if(manga.getVolume() == null || manga.getVolume().equals("") || manga.getVolume().length()>20)
             throw new Exception("il volume passato risulta nullo");
 
         if(manga.getExitDate() == null || manga.getExitDate().after(new java.util.Date()))
-            throw new Exception("la data passata non risulta valida"+ manga.getExitDate());
+            throw new Exception("la data passata non risulta valida "+ manga.getExitDate());
 
         if(manga.getPages()<1)
             throw new Exception("numero di pagine non corretto");
@@ -48,59 +75,85 @@ public class MangaDAO {
         if(manga.getQuantity()<1)
             throw new Exception("numero di unità richieste non corretto");
 
-        if(manga.getInterior()== null || manga.getInterior().equals(""))
+        if(manga.getInterior()== null || manga.getInterior().equals("") || manga.getInterior().length()>20)
             throw new Exception("il colore degli interni non risulta correttamente inserito");
 
-        if(manga.getLanguage()==null || manga.getLanguage().equals(""))
+        if(manga.getLanguage()==null || manga.getLanguage().equals("") || manga.getLanguage().length()>20)
             throw new Exception("la lingua non risulta correttamente inserita");
 
-        if(manga.getStoryMaker()==null || manga.getStoryMaker().equals(""))
+        if(manga.getStoryMaker()==null || manga.getStoryMaker().equals("") || manga.getStoryMaker().length()>25)
             throw new Exception("lo storymaker non risulta correttamente inserito");
 
-        GenreDAO g = new GenreDAO(ds);
-        CollectionDAO c = new CollectionDAO(ds);
+        if(manga.getGenre()==null || manga.getGenre().getName()==null || manga.getGenre().getName().equals(""))
+            throw new Exception("il genere inserito non risulta valido");
 
-        if(manga.getGenre()==null || manga.getGenre().getName()==null || manga.getGenre().getName().equals("") || g.retrieve(manga.getGenre().getName())==null)
+            try {
+                pr = conn.prepareStatement("SELECT * FROM GENRE AS G WHERE g.nome=?");
+                pr.setString(1, manga.getGenre().getName());
+
+                rs = pr.executeQuery();
+
+                if (rs.next()) {
+                } else {
+                    throw new Exception("il genere inserito non risulta valido");
+                }
+            }catch(SQLException e){
+                throw e;
+            }
+
+        if(manga.getCollection()==null || manga.getCollection().getName()==null || manga.getCollection().getName().equals(""))
             throw new Exception("la collezione inserita non risulta valida");
 
-        if(manga.getCollection()==null || manga.getCollection().getName()==null || manga.getCollection().getName().equals("") || c.retrieve(manga.getCollection().getName())==null)
-            throw new Exception("la collezione inserita non risulta valida");
+            try{
+                pr = conn.prepareStatement("SELECT * FROM COLLECTION AS c WHERE c.nome=?");
+                pr.setString(1,manga.getCollection().getName());
 
-        PreparedStatement pr = null;
-        try(Connection conn = ds.getConnection()){
-            pr = conn.prepareStatement("INSERT INTO Manga (name,editore,price,weight,height,lenght,state,description,ISBN,book_binding,volume,release_date,page_number,quantity,interior,lang,image,collection_id,genre_id,storyMaker) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            pr.setString(1,manga.getName());
-            pr.setString(2,manga.getPublisher());
-            pr.setDouble(3,manga.getPrice());
-            pr.setDouble(4,manga.getWeight());
-            pr.setDouble(5,manga.getHeight());
-            pr.setDouble(6,manga.getLength());
+                rs=pr.executeQuery();
 
-            if(manga.getState().equals(ProductState.USED))
-                pr.setString(7,"USED");
-            else
-                pr.setString(7,"NEW");
+                if(rs.next()){
+                }else {
+                    throw new Exception("la collezione inserita non risulta valida");
+                }
+            }catch(SQLException e){
+                    throw e;
+            }
 
-            pr.setString(8,manga.getDescription());
-            pr.setString(9,manga.getIsbn());
-            pr.setString(10,manga.getBinding());
-            pr.setString(11,manga.getVolume());
-            pr.setDate(12,manga.getExitDate());
-            pr.setInt(13,manga.getPages());
-            pr.setInt(14,manga.getQuantity());
-            pr.setString(15,manga.getInterior());
-            pr.setString(16,manga.getLanguage());
-            pr.setString(17,manga.getImagePath());
-            pr.setString(18,manga.getCollection().getName());
-            pr.setString(19,manga.getGenre().getName());
-            pr.setString(20, manga.getStoryMaker());
+           try {
+               pr = conn.prepareStatement("INSERT INTO Manga (name,editore,price,weight,height,lenght,state,description,ISBN,book_binding,volume,release_date,page_number,quantity,interior,lang,image,collection_id,genre_id,storyMaker) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+               pr.setString(1, manga.getName());
+               pr.setString(2, manga.getPublisher());
+               pr.setDouble(3, manga.getPrice());
+               pr.setDouble(4, manga.getWeight());
+               pr.setDouble(5, manga.getHeight());
+               pr.setDouble(6, manga.getLength());
 
-            pr.executeUpdate();
-        }catch (SQLException e){
+               if (manga.getState().equals(ProductState.USED))
+                   pr.setString(7, "USED");
+               else
+                   pr.setString(7, "NEW");
+
+               pr.setString(8, manga.getDescription());
+               pr.setString(9, manga.getIsbn());
+               pr.setString(10, manga.getBinding());
+               pr.setString(11, manga.getVolume());
+               pr.setDate(12, manga.getExitDate());
+               pr.setInt(13, manga.getPages());
+               pr.setInt(14, manga.getQuantity());
+               pr.setString(15, manga.getInterior());
+               pr.setString(16, manga.getLanguage());
+               pr.setString(17, manga.getImagePath());
+               pr.setString(18, manga.getCollection().getName());
+               pr.setString(19, manga.getGenre().getName());
+               pr.setString(20, manga.getStoryMaker());
+
+               pr.executeUpdate();
+           }catch (SQLException e){
             System.out.println(e.getMessage());
         }finally{
             try{
                 pr.close();
+                rs.close();
+                conn.close();
             }catch(SQLException e){
                 e.printStackTrace();
             }
@@ -108,11 +161,19 @@ public class MangaDAO {
     }
 
     public void delete(int id) throws Exception {
-        if(retrieveById(id)==null)
-            throw new Exception("prodotto selezionato non esistente");
-
+        Connection conn = ds.getConnection();
         PreparedStatement pr = null;
-        try(Connection conn = ds.getConnection()){
+        ResultSet rs = null;
+        pr = conn.prepareStatement("SELECT * from Manga as m WHERE m.id=?");
+        pr.setInt(1,id);
+        rs = pr.executeQuery();
+        if(rs.next()){
+            ;
+        }else{
+            throw new Exception("Il prodotto selezionato per la rimozione non è presente nel db");
+        }
+
+        try{
             pr = conn.prepareStatement("DELETE FROM Manga as p WHERE p.id=?");
             pr.setInt(1,id);
             pr.executeUpdate();
@@ -121,6 +182,8 @@ public class MangaDAO {
         }finally {
             try{
                 pr.close();
+                rs.close();
+                conn.close();
             }catch (SQLException e){
                 e.printStackTrace();
             }
@@ -129,14 +192,23 @@ public class MangaDAO {
 
     public void updateQuantity(int quantity,int id) throws Exception {
 
-        if(retrieveById(id)==null)
-            throw new Exception("prodotto inserito non esistente");
+        Connection conn = ds.getConnection();
+        PreparedStatement pr = null;
+        ResultSet rs = null;
+        pr = conn.prepareStatement("SELECT * from Manga as m WHERE m.id=?");
+        pr.setInt(1,id);
+        rs = pr.executeQuery();
+        if(rs.next()){
+            ;
+        }else{
+            throw new Exception("Il prodotto selezionato per l'aggiornamento non è presente nel db'");
+        }
+
 
         if(quantity<=0)
             throw new Exception("quantità inserita non valida");
 
-        PreparedStatement pr = null;
-        try(Connection conn = ds.getConnection()){
+        try{
             pr = conn.prepareStatement("UPDATE Manga AS m SET m.quantity = m.quantity + ? WHERE m.id=?");
             pr.setInt(1,quantity);
             pr.setInt(2,id);
@@ -146,6 +218,8 @@ public class MangaDAO {
         }finally{
             try{
                 pr.close();
+                rs.close();
+                conn.close();
             }catch(SQLException e){
                 e.printStackTrace();
             }
@@ -271,27 +345,33 @@ public class MangaDAO {
         if((name==null || name.equals("")) && (collection==null || collection.equals("")) && min_price==0 && max_price==0)
             return retrieveAll();
 
-        if(max_price>0 && max_price<min_price)
+        if(max_price>=0 && max_price<min_price)
             throw new Exception("range di valori inserito non corretto");
 
         if(name==null)
             name="";
 
-        if(collection==null)
-            collection="";
 
-        CollectionDAO c = new CollectionDAO(ds);
-        if(c.retrieve(collection)==null)
-            throw new Exception("collezione inserita non valida");
-
+        Connection conn = ds.getConnection();
 
         PreparedStatement pr = null;
         ResultSet rs = null;
 
+        pr = conn.prepareStatement("SELECT * FROM COLLECTION AS c WHERE c.nome=?");
+        pr.setString(1,collection);
+
+        rs=pr.executeQuery();
+
+        if(rs.next()) {
+        }else{
+            throw new Exception("Collezione inserita non esistente nel db");
+        }
+
+
+
         String ricerca = null;
 
-        try(Connection conn = ds.getConnection()) {
-
+        try{
             ricerca = "SELECT * FROM Manga AS m WHERE m.name LIKE '%" + name + "%' AND m.collection_id LIKE '%" + collection + "%' AND m.price BETWEEN ? AND ";
             if (max_price <= 0) {
                 ricerca = ricerca + "99999999999 ";
@@ -392,6 +472,7 @@ public class MangaDAO {
             try{
                 rs.close();
                 pr.close();
+                conn.close();
             }catch (SQLException e){
                 e.printStackTrace();
             }
@@ -465,22 +546,28 @@ public class MangaDAO {
         if(name==null)
             name="";
 
-        if(collection==null)
-            collection="";
 
-        CollectionDAO c = new CollectionDAO(ds);
-        if(c.retrieve(collection)==null)
-            throw new Exception("collezione inserita non valida");
-
+        Connection conn = ds.getConnection();
 
         PreparedStatement pr = null;
         ResultSet rs = null;
 
+        pr = conn.prepareStatement("SELECT * FROM COLLECTION AS c WHERE c.nome=?");
+        pr.setString(1,collection);
+
+        rs=pr.executeQuery();
+
+        if(rs.next()) {
+        }else{
+            throw new Exception("Collezione inserita non esistente nel db");
+        }
+
+
         String ricerca = null;
 
-        try(Connection conn = ds.getConnection()) {
+        try{
 
-            ricerca = "SELECT * FROM Manga AS m WHERE m.name LIKE '%" + name + "%' AND m.collection_id LIKE '%" + collection + "%'";
+            ricerca = "SELECT * FROM Manga AS m WHERE m.name LIKE '%" + name + "%' AND m.collection_id ='"+collection+"'";
 
             pr = conn.prepareStatement(ricerca);
 
@@ -536,6 +623,7 @@ public class MangaDAO {
             try{
                 rs.close();
                 pr.close();
+                conn.close();
             }catch (SQLException e){
                 e.printStackTrace();
             }

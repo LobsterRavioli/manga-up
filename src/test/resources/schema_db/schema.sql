@@ -1,30 +1,31 @@
 
-
-CREATE TABLE IF NOT EXISTS end_user
+CREATE TABLE IF NOT EXISTS END_USER
 (
     usr_id  INT AUTO_INCREMENT NOT NULL,
     usr_email Varchar(128) NOT NULL UNIQUE,
     usr_name VARCHAR(32) NOT NULL,
     usr_surname VARCHAR(32) NOT NULL,
-    usr_password VARCHAR(64) NOT NULL,
+    usr_password VARCHAR(32) NOT NULL,
     usr_phone_number VARCHAR(20) NOT NULL,
-    usr_birth_date date NOT NULL ,
+    usr_birth_date date NOT NULL,
     PRIMARY KEY (usr_id)
 );
 
-CREATE TABLE IF NOT EXISTS address
+CREATE TABLE IF NOT EXISTS ADDRESS
 (
-    addr_id           IDENTITY NOT NULL PRIMARY KEY,
+    addr_id           INT AUTO_INCREMENT,
     usr_id            INT          NOT NULL,
     addr_country      VARCHAR(64)  NOT NULL,
     addr_city         VARCHAR(30)  NOT NULL,
     addr_street       VARCHAR(100) NOT NULL,
     addr_phone_number VARCHAR(15)  NOT NULL,
     addr_region       VARCHAR(30)  NOT NULL,
-    addr_postal_code  VARCHAR(5)   NOT NULL
+    addr_postal_code  VARCHAR(5)   NOT NULL,
+    PRIMARY KEY (addr_id),
+    FOREIGN KEY (usr_id) REFERENCES end_user (usr_id)
 );
 
-CREATE TABLE IF NOT EXISTS credit_card
+CREATE TABLE IF NOT EXISTS CREDIT_CARD
 (
     crd_id INT AUTO_INCREMENT NOT NULL,
     crd_number VARCHAR(16) UNIQUE NOT NULL,
@@ -32,22 +33,25 @@ CREATE TABLE IF NOT EXISTS credit_card
     crd_cvc VARCHAR(32) NOT NULL,
     crd_holder VARCHAR(50) NOT NULL,
     crd_expiration_date date NOT NULL,
-    PRIMARY KEY (crd_id),
-    FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)
+    PRIMARY KEY (crd_id)
+   // FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)
 );
 
-CREATE TABLE IF NOT EXISTS us_ers
+CREATE TABLE IF NOT EXISTS US_ERS
 (
     user_name VARCHAR(20) NOT NULL PRIMARY KEY,
-    password VARCHAR(32) NOT NULL);
+    password VARCHAR(32) NOT NULL
+);
 
 
-CREATE TABLE IF NOT EXISTS ro_les
+CREATE TABLE IF NOT EXISTS RO_LES
 (
     role_name VARCHAR(20) NOT NULL PRIMARY KEY
 );
 
-CREATE TABLE IF NOT EXISTS user_roles
+
+
+CREATE TABLE IF NOT EXISTS USER_ROLES
 (
     user_name VARCHAR(20) NOT NULL,
     role_name VARCHAR(20) NOT NULL,
@@ -56,7 +60,7 @@ CREATE TABLE IF NOT EXISTS user_roles
     FOREIGN KEY (role_name) REFERENCES ro_les (role_name) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS Orders
+CREATE TABLE IF NOT EXISTS ORDERS
 (
     ord_id INT AUTO_INCREMENT NOT NULL,
     ord_date DATE NOT NULL,
@@ -70,7 +74,7 @@ CREATE TABLE IF NOT EXISTS Orders
     PRIMARY KEY(ord_id)
 );
 
-CREATE TABLE IF NOT EXISTS Order_row
+CREATE TABLE IF NOT EXISTS ORDER_ROW
 (
     id INT AUTO_INCREMENT NOT NULL,
     ord_id INT NOT NULL,
@@ -97,7 +101,7 @@ CREATE TABLE IF NOT EXISTS TO_MANAGE
         ON UPDATE cascade ON DELETE cascade
 );
 
-CREATE TABLE IF NOT EXISTS manages
+CREATE TABLE IF NOT EXISTS MANAGES
 (
     man_user_name VARCHAR(20) NOT NULL,
     man_order_id INT NOT NULL,
@@ -112,7 +116,7 @@ CREATE TABLE IF NOT EXISTS manages
 );
 
 
-CREATE TABLE IF NOT EXISTS Manga
+CREATE TABLE IF NOT EXISTS MANGA
 (
     id int auto_increment PRIMARY KEY NOT NULL,
     name VARCHAR(50) NOT NULL,
@@ -153,15 +157,80 @@ CREATE TABLE IF NOT EXISTS CART
 
 CREATE TABLE IF NOT EXISTS COLLECTION
 (
-    nome VARCHAR(25) NOT NULL
+    nome VARCHAR(25) PRIMARY KEY NOT NULL
 );
 
 
 
-CREATE TABLE IF NOT EXISTS Genre
+CREATE TABLE IF NOT EXISTS GENRE
 (
     nome VARCHAR(15) PRIMARY KEY NOT NULL
-);
+)
 
 
+/*
+INSERT INTO users (user_name, password) VALUES ('Tommaso', 'password1');
+INSERT INTO users (user_name, password) VALUES ('Francesco', 'password5');
+INSERT INTO users (user_name, password) VALUES ('Alessandro', 'password6');
 
+
+INSERT INTO roles (role_name) VALUES ('CATALOG_MANAGER');
+INSERT INTO roles (role_name) VALUES ('USER_MANAGER');
+INSERT INTO roles (role_name) VALUES ('ORDER_MANAGER');
+
+INSERT INTO user_roles (user_name, role_name) VALUES ('Tommaso', 'CATALOG_MANAGER');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Alessandro', 'USER_MANAGER');
+
+
+INSERT INTO user_roles (user_name, role_name) VALUES ('Francesco', 'ORDER_MANAGER');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Francesco', 'CATALOG_MANAGER');
+
+INSERT INTO user_roles (user_name, role_name) VALUES ('Francesco', 'USER_MANAGER');
+INSERT INTO user_roles (user_name, role_name) VALUES ('Alessandro', 'ORDER_MANAGER');
+
+
+INSERT INTO COLLECTION(nome) VALUES ('Aniparo');
+
+INSERT INTO COLLECTION(nome) VALUES ('Cyberpunk');
+
+INSERT INTO COLLECTION(nome) VALUES ('Gekiga');
+
+INSERT INTO COLLECTION(nome) VALUES ('Gore');
+
+INSERT INTO COLLECTION(nome) VALUES ('Mecha');
+
+INSERT INTO COLLECTION(nome) VALUES ('Meitantei');
+
+INSERT INTO COLLECTION(nome) VALUES ('Romakome');
+
+INSERT INTO COLLECTION(nome) VALUES ('Spokon');
+
+INSERT INTO COLLECTION(nome) VALUES ('Suriraa');
+
+INSERT INTO Genre(nome) VALUES ('Azione');
+
+INSERT INTO Genre(nome) VALUES ('Commedia');
+
+INSERT INTO Genre(nome) VALUES ('Cucina');
+
+INSERT INTO Genre(nome) VALUES ('Fantascienza');
+
+INSERT INTO Genre(nome) VALUES ('Fantasy');
+
+INSERT INTO Genre(nome) VALUES ('Josei');
+
+INSERT INTO Genre(nome) VALUES ('Kodomo');
+
+INSERT INTO Genre(nome) VALUES ('Romantico');
+
+INSERT INTO Genre(nome) VALUES ('Saggistico');
+
+INSERT INTO Genre(nome) VALUES ('Seinen');
+
+INSERT INTO Genre(nome) VALUES ('Shonen');
+
+INSERT INTO Genre(nome) VALUES ('Shoujo');
+
+INSERT INTO Genre(nome) VALUES ('Storico');
+
+INSERT INTO Genre(nome) VALUES ('Vita Scolastica');*/

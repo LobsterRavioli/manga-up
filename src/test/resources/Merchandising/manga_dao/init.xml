@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Manga id='20' name='Sanctuary 3' editore='Star Comics' price="25.99" weight="3" height="3" lenght="5" state="NEW" description="cxd" ISBN="9997546123412" book_binding="bordatura" volume="VOL.5" release_date="2001-03-05" page_number="287" quantity="3" interior="6" lang="ITA" image="Sanctuary3.jpeg" collection_id="Mecha" genre_id="Kodomo" storyMaker="Akira Toriyama" />
+    <Collection nome="Mecha" />
+    <Genre nome="Josei" />
+    <END_USER usr_id="3" usr_email="fracmonz@gmail.com" usr_name="Francesco" usr_surname="Monzillo" usr_password="Monzillo.2001" usr_phone_number="3427797976" usr_birth_date="2001-07-19"/>
+    <Cart manga_id="20" user_id="3" quantity="20" />
+
+</dataset>
