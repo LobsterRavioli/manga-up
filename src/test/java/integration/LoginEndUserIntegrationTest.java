@@ -1,7 +1,6 @@
 package integration;
 
 import Cart.CheckoutService.CartDAO;
-import User.AccountService.EndUser;
 import User.AccountService.EndUserDAO;
 import User.ProfileView.LoginEndUserServlet;
 import org.dbunit.IDatabaseTester;
@@ -20,13 +19,11 @@ import javax.naming.Context;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.mockito.Mockito.*;
@@ -87,7 +84,7 @@ public class LoginEndUserIntegrationTest {
     }
 
     @Test
-    void invalidParameter() throws Exception {
+    void loginSuccess() throws Exception {
         refreshDataSet("enduser_dao/end_user_dao_exists_email.xml");
         String email = "tommyrock99@hotmail.it";
         String password = "password1!";
