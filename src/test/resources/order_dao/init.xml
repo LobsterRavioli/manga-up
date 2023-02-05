@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <END_USER usr_id='101' usr_email='tommy@hotmail.it' usr_name='Tommaso' usr_surname='Sorrentino' usr_password='password1!' usr_phone_number='+393662968496' usr_birth_date='2021-12-01'/>
+    <END_USER usr_id='136' usr_email='ale@hotmail.it' usr_name='Alessandro' usr_surname='Carnevale' usr_password='passWARUDO' usr_phone_number='+393552477336' usr_birth_date='2013-10-10'/>
+    <ORDERS ord_id='29' ord_date='2018-05-06' ord_state='TO_SEND' ord_total_price='10.50' ord_end_user_id='136' ord_address='Address info fittizie' ord_card='Credit card info fittizie'/>
+    <ORDERS ord_id='37' ord_date='2018-05-07' ord_state='TO_SEND' ord_total_price='9.99' ord_end_user_id='136' ord_address='Address info fittizie' ord_card='Credit card info fittizie'/>
+    <END_USER usr_id='203' usr_email='frank@hotmail.it' usr_name='Francesco' usr_surname='Monzillo' usr_password='password1!' usr_phone_number='+393662968496' usr_birth_date='2021-12-01'/>
+    <ORDERS ord_id='33' ord_date='2019-05-06' ord_state='TO_SEND' ord_total_price='10.50' ord_end_user_id='203' ord_address='Address info fittizie' ord_card='Credit card info fittizie'/>
+</dataset>

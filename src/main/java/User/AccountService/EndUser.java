@@ -3,6 +3,18 @@ package User.AccountService;
 import java.util.*;
 
 public class EndUser{
+
+    public static final String NAME_REGEX = "^[a-zA-Z]+$";
+    public static final String SURNAME_REGEX = "^[a-zA-Z]+$";
+    public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
+    public static final String PASSWORD_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$";
+    public static final String ADDRESS_REGEX = "^[a-zA-Z0-9]+$";
+    public static final String CITY_REGEX = "^[a-zA-Z]+$";
+    public static final String COUNTRY_REGEX = "^[a-zA-Z]+$";
+    public static final String POSTAL_CODE_REGEX = "^[0-9]+$";
+    public static final String PHONE_REGEX = "^[0-9]+$";
+    public static final String BIRTH_DATE_REGEX = "^\\d{4}-\\d{2}-\\d{2}$";
+
     private String name;
     private String surname;
     private String email;
@@ -173,6 +185,7 @@ public class EndUser{
                 ", id=" + getId() +
                 '}';
     }
+
 
     public static boolean validate(EndUser endUser){
         if (endUser == null) return false;

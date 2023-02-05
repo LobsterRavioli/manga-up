@@ -16,8 +16,9 @@ function check_registration_format(){
     let city_format = /^[a-zA-Z]{1,163}$/;
     let street_format = /^[a-zA-Z0-9\-\s]{1,40}$/;
     let phone_number_format = /^[0-9]{13,15}$/;
-    let postal_code_format = /^[0-9]{5}$/;
 
+
+    let postal_code_format = /^[0-9]{5}$/;
 
     let email = document.getElementById("email").value;
     let name = document.getElementById("name").value;
@@ -27,14 +28,11 @@ function check_registration_format(){
     let birth_date = document.getElementById("birth_date").value;
     let phone_number = document.getElementById("phone_number").value;
 
-
     let card_number = document.getElementById("card_number").value;
     let cvc = document.getElementById("cvc").value;
     let card_holder = document.getElementById("card_holder").value;
     let expirement_date = document.getElementById("expirement_date").value;
     let phone_number_address = document.getElementById("phone_number_address").value;
-
-
 
     let country = document.getElementById("country").value;
     let region = document.getElementById("region").value;
@@ -218,7 +216,7 @@ function check_registration_format(){
     }
 
     if(!phone_number_format.test(phone_number_address)) {
-        document.querySelector(".phone_number_address_error").innerHTML = "Campo non valido: il campo numero di cellulare è obbligatorio e la lunghezza del numero cellulare non deve essere compresa tra 13 e 15 e il formato: +39–XXX-XXXXXXX di cui le x sono caratteri numerici";
+        document.querySelector(".phone_number_address_error").innerHTML = "Campo non valido: il campo numero di cellulare è obbligatorio e la lunghezza del numero cellulare non deve essere compresa tra 13 e 15 e caratteri numerici";
         document.querySelector(".phone_number_address_error").style.display = "block";
         event.preventDefault();
 
@@ -243,7 +241,7 @@ function check_registration_format(){
     }
 
     if(!phone_number_format.test(phone_number)) {
-        document.querySelector(".phone_number_error").innerHTML = "Campo non valido: il campo numero di cellulare  è obbligatorio e la lunghezza del numero cellulare non deve essere compresa tra 13 e 15 e il formato: +39–XXX-XXXXXXX di cui le x sono caratteri numerici";
+        document.querySelector(".phone_number_error").innerHTML = "Campo non valido: il campo numero di cellulare è obbligatorio e la lunghezza del numero cellulare non deve essere compresa tra 13 e 15 e caratteri numerici";;
         document.querySelector(".phone_number_error").style.display = "block";
         event.preventDefault();
 

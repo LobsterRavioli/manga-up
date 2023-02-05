@@ -1,4 +1,4 @@
-package unit;
+package unit.dao;
 
 import User.AccountService.EndUser;
 import User.AccountService.EndUserDAO;
@@ -118,7 +118,6 @@ class EndUserDAOTest {
         Assert.assertThrows(IllegalArgumentException.class, () -> endUserDAO.existEmail(email));
     }
 
-
     private static Stream<Arguments> existEmailInvalidInputProvider() {
         return Stream.of(
                 Arguments.of("Test case email non valida", ""),
@@ -126,7 +125,6 @@ class EndUserDAOTest {
                 Arguments.of("Test case lunghezza email non valida", "fkdsuheioquwfhewieuhuefiwhheiuwefiuhofehiouiquweho3iqeuhfgjkefslkajlea;ijwq;oilufoiwqjfopfiqwjopwqiqwhiofwo")
         );
     }
-
 
     @Test
     void existEmailTestInDB() throws Exception {

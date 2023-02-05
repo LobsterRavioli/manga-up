@@ -29,8 +29,11 @@ public class OrderDAO
 
     private static final String RETRIEVE = "SELECT * FROM "+ORDER_TABLE+" WHERE ord_id = ? ;";
 
-    public void create(Order order) throws SQLException
+    public void create(Order order) throws IllegalArgumentException, SQLException
     {
+        if(!order.validateOrderCreation())
+            throw new IllegalArgumentException("Invalid data.");
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -158,8 +161,8 @@ public class OrderDAO
                 orderBean.setState(rs.getString("ord_state"));
                 orderBean.setTotalPrice(rs.getDouble("ord_total_price"));
                 orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
-                orderBean.setCreditCardEndUserInfo(rs.getString("ord_address"));
-                orderBean.setAddressEndUserInfo(rs.getString("ord_card"));
+                orderBean.setAddressEndUserInfo(rs.getString("ord_address"));
+                orderBean.setCreditCardEndUserInfo(rs.getString("ord_card"));
             }
         }
         finally
@@ -175,7 +178,10 @@ public class OrderDAO
                     connection.close();
             }
         }
-        return orderBean;
+        if(orderBean.validateOrder())
+            return orderBean;
+        else
+            return null;
     }
 
     public Collection<Order> doRetrieveAll(String ordCriteria) throws SQLException {
@@ -207,8 +213,8 @@ public class OrderDAO
                 orderBean.setState(rs.getString("ord_state"));
                 orderBean.setTotalPrice(rs.getDouble("ord_total_price"));
                 orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
-                orderBean.setCreditCardEndUserInfo(rs.getString("ord_address"));
-                orderBean.setAddressEndUserInfo(rs.getString("ord_card"));
+                orderBean.setAddressEndUserInfo(rs.getString("ord_address"));
+                orderBean.setCreditCardEndUserInfo(rs.getString("ord_card"));
 
                 orders.add(orderBean);
             }
@@ -255,8 +261,8 @@ public class OrderDAO
                 orderBean.setState(rs.getString("ord_state"));
                 orderBean.setTotalPrice(rs.getDouble("ord_total_price"));
                 orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
-                orderBean.setCreditCardEndUserInfo(rs.getString("ord_address"));
-                orderBean.setAddressEndUserInfo(rs.getString("ord_card"));
+                orderBean.setAddressEndUserInfo(rs.getString("ord_address"));
+                orderBean.setCreditCardEndUserInfo(rs.getString("ord_card"));
                 orders.add(orderBean);
             }
         } finally {
@@ -297,8 +303,8 @@ public class OrderDAO
                 orderBean.setState(rs.getString("ord_state"));
                 orderBean.setTotalPrice(rs.getDouble("ord_total_price"));
                 orderBean.setEndUserID(rs.getInt("ord_end_user_id"));
-                orderBean.setCreditCardEndUserInfo(rs.getString("ord_address"));
-                orderBean.setAddressEndUserInfo(rs.getString("ord_card"));
+                orderBean.setAddressEndUserInfo(rs.getString("ord_address"));
+                orderBean.setCreditCardEndUserInfo(rs.getString("ord_card"));
                 orders.add(orderBean);
             }
 
@@ -313,9 +319,5 @@ public class OrderDAO
         }
 
         return orders;
-
     }
-
-
-
 }
