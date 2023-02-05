@@ -77,7 +77,6 @@ public class CartDAO {
             try{
                 rsret.close();
                 prret.close();
-                conn.close();
             }catch (SQLException e){
                 e.printStackTrace();
             }
@@ -85,6 +84,7 @@ public class CartDAO {
 
     }
     public void removeProduct(Manga manga,EndUser user) throws Exception{
+
 
         Connection conn = ds.getConnection();
 
@@ -117,10 +117,6 @@ public class CartDAO {
             throw e;
         }
 
-        conn.close();
-        pr.close();
-        rs.close();
-
 
         HashMap<Manga,Integer> ma = retrieveByUser(user);
         boolean b = false;
@@ -136,23 +132,18 @@ public class CartDAO {
             throw new Exception("prodotto non inserito nel carrello di questo utente");
         }
 
-        Connection c = ds.getConnection();
-        PreparedStatement prs=null;
-
         try{
-            System.out.println("Dentro");
-            System.out.println(c.isClosed());
-            prs = c.prepareStatement("DELETE FROM CART AS C WHERE C.user_id=? AND C.manga_id=?");
-            prs.setInt(1,user.getId());
-            prs.setInt(2,manga.getId());
-            prs.executeUpdate();
+            pr = conn.prepareStatement("DELETE FROM CART AS C WHERE C.user_id=? AND C.manga_id=?");
+            pr.setInt(1,user.getId());
+            pr.setInt(2,manga.getId());
+            pr.executeUpdate();
             System.out.println("Dentro");
         }catch (SQLException e){
             System.out.println(e.getMessage() + 1);
         }finally {
             try{
-                c.close();
-                prs.close();
+                conn.close();
+                pr.close();
             }catch (SQLException e){
                 System.out.println(e.getMessage() + 2);
             }
@@ -160,25 +151,55 @@ public class CartDAO {
     }
 
     public void addProduct(Manga manga,int quantity,EndUser user) throws Exception{
-        EndUserDAO eD = new EndUserDAO(ds);
-        MangaDAO m = new MangaDAO(ds);
 
 
-        if(eD.findById(user.getId())==null){
-            throw new Exception("utente non esistente");
+        Connection conn = ds.getConnection();
+
+        PreparedStatement pr = null;
+        ResultSet rs = null;
+
+        pr = conn.prepareStatement("SELECT * FROM END_USER AS e WHERE e.usr_id=?");
+
+        pr.setInt(1,user.getId());
+
+        rs = pr.executeQuery();
+
+        if(rs.next()){
+            ;
+        }else {
+            throw new Exception("l'utente non risulta registrato nel sistema");
         }
 
-        if(m.retrieveById(manga.getId())==null)
-            throw new Exception("prodotto non esistente");
+        try {
+            pr = conn.prepareStatement("SELECT * from Manga as m WHERE m.id=?");
+            pr.setInt(1, manga.getId());
+
+            rs = pr.executeQuery();
+            if (rs.next()) {
+                ;
+            } else {
+                throw new Exception("il manga che si sta provando ad inserire non risulta presente nel db");
+            }
+        }catch (Exception e){
+            throw e;
+        }
 
 
-        if(quantity<0 || quantity>manga.getQuantity()){
+
+        if(quantity<=0 || quantity>manga.getQuantity()){
             throw new Exception("quantità inserita non valida");
         }
 
+        HashMap<Manga,Integer> ma = retrieveByUser(user);
+        for (Map.Entry <Manga, Integer> set : ma.entrySet()) {
+            System.out.println(manga.getId());
+            if(set.getKey().getId()==manga.getId()) {
+                updateProduct(manga,quantity,user);
+                return;
+            }
+        }
 
-        PreparedStatement pr = null;
-        try(Connection conn = ds.getConnection()){
+        try{
             pr = conn.prepareStatement("INSERT INTO CART (user_id,manga_id,quantity) VALUES (?,?,?)");
 
             pr.setInt(1,user.getId());
@@ -198,9 +219,44 @@ public class CartDAO {
 
     public void updateProduct(Manga manga,int quantity, EndUser user) throws Exception{
 
-        EndUserDAO eD = new EndUserDAO(ds);
-        MangaDAO m = new MangaDAO(ds);
-        System.out.println(quantity);
+
+        Connection conn = ds.getConnection();
+
+        PreparedStatement pr = null;
+        ResultSet rs = null;
+
+        pr = conn.prepareStatement("SELECT * FROM END_USER AS e WHERE e.usr_id=?");
+
+        pr.setInt(1,user.getId());
+
+        rs = pr.executeQuery();
+
+        if(rs.next()){
+            ;
+        }else {
+            throw new Exception("l'utente non risulta registrato nel sistema");
+        }
+
+        try {
+            pr = conn.prepareStatement("SELECT * from Manga as m WHERE m.id=?");
+            pr.setInt(1, manga.getId());
+
+            rs = pr.executeQuery();
+            if (rs.next()) {
+                ;
+            } else {
+                throw new Exception("il manga che si sta provando ad inserire non risulta presente nel db");
+            }
+        }catch (Exception e){
+            throw e;
+        }
+
+
+
+        if(quantity<=0 || quantity>manga.getQuantity()){
+            throw new Exception("quantità inserita non valida");
+        }
+
         HashMap<Manga,Integer> mappa = retrieveByUser(user);
 
         boolean b = false;
@@ -218,25 +274,8 @@ public class CartDAO {
             return;
         }
 
-        if(eD.findById(user.getId())==null){
-            throw new Exception("utente non esistente");
-        }
 
-        if(m.retrieveById(manga.getId())==null)
-            throw new Exception("prodotto non esistente");
-
-        if(quantity<=0){
-            throw new Exception("quantità inserita non valida");
-        }
-
-        if(quantity>manga.getQuantity()){
-            throw new Exception("quantità inserita non valida");
-        }
-
-
-
-        PreparedStatement pr = null;
-        try(Connection conn = ds.getConnection()){
+        try{
 
             pr = conn.prepareStatement("UPDATE CART SET quantity=? WHERE user_id=? AND manga_id=?");
 
@@ -258,13 +297,24 @@ public class CartDAO {
 
 
     public void toEmptyCart(EndUser user) throws Exception {
-        EndUserDAO ed = new EndUserDAO(ds);
-
-        if (ed.findById(user.getId()) == null)
-            throw new Exception("utente non esistente");
+        Connection conn =ds.getConnection();
 
         PreparedStatement pr = null;
-        try (Connection conn = ds.getConnection()) {
+        ResultSet rs = null;
+
+        pr = conn.prepareStatement("SELECT * FROM END_USER AS e WHERE e.usr_id=?");
+
+        pr.setInt(1,user.getId());
+
+        rs = pr.executeQuery();
+
+        if(rs.next()){
+            ;
+        }else {
+            throw new Exception("l'utente non risulta registrato nel sistema");
+        }
+
+        try {
             pr = conn.prepareStatement("DELETE FROM CART AS C WHERE c.user_id=?");
             pr.setInt(1, user.getId());
             pr.executeUpdate();
