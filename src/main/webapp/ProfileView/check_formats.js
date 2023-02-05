@@ -16,6 +16,8 @@ function check_registration_format(){
     let city_format = /^[a-zA-Z]{1,163}$/;
     let street_format = /^[a-zA-Z0-9\-\s]{1,40}$/;
     let phone_number_format = /^[0-9]{13,15}$/;
+
+
     let postal_code_format = /^[0-9]{5}$/;
 
     let email = document.getElementById("email").value;
