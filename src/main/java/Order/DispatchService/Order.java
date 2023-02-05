@@ -150,12 +150,14 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return id == order.id && Double.compare(order.totalPrice, totalPrice) == 0 && Objects.equals(orderDate, order.orderDate) && Objects.equals(state, order.state) && Objects.equals(endUser, order.endUser) && Objects.equals(endUserAddress, order.endUserAddress) && Objects.equals(endUserCard, order.endUserCard);
+        return id == order.id && Double.compare(order.totalPrice, totalPrice) == 0 && orderDate.equals(order.orderDate)
+                && state.equals(order.state) && addressInfo.equals(order.addressInfo)
+                && creditCardInfo.equals(order.creditCardInfo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, orderDate, state, totalPrice, endUser, endUserAddress, endUserCard);
+        return Objects.hash(id, orderDate, state, totalPrice, endUser, endUserAddress, addressInfo, endUserCard, creditCardInfo);
     }
 
     /*
@@ -184,6 +186,23 @@ public class Order {
         this.endUserCard.setId(cardId);
     }
 */
+
+    public boolean validateOrder()
+    {
+        if(this.orderDate == null || this.state == null ||
+                this.totalPrice <= 0 || this.getEndUserID() < 0 || this.addressInfo == null || this.creditCardInfo == null)
+            return false;
+        else
+            return true;
+    }
+    public boolean validateOrderCreation()
+    {
+        if(this.orderDate == null || this.state.equals(Order.SENT) ||
+           this.totalPrice <= 0 || this.getEndUserID() < 0 || this.addressInfo == null || this.creditCardInfo == null)
+            return false;
+        else
+            return true;
+    }
 
     private long id;
     private Date orderDate;
