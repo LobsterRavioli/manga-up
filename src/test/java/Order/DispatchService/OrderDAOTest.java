@@ -54,7 +54,7 @@ class OrderDAOTest {
                 .build(OrderDAOTest.class.getClassLoader().getResourceAsStream(filename));
         tester.setDataSet(initialState);
         tester.onSetup();
-    } //
+    }
 
     @BeforeEach
     public void setUp() throws Exception {
