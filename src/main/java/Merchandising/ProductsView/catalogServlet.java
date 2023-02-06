@@ -13,27 +13,28 @@ import java.util.ArrayList;
 @WebServlet(name = "catalogServlet", value = "/catalogServlet")
 public class catalogServlet extends HttpServlet {
 
+    MangaDAO daoM;
 
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         ArrayList<Manga> list = new ArrayList<Manga>();
 
-        DataSource ds =(DataSource) getServletContext().getAttribute("DataSource");
-        MangaDAO daoM = new MangaDAO(ds);
-
+        if(daoM == null) {
+            DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+            daoM = new MangaDAO(ds);
+        }
 
         HttpSession session = request.getSession(true);
         try{
             list = daoM.retrieveAll();
-
-            session.setAttribute("listaElementi",list);
+            request.setAttribute("listaElementi",list);
             RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/catalog.jsp");
             rD.forward(request,response);
         }catch (Exception e){
             System.out.println(e.getMessage());
-            session.setAttribute("listaElementi",null);
+            request.setAttribute("listaElementi",null);
             RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/catalog.jsp");
             rD.forward(request,response);
         }
@@ -41,7 +42,11 @@ public class catalogServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
 
+    public void setDaoM(MangaDAO m){
+        daoM=m;
     }
 }

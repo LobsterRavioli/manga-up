@@ -67,7 +67,7 @@
     <% Integer limit=0;%>
 
 <div class="container mydiv x" id="paginated-list">
-    <% ArrayList<Manga>list = (ArrayList<Manga>) session.getAttribute("listaElementi");
+    <% ArrayList<Manga>list = (ArrayList<Manga>) request.getAttribute("listaElementi");
     if(list!=null){
         boolean b = false;
         if(limit==null){

@@ -44,6 +44,13 @@ public class processProductInsertion extends HttpServlet {
         final String prodBinding = request.getParameter("rilegatura");
         final String prodVolume = request.getParameter("volume");
         final String prodDataUscita = request.getParameter("data_uscita");
+
+        if(prodDataUscita==null){
+            request.setAttribute("error","Il nome del prodotto non è stato specificato...errore");
+            RequestDispatcher rD = this.getServletContext().getRequestDispatcher("/ProductsView/homepage.jsp");
+            rD.forward(request,response);
+            return;
+        }
         final Date data = Date.valueOf(prodDataUscita);
         final String prodPageNumber = request.getParameter("numPagine");
         final String prodQuantity = request.getParameter("quantity");
@@ -58,6 +65,13 @@ public class processProductInsertion extends HttpServlet {
         OutputStream out = null;
         InputStream filecontent = null;
         //final PrintWriter writer = response.getWriter();
+
+        if(prodName == null){
+            request.setAttribute("error","Il nome del prodotto non è stato specificato...errore");
+            RequestDispatcher rD = this.getServletContext().getRequestDispatcher("/ProductsView/homepage.jsp");
+            rD.forward(request,response);
+            return;
+        }
 
         try {
             out = new FileOutputStream(new File("C:\\Users\\Francesco Monzillo\\Dropbox\\Il mio PC (LAPTOP-AMUDE4IL)\\Desktop\\Uni\\Corsi\\3° anno\\Primo Semestre\\Ingegneria del Software\\Progetto\\Implementation\\manga-up\\src\\main\\webapp\\images\\products" + File.separator
@@ -80,7 +94,7 @@ public class processProductInsertion extends HttpServlet {
                 return;
             }catch (Exception e){
                 System.out.println(e.getMessage());
-                request.setAttribute("error","prodotto già esistente");
+                request.setAttribute("error",e.getMessage());
                 RequestDispatcher rD = this.getServletContext().getRequestDispatcher("/ProductsView/homepage.jsp");
                 rD.forward(request,response);
                 return;
