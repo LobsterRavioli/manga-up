@@ -17,19 +17,23 @@ public class catalogServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String page = request.getParameter("productsSupply");
+
         ArrayList<Manga> list = new ArrayList<Manga>();
 
         DataSource ds =(DataSource) getServletContext().getAttribute("DataSource");
         MangaDAO daoM = new MangaDAO(ds);
+
+
+        HttpSession session = request.getSession(true);
         try{
             list = daoM.retrieveAll();
-            request.setAttribute("listaElementi",list);
+
+            session.setAttribute("listaElementi",list);
             RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/catalog.jsp");
             rD.forward(request,response);
         }catch (Exception e){
             System.out.println(e.getMessage());
-            request.setAttribute("listaElementi",null);
+            session.setAttribute("listaElementi",null);
             RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/catalog.jsp");
             rD.forward(request,response);
         }

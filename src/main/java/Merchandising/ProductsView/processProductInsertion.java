@@ -1,6 +1,7 @@
 package Merchandising.ProductsView;
 
 import Merchandising.MerchandiseService.*;
+import User.AccountService.EndUserDAO;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -14,15 +15,19 @@ import java.text.SimpleDateFormat;
 @WebServlet(name = "processProductInsertion", value = "/ProductsView/processProductInsertion")
 @MultipartConfig
 public class processProductInsertion extends HttpServlet {
+
+    private MangaDAO daoM;
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doPost(request,response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        DataSource ds =(DataSource) getServletContext().getAttribute("DataSource");
-        MangaDAO daoM = new MangaDAO(ds);
-
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(daoM==null) {
+            DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+            daoM = new MangaDAO(ds);
+        }
         final String prodName = request.getParameter("nome");
         final String prodPublisher = request.getParameter("editore");
         final String prodPrice = request.getParameter("prezzo");
@@ -50,7 +55,6 @@ public class processProductInsertion extends HttpServlet {
         // Create path components to save the file
         final Part filePart = request.getPart("immagine");
         //final String fileName = getFileName(filePart);
-        RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/homepage.jsp");
         OutputStream out = null;
         InputStream filecontent = null;
         //final PrintWriter writer = response.getWriter();
@@ -71,11 +75,13 @@ public class processProductInsertion extends HttpServlet {
                     out.write(bytes, 0, read);
                 }
                 System.out.println("New file " + prodName + " created at " + "C:\\Users\\Francesco Monzillo\\Dropbox\\Il mio PC (LAPTOP-AMUDE4IL)\\Desktop\\Uni\\Corsi\\3° anno\\Primo Semestre\\Ingegneria del Software\\Progetto\\Implementation\\manga-up\\src\\main\\webapp\\images\\products" + File.separator + prodName);
+                RequestDispatcher rD = this.getServletContext().getRequestDispatcher("/ProductsView/homepage.jsp");
                 rD.forward(request,response);
                 return;
             }catch (Exception e){
                 System.out.println(e.getMessage());
                 request.setAttribute("error","prodotto già esistente");
+                RequestDispatcher rD = this.getServletContext().getRequestDispatcher("/ProductsView/homepage.jsp");
                 rD.forward(request,response);
                 return;
             }
@@ -103,5 +109,9 @@ public class processProductInsertion extends HttpServlet {
             }
         }
         return null;
+    }
+
+    public void setMangaDAO(MangaDAO dao){
+        this.daoM = dao;
     }
 }
