@@ -24,13 +24,10 @@ public class visualizeCartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Cart c = (Cart) request.getSession(false).getAttribute("cart");
-        request.setAttribute("listaProdottiCart", c);
 
         DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
         CartDAO dao = new CartDAO(ds);
-        EndUser user = new EndUser(1,"francesco","M.1234");
-        request.getSession().setAttribute("user",user);
+        EndUser user = (EndUser) request.getSession(false).getAttribute("user");
         try{
             request.getSession().setAttribute("cart",new Cart(dao.retrieveByUser(user)));
         }catch (Exception e){

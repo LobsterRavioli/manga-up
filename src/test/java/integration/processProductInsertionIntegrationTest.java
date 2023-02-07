@@ -149,7 +149,7 @@ public class processProductInsertionIntegrationTest {
 
         spy.doPost(request, response);
 
-        verify(request).setAttribute(any(String.class),any(String.class));
+        verify(request).setAttribute(eq("error"),any(String.class));
     }
 
     private static Stream<Arguments> createTestFailProvider() {

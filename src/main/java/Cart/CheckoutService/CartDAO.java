@@ -190,12 +190,19 @@ public class CartDAO {
             throw new Exception("quantità inserita non valida");
         }
 
-        HashMap<Manga,Integer> ma = retrieveByUser(user);
-        for (Map.Entry <Manga, Integer> set : ma.entrySet()) {
-            System.out.println(manga.getId());
-            if(set.getKey().getId()==manga.getId()) {
-                updateProduct(manga,quantity,user);
-                return;
+        try{
+            HashMap<Manga,Integer> ma = retrieveByUser(user);
+            for (Map.Entry <Manga, Integer> set : ma.entrySet()) {
+                System.out.println(manga.getId());
+                if(set.getKey().getId()==manga.getId()) {
+                    updateProduct(manga,quantity,user);
+                    return;
+                }
+            }
+        }catch (Exception e){
+            if(e.getMessage().equals("nessun Elemento presente nel carrello"));
+            else{
+                throw e;
             }
         }
 

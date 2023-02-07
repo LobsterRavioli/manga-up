@@ -18,16 +18,23 @@ import java.util.Map;
 public class cartAddServlet extends HttpServlet {
 
 
+    private CartDAO dao;
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request,response);
     }
 
 
+
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
-        CartDAO dao = new CartDAO(ds);
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        if(dao == null) {
+            DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+            dao = new CartDAO(ds);
+        }
         HttpSession s = request.getSession(false);
         if (s == null){
             response.setStatus(201);
@@ -38,6 +45,7 @@ public class cartAddServlet extends HttpServlet {
         }
         PrintWriter pw;
         EndUser endUser = (EndUser) s.getAttribute("user");
+        System.out.println(endUser.getId());
         String quantity = request.getParameter("quantity");
         String prod_id = request.getParameter("id");
         String maxQ = request.getParameter("maxQ");
@@ -75,8 +83,10 @@ public class cartAddServlet extends HttpServlet {
             c.addToCart(m,Integer.parseInt(quantity));
             s.setAttribute("cart",c);
             response.setStatus(200);
+            response.getWriter().print(quantity);
             return;
         }catch (Exception e){
+            e.printStackTrace();
             if(e.getMessage().equals("utente non esistente")){
                 response.setStatus(201);
             }
@@ -90,4 +100,8 @@ public class cartAddServlet extends HttpServlet {
         }
 
     }
+    public void setDao(CartDAO c){
+        dao=c;
+    }
+
 }

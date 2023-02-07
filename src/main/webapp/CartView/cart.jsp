@@ -58,6 +58,12 @@
         <div class="cart_container">
           <div class="cart_title">Carrello</div>
 
+          <%if(request.getAttribute("errorCard")!=null){%>
+              <p><%=request.getAttribute("errorCard")%></p>
+          <%}%>
+          <%if(request.getAttribute("errorAddress")!=null){%>
+            <p><%=request.getAttribute("errorCard")%></p>
+          <%}%>
               <%Cart cart = (Cart) session.getAttribute("cart");
                 if(cart.getProdotti().size()>0){
                   int i=0;

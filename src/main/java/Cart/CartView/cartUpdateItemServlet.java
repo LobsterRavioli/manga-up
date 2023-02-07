@@ -13,16 +13,22 @@ import java.io.IOException;
 
 @WebServlet(name = "cartUpdateItemServlet", value = "/cartUpdateItemServlet")
 public class cartUpdateItemServlet extends HttpServlet {
+
+    CartDAO dao;
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request,response);
     }
 
+
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
-        System.out.println("Sono LA UPDATE");
-        CartDAO dao = new CartDAO(ds);
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(dao==null) {
+            DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+            dao = new CartDAO(ds);
+        }
         String aggiunta = request.getParameter("add");
         System.out.println(aggiunta);
         HttpSession s = request.getSession(false);
@@ -55,7 +61,6 @@ public class cartUpdateItemServlet extends HttpServlet {
                 return;
             }
             response.setStatus(200);
-            response.getWriter().write(quantity);
             return;
             }catch (Exception e){
                 System.out.println(e.getMessage());
@@ -70,5 +75,9 @@ public class cartUpdateItemServlet extends HttpServlet {
                 }
                 return;
         }
+    }
+
+    public void setDao(CartDAO c){
+        dao=c;
     }
 }
