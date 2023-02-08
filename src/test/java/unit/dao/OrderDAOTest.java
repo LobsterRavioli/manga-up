@@ -44,7 +44,6 @@ class OrderDAOTest {
                 "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;init=runscript from 'classpath:schema_db/schema.sql'",
                 "prova",
                 ""
-
         );
 
         // Refresh permette di svuotare la cache dopo un modifica con setDataSet
@@ -148,7 +147,7 @@ class OrderDAOTest {
     }
 
     @Test
-    void deleteNotExistingOrder() throws Exception {
+    void deleteNotExistingOrder() {
 
         Order order = new Order();
         order.setId(100);

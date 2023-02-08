@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <US_ERS user_name='Sara' password='password4'/>
+    <END_USER usr_id='95' usr_email='jimmy@hotmail.it' usr_name='James' usr_surname='Lobber' usr_password='unoDueTreStaiLa' usr_phone_number='+393992153977' usr_birth_date='2011-03-10'/>
+    <ORDERS ord_id='45' ord_date='2018-10-07' ord_state='TO_SEND' ord_total_price='4.50' ord_end_user_id='95' ord_address='Address info fittizie' ord_card='Credit card info fittizie'/>
+    <TO_MANAGE user_name='Sara' order_id='45'/>
+    <US_ERS user_name='Giovanni' password='password3'/>
+    <END_USER usr_id='36' usr_email='bob@hotmail.it' usr_name='Bob' usr_surname='Eagle' usr_password='loveMOM67' usr_phone_number='+395552686647' usr_birth_date='2011-03-10'/>
+    <ORDERS ord_id='75' ord_date='2018-10-07' ord_state='TO_SEND' ord_total_price='4.50' ord_end_user_id='36' ord_address='Address info fittizie' ord_card='Credit card info fittizie'/>
+    <TO_MANAGE user_name='Giovanni' order_id='75'/>
+    <US_ERS user_name='Sara' password='password4'/>
+    <END_USER usr_id='45' usr_email='lory@hotmail.it' usr_name='Lorenzo' usr_surname='Rossi' usr_password='unoDueTreStaiLa' usr_phone_number='+393992153977' usr_birth_date='2011-03-10'/>
+    <ORDERS ord_id='21' ord_date='2018-10-07' ord_state='TO_SEND' ord_total_price='4.50' ord_end_user_id='45' ord_address='Address info fittizie' ord_card='Credit card info fittizie'/>
+</dataset>
