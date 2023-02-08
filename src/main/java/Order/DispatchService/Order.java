@@ -34,6 +34,7 @@ public class Order {
         this.state = Order.TO_SENT;
     }
 
+    /*
     public Order(long id, Date orderDate, double totalPrice, EndUser endUser, CreditCard card)
     {
         this.id = id;
@@ -43,6 +44,7 @@ public class Order {
         this.endUser = endUser;
         this.endUserCard = card;
     }
+     */
 
     public long getId()
     {
@@ -190,7 +192,8 @@ public class Order {
     public boolean validateOrder()
     {
         if(this.orderDate == null || this.state == null ||
-                this.totalPrice <= 0 || this.getEndUserID() < 0 || this.addressInfo == null || this.creditCardInfo == null)
+                this.totalPrice <= 0 || this.getEndUserID() < 0 || this.addressInfo == null ||
+                this.addressInfo.trim() == "" || this.creditCardInfo == null || this.creditCardInfo.trim() == "")
             return false;
         else
             return true;
@@ -198,7 +201,8 @@ public class Order {
     public boolean validateOrderCreation()
     {
         if(this.orderDate == null || this.state.equals(Order.SENT) ||
-           this.totalPrice <= 0 || this.getEndUserID() < 0 || this.addressInfo == null || this.creditCardInfo == null)
+           this.totalPrice <= 0 || this.getEndUserID() < 0 || this.addressInfo == null || this.addressInfo.trim() == ""
+                || this.creditCardInfo == null || this.creditCardInfo.trim() == "")
             return false;
         else
             return true;

@@ -21,15 +21,18 @@ public class ManagedOrderDAO {
             " (man_user_name, man_order_id, man_shipment_date, man_tracking_number, man_courier, man_delivery_date)"+
             " VALUES (?, ?, ?, ?, ?, ?) ;";
 
-    private static final String DELETE = "DELETE FROM "+MANAGED_ORDER_TABLE+" WHERE man_order_id = ? AND man_user_name = ? ;";
+    // private static final String DELETE = "DELETE FROM "+MANAGED_ORDER_TABLE+" WHERE man_order_id = ? AND man_user_name = ? ;";
 
-    private static final String UPDATE = "UPDATE "+MANAGED_ORDER_TABLE+" SET man_tracking_number = ? WHERE man_order_id = ? AND man_user_name = ? ;";
+    // private static final String UPDATE = "UPDATE "+MANAGED_ORDER_TABLE+" SET man_tracking_number = ? WHERE man_order_id = ? AND man_user_name = ? ;";
 
-    private static final String RETRIEVE = "SELECT * FROM "+MANAGED_ORDER_TABLE+" WHERE man_order_id = ? AND man_user_name = ? ;";
+    // private static final String RETRIEVE = "SELECT * FROM "+MANAGED_ORDER_TABLE+" WHERE man_order_id = ? AND man_user_name = ? ;";
     private static final String RETRIEVE_BY_ORDER = "SELECT * FROM "+MANAGED_ORDER_TABLE+" WHERE man_order_id = ?;";
 
     public void create(ManagedOrder managedOrder) throws SQLException
     {
+        if(!managedOrder.validateManagedOrderCreation())
+            throw new IllegalArgumentException("Invalid data");
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -48,7 +51,7 @@ public class ManagedOrderDAO {
             if(affectedRows == 0)
                 throw new DAOException("Creating managed order failed, no rows affected.");
 
-           // connection.commit();
+           connection.commit();
         }
         finally
         {
@@ -65,6 +68,7 @@ public class ManagedOrderDAO {
         }
     }
 
+    /*
     public ManagedOrder retrieve(long ordId, String userName) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -106,7 +110,7 @@ public class ManagedOrderDAO {
         return managedOrderBean;
     }
 
-
+*/
     public ManagedOrder retrieveByOrder(int ordId) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -126,10 +130,10 @@ public class ManagedOrderDAO {
             {
                 managedOrderBean.setUserName(rs.getString("man_user_name"));
                 managedOrderBean.setId(rs.getLong("man_order_id"));
-                managedOrderBean.setDeliveryDate(rs.getDate("man_delivery_date"));
+                managedOrderBean.setShipmentDate(rs.getDate("man_shipment_date"));
                 managedOrderBean.setTrackNumber(rs.getString("man_tracking_number"));
                 managedOrderBean.setCourierName(rs.getString("man_courier"));
-                managedOrderBean.setShipmentDate(rs.getDate("man_shipment_date"));
+                managedOrderBean.setDeliveryDate(rs.getDate("man_delivery_date"));
             }
         }
         finally
@@ -145,9 +149,13 @@ public class ManagedOrderDAO {
                     preparedStatement.close();
             }
         }
-        return managedOrderBean;
+        if(managedOrderBean.validateManagedOrder())
+            return managedOrderBean;
+        else
+            return null;
     }
 
+    /*
     public void update(ManagedOrder managedOrder) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -178,8 +186,8 @@ public class ManagedOrderDAO {
             }
         }
     }
-
-
+*/
+/*
     public void delete(ManagedOrder managedOrder) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -209,4 +217,6 @@ public class ManagedOrderDAO {
             }
         }
     }
+
+ */
 }
