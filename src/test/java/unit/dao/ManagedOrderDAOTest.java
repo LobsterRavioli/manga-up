@@ -1,5 +1,7 @@
-package Order.DispatchService;
+package unit.dao;
 
+import Order.DispatchService.ManagedOrder;
+import Order.DispatchService.ManagedOrderDAO;
 import User.AccountService.Address;
 import User.AccountService.CreditCard;
 import User.AccountService.EndUser;
