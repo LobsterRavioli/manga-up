@@ -5,6 +5,7 @@ import Order.DispatchService.OrderDAO;
 import User.AccountService.Address;
 import User.AccountService.CreditCard;
 import User.AccountService.EndUser;
+import User.AccountService.User;
 import org.dbunit.Assertion;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
@@ -43,7 +44,6 @@ class OrderDAOTest {
                 "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;init=runscript from 'classpath:schema_db/schema.sql'",
                 "prova",
                 ""
-
         );
 
         // Refresh permette di svuotare la cache dopo un modifica con setDataSet
@@ -124,7 +124,9 @@ class OrderDAOTest {
                          Arguments.of("Test case creazione ordine fallita, prezzo totale non valido", Date.valueOf("2019-07-03"), "TO_SEND", -37.99, 25, "Address info", "Credit card info"),
                          Arguments.of("Test case creazione ordine fallita, end user id non valido", Date.valueOf("2019-07-03"), "TO_SEND", 50.00, -1, "Address info", "Credit card info"),
                          Arguments.of("Test case creazione ordine fallita, address info non valide", Date.valueOf("2019-07-03"), "TO_SEND", 50.00, 25, null, "Credit card info"),
-                         Arguments.of("Test case creazione ordine fallita, credit card info non valide", Date.valueOf("2019-07-03"), "TO_SEND", 50.00, 25, "Address info", null)
+                         Arguments.of("Test case creazione ordine fallita, address info non valide", Date.valueOf("2019-07-03"), "TO_SEND", 50.00, 25, " ", "Credit card info"),
+                         Arguments.of("Test case creazione ordine fallita, credit card info non valide", Date.valueOf("2019-07-03"), "TO_SEND", 50.00, 25, "Address info", null),
+                         Arguments.of("Test case creazione ordine fallita, credit card info non valide", Date.valueOf("2019-07-03"), "TO_SEND", 50.00, 25, "Address info", " ")
         );
     }
 
@@ -145,7 +147,7 @@ class OrderDAOTest {
     }
 
     @Test
-    void deleteNotExistingOrder() throws Exception {
+    void deleteNotExistingOrder() {
 
         Order order = new Order();
         order.setId(100);
@@ -238,8 +240,37 @@ class OrderDAOTest {
     }
 
     @Test
-    void doRetrieveAllForSpecificUser() {
-        // TO DO
+    void doRetrieveAllForSpecificUser() throws SQLException {
+
+        User orderManager = Mockito.mock(User.class);
+        Mockito.when(orderManager.getUsername()).thenReturn("Giovanni");
+
+        Collection<Order> orders = new LinkedList<>();
+
+        Order o1 = new Order();
+        Order o2 = new Order();
+
+        o1.setId(29);
+        o1.setOrderDate(Date.valueOf("2018-05-06"));
+        o1.setState("TO_SEND");
+        o1.setTotalPrice(10.50);
+        o1.setEndUserID(136);
+        o1.setAddressEndUserInfo("Address info fittizie");
+        o1.setCreditCardEndUserInfo("Credit card info fittizie");
+
+        o2.setId(33);
+        o2.setOrderDate(Date.valueOf("2019-05-06"));
+        o2.setState("TO_SEND");
+        o2.setTotalPrice(10.50);
+        o2.setEndUserID(203);
+        o2.setAddressEndUserInfo("Address info fittizie");
+        o2.setCreditCardEndUserInfo("Credit card info fittizie");
+
+        orders.add(o1);
+        orders.add(o2);
+
+        Collection<Order> actual = orderDAO.doRetrieveAllForSpecificUser(orderManager.getUsername(),"");
+        Assert.assertEquals(orders, actual);
     }
 
     @Test

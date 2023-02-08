@@ -78,7 +78,9 @@ public class OrderRow {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderRow orderRow = (OrderRow) o;
-        return quantity == orderRow.quantity && Objects.equals(order, orderRow.order) && Objects.equals(user, orderRow.user) && Objects.equals(manga, orderRow.manga);
+        return quantity == orderRow.quantity && order.getId() == orderRow.order.getId()
+                && user.getId() == orderRow.user.getId() && manga.getName().equals(orderRow.manga.getName()) &&
+                manga.getPrice() == orderRow.manga.getPrice();
     }
 
     @Override
@@ -101,5 +103,14 @@ public class OrderRow {
 
     public void setUser(EndUser user) {
         this.user = user;
+    }
+
+    public boolean validateCreation()
+    {
+        if(this.order.getId() <= 0 || this.user.getId() <= 0 || this.manga.getName() == null ||
+                this.manga.getName().trim().equals("") || this.manga.getPrice() <= 0 || this.quantity <= 0)
+            return false;
+        else
+            return true;
     }
 }

@@ -1,6 +1,7 @@
 package Order.DispatchService;
 
 
+import User.AccountService.Address;
 import User.AccountService.CreditCard;
 import User.AccountService.EndUser;
 import User.AccountService.User;
@@ -14,18 +15,19 @@ public class ManagedOrder extends Order {
     {
         super();
         this.user = new User();
+        this.state = Order.SENT;
     }
 
-    public ManagedOrder(long id, Date orderDate, double totalPrice, EndUser endUser, CreditCard card,
-                        User user, Date deliveryDate, String trackNumber, String courierName, Date shipmentDate)
+    public ManagedOrder(EndUser endUser, Address endUserAddress, CreditCard endUserCard, User user, Date shipmentDate,
+                        String trackNumber, String courierName, Date deliveryDate)
     {
-        super(id, orderDate, totalPrice, endUser, card);
+        super(endUser, endUserAddress, endUserCard);
         this.state = Order.SENT;
         this.user = user;
-        this.deliveryDate = deliveryDate;
+        this.shipmentDate = shipmentDate;
         this.trackNumber = trackNumber;
         this.courierName = courierName;
-        this.shipmentDate = shipmentDate;
+        this.deliveryDate = deliveryDate;
     }
 
     public long getUserId()
@@ -90,14 +92,15 @@ public class ManagedOrder extends Order {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ManagedOrder)) return false;
-        if (!super.equals(o)) return false;
         ManagedOrder that = (ManagedOrder) o;
-        return Objects.equals(user, that.user) && Objects.equals(deliveryDate, that.deliveryDate) && Objects.equals(shipmentDate, that.shipmentDate) && Objects.equals(trackNumber, that.trackNumber) && Objects.equals(state, that.state) && Objects.equals(courierName, that.courierName);
+        return user.getUsername().equals(that.user.getUsername()) && shipmentDate.equals(that.shipmentDate) &&
+                deliveryDate.equals(that.deliveryDate) && trackNumber.equals(that.trackNumber) &&
+                state.equals(that.state) && courierName.equals(that.courierName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), user, deliveryDate, shipmentDate, trackNumber, state, courierName);
+        return Objects.hash(super.hashCode(), user, shipmentDate, deliveryDate, trackNumber, state, courierName);
     }
 
     @Override
@@ -112,7 +115,33 @@ public class ManagedOrder extends Order {
                 '}';
     }
 
+    public boolean validateManagedOrder()
+    {
+        String managerName = getUserName();
+        Date orderDate = this.getOrderDate();
+
+        if(managerName == null || managerName.trim() == "" || shipmentDate == null || deliveryDate == null
+                || trackNumber == null || trackNumber.trim() == "" || courierName == null || courierName.trim() == "")
+            return false;
+        else return true;
+    }
+
+    public boolean validateManagedOrderCreation()
+    {
+        String managerName = getUserName();
+        Date orderDate = this.getOrderDate();
+
+        if(!this.validateOrderCreation())
+            return false;
+
+        else if(managerName == null || managerName.trim() == "" || shipmentDate == null || shipmentDate.before(orderDate) ||
+                deliveryDate == null || deliveryDate.before(orderDate) || deliveryDate.before(shipmentDate) ||
+                trackNumber == null || trackNumber.trim() == "" || courierName == null || courierName.trim() == "")
+            return false;
+        else return true;
+    }
+
     private User user;
-    private Date deliveryDate, shipmentDate;
+    private Date shipmentDate, deliveryDate;
     private String trackNumber, state, courierName;
 }

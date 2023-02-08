@@ -30,6 +30,10 @@ public class ToManageDAO {
 
     // create: crea un ordine che deve essere gestito da un certo user (assegna un ordine a un gestore)
     public void create(ToManage order) throws SQLException {
+
+        if(!order.validateCreation())
+            throw new IllegalArgumentException("Invalid data");
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 

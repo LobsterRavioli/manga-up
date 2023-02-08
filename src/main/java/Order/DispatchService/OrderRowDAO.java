@@ -1,6 +1,5 @@
 package Order.DispatchService;
 
-import Merchandising.MerchandiseService.Manga;
 import utils.DAOException;
 
 import javax.sql.DataSource;
@@ -26,6 +25,10 @@ public class OrderRowDAO {
     }
 
     public void create(OrderRow row) throws SQLException {
+
+        if(!row.validateCreation())
+            throw new IllegalArgumentException("Invalid data");
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 

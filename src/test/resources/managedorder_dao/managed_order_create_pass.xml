@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <MANAGES man_user_name='Giovanni' man_order_id='37' man_shipment_date='2018-05-07' man_tracking_number='ABC123KL' man_courier='BRT' man_delivery_date='2018-05-10'/>
+    <US_ERS user_name='Sara' password='password4'/>
+    <END_USER usr_id='45' usr_email='lory@hotmail.it' usr_name='Lorenzo' usr_surname='Rossi' usr_password='unoDueTreStaiLa' usr_phone_number='+393992153977' usr_birth_date='2011-03-10'/>
+    <ORDERS ord_id='21' ord_date='2018-10-07' ord_state='TO_SEND' ord_total_price='4.50' ord_end_user_id='45' ord_address='Address info fittizie' ord_card='Credit card info fittizie'/>
+    <MANAGES man_user_name='Sara' man_order_id='21' man_shipment_date='2018-10-09' man_tracking_number='AFJ573LU' man_courier='DHL' man_delivery_date='2018-10-15'/>
+</dataset>
