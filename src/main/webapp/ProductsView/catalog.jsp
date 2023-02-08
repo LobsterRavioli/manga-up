@@ -64,10 +64,17 @@
 </div>
 
 </div>
+    <% Integer limit=0;%>
+
 <div class="container mydiv x" id="paginated-list">
     <% ArrayList<Manga>list = (ArrayList<Manga>) request.getAttribute("listaElementi");
     if(list!=null){
         boolean b = false;
+        if(limit==null){
+
+        }
+
+
        for(int i=0;i<list.size();i++){
            Manga m = null;
            if(i % 3 == 0){
@@ -154,14 +161,31 @@
 </script>-->
 
 <script>
+
+    function moreProducts(){
+        let xhrObj=new XMLHttpRequest();
+        let TreeName=x.parentElement.parentElement.previousElementSibling.firstElementChild.nextElementSibling;
+        xhrObj.open("GET","/ArborVitae/catalogServlet?productsSupply="+Math.ceil(currentPage/3),true);
+        xhrObj.send();
+        return;
+    }
+
     const paginationNumbers = document.getElementById("pagination-numbers");
     const paginatedList = document.getElementById("paginated-list");
-    const listItems = paginatedList.querySelectorAll("#idkidk");
+    var listItems;
+    try{
+        listItems = parseInt('<%=limit%>');
+    }catch(NullPointerException){
+        listItems=0;
+    }
+
+
     const nextButton = document.getElementById("next-button");
     const prevButton = document.getElementById("prev-button");
 
-    const paginationLimit = 3;
-    const pageCount = Math.ceil((listItems.length) / paginationLimit);
+    const paginationLimit = 6;
+    const prodNumLimit=18;
+    const pageCount = Math.ceil(listItems / paginationLimit);
     let currentPage = 1;
 
     const disableButton = (button) => {
@@ -257,4 +281,6 @@
 
 </script>
 
-</body></html>
+</body>
+
+</html>

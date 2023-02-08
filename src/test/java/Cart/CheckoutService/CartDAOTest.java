@@ -1,7 +1,6 @@
 package Cart.CheckoutService;
 
-import Merchandising.MerchandiseService.Manga;
-import Merchandising.MerchandiseService.MangaDAO;
+import Merchandising.MerchandiseService.*;
 import User.AccountService.EndUser;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
@@ -16,6 +15,8 @@ import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
 import javax.sql.DataSource;
+
+import java.sql.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -62,6 +63,7 @@ class CartDAOTest {
     }
 
 
+
     @AfterEach
     void tearDown() throws Exception {
         tester.onTearDown();
@@ -105,14 +107,103 @@ class CartDAOTest {
     }
 
     @Test
-    void addProduct() {
+    void removeProductNotInCart() throws Exception{
+        EndUser e_U = new EndUser(3);
+        Manga m = new Manga(18);
+        System.out.println(Assert.assertThrows(Exception.class,()->cD.removeProduct(m,e_U)).getMessage());
     }
 
     @Test
-    void updateProduct() {
+    void addProductNotExistentUser() {
+        EndUser e_U = new EndUser(2);
+        Manga m = new Manga(20);
+        System.out.println(Assert.assertThrows(Exception.class,()->cD.addProduct(m,1,e_U)).getMessage());
     }
 
     @Test
-    void toEmptyCart() {
+    void addProductNotExistentManga() {
+        EndUser e_U = new EndUser(3);
+        Manga m = new Manga(15);
+        System.out.println(Assert.assertThrows(Exception.class,()->cD.addProduct(m,1,e_U)).getMessage());
+    }
+    @Test
+    void addProductNonValidQuantity(){
+        EndUser e_U = new EndUser(3);
+        Manga manga = new Manga("9997546123412","Star Comics","bordatura","ITA","VOL.5",287,(java.sql.Date) Date.valueOf("2001-02-05"),18,"Sanctuary","",25.99,3,5,3,3,"rosso","",new Collection("Mecha"), ProductState.NEW,"Akira Toriyama",new Genre("Josei"));
+        System.out.println(Assert.assertThrows(Exception.class,()->cD.addProduct(manga,0,e_U)).getMessage());
+        System.out.println(Assert.assertThrows(Exception.class,()->cD.addProduct(manga,4,e_U)).getMessage());
+    }
+
+    @Test
+    void addProductSuccess()throws Exception{
+        EndUser e_U = new EndUser(3);
+        Manga manga = new Manga("9997546123412","Star Comics","bordatura","ITA","VOL.5",287,(java.sql.Date) Date.valueOf("2001-02-05"),18,"Sanctuary","",25.99,3,5,3,3,"rosso","",new Collection("Mecha"), ProductState.NEW,"Akira Toriyama",new Genre("Josei"));
+        cD.addProduct(manga,2,e_U);
+        ITable actualTable = tester.getConnection().createDataSet().getTable("CART");
+        Assert.assertEquals(actualTable.getRowCount(),2);
+    }
+
+    @Test
+    void addProductAlreadyExistent() throws Exception{
+        EndUser e_U = new EndUser(3);
+        Manga manga = new Manga("9997546123412","Star Comics","bordatura","ITA","VOL.5",287,(java.sql.Date) Date.valueOf("2001-02-05"),20,"Sanctuary","",25.99,3,5,3,3,"rosso","",new Collection("Mecha"), ProductState.NEW,"Akira Toriyama",new Genre("Josei"));
+        cD.addProduct(manga,2,e_U);
+        ITable actualTable = tester.getConnection().createDataSet().getTable("CART");
+        Assert.assertEquals(actualTable.getRowCount(),1);
+    }
+
+
+    @Test
+    void updateProductNotExistentUser() {
+        EndUser e_U = new EndUser(2);
+        Manga m = new Manga(20);
+        System.out.println(Assert.assertThrows(Exception.class,()->cD.addProduct(m,1,e_U)).getMessage());
+    }
+
+    @Test
+    void updateProductNotExistentManga() {
+        EndUser e_U = new EndUser(3);
+        Manga m = new Manga(15);
+        System.out.println(Assert.assertThrows(Exception.class,()->cD.addProduct(m,1,e_U)).getMessage());
+    }
+    @Test
+    void updateProductNonValidQuantity(){
+        EndUser e_U = new EndUser(3);
+        Manga manga = new Manga("9997546123412","Star Comics","bordatura","ITA","VOL.5",287,(java.sql.Date) Date.valueOf("2001-02-05"),18,"Sanctuary","",25.99,3,5,3,3,"rosso","",new Collection("Mecha"), ProductState.NEW,"Akira Toriyama",new Genre("Josei"));
+        System.out.println(Assert.assertThrows(Exception.class,()->cD.updateProduct(manga,0,e_U)).getMessage());
+        System.out.println(Assert.assertThrows(Exception.class,()->cD.updateProduct(manga,4,e_U)).getMessage());
+    }
+
+
+    @Test
+    void updateProductNonExistentInCart() throws Exception {
+        EndUser e_U = new EndUser(3);
+        Manga manga = new Manga("9997546123412","Star Comics","bordatura","ITA","VOL.5",287,(java.sql.Date) Date.valueOf("2001-02-05"),18,"Sanctuary","",25.99,3,5,3,3,"rosso","",new Collection("Mecha"), ProductState.NEW,"Akira Toriyama",new Genre("Josei"));
+        cD.updateProduct(manga,2,e_U);
+        ITable actualTable = tester.getConnection().createDataSet().getTable("CART");
+        Assert.assertEquals(actualTable.getRowCount(),2);
+    }
+
+    @Test
+    void updateProductSuccess() throws Exception {
+        EndUser e_U = new EndUser(3);
+        Manga manga = new Manga("9997546123412","Star Comics","bordatura","ITA","VOL.5",287,(java.sql.Date) Date.valueOf("2001-02-05"),20,"Sanctuary","",25.99,3,5,3,3,"rosso","",new Collection("Mecha"), ProductState.NEW,"Akira Toriyama",new Genre("Josei"));
+        cD.updateProduct(manga,1,e_U);
+        ITable actualTable = tester.getConnection().createDataSet().getTable("CART");
+        Assert.assertEquals(actualTable.getValue(0,"quantity"),1);
+    }
+
+    @Test
+    void toEmptyCartNotExistingUser() throws Exception{
+        EndUser e_U = new EndUser(1);
+        System.out.println(Assert.assertThrows(Exception.class,()->cD.toEmptyCart(e_U)).getMessage());
+    }
+
+    @Test
+    void toEmptyCartSuccess() throws Exception{
+        EndUser e_U = new EndUser(3);
+        cD.toEmptyCart(e_U);
+        ITable actualTable = tester.getConnection().createDataSet().getTable("CART");
+        Assert.assertEquals(actualTable.getRowCount(),0);
     }
 }

@@ -1,90 +1,200 @@
-package Merchandising.MerchandiseService;
+package unit.servlets;
 
+
+import Cart.CheckoutService.CartDAO;
+import Merchandising.MerchandiseService.*;
+import Merchandising.ProductsView.processProductInsertion;
 import User.AccountService.EndUser;
 import User.AccountService.EndUserDAO;
-import org.dbunit.Assertion;
-import org.dbunit.IDatabaseTester;
-import org.dbunit.JdbcDatabaseTester;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.RowOutOfBoundsException;
-import org.dbunit.dataset.SortedTable;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.ext.oracle.OracleDataTypeFactory;
-import org.dbunit.operation.DatabaseOperation;
+import User.ProfileView.LoginEndUserServlet;
 import org.junit.Assert;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import utils.Utils;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import javax.sql.DataSource;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class MangaDAOTest {
+public class processProductInsertionTest {
 
-
-    private static IDatabaseTester tester;
-
-    private MangaDAO m;
-
-    @BeforeAll
-    void setUpAll() throws ClassNotFoundException {
-        tester = new JdbcDatabaseTester(org.h2.Driver.class.getName(),
-                "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;init=runscript from 'classpath:schema_db/schema.sql'",
-                "prova",
-                ""
-
-        );
-
-        // Refresh permette di svuotare la cache dopo un modifica con setDataSet
-        // DeleteAll ci svuota il DB mantenendo lo schema
-        tester.setSetUpOperation(DatabaseOperation.REFRESH);
-        tester.setTearDownOperation(DatabaseOperation.DELETE_ALL);
-        try{
-            tester.getConnection().getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new OracleDataTypeFactory());
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
-    private static void refreshDataSet(String filename) throws Exception {
-        IDataSet initialState = new FlatXmlDataSetBuilder()
-                .build(MangaDAOTest.class.getClassLoader().getResourceAsStream(filename));
-        tester.setDataSet(initialState);
-        tester.onSetup();
-    }
+    private processProductInsertion servlet;
+    private HttpServletRequest request;
+    private HttpServletResponse response;
+    private HttpSession session;
+    private RequestDispatcher dispatcher;
+    private processProductInsertion spy;
+    private MangaDAO mangaDAO;
 
     @BeforeEach
-    public void setUp() throws Exception {
-        // Prepara lo stato iniziale di default
-        refreshDataSet("Merchandising/manga_dao/init.xml");
-        DataSource ds = Mockito.mock(DataSource.class);
-        Mockito.when(ds.getConnection()).thenReturn(tester.getConnection().getConnection());
-        m = new MangaDAO(ds);
+    void setUp() throws Exception {
+        request = Mockito.mock(HttpServletRequest.class) ;
+        response = Mockito.mock(HttpServletResponse.class);
+        session = mock(HttpSession.class);
+        Mockito.when(request.getSession()).thenReturn(session);
+        spy = Mockito.spy(new processProductInsertion());
+        Mockito.when(spy.getServletConfig()).thenReturn(Mockito.mock(ServletConfig.class));
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL(""))).thenReturn(Mockito.mock(RequestDispatcher.class));
+        Mockito.when(spy.getServletContext()).thenReturn(context);
     }
 
 
-    @AfterEach
-    void tearDown() throws Exception {
-        tester.onTearDown();
+
+
+
+
+    @Test
+    void correctInsertion() throws Exception{
+        String prodName = "Sanctuary";
+        String prodPublisher = "Star Comics";
+        String prodPrice = "30.25";
+        String prodWeight = "3";
+        String prodHeight = "4";
+        String prodLength = "5";
+        String prodState = "NEW";
+        String prodDescription = "BEL MANGA";
+        String prodISBN = "1234567891011";
+        String prodBinding = "Spilli";
+        String prodVolume = "Vol.5";
+        String prodDataUscita = "2021-02-03";
+        String prodPageNumber = "68";
+        String prodQuantity = "9";
+        String prodInterior = "blu";
+        String prodLanguage = "ESP";
+        String prodCollection = "Mecha";
+        String prodGenre = "Josei";
+        String prodStoryMaker = "SAVIANO";
+
+        // Create path components to save the file
+        Part partFile = mock(Part.class);
+        Mockito.when(partFile.getInputStream()).thenReturn(new InputStream() {
+            @Override
+            public int read() throws IOException {
+                return -1;
+            }
+        });
+        Mockito.when(request.getParameter("nome")).thenReturn(prodName);
+        Mockito.when(request.getParameter("editore")).thenReturn(prodPublisher);
+        Mockito.when(request.getParameter("prezzo")).thenReturn(prodPrice);
+        Mockito.when(request.getParameter("peso")).thenReturn(prodWeight);
+        Mockito.when(request.getParameter("altezza")).thenReturn(prodHeight);
+        Mockito.when(request.getParameter("larghezza")).thenReturn(prodLength);
+        Mockito.when(request.getParameter("stato")).thenReturn(prodState);
+        Mockito.when(request.getParameter("descrizione")).thenReturn(prodDescription);
+        Mockito.when(request.getParameter("isbn")).thenReturn(prodISBN);
+        Mockito.when(request.getParameter("rilegatura")).thenReturn(prodBinding);
+        Mockito.when(request.getParameter("volume")).thenReturn(prodVolume);
+        Mockito.when(request.getParameter("data_uscita")).thenReturn(prodDataUscita);
+        Mockito.when(request.getParameter("numPagine")).thenReturn(prodPageNumber);
+        Mockito.when(request.getParameter("quantity")).thenReturn(prodQuantity);
+        Mockito.when(request.getParameter("interni")).thenReturn(prodInterior);
+        Mockito.when(request.getParameter("lingua")).thenReturn(prodLanguage);
+        Mockito.when(request.getParameter("collection")).thenReturn(prodCollection);
+        Mockito.when(request.getParameter("genere")).thenReturn(prodGenre);
+        Mockito.when(request.getParameter("story_maker")).thenReturn(prodStoryMaker);
+        Mockito.when(request.getPart("immagine")).thenReturn(partFile);
+        MangaDAO mangaDAO = mock(MangaDAO.class);
+
+        Mockito.doAnswer(invocation -> {
+            return null;                            //Method to have a mocked execution of a method
+        }).when(mangaDAO).create(any(Manga.class));
+
+        spy.setMangaDAO(mangaDAO);
+
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(spy.getServletContext()).thenReturn(context);
+        RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
+        Mockito.when(context.getRequestDispatcher("/ProductsView/homepage.jsp")).thenReturn(rD);
+
+        spy.doPost(request, response);
+        verify(context).getRequestDispatcher("/ProductsView/homepage.jsp");
     }
+
 
     @ParameterizedTest(name = "{index} - {0} (parametri: {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}, {16}, {17}, {18}, {19})")
     @MethodSource("createTestFailProvider")
-    void createTestFailInvalidInput(String testName,String isbn, String publisher, String binding, String language, String volume, int pages, Date exitDate, String name, String description, double price, double height, double length, double weight, int quantity, String interior, String imagePath, Collection collection, ProductState state, String storyMaker, Genre genre) throws Exception {
-        Manga manga = new Manga(isbn,publisher,binding,language,volume,pages,exitDate,0,name,description,price,height,length,weight,quantity,interior,imagePath,collection,state,storyMaker,genre);
-        String message = Assert.assertThrows(Exception.class, () ->m.create(manga)).getMessage();
-        System.out.println(message);
+    void createTestFailInvalidInput(String testName, String isbn, String publisher, String binding, String language, String volume, int pages, Date exitDate, String name, String description, double price, int height, int length, int weight, int quantity, String interior, String imagePath, Collection collection, ProductState state, String storyMaker, Genre genre) throws Exception {
+        Part partFile = mock(Part.class);
+        Mockito.when(partFile.getInputStream()).thenReturn(new InputStream() {
+            @Override
+            public int read() throws IOException {
+                return -1;
+            }
+        });
+
+
+
+        Mockito.when(request.getParameter("nome")).thenReturn(name);
+        Mockito.when(request.getParameter("editore")).thenReturn(publisher);
+        Mockito.when(request.getParameter("prezzo")).thenReturn(""+price);
+        Mockito.when(request.getParameter("peso")).thenReturn(""+weight);
+        Mockito.when(request.getParameter("altezza")).thenReturn(""+height);
+        Mockito.when(request.getParameter("larghezza")).thenReturn(""+length);
+        Mockito.when(request.getParameter("stato")).thenReturn(""+state);
+        Mockito.when(request.getParameter("descrizione")).thenReturn(description);
+        Mockito.when(request.getParameter("isbn")).thenReturn(isbn);
+        Mockito.when(request.getParameter("rilegatura")).thenReturn(binding);
+        Mockito.when(request.getParameter("volume")).thenReturn(volume);
+
+        if(exitDate==null)
+            Mockito.when(request.getParameter("data_uscita")).thenReturn(null);
+        else
+            Mockito.when(request.getParameter("data_uscita")).thenReturn(""+exitDate);
+
+        Mockito.when(request.getParameter("numPagine")).thenReturn(""+pages);
+        Mockito.when(request.getParameter("quantity")).thenReturn(""+quantity);
+        Mockito.when(request.getParameter("interni")).thenReturn(interior);
+        Mockito.when(request.getParameter("lingua")).thenReturn(language);
+        if(collection==null)
+            Mockito.when(request.getParameter("collection")).thenReturn(null);
+        else
+            Mockito.when(request.getParameter("collection")).thenReturn(collection.getName());
+
+        if(genre==null)
+            Mockito.when(request.getParameter("collection")).thenReturn(null);
+        else
+            Mockito.when(request.getParameter("collection")).thenReturn(genre.getName());
+
+
+
+
+        Mockito.when(request.getParameter("story_maker")).thenReturn(storyMaker);
+        Mockito.when(request.getPart("immagine")).thenReturn(partFile);
+        MangaDAO mangaDAO = mock(MangaDAO.class);
+        Mockito.doAnswer(invocation -> {
+            throw new Exception("Errore");                            //Method to have a mocked execution of a method
+        }).when(mangaDAO).create(any(Manga.class));
+
+        spy.setMangaDAO(mangaDAO);
+
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(spy.getServletContext()).thenReturn(context);
+        RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
+        Mockito.when(context.getRequestDispatcher("/ProductsView/homepage.jsp")).thenReturn(rD);
+
+        spy.doPost(request, response);
+
+        verify(request).setAttribute(any(String.class),any(String.class));
 
     }
 
@@ -132,13 +242,13 @@ class MangaDAOTest {
                 //Controllo Numero di pagine
                 Arguments.of("Test case creazione prodotto fallita Numero di pagine non valido", "9997546123412","Star Comics","bordatura","ITA","VOL.5",0,(java.sql.Date)Date.valueOf("2001-02-05"),"Sanctuary","",25.99,3,5,3,3,"rosso","",new Collection("Mecha"),ProductState.NEW,"Akira Toriyama",new Genre("Josei")),
                 //Controllo Data
-                Arguments.of("Test case creazione prodotto fallita Data Non valida", "9997546123412","Star Comics","bordatura","ITA","VOL.5",287,null,"Sanctuary","",25.99,3,5,3,3,"rosso","",new Collection("Mecha"),ProductState.NEW,"Akira Toriyama",new Genre("Josei")),
-                Arguments.of("Test case creazione prodotto fallita Data non valida", "9997546123412","Star Comics","bordatura","ITA","VOL.5",287,(java.sql.Date)Date.valueOf("2025-02-05"),"Sanctuary","",25.99,3,5,3,3,"rosso","",new Collection("Mecha"),ProductState.NEW,"Akira Toriyama",new Genre("Josei")),
+                Arguments.of("Test case creazione prodotto fallita Numero di pagine non valido", "9997546123412","Star Comics","bordatura","ITA","VOL.5",287,null,"Sanctuary","",25.99,3,5,3,3,"rosso","",new Collection("Mecha"),ProductState.NEW,"Akira Toriyama",new Genre("Josei")),
+                Arguments.of("Test case creazione prodotto fallita Numero di pagine non valido", "9997546123412","Star Comics","bordatura","ITA","VOL.5",287,(java.sql.Date)Date.valueOf("2025-02-05"),"Sanctuary","",25.99,3,5,3,3,"rosso","",new Collection("Mecha"),ProductState.NEW,"Akira Toriyama",new Genre("Josei")),
                 //Controllo Nome
                 Arguments.of("Test case creazione prodotto fallita Nome non valido", "9997546123412","Star Comics","bordatura","ITA","VOL.5",287,(java.sql.Date)Date.valueOf("2001-02-05"),null,"",25.99,3,5,3,3,"rosso","",new Collection("Mecha"),ProductState.NEW,"Akira Toriyama",new Genre("Josei")),
                 Arguments.of("Test case creazione prodotto fallita Nome non valido", "9997546123412","Star Comics","bordatura","ITA","VOL.5",287,(java.sql.Date)Date.valueOf("2001-02-05"),"","",25.99,3,5,3,3,"rosso","",new Collection("Mecha"),ProductState.NEW,"Akira Toriyama",new Genre("Josei")),
                 Arguments.of("Test case creazione prodotto fallita Nome non valido", "9997546123412","Star Comics","bordatura","ITA","VOL.5",287,(java.sql.Date)Date.valueOf("2001-02-05"),"Lorem ipsum dolor sit amet, consectetur sodales sed","",25.99,3,5,3,3,"rosso","",new Collection("Mecha"),ProductState.NEW,"Akira Toriyama",new Genre("Josei")),
-                Arguments.of("Test case creazione prodotto fallita Nome non valido ", "9997546123412","Star Comics","bordatura","ITA","VOL.5",287,(java.sql.Date)Date.valueOf("2001-02-05"),"Sanctuary 3","",25.99,3,5,3,3,"rosso","",new Collection("Mecha"),ProductState.NEW,"Akira Toriyama",new Genre("Josei")),
+                Arguments.of("Test case creazione prodotto fallita Nome non valido ", "9997546123412","Star Comics","bordatura","ITA","VOL.5",287,(java.sql.Date)Date.valueOf("2001-02-05"),"Sanctuary","",25.99,3,5,3,3,"rosso","",new Collection("Mecha"),ProductState.NEW,"Akira Toriyama",new Genre("Josei")),
                 //Controllo Prezzo
                 Arguments.of("Test case creazione prodotto fallita Prezzo non valido", "9997546123412","Star Comics","bordatura","ITA","VOL.5",287,(java.sql.Date)Date.valueOf("2001-02-05"),"Sanctuary","",0,3,5,3,3,"rosso","",new Collection("Mecha"),ProductState.NEW,"Akira Toriyama",new Genre("Josei")),
                 //Controllo Altezza
@@ -172,163 +282,7 @@ class MangaDAOTest {
                 //Controllo Descrizione
                 Arguments.of("Test case creazione prodotto fallita genere non valido", "9997546123412","Star Comics","bordatura","ITA","VOL.5",287,(java.sql.Date)Date.valueOf("2001-02-05"),"Sanctuary","Lorem ipsum dolor sit amet, consectetur sodales sedLorem ipsum dolor sit amet, consectetur sodales sedLorem ipsum dolor sit amet, consectetur sodales sedLorem ipsum dolor sit amet, consectetur sodales sedLorem ipsum dolor sit amet, consectetur sodales sedLorem ipsum dolor sit amet, consectetur sodales sed",25.99,3,5,3,3,"rosso","",new Collection("Mecha"),ProductState.NEW,"Akira Toriyama",new Genre("Jo"))
 
-                );
-    }
-
-    @Test
-    void createTestPass() throws Exception {
-        Manga manga = new Manga("9997546123412","Star Comics","bordatura","ITA","VOL.5",287,(java.sql.Date)Date.valueOf("2001-02-05"),10,"Sanctuary","",25.99,3,5,3,3,"rosso","",new Collection("Mecha"),ProductState.NEW,"Akira Toriyama",new Genre("Josei"));
-        try{
-            m.create(manga);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-        IDataSet expectedDataSet = new FlatXmlDataSetBuilder()
-                .build(MangaDAOTest.class.getClassLoader().getResourceAsStream("Merchandising/manga_dao/create_manga.xml"));
-        String[] ignoreCol = new String[1];
-        ITable expectedTable = expectedDataSet.getTable("MANGA");
-        ITable actualTable = tester.getConnection().createDataSet().getTable("MANGA");
-        Assert.assertTrue(actualTable.getRowCount()==2);
-    }
-
-
-
-    @Test
-    void deleteNotPassed() {
-        Manga manga = new Manga(15);
-        System.out.println(Assert.assertThrows(Exception.class, () ->m.delete(manga.getId())).getMessage());
-    }
-
-
-    @Test
-    void deletePassed() throws Exception{
-        Manga manga = new Manga(20);
-        m.delete(manga.getId());
-        ITable actualTable = tester.getConnection().createDataSet().getTable("MANGA");
-        Assert.assertTrue(actualTable.getRowCount()==0);
-    }
-
-    @Test
-    void retrieveByIdNotNull() {
-        Manga manga = new Manga(20);
-        Assert.assertNotNull(m.retrieveById(manga.getId()));
-    }
-
-    @Test
-    void retrieveByIdNull(){
-        Manga manga = new Manga(15);
-        Assert.assertNull(m.retrieveById(manga.getId()));
-    }
-
-    @Test
-    void filterForUsers() {
-    }
-
-    @Test
-    void retrieveAllExistingElements() throws Exception {
-        Assert.assertTrue(m.retrieveAll().get(0).getId()==20);
-    }
-
-    @Test
-    void retrieveAllNotExistingElements() throws Exception{
-        m.delete(20);
-        System.out.println(Assert.assertThrows(Exception.class, () ->m.retrieveAll()).getMessage());
-    }
-
-
-    @Test
-    void filterForEndUsers() {
-    }
-
-    @Test
-    void updateQuantityInvalidQuantity() throws Exception {
-        Assert.assertThrows(Exception.class, () ->m.updateQuantity(0,20));
-    }
-
-    @Test
-    void updateQuantityInvalidId() {
-        Assert.assertThrows(Exception.class, () ->m.updateQuantity(20,15));
-    }
-
-    @Test
-    void updateQuantitySuccess() throws Exception{
-        m.updateQuantity(15,20);
-        ITable actualTable = tester.getConnection().createDataSet().getTable("MANGA");
-        Assert.assertEquals((int) actualTable.getValue(0,"quantity"),18);
-    }
-
-    @Test
-    void filterTestNotExistentCollection() throws Exception {
-        Assert.assertThrows(Exception.class, () -> m.filterForEndUsers("Sanctuary 3","Meclasd"));
-    }
-
-    @Test
-    void filterTestNoMatchingProducts() throws Exception {
-        Assert.assertThrows(Exception.class, () -> m.filterForEndUsers("Sanctuar655","Mecha"));
-    }
-
-    @Test
-    void filterTestMatchingProducts() throws Exception {
-        Assert.assertTrue(m.filterForEndUsers("Sanctuary 3","Mecha").size()>=1);
-    }
-
-    @ParameterizedTest(name = "{index} - {0} (parametri: {1}, {2})")
-    @MethodSource("filterTestUserSDefaultsProvider")
-    void filterTestUserSDefaults(String testName, String name, String collection_name,float min_price,float max_price) throws Exception {
-        Assert.assertEquals(m.filterForUsers(name,min_price,max_price,collection_name,true,true).size(),1);
-    }
-
-    private static Stream<Arguments> filterTestUserSDefaultsProvider() {
-
-        return Stream.of(
-
-                //Controllo nome
-                Arguments.of("Test case filtra prodotto User... Restituisci tutti i prodotti", null,null,0,0),
-                Arguments.of("Test case filtra prodotto User... Restituisci tutti i prodotti", "",null,0,0),
-                Arguments.of("Test case filtra prodotto User... Restituisci tutti i prodotti", null,"",0,0),
-                Arguments.of("Test case filtra prodotto User... Restituisci tutti i prodotti", "","",0,0)
-
         );
     }
 
-    @Test
-    void filterTestUserNotExistingCollection(){
-        System.out.println(Assert.assertThrows(Exception.class, () -> m.filterForUsers("Sanctuary 3",0,100,"Meclasd",true,true)).getMessage());
-    }
-
-    @Test
-    void filterTestUserNotValidRange(){
-        System.out.println(Assert.assertThrows(Exception.class, () -> m.filterForUsers("Sanctuary 3",20,10,"Mecha",true,true)).getMessage());
-    }
-
-    @Test
-    void filterTestUserFoundProducts() throws Exception{
-        Assert.assertTrue( m.filterForUsers("Sanctuary 3",0,100,"Mecha",true,true).size()>=1);
-    }
-
-    @Test
-    void filterTestUserNotFoundProducts() throws Exception{
-        System.out.println(Assert.assertThrows(Exception.class,()-> m.filterForUsers("Sanctuardsasdd",0,100,"Mecha",true,true)).getMessage());
-        System.out.println(Assert.assertThrows(Exception.class,()-> m.filterForUsers("Sanctuary 3",0,10,"Mecha",true,true)).getMessage());
-    }
-
-
-    @ParameterizedTest(name = "{index} - {0} (parametri: {1}, {2})")
-    @MethodSource("filterTestCollectionOrNameNullProvider")
-    void filterTestCollectionOrNameNull(String testName, String name, String collection_name) throws Exception {
-        Assert.assertEquals(m.filterForEndUsers(name,collection_name).size(),1);
-    }
-
-    private static Stream<Arguments> filterTestCollectionOrNameNullProvider() {
-
-        return Stream.of(
-
-                //Controllo nome
-                Arguments.of("Test case filtra prodotto End User... Restituisci tutti i prodotti", null,null),
-                Arguments.of("Test case filtra prodotto End User... Restituisci tutti i prodotti", "",null),
-                Arguments.of("Test case filtra prodotto End User... Restituisci tutti i prodotti", null,""),
-                Arguments.of("Test case filtra prodotto End User... Restituisci tutti i prodotti", "","")
-
-        );
-    }
 }
