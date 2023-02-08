@@ -1,6 +1,7 @@
 package integration;
 
 import Cart.CheckoutService.CartDAO;
+import User.AccountService.EndUser;
 import User.AccountService.EndUserDAO;
 import User.ProfileView.LoginEndUserServlet;
 import org.dbunit.IDatabaseTester;
@@ -88,12 +89,14 @@ public class LoginEndUserIntegrationTest {
         refreshDataSet("enduser_dao/end_user_dao_exists_email.xml");
         String email = "tommyrock99@hotmail.it";
         String password = "password1!";
+
         Mockito.when(request.getParameter("email")).thenReturn(email);
         Mockito.when(request.getParameter("password")).thenReturn(password);
         spy.setEndUserDAO(endUserDAO);
         spy.setCartDAO(cartDAO);
         spy.doPost(request, response);
         verify(response).encodeURL("/ProductsView/endUserHomepage.jsp");
+
     }
 
     @Test

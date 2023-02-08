@@ -195,11 +195,12 @@ public class EndUser{
         if (endUser.getPhoneNumber() == null || endUser.getPhoneNumber().equals("")) return false;
         if (endUser.getPassword() == null || endUser.getPassword().equals("")) return false;
         if (endUser.getBirthdate() == null) return false;
-        if(endUser.getName().length() > 32) return false;
-        if(endUser.getSurname().length() > 32) return false;
-        if(endUser.getEmail().length() > 128) return false;
-        if(endUser.getPhoneNumber().length() > 20) return false;
-        if(endUser.getPassword().length() > 64) return false;
+        if(!endUser.getName().matches(NAME_REGEX)) return false;
+        if(!endUser.getSurname().matches(SURNAME_REGEX)) return false;
+        if(!endUser.getEmail().matches(EMAIL_REGEX)) return false;
+        if(!endUser.getPhoneNumber().matches(PHONE_REGEX)) return false;
+        if(!endUser.getPassword().matches(PASSWORD_REGEX)) return false;
+
 
         return true;
     }

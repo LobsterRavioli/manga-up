@@ -33,14 +33,13 @@ class EndUserDAOTest {
                 "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;init=runscript from 'classpath:schema_db/schema.sql'",
                 "prova",
                 ""
-
         );
-
         // Refresh permette di svuotare la cache dopo un modifica con setDataSet
         // DeleteAll ci svuota il DB mantenendo lo schema
         tester.setSetUpOperation(DatabaseOperation.REFRESH);
         tester.setTearDownOperation(DatabaseOperation.DELETE_ALL);
     }
+
     private static void refreshDataSet(String filename) throws Exception {
         IDataSet initialState = new FlatXmlDataSetBuilder()
                 .build(EndUserDAOTest.class.getClassLoader().getResourceAsStream(filename));
@@ -63,41 +62,38 @@ class EndUserDAOTest {
         tester.onTearDown();
     }
 
-
     @ParameterizedTest(name = "{index} - {0} (parametri: {1}, {2}, {3}, {4}, {5}, {6})")
     @MethodSource("createTestFailProvider")
     void createTestFailInvalidInput(String testName, String name, String surname, String email, String phoneNumber, String password, Date birthDate) throws Exception {
         EndUser user = new EndUser(name, surname, email, phoneNumber, password, birthDate);
         Assert.assertThrows(IllegalArgumentException.class, () ->endUserDAO.create(user));
+        ITable actualTable = tester.getConnection().createDataSet().getTable("end_user");
+        Assert.assertTrue(actualTable.getRowCount() == 0);
     }
 
     private static Stream<Arguments> createTestFailProvider() {
-
         return Stream.of(
+                Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
                 Arguments.of("Test case creazione utente fallita Nome non valido", "", "Sorrentino", "tommyrock99@hotmail.it", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
                 Arguments.of("Test case creazione utente fallita Nome non valido", null, "Sorrentino", "tommyrock99@hotmail.it", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
-                Arguments.of("Test case creazione utente fallita Nome non valido", "awrkjhqrwokpjhfewiqfhoiwqhoqwpihoiqwhhoidfq", "Sorrentino", "tommyrock99@hotmail.it", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
-                Arguments.of("Test case creazione utente fallita Cognome non valido", "Tommaso", "", "tommyrock99@hotmail.it", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
-                Arguments.of("Test case creazione utente fallita Cognome non valido", "Tommaso", "dfaslkndsalkjhfaklholikhadosiufphdsopfhjapophsdifhoies", "tommyrock99@hotmail.it", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
-                Arguments.of("Test case creazione utente fallita Cognome non valido", "Tommaso", null, "tommyrock99@hotmail.it", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
-                Arguments.of("Test case creazione utente fallita Email non valido", "Tommaso", "Sorrentino", "", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
-                Arguments.of("Test case creazione utente fallita Email non valido", "Tommaso", "Sorrentino", "fasjklhkldahjfiaeshifkowaeuhiuweqsifoqwiuhfaeqwfhflekahkajshfalskjhasflkjhklsajfsahjkfhjksaljkfhasjkafhshjklsaflhafsjkjhksfjkhaddsdas", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
-                Arguments.of("Test case creazione utente fallita Email non valido", "Tommaso", "Sorrentino", null, "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
-                Arguments.of("Test case creazione utente fallita Numero cellulare non valido", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "", "password!1", Utils.parseDate("2023-01-01")),
-                Arguments.of("Test case creazione utente fallita Numero cellulare non valido", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", null, "password!1", Utils.parseDate("2023-01-01")),
-                Arguments.of("Test case creazione utente fallita Numero cellulare non valido", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "sadkljhsalkhjaosiduopsijwopijqdopijwiwjodqwioj", "password!1", Utils.parseDate("2023-01-01")),
-                Arguments.of("Test case creazione utente fallita Numero cellulare non valido", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "3128978912739782317891232378918237912378979", "password!1", Utils.parseDate("2023-01-01")),
-                Arguments.of("Test case creazione utente fallita Password non valida", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "+393662968496", "dfaslkjdslkajhfpidkjshfpaldkshdslsadlkjaqljkdslkjsdljksadjklasdjkladskjhdsfdohidfsohipafioshp", Utils.parseDate("2023-01-01")),
-                Arguments.of("Test case creazione utente fallita Password non valida", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "+393662968496", null, Utils.parseDate("2023-01-01")),
-                Arguments.of("Test case creazione utente fallita Password non valida", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "+393662968496", "", Utils.parseDate("2023-01-01")),
-                Arguments.of("Test case creazione utente fallita Data non valida", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "+393662968496", "password!1",null)
+                Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", null, "tommyrock99@hotmail.it", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
+                Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "", "tommyrock99@hotmail.it", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
+                Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "", "tommyrock99@hotmail.it", "+39366296849639873243492872869", "password!1", Utils.parseDate("2023-01-01")),
+                Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", "to", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
+                Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", "", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
+                Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", null, "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
+                Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
+                Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "abc", "password!1", Utils.parseDate("2023-01-01")),
+                Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", null, "password!1", Utils.parseDate("2023-01-01")),
+                Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "", "password!1", Utils.parseDate("2023-01-01")),
+                Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "+393662968496", "password11", Utils.parseDate("2023-01-01")),
+                Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "+393662968496", "password1!", null)
         );
     }
 
-
     @Test
     void createTestPass() throws Exception {
-        EndUser user = new EndUser("Tommaso", "Sorrentino", "tommy@hotmail.it", "+393662968496","napoli1!", Utils.parseDate("2021-12-01"));
+        EndUser user = new EndUser("Tommaso", "Sorrentino", "tommy@hotmail.it", "393662968496","napoli1!", Utils.parseDate("2021-12-01"));
         String cryptPassword = Utils.hash(user.getPassword());
         endUserDAO.create(user);
         IDataSet expectedDataSet = new FlatXmlDataSetBuilder()

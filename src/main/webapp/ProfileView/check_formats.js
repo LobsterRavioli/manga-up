@@ -6,18 +6,18 @@ function check_registration_format(){
     let password_format = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     let birth_date_format = /^\d{4}-\d{2}-\d{2}$/;
 
+
     let card_number_format = /^[0-9]{13,16}$/;
     let cvc_format = /^[0-9]{3,5}$/;
     let card_holder_format = /^[a-zA-Z\-\s]{1,40}$/;
     let expirement_date_format = /^\d{4}-\d{2}-\d{2}$/;
+
 
     let country_format = /^[a-zA-Z]{1,56}$/;
     let region_format = /^[a-zA-Z]{1,30}$/;
     let city_format = /^[a-zA-Z]{1,163}$/;
     let street_format = /^[a-zA-Z0-9\-\s]{1,40}$/;
     let phone_number_format = /^[0-9]{13,15}$/;
-
-
     let postal_code_format = /^[0-9]{5}$/;
 
     let email = document.getElementById("email").value;
@@ -42,8 +42,8 @@ function check_registration_format(){
     let postal_code = document.getElementById("postal_code").value;
 
 
-    if(!email_format.test(email)) {
-        document.querySelector(".email_error").innerHTML = "Indirizzo email deve rispettare il seguente formato: x@dominio.x";
+    if(!email_format.test(email) || email.length > 319) {
+        document.querySelector(".email_error").innerHTML = "Indirizzo email deve rispettare il seguente formato: x@dominio.x e la lunghezza deve essere di 319";
         document.querySelector(".email_error").style.display = "block";
         event.preventDefault();
 

@@ -97,6 +97,27 @@ public class Address {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Address address = (Address) o;
+
+        if (id != address.id) return false;
+        if (!(this.endUser.getId() == address.getEndUser().getId())) return false;
+        if (!country.equals(address.country)) return false;
+        if (!city.equals(address.city)) return false;
+        if (!street.equals(address.street)) return false;
+        if (!postalCode.equals(address.postalCode)) return false;
+        if (!phoneNumber.equals(address.phoneNumber)) return false;
+        return region.equals(address.region);
+    }
+
+    public Address(int id) {
+        this.id = id;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -105,5 +126,39 @@ public class Address {
         this.phoneNumber = phoneNumber;
     }
 
+
+    public static boolean validate(Address address) {
+        if (address.getCountry() == null || address.getCountry().isEmpty()) {
+            return false;
+        }
+        if (address.getCity() == null || address.getCity().isEmpty()) {
+            return false;
+        }
+        if (address.getStreet() == null || address.getStreet().isEmpty()) {
+            return false;
+        }
+        if (address.getPostalCode() == null || address.getPostalCode().isEmpty()) {
+            return false;
+        }
+        if (address.getPhoneNumber() == null || address.getPhoneNumber().isEmpty()) {
+            return false;
+        }
+        if (address.getRegion() == null || address.getRegion().isEmpty()) {
+            return false;
+        }
+        if (address.getCity().matches("^[a-zA-Z]{1,163}$") == false) {return false;}
+
+        if(address.getStreet().matches("^[a-zA-Z0-9]{1,163}$") == false) {return false;}
+
+        if (address.getPostalCode().matches("^[0-9]{5}$") == false) {return false;}
+
+        if (address.getPhoneNumber().matches("^[0-9]{13,15}$") == false) {return false;}
+
+        if (address.getRegion().matches("^[a-zA-Z]{1,30}$") == false) {return false;}
+
+        if (address.getCountry().matches("^[a-zA-Z]{1,56}$") == false) {return false;}
+
+        return true;
+    }
 
 }

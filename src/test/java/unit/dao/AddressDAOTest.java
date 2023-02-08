@@ -2,6 +2,7 @@ package unit.dao;
 
 import User.AccountService.Address;
 import User.AccountService.AddressDAO;
+import User.AccountService.CreditCard;
 import User.AccountService.EndUser;
 import org.dbunit.Assertion;
 import org.dbunit.IDatabaseTester;
@@ -11,10 +12,17 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
+import org.junit.Assert;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
+import utils.Utils;
 
 import javax.sql.DataSource;
+import java.util.Date;
+import java.util.stream.Stream;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AddressDAOTest {
@@ -45,88 +53,124 @@ class AddressDAOTest {
     @BeforeEach
     public void setUp() throws Exception {
         // Prepara lo stato iniziale di default
-        refreshDataSet("enduser_dao/init.xml");
+        refreshDataSet("address_dao/init.xml");
         DataSource ds = Mockito.mock(DataSource.class);
         Mockito.when(ds.getConnection()).thenReturn(tester.getConnection().getConnection());
         addressDAO = new AddressDAO(ds);
     }
-
 
     @AfterEach
     void tearDown() throws Exception {
         tester.onTearDown();
     }
 
-    @Test
-    void createPass() throws Exception {
+    @ParameterizedTest(name = "{index} - {0} (parametri: {1}, {2}, {3}, {4}, {5}, {6})")
+    @MethodSource("createTestFailProvider")
+    void createTestFailInvalidInput(String testName, String country, String city, String street, String postalCode, String phoneNumber, String region) throws Exception {
+        refreshDataSet("address_dao/populate.xml");
+        EndUser endUser = new EndUser(1);
         Address address = new Address();
-        address.setCity("Roma");
-        address.setStreet("Via Roma 24");
-        address.setPostalCode("00100");
-        address.setCountry("Italia");
-        address.setRegion("Campania");
-        address.setPhoneNumber("3333333333");
-        EndUser user = new EndUser();
-        user.setId(1);
-        address.setEndUser(user);
-        addressDAO.create(address);
+        address.setCountry(country);
+        address.setCity(city);
+        address.setStreet(street);
+        address.setPostalCode(postalCode);
+        address.setPhoneNumber(phoneNumber);
+        address.setRegion(region);
+        address.setEndUser(endUser);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> addressDAO.create(address));
         ITable actualTable = tester.getConnection().createDataSet().getTable("address");
-        IDataSet expectedDataSet = new FlatXmlDataSetBuilder()
-                .build(AddressDAOTest.class.getClassLoader().getResourceAsStream("enduser_dao/create_pass.xml"));
-        String[] ignoreCol = new String[1];
-        ignoreCol[0] = "addr_id";
-        ITable expectedTable = expectedDataSet.getTable("address");
-        Assertion.assertEqualsIgnoreCols(new SortedTable(expectedTable), new SortedTable(actualTable), ignoreCol);
+        Assert.assertTrue(actualTable.getRowCount() == 1);
     }
 
-    @Test
-    void createFail1() throws Exception {
-        Address address = new Address();
-        address.setCity(null);
-        address.setStreet("Via Roma 24");
-        address.setPostalCode("00100");
-        address.setCountry("Italia");
-        address.setRegion("Campania");
-        address.setPhoneNumber("3333333333");
-        EndUser user = new EndUser();
-        user.setId(1);
-        address.setEndUser(user);
-        addressDAO.create(address);
-        ITable actualTable = tester.getConnection().createDataSet().getTable("address");
-        IDataSet expectedDataSet = new FlatXmlDataSetBuilder()
-                .build(AddressDAOTest.class.getClassLoader().getResourceAsStream("enduser_dao/create_pass.xml"));
-        String[] ignoreCol = new String[1];
-        ignoreCol[0] = "addr_id";
-        ITable expectedTable = expectedDataSet.getTable("address");
-        Assertion.assertEqualsIgnoreCols(new SortedTable(expectedTable), new SortedTable(actualTable), ignoreCol);
+    private static Stream<Arguments> createTestFailProvider() {
+        return Stream.of(
+                Arguments.of("Test case creazione address fallita Nome non valido", "", "Napoli", "Via Roma 35", "00100", "+393662968496", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", null, "Napoli", "Via Roma 35", "00100", "+393662968496", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "Napoli", "Via Roma 35", "00100", "+393662968496", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via Roma 35", "00100", "+393662968496", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "", "Via Roma 35", "00100", "+393662968496", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", null, "Via Roma 35", "00100", "+393662968496", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "123", "Via Roma 35", "00100", "+393662968496", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via Roma 35", "00100", "+393662968496", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "", "00100", "+393662968496", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", null, "00100", "+393662968496", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via roma 35", "abc", "+393662968496", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via roma 35", "1", "+393662968496", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via roma 35", null, "+393662968496", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via roma 35", "00100", "+393662968496", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via roma 35", "00100", "abc", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via roma 35", "00100", "", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via roma 35", "00100", "2187361892736218697", "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via roma 35", "00100", null, "Campania"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via roma 35", "00100", "+393662968496", "123"),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via roma 35", "00100", "+393662968496", ""),
+                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via roma 35", "00100", "+393662968496", null)
+        );
     }
 
+    @ParameterizedTest(name = "{index} - {0} (parametri: {1})")
+    @MethodSource("deleteInvalidProvider")
+    void deleteInvalid(String testName, Address address) throws Exception {
+        refreshDataSet("address_dao/populated.xml");
+        Assert.assertThrows(IllegalArgumentException.class, () -> addressDAO.delete(address));
+        ITable actualTable = tester.getConnection().createDataSet().getTable("address");
+        Assert.assertTrue(actualTable.getRowCount() == 1);
+    }
 
-
+    private static Stream<Arguments> deleteInvalidProvider() {
+        return Stream.of(
+                Arguments.of("Indirizzo non valido", new Address(0)),
+                Arguments.of("Indirizzo non valido", new Address(-1)),
+                Arguments.of( "Indirizzo non valido",null)
+        );
+    }
     @Test
-    void createSuccess() {
-        Address address = new Address();
-        address.setCity("Roma");
-        address.setStreet("Via Roma 24");
-        address.setPostalCode("00100");
-        address.setCountry("Italia");
-        address.setRegion("Campania");
-        address.setPhoneNumber("3333333333");
+    void findAssociatedAddressesExistingUser() throws Exception {
         EndUser user = new EndUser(1);
+        refreshDataSet("address_dao/populated.xml");
+        Address address = new Address();
+        address.setId(24);
+        address.setCountry("Italia");
+        address.setCity("Napoli");
+        address.setRegion("Campania");
+        address.setStreet("Via Roma 24");
+        address.setPostalCode("80100");
+        address.setPhoneNumber("+393662968496");
         address.setEndUser(user);
-        addressDAO.create(address);
-
+        Assert.assertEquals(address, addressDAO.findAssociatedAddresses(user).iterator().next());
     }
 
     @Test
-    void delete() {
+    void findAssociatedAddressesNotExistingUser() throws Exception {
+        EndUser user = new EndUser(1);
+        refreshDataSet("address_dao/populated.xml");
+        Assert.assertNull(addressDAO.findAssociatedAddresses(user));
     }
 
     @Test
-    void findAssociatedAddresses() {
+    void findByIdValidInputExistingUser() {
+        EndUser user = new EndUser(1);
+        Address address = new Address();
+        address.setId(24);
+        address.setCountry("Italia");
+        address.setCity("Napoli");
+        address.setRegion("Campania");
+        address.setStreet("Via Roma 24");
+        address.setPostalCode("80100");
+        address.setPhoneNumber("+393662968496");
+        address.setEndUser(user);
+        Assert.assertTrue(addressDAO.findById(1).equals(address));
     }
 
     @Test
-    void findById() {
+    void findByIdValidInputNotExistingAddress() throws Exception {
+        refreshDataSet("address_dao/populated.xml");
+        Assert.assertNull(addressDAO.findById(50));
     }
+
+    @Test
+    void findByIdInvalidInput() {
+        Assert.assertThrows(IllegalArgumentException.class, () -> addressDAO.findById(-1));
+    }
+
 }

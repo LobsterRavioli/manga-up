@@ -36,6 +36,10 @@ public class AddressDAO {
             "    AND usr_id = ?5;";
 
     public void create(Address address) {
+
+        if (!Address.validate(address))
+            throw new IllegalArgumentException("Address is not valid");
+
         Object[] values = {
             address.getStreet(),
             address.getCountry(),
@@ -44,7 +48,7 @@ public class AddressDAO {
             address.getPhoneNumber(),
                 address.getRegion(),
             address.getEndUser().getId()
-    };
+        };
 
     try (
             Connection connection = ds.getConnection();
@@ -68,6 +72,9 @@ public class AddressDAO {
     }
 
     public void delete(Address address) {
+        if (address == null || address.getId() <= 0) {
+            throw new IllegalArgumentException("Address is not created yet, the user ID is null.");
+        }
         Object[] values = {
             address.getId()
         };
@@ -108,6 +115,9 @@ public class AddressDAO {
     }
 
     public Address findById(int id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("Invalid address ID.");
+        }
         return find(SQL_FIND_BY_ADDRESS_ID,id);
     }
 
@@ -125,19 +135,6 @@ public class AddressDAO {
         address.setEndUser(user);
         return address;
 
-        /*
-        Address address = new ConcreteAddressBuilder().setStreet(resultSet.getString("addr_street"))
-                .setCountry(resultSet.getString("addr_country"))
-                .setCity(resultSet.getString("addr_city"))
-                .setStreet(resultSet.getString("addr_street"))
-                .setPostalCode(resultSet.getString("addr_postal_code"))
-                .setPhoneNumber(resultSet.getString("addr_phone_number"))
-                .setRegion(resultSet.getString("addr_region"))
-                .setEndUser(new ConcreteEndUserBuilder().setId(resultSet.getInt("usr_id")).createEndUser())
-                .setId(resultSet.getInt("addr_id"))
-                .createAddress();
-        return address;
-        */
     }
 
 
@@ -158,54 +155,4 @@ public class AddressDAO {
         return address;
     }
 
-    /*
-
-    NON PRESENTI IN ODD
-
-    @Override
-    public Collection list() {
-        List<Address> addresses = new ArrayList<>();
-
-        try (
-                Connection connection = ds.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_LIST_ORDER_BY_ORDER_ID);
-                ResultSet resultSet = statement.executeQuery();
-        ) {
-            while (resultSet.next()) {
-                addresses.add(map(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        }
-
-        return addresses;
-
-    }
-
-    @Override
-    public Collection findSingleByEnduser(Address address) {
-        List<Address> addresses = new ArrayList<>();
-        Object[] values = {
-                address.getEndUser().getId()
-        };
-        try (
-                Connection connection = ds.getConnection();
-                PreparedStatement statement = prepareStatement(connection, SQL_FIND_SINGLE_BY_ENDUSER, false, values);
-                ResultSet resultSet = statement.executeQuery();
-        ) {
-            while (resultSet.next()) {
-                addresses.add(map(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        }
-
-        return addresses;
-    }
-
-    @Override
-    public Collection find(Address address) {
-        return null;
-    }
-*/
 }

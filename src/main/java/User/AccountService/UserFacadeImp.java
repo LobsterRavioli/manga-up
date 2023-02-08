@@ -23,9 +23,9 @@ public class UserFacadeImp implements UserFacade {
         this.endUserDAO = new EndUserDAO(ds);
     }
 
-
     private static User getRandomOrderManager(Collection<User> orderManagers)
     {
+
         Random random = new Random();
 
         int randomNumber = random.nextInt(orderManagers.size());

@@ -14,6 +14,10 @@ public class CreditCard {
     public CreditCard() {
     }
 
+    public CreditCard(int id) {
+        this.id = id;
+    }
+
     public void setEndUser(EndUser newEndUser) {
         if(endUser != newEndUser){
             EndUser oldEndUser = endUser;
@@ -88,4 +92,29 @@ public class CreditCard {
     public void setExpirementDate(Date expirementDate) {
         this.expirementDate = expirementDate;
     }
+
+    public static boolean validate(CreditCard creditCard){
+        if (creditCard.getCardNumber() == null || creditCard.getCardNumber().matches("^[0-9]{13,16}$")) return false;
+        if (creditCard.getCardHolder() == null || creditCard.getCardHolder().matches("^[a-zA-Z\\-\\s]{1,40}$")) return false;
+        if (creditCard.getCvv() == null || creditCard.getCvv().matches("^[0-9]{3,5}$")) return false;
+        if (creditCard.getExpirementDate() == null) return false;
+        if (creditCard.getEndUser() == null) return false;
+
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CreditCard that = (CreditCard) o;
+
+        if (id != that.id) return false;
+        if (!cvv.equals(that.cvv)) return false;
+        if (!endUser.equals(that.endUser)) return false;
+        if (!cardNumber.equals(that.cardNumber)) return false;
+        if (!cardHolder.equals(that.cardHolder)) return false;
+        return expirementDate.equals(that.expirementDate);
+    }
+
 }

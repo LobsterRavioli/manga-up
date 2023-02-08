@@ -41,6 +41,16 @@ public class CreditCardDAO {
     }
 
     public void create(CreditCard card) {
+
+        if (!CreditCard.validate(card))
+            throw new IllegalArgumentException("Credit card is not valid");
+
+        if (card.getEndUser() == null)
+            throw new IllegalArgumentException("Credit card is not associated with a user");
+
+        if (card.getId() != 0)
+            throw new IllegalArgumentException("Credit card is already created, the user ID is not null.");
+
         Object[] values = {
                 Utils.hash(card.getCvv()),
                 String.valueOf(card.getCardNumber()),
@@ -71,6 +81,11 @@ public class CreditCardDAO {
         }
     }
     public void delete(CreditCard card) {
+        if (card == null)
+            throw new IllegalArgumentException("Credit card is null");
+        if(card.getId() <= 0)
+            throw new IllegalArgumentException("Credit card is not created yet, the user ID is null.");
+
         Object[] values = {
                 card.getId()
         };
@@ -91,6 +106,8 @@ public class CreditCardDAO {
     }
 
     public CreditCard findById(int id) {
+        if (id <= 0)
+            throw new IllegalArgumentException("Credit card ID is not valid");
         return find(CreditCardDAO.SQL_FIND_BY_ID,id);
     }
 
@@ -112,6 +129,10 @@ public class CreditCardDAO {
     }
 
     public List findAssociatedCards(EndUser user) {
+        if (user == null)
+            throw new IllegalArgumentException("User is null");
+        if (user.getId() <= 0)
+            throw new IllegalArgumentException("User is not created yet, the user ID is null.");
         List<CreditCard> creditCards = new ArrayList<>();
         Object[] values = {
                 user.getId()

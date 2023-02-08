@@ -30,7 +30,7 @@
            String errMessage = (String)request.getAttribute("error");
            if(errMessage != null) {
         %>
-            <p style='color: red;'><%=errMessage %></p>
+            <p id="lollo" tyle='color: red;'><%=errMessage %></p>
         <% } %>
 
 </body>

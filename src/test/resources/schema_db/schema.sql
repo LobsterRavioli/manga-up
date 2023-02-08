@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS END_USER
     usr_email Varchar(128) NOT NULL UNIQUE,
     usr_name VARCHAR(32) NOT NULL,
     usr_surname VARCHAR(32) NOT NULL,
-    usr_password VARCHAR(32) NOT NULL,
+    usr_password VARCHAR(64) NOT NULL,
     usr_phone_number VARCHAR(20) NOT NULL,
     usr_birth_date date NOT NULL,
     PRIMARY KEY (usr_id)
