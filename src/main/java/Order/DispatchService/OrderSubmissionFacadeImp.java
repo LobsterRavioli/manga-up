@@ -11,9 +11,8 @@ import java.util.Map;
 import Cart.CheckoutService.Cart;
 import Cart.CheckoutService.CartDAO;
 import Merchandising.MerchandiseService.Manga;
-import User.AccountService.EndUser;
-import User.AccountService.UserDAO;
-import User.AccountService.User;
+import User.AccountService.*;
+
 import javax.sql.DataSource;
 
 public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
@@ -38,14 +37,43 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
 
 
     public void createOrder(Order order, ArrayList<Manga> products,User selectedManager) throws Exception{
+
+        if(order == null || products == null || selectedManager == null || order.getEndUser() == null || order.getCreditCardEndUserInfo() == null || order.getAddressEndUserInfo() == null)
+            throw new IllegalArgumentException("Parametri invalidi");
+
+        if(products.size() == 0)
+            throw new IllegalArgumentException("Parametri invalidi");
+
+        if(order.getEndUser().getId() <= 0)
+            throw new IllegalArgumentException("Parametri invalidi");
+
+        if(!CreditCard.validate(order.getEndUserCard()))
+            throw new IllegalArgumentException("Parametri invalidi");
+
+        if(!Address.validate(order.getEndUserAddress()))
+            throw new IllegalArgumentException("Parametri invalidi");
+
+        for (Manga m : products) {
+            if(m.getQuantity() == 0 || m.getName() == null || m.getName().length() > 50 || m.getName().trim().equals("")|| m.getPrice() <= 0 || m.getQuantity() <= 0)
+                throw new IllegalArgumentException("Parametri invalidi");
+        }
+
         OrderRow orderRow;
         order.setOrderDate(Date.valueOf(LocalDate.now()));
+        float total = 0;
+
+        for (Manga p : products) {
+            total += p.getPrice();
+        }
+
+        order.setTotalPrice(total);
         orderDAO.create(order);
         for (Manga manga : products) {
              orderRow = new OrderRow(order, order.getEndUser(), manga, manga.getQuantity());
              orderRowDAO.create(orderRow);
         }
-            assignDAO.create(new ToManage(selectedManager,order));
+
+        assignDAO.create(new ToManage(selectedManager,order));
     }
 
     public void executeTask(ManagedOrder managedOrder) throws SQLException

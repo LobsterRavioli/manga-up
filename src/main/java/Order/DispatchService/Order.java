@@ -34,6 +34,8 @@ public class Order {
         this.state = Order.TO_SENT;
     }
 
+
+
     /*
     public Order(long id, Date orderDate, double totalPrice, EndUser endUser, CreditCard card)
     {
@@ -235,5 +237,13 @@ public class Order {
                 ", endUserCard=" + endUserCard +
                 ", creditCardInfo='" + creditCardInfo + '\'' +
                 '}';
+    }
+
+    public Address getEndUserAddress() {
+        return endUserAddress;
+    }
+
+    public CreditCard getEndUserCard() {
+        return endUserCard;
     }
 }

@@ -42,6 +42,7 @@ public class checkoutServlet extends HttpServlet {
             CreditCard userCard = new CreditCardDAO(ds).findById(creditCardId);
             if(userCard==null)
                 System.out.println("Problema null");
+
             Address addressEndUser = new AddressDAO(ds).findById(addressId);
             CartDAO cartDAO = new CartDAO(ds);
             MangaDAO mangaDAO = new MangaDAO(ds);
@@ -67,6 +68,7 @@ public class checkoutServlet extends HttpServlet {
                 mangaQuantityFromCart = entry.getValue();
                 manga.setQuantity(mangaQuantityFromCart);
             }
+
 
             Order order = new Order(endUser, addressEndUser, userCard);
 

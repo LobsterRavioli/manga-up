@@ -8,6 +8,15 @@ import java.util.Objects;
 public class Manga{
 
 
+    public Manga() {
+    }
+
+    public Manga(String name, double price, int quantity) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
     public Manga(String isbn, String publisher, String binding, String language, String volume, int pages, Date exitDate, int id, String name, String description, double price, double height, double length, double weight, int quantity, String interior, String imagePath, Collection collection, ProductState state, String storyMaker, Genre genre) {
         this.isbn = isbn;
         this.publisher = publisher;
