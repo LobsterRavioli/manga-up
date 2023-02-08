@@ -40,7 +40,7 @@ public class CartDAO {
             if (rsret.next()) {
                 ;
             } else {
-                throw new Exception("l'utente non risulta registrato nel sistema");
+                throw new Exception("utente non esistente");
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -100,7 +100,7 @@ public class CartDAO {
         if(rs.next()){
             ;
         }else {
-            throw new Exception("l'utente non risulta registrato nel sistema");
+            throw new Exception("utente non esistente");
         }
 
         try {
@@ -111,7 +111,7 @@ public class CartDAO {
             if (rs.next()) {
                 ;
             } else {
-                throw new Exception("il manga che si sta provando ad inserire non risulta presente nel db");
+                throw new Exception("prodotto non esistente");
             }
         }catch (Exception e){
             throw e;
@@ -167,7 +167,7 @@ public class CartDAO {
         if(rs.next()){
             ;
         }else {
-            throw new Exception("l'utente non risulta registrato nel sistema");
+            throw new Exception("utente non esistente");
         }
 
         try {
@@ -178,7 +178,7 @@ public class CartDAO {
             if (rs.next()) {
                 ;
             } else {
-                throw new Exception("il manga che si sta provando ad inserire non risulta presente nel db");
+                throw new Exception("prodotto non esistente");
             }
         }catch (Exception e){
             throw e;
@@ -241,7 +241,7 @@ public class CartDAO {
         if(rs.next()){
             ;
         }else {
-            throw new Exception("l'utente non risulta registrato nel sistema");
+            throw new Exception("utente non esistente");
         }
 
         try {
@@ -252,7 +252,7 @@ public class CartDAO {
             if (rs.next()) {
                 ;
             } else {
-                throw new Exception("il manga che si sta provando ad inserire non risulta presente nel db");
+                throw new Exception("prodotto non esistente");
             }
         }catch (Exception e){
             throw e;
@@ -318,7 +318,7 @@ public class CartDAO {
         if(rs.next()){
             ;
         }else {
-            throw new Exception("l'utente non risulta registrato nel sistema");
+            throw new Exception("utente non esistente");
         }
 
         try {
