@@ -1,5 +1,6 @@
-package Cart.CheckoutService;
+package unit.dao;
 
+import Cart.CheckoutService.CartDAO;
 import Merchandising.MerchandiseService.*;
 import User.AccountService.EndUser;
 import org.dbunit.IDatabaseTester;
@@ -18,7 +19,6 @@ import javax.sql.DataSource;
 
 import java.sql.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CartDAOTest {
 

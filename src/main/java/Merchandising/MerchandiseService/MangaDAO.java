@@ -483,7 +483,8 @@ public class MangaDAO {
     public ArrayList<Manga> retrieveAll() throws Exception{
         PreparedStatement pr = null;
         ResultSet rs = null;
-        try(Connection conn = ds.getConnection()){
+        Connection conn = ds.getConnection();
+        try{
             pr = conn.prepareStatement("SELECT * from Manga as m");
             rs = pr.executeQuery();
             ArrayList<Manga> lista = new ArrayList<Manga>();
@@ -532,6 +533,7 @@ public class MangaDAO {
             try{
                 rs.close();
                 pr.close();
+                conn.close();
             }catch (SQLException e){
                 e.printStackTrace();
             }

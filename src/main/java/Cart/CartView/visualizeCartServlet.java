@@ -17,16 +17,21 @@ import java.util.HashMap;
 public class visualizeCartServlet extends HttpServlet {
 
 
+    private CartDAO dao;
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (dao == null){
+            DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+            dao = new CartDAO(ds);
+        }
 
-        DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
-        CartDAO dao = new CartDAO(ds);
+
         EndUser user = (EndUser) request.getSession(false).getAttribute("user");
         try{
             request.getSession().setAttribute("cart",new Cart(dao.retrieveByUser(user)));
@@ -35,5 +40,9 @@ public class visualizeCartServlet extends HttpServlet {
         }
         response.sendRedirect(request.getContextPath()+"/CartView/cart.jsp");
         return;
+    }
+
+    public void setDao(CartDAO dao) {
+        this.dao = dao;
     }
 }
