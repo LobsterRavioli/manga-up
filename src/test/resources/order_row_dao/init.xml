@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <END_USER usr_id='44' usr_email='antonio@hotmail.it' usr_name='Antonio' usr_surname='Di Bianco' usr_password='softwareEngineerIsCool!' usr_phone_number='+393522979986' usr_birth_date='2013-10-10'/>
+    <ORDERS ord_id='65' ord_date='2018-05-06' ord_state='TO_SEND' ord_total_price='10.50' ord_end_user_id='44' ord_address='Address info fittizie' ord_card='Credit card info fittizie'/>
+    <ORDER_ROW id='2' ord_id='65' user_id='44' manga_name='Dragon Quest' manga_price='4.99' quantity='6'/>
+    <END_USER usr_id='44' usr_email='antonio@hotmail.it' usr_name='Antonio' usr_surname='Di Bianco' usr_password='softwareEngineerIsCool!' usr_phone_number='+393522979986' usr_birth_date='2013-10-10'/>
+    <ORDERS ord_id='69' ord_date='2018-05-06' ord_state='TO_SEND' ord_total_price='10.50' ord_end_user_id='44' ord_address='Address info fittizie' ord_card='Credit card info fittizie'/>
+    <ORDER_ROW id='5' ord_id='65' user_id='44' manga_name='Bleach' manga_price='4.99' quantity='3'/>
+    <END_USER usr_id='136' usr_email='ale@hotmail.it' usr_name='Alessandro' usr_surname='Carnevale' usr_password='passWARUDO' usr_phone_number='+393552477336' usr_birth_date='2013-10-10'/>
+    <ORDERS ord_id='29' ord_date='2018-05-06' ord_state='TO_SEND' ord_total_price='10.50' ord_end_user_id='136' ord_address='Address info fittizie' ord_card='Credit card info fittizie'/>
+</dataset>
