@@ -33,9 +33,6 @@ public class OrderListServlet extends HttpServlet {
             Collection<Order>order = dao.retrieveOrdersAssociatedToUsers(user);
             request.setAttribute("orders", order);
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/OrderView/order_dashboard_enduser.jsp"));
-            for (Order o : order) {
-                System.out.println(o);
-            }
 
             dispatcher.forward(request, response);
         } catch (SQLException e) {

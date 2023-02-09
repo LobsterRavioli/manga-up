@@ -35,6 +35,12 @@ public class AddressDAO {
             "    AND addr_street_number = ?4\n" +
             "    AND usr_id = ?5;";
 
+    /**
+     *
+     * @param address
+     * Precondition: address != null
+     * Postcondition: address.getId() != null
+     */
     public void create(Address address) {
 
         if (!Address.validate(address))

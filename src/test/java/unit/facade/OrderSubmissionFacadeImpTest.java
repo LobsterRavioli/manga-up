@@ -98,11 +98,11 @@ class OrderSubmissionFacadeImpTest {
 
 
         return Stream.of(
-                Arguments.of("Credit card non valida",null,products, new User("Tommaso")),
+                Arguments.of("Credit card non valida",null,null, new User("Tommaso")),
                 Arguments.of("Credit card non valida",order,new ArrayList<Manga>(), new User("Tommaso")),
                 Arguments.of("Credit card non valida",order,null, new User("Tommaso")),
-                Arguments.of("Credit card non valida",order,products, new User()),
-                Arguments.of("Credit card non valida",order,products, null)
+                Arguments.of("Credit card non valida",order,null, new User()),
+                Arguments.of("Credit card non valida",order,null, null)
         );
     }
 
@@ -138,4 +138,4 @@ class OrderSubmissionFacadeImpTest {
 
     }
 
-}\
+}
