@@ -102,7 +102,7 @@ class OrderSubmissionFacadeImpTest {
 
         Order order1 = new Order();
         order1.setId(-3); // id ordine non valido
-        order1.setEndUserAddress(new Address("Italia", "Campania", "Salerno", "Via Garibaldi", "8400"));
+        order1.setEndUserAddress(new Address("Italia", "Campania", "Salerno", "Via Garibaldi", "84003"));
         order1.setEndUserCard(new CreditCard("1111222233334444", "326", "Giovanni Vincenzi", Date.valueOf("2025-10-02")));
         order1.setEndUserID(56);
         order1.setState(Order.TO_SENT);
