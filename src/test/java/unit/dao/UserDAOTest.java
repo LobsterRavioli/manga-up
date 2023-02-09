@@ -10,7 +10,10 @@ import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Assert;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -25,12 +28,12 @@ import java.util.LinkedList;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
 class UserDAOTest {
 
     private static IDatabaseTester tester;
 
-    private UserDAO userDAO;
+    private static UserDAO userDAO;
     @BeforeAll
     static void setUpAll() throws ClassNotFoundException {
         tester = new JdbcDatabaseTester(org.h2.Driver.class.getName(),
@@ -76,6 +79,7 @@ class UserDAOTest {
     }
 
 
+
     private static Stream<Arguments> createInvalidInputProvider() {
         return Stream.of(
                 Arguments.of("Test case user non valido", null, "password!1"),
@@ -118,33 +122,36 @@ class UserDAOTest {
 
     @Test
     void getAllBeginnerOrderManagersPass() throws SQLException {
+
         Collection<User> managers = new LinkedList<>();
+
         User user1 = new User("Tommaso", "password1");
         User user2 = new User("Giacomo", "password2");
         User user3 = new User("Sara", "password3");
+
         managers.add(user1);
         managers.add(user2);
         managers.add(user3);
+
         Collection<User> actual = userDAO.getAllBeginnerOrderManagers();
         Assert.assertEquals(managers, actual);
     }
 
     @Test
     void getTargetOrderManagerUserName() throws SQLException {
-        User manager = Mockito.mock(User.class);
-        Mockito.when(manager.getUsername()).thenReturn("Giacomo"); // è il primo in ordine alfabetico
+
+        String orderManagerUserName = "Tommaso";
+
         String actual = userDAO.getTargetOrderManagerUserName();
-        Assert.assertEquals(manager.getUsername(), actual);
+        Assert.assertEquals(orderManagerUserName, actual);
     }
 
     @Test
     void getRoles() {
-
     }
 
     @Test
     void getUserByUsername() {
-
     }
 
     @Test

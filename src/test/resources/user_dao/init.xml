@@ -4,8 +4,15 @@
     <US_ERS user_name="Tommaso" password="password1"/>
     <US_ERS user_name="Giacomo" password="password2"/>
     <US_ERS user_name="Sara" password="password3"/>
-    <US_ERS user_name="Giulia" password="password!"/>
+    <END_USER usr_id='136' usr_email='ale@hotmail.it' usr_name='Alessandro' usr_surname='Carnevale' usr_password='passWARUDO' usr_phone_number='+393552477336' usr_birth_date='2013-10-10'/>
+    <ORDERS ord_id='29' ord_date='2018-05-06' ord_state='TO_SEND' ord_total_price='10.50' ord_end_user_id='136' ord_address='Address info fittizie' ord_card='Credit card info fittizie'/>
+    <ORDERS ord_id='37' ord_date='2018-05-07' ord_state='TO_SEND' ord_total_price='9.99' ord_end_user_id='136' ord_address='Address info fittizie' ord_card='Credit card info fittizie'/>
+    <END_USER usr_id='203' usr_email='frank@hotmail.it' usr_name='Francesco' usr_surname='Monzillo' usr_password='password1!' usr_phone_number='+393662968496' usr_birth_date='2021-12-01'/>
+    <ORDERS ord_id='33' ord_date='2019-05-06' ord_state='TO_SEND' ord_total_price='10.50' ord_end_user_id='203' ord_address='Address info fittizie' ord_card='Credit card info fittizie'/>
     <USER_ROLES user_name='Tommaso' role_name='ORDER_MANAGER'/>
     <USER_ROLES user_name='Giacomo' role_name='ORDER_MANAGER'/>
     <USER_ROLES user_name='Sara' role_name='ORDER_MANAGER'/>
+    <MANAGES man_user_name="Tommaso" man_order_id="29" man_shipment_date="2018-05-06" man_tracking_number="TRKN1" man_courier="BRT" man_delivery_date="2018-05-09"/>
+    <MANAGES man_user_name="Sara" man_order_id="37" man_shipment_date="2018-05-07" man_tracking_number="TRKN2" man_courier="BRT" man_delivery_date="2018-05-12"/>
+    <MANAGES man_user_name="Sara" man_order_id="33" man_shipment_date="2019-05-06" man_tracking_number="TRKN3" man_courier="DHL" man_delivery_date="2019-05-10"/>
 </dataset>
