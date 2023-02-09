@@ -57,6 +57,14 @@ public class UserDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
+        if (user == null || user.getUsername() == null || user.getPassword() == null)
+            throw new IllegalArgumentException("User or username or password is null");
+        if (!user.getUsername().matches(User.USER_FORMAT))
+            throw new IllegalArgumentException("Username is not valid");
+
+        if (!user.getPassword().matches(User.PASSWORD_FORMAT))
+            throw new IllegalArgumentException("Username is not valid");
+
         try
         {
             connection = ds.getConnection();

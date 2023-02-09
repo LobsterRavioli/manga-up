@@ -110,12 +110,16 @@ public class AddressDAO {
                 PreparedStatement statement = prepareStatement(connection, SQL_FIND_ALL_BY_ENDUSER, false, values);
                 ResultSet resultSet = statement.executeQuery();
         ) {
+
             while (resultSet.next()) {
                 addresses.add(map(resultSet));
             }
         } catch (SQLException e) {
             throw new DAOException(e);
         }
+
+        if (addresses.isEmpty())
+            return null;
 
         return addresses;
     }

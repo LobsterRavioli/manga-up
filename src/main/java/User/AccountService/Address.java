@@ -155,11 +155,11 @@ public class Address {
         }
         if (address.getCity().matches("^[a-zA-Z]{1,163}$") == false) {return false;}
 
-        if(address.getStreet().matches("^[a-zA-Z0-9]{1,163}$") == false) {return false;}
+        if(address.getStreet().matches("^[a-zA-Z0-9\\-\\s]{1,40}$") == false) {return false;}
 
         if (address.getPostalCode().matches("^[0-9]{5}$") == false) {return false;}
 
-        if (address.getPhoneNumber().matches("^[0-9]{13,15}$") == false) {return false;}
+        if (address.getPhoneNumber().matches("^[+][0-9]{12,15}$") == false) {return false;}
 
         if (address.getRegion().matches("^[a-zA-Z]{1,30}$") == false) {return false;}
 

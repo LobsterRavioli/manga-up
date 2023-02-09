@@ -1,8 +1,7 @@
 package unit.dao;
 
-import User.AccountService.CreditCard;
-import User.AccountService.CreditCardDAO;
-import User.AccountService.EndUser;
+import User.AccountService.*;
+import org.dbunit.Assertion;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.dataset.IDataSet;
@@ -211,5 +210,23 @@ class CreditCardDAOTest {
         EndUser user = new EndUser(1);
         refreshDataSet("credit_card_dao/populated.xml");
         Assert.assertFalse(creditCardDAO.existsCreditCardNumber("1234567890123457"));
+    }
+
+
+    @Test
+    void createTestPass() throws Exception {
+        refreshDataSet("credit_card_dao/actual.xml");
+        CreditCard creditCard = new CreditCard();
+        creditCard.setCardHolder("Tommaso Sorrentino");
+        creditCard.setExpirementDate(Utils.parseDate("2030-11-16"));
+        creditCard.setEndUser(new EndUser(1));
+        creditCard.setCvv("123");
+        creditCard.setCardNumber("1234567890123456");
+        creditCardDAO.create(creditCard);
+        IDataSet expectedDataSet = new FlatXmlDataSetBuilder()
+                .build(EndUserDAO.class.getClassLoader().getResourceAsStream("credit_card_dao/expected.xml"));
+        ITable actualTable = tester.getConnection().createDataSet().getTable("credit_card");
+        Assertion.assertEquals(expectedDataSet.getTable("credit_card"), actualTable);
+
     }
 }

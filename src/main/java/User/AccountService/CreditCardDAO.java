@@ -151,6 +151,9 @@ public class CreditCardDAO {
             throw new DAOException(e);
         }
 
+        if (creditCards.isEmpty())
+            return null;
+
         return creditCards;
     }
 
