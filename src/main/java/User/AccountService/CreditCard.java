@@ -50,7 +50,6 @@ public class CreditCard {
     @Override
     public String toString() {
         return "cardNumber="+cardNumber
-                +",cvv="+cvv
                 +",cardHolder="+cardHolder
                 +",expirationDate="+expirementDate;
     }

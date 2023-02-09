@@ -1,12 +1,14 @@
 package unit.dao;
 
 import User.AccountService.EndUserDAO;
+import User.AccountService.User;
 import User.AccountService.UserDAO;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
+import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +20,9 @@ import org.mockito.Mockito;
 
 import javax.sql.DataSource;
 
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,9 +31,9 @@ class UserDAOTest {
 
     private static IDatabaseTester tester;
 
-    private UserDAO userDAO;
+    private static UserDAO userDAO;
     @BeforeAll
-    void setUpAll() throws ClassNotFoundException {
+    static void setUpAll() throws ClassNotFoundException {
         tester = new JdbcDatabaseTester(org.h2.Driver.class.getName(),
                 "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;init=runscript from 'classpath:schema_db/schema.sql'",
                 "prova",
@@ -61,7 +66,7 @@ class UserDAOTest {
         tester.onTearDown();
     }
 
-    @Test
+
     @ParameterizedTest(name = "Test {index}: {0}")
     @MethodSource("createInvalidInputProvider")
     void createInvalidInputUser() {
@@ -91,11 +96,30 @@ class UserDAOTest {
     }
 
     @Test
-    void getAllBeginnerOrderManagers() {
+    void getAllBeginnerOrderManagersPass() throws SQLException {
+
+        Collection<User> managers = new LinkedList<>();
+
+        User user1 = new User("Tommaso", "password1");
+        User user2 = new User("Giacomo", "password2");
+        User user3 = new User("Sara", "password3");
+
+        managers.add(user1);
+        managers.add(user2);
+        managers.add(user3);
+
+        Collection<User> actual = userDAO.getAllBeginnerOrderManagers();
+        Assert.assertEquals(managers, actual);
     }
 
     @Test
-    void getTargetOrderManagerUserName() {
+    void getTargetOrderManagerUserName() throws SQLException {
+
+        User manager = Mockito.mock(User.class);
+        Mockito.when(manager.getUsername()).thenReturn("Giacomo"); // è il primo in ordine alfabetico
+
+        String actual = userDAO.getTargetOrderManagerUserName();
+        Assert.assertEquals(manager.getUsername(), actual);
     }
 
     @Test

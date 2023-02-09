@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-
+    <RO_LES role_name='ORDER_MANAGER'/>
+    <US_ERS user_name="Tommaso" password="password1"/>
+    <US_ERS user_name="Giacomo" password="password2"/>
+    <US_ERS user_name="Sara" password="password3"/>
+    <USER_ROLES user_name='Tommaso' role_name='ORDER_MANAGER'/>
+    <USER_ROLES user_name='Giacomo' role_name='ORDER_MANAGER'/>
+    <USER_ROLES user_name='Sara' role_name='ORDER_MANAGER'/>
 </dataset>

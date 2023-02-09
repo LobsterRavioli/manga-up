@@ -15,11 +15,11 @@ public class UserDAO {
 
     private DataSource ds;
 
-    private static final String USER_TABLE = "users";
-    private static final String USER_ROLE_TABLE = "user_roles";
+    private static final String USER_TABLE = "US_ERS";
+    private static final String USER_ROLE_TABLE = "USER_ROLES";
 
-    private static final String ROLE_TABLE = "roles";
-    private static final String MANAGES_TABLE = "manages";
+    private static final String ROLE_TABLE = "RO_LES";
+    private static final String MANAGES_TABLE = "MANAGES";
 
     private static final String CREATE = "INSERT INTO "+USER_TABLE+
             " (user_name, password)"+

@@ -56,8 +56,8 @@ CREATE TABLE IF NOT EXISTS USER_ROLES
     user_name VARCHAR(20) NOT NULL,
     role_name VARCHAR(20) NOT NULL,
     PRIMARY KEY (user_name, role_name),
-    FOREIGN KEY (user_name) REFERENCES us_ers (user_name) ON DELETE CASCADE,
-    FOREIGN KEY (role_name) REFERENCES ro_les (role_name) ON DELETE CASCADE
+    FOREIGN KEY (user_name) REFERENCES us_ers (user_name) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (role_name) REFERENCES ro_les (role_name) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS ORDERS
