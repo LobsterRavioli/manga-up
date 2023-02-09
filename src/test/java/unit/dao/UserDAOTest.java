@@ -110,7 +110,7 @@ class UserDAOTest {
 
     @Test
     void createUserFailAlreadyExisted(){
-        Assert.assertThrows(SQLException.class, ()->userDAO.createUser(new User("Giulia", "password!1")));
+        Assert.assertThrows(SQLException.class, ()->userDAO.createUser(new User("Tommaso", "password1!")));
     }
 
     @Test

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
     <RO_LES role_name='ORDER_MANAGER'/>
-    <US_ERS user_name="Tommaso" password="password1"/>
-    <US_ERS user_name="Giacomo" password="password2"/>
-    <US_ERS user_name="Sara" password="password3"/>
+    <US_ERS user_name="Tommaso" password="password1!"/>
+    <US_ERS user_name="Giacomo" password="password2!"/>
+    <US_ERS user_name="Sara" password="password3!"/>
     <END_USER usr_id='136' usr_email='ale@hotmail.it' usr_name='Alessandro' usr_surname='Carnevale' usr_password='passWARUDO' usr_phone_number='+393552477336' usr_birth_date='2013-10-10'/>
     <ORDERS ord_id='29' ord_date='2018-05-06' ord_state='TO_SEND' ord_total_price='10.50' ord_end_user_id='136' ord_address='Address info fittizie' ord_card='Credit card info fittizie'/>
     <ORDERS ord_id='37' ord_date='2018-05-07' ord_state='TO_SEND' ord_total_price='9.99' ord_end_user_id='136' ord_address='Address info fittizie' ord_card='Credit card info fittizie'/>
