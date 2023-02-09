@@ -3,13 +3,8 @@ package Order.DispatchService;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import Cart.CheckoutService.Cart;
-import Cart.CheckoutService.CartDAO;
 import Merchandising.MerchandiseService.Manga;
 import User.AccountService.*;
 
@@ -36,27 +31,28 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
     }
 
 
+    private static boolean validateOrderCreationParameters(Order order, ArrayList<Manga> products, User selectedManager)
+    {
+        if(order == null || products == null || selectedManager == null)
+            return false;
+
+        if(!order.validateOrder())
+            return false;
+
+        for(Manga m : products)
+            if(!m.validateManga())
+                return false;
+
+        if(!selectedManager.validateUser())
+            return false;
+
+        return true;
+    }
+
     public void createOrder(Order order, ArrayList<Manga> products,User selectedManager) throws Exception{
 
-        if(order == null || products == null || selectedManager == null || order.getEndUser() == null || order.getCreditCardEndUserInfo() == null || order.getAddressEndUserInfo() == null)
-            throw new IllegalArgumentException("Parametri invalidi");
-
-        if(products.size() == 0)
-            throw new IllegalArgumentException("Parametri invalidi");
-
-        if(order.getEndUser().getId() <= 0)
-            throw new IllegalArgumentException("Parametri invalidi");
-
-        if(!CreditCard.validate(order.getEndUserCard()))
-            throw new IllegalArgumentException("Parametri invalidi");
-
-        if(!Address.validate(order.getEndUserAddress()))
-            throw new IllegalArgumentException("Parametri invalidi");
-
-        for (Manga m : products) {
-            if(m.getQuantity() == 0 || m.getName() == null || m.getName().length() > 50 || m.getName().trim().equals("")|| m.getPrice() <= 0 || m.getQuantity() <= 0)
-                throw new IllegalArgumentException("Parametri invalidi");
-        }
+        if(!validateOrderCreationParameters(order, products, selectedManager))
+            throw new IllegalArgumentException("Invalid data");
 
         OrderRow orderRow;
         order.setOrderDate(Date.valueOf(LocalDate.now()));

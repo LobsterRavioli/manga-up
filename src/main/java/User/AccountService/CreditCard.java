@@ -39,7 +39,13 @@ public class CreditCard {
         this.expirementDate = expirementDate;
     }
 
-
+    public CreditCard(String cardNumber, String cvv, String cardHolder, Date expirationDate)
+    {
+        this.cardNumber = cardNumber;
+        this.cvv = cvv;
+        this.cardHolder = cardHolder;
+        this.expirementDate = expirationDate;
+    }
 
     @Override
     public String toString() {

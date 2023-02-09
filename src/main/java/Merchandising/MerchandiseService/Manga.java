@@ -1,9 +1,6 @@
 package Merchandising.MerchandiseService;
 
-import java.util.ArrayList;
 import java.sql.Date;
-import java.util.List;
-import java.util.Objects;
 
 public class Manga{
 
@@ -238,6 +235,14 @@ public class Manga{
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+    }
+
+    public boolean validateManga()
+    {
+        if(id <= 0 || name == null || name.trim().equals("") || name.length() > 50 || price <= 0 || quantity <= 0)
+            return false;
+        else
+            return true;
     }
 }
 

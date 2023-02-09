@@ -18,7 +18,8 @@ public class User {
         this.id = id;
     }
 
-    public User(){}
+    public User() {
+    }
 
     public User(String username, String password) {
         this.username = username;
@@ -46,18 +47,17 @@ public class User {
         this.password = password;
     }
 
-    public void addRole(String role){
-        if(!roles.contains(role))
+    public void addRole(String role) {
+        if (!roles.contains(role))
             roles.add(role);
     }
 
-    public void removeRole(String role){
-        if(roles.contains(role))
+    public void removeRole(String role) {
+        if (roles.contains(role))
             roles.remove(role);
     }
 
-    public Set getRoles()
-    {
+    public Set getRoles() {
         return this.roles;
     }
 
@@ -81,6 +81,15 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public boolean validateUser()
+    {
+        if(username == null || username.trim().equals("") || username.length() > 50
+                || password == null || password.trim().equals("") || password.length() > 255)
+            return false;
+        else
+            return true;
     }
 
     public void setRoles(Set roles) {

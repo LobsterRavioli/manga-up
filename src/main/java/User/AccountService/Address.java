@@ -20,6 +20,15 @@ public class Address {
 
     public Address(){}
 
+    public Address(String country, String region, String city, String street, String postalCode)
+    {
+        this.country = country;
+        this.region = region;
+        this.city = city;
+        this.street = street;
+        this.postalCode = postalCode;
+    }
+
     public Address(int id, EndUser endUser, String country, String city, String street, String postalCode, String phoneNumber, String region) {
         this.id = id;
         this.endUser = endUser;
@@ -30,8 +39,6 @@ public class Address {
         this.phoneNumber = phoneNumber;
         this.region = region;
     }
-
-
 
     public int getId() {
         return id;
