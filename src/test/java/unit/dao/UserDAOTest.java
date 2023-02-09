@@ -18,7 +18,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
-import utils.Utils;
 
 import javax.sql.DataSource;
 
@@ -125,13 +124,7 @@ class UserDAOTest {
 
         Collection<User> managers = new LinkedList<>();
 
-        User user1 = new User("Tommaso", "password1");
-        User user2 = new User("Giacomo", "password2");
-        User user3 = new User("Sara", "password3");
-
-        managers.add(user1);
-        managers.add(user2);
-        managers.add(user3);
+        managers.add(new User("Giacomo", "password2"));
 
         Collection<User> actual = userDAO.getAllBeginnerOrderManagers();
         Assert.assertEquals(managers, actual);
