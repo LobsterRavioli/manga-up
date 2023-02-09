@@ -18,6 +18,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
+import utils.Utils;
 
 import javax.sql.DataSource;
 
@@ -71,10 +72,13 @@ class UserDAOTest {
     @ParameterizedTest(name = "Test {index}: {0}, {1}, {2}")
     @MethodSource("createInvalidInputProvider")
     void createInvalidInputUser(String testName, String username, String password) throws Exception {
-        refreshDataSet("user_dao/invalid.xml");
+
         assertThrows(IllegalArgumentException.class, () -> userDAO.createUser(new User(username, password)));
         ITable actualTable = tester.getConnection().createDataSet().getTable("US_ERS");
-        Assert.assertTrue(actualTable.getRowCount() == 1);
+        ITable expectedTable = new FlatXmlDataSetBuilder()
+                .build(UserDAO.class.getClassLoader().getResourceAsStream("user_dao/createInvalitInput.xml"))
+                .getTable("US_ERS");
+        Assertion.assertEquals(new SortedTable(expectedTable), new SortedTable(actualTable));
     }
 
 

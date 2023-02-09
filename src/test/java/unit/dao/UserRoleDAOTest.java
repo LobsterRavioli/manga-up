@@ -9,6 +9,8 @@ class UserRoleDAOTest {
 
     private UserRoleDAO userRoleDAO;
 
+
+
     @Test
     void getRoles() {
 
@@ -17,4 +19,9 @@ class UserRoleDAOTest {
     @Test
     void setRoles() {
     }
+
+    void removeAllRoles() {
+    }
+
+
 }
