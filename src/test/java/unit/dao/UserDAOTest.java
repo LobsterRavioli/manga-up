@@ -115,11 +115,10 @@ class UserDAOTest {
     @Test
     void getTargetOrderManagerUserName() throws SQLException {
 
-        User manager = Mockito.mock(User.class);
-        Mockito.when(manager.getUsername()).thenReturn("Giacomo"); // è il primo in ordine alfabetico
+        String orderManagerUserName = "Tommaso";
 
         String actual = userDAO.getTargetOrderManagerUserName();
-        Assert.assertEquals(manager.getUsername(), actual);
+        Assert.assertEquals(orderManagerUserName, actual);
     }
 
     @Test
