@@ -45,7 +45,7 @@ public class UserDAO {
                                               "FROM "+ROLE_TABLE+" AS R, "+USER_ROLE_TABLE+" AS U1, "+USER_TABLE+" AS U2 "+
                                               "WHERE R.role_name=U1.role_name AND U1.user_name=U2.user_name AND U2.user_name=?";
 
-    private static final String EXISTS_USERNAME = "SELECT user_name FROM users WHERE user_name = ? ";
+    private static final String EXISTS_USERNAME = "SELECT user_name FROM "+USER_TABLE+" WHERE user_name = ? ";
 
     public UserDAO(DataSource ds)
     {

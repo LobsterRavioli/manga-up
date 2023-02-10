@@ -1,5 +1,6 @@
 package unit.dao;
 
+import Order.DispatchService.OrderDAO;
 import User.AccountService.*;
 import org.dbunit.Assertion;
 import org.dbunit.IDatabaseTester;
@@ -18,6 +19,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
+import utils.DAOException;
 
 import javax.sql.DataSource;
 
@@ -113,13 +115,36 @@ class UserDAOTest {
     }
 
     @Test
-    void removeUserByUserName() {
+    void removeUserByUserNamePass() throws Exception {
 
+        ITable expected = new FlatXmlDataSetBuilder().
+                build(OrderDAO.class.getClassLoader().getResourceAsStream("user_dao/delete_user_pass.xml")).
+                getTable("US_ERS");
+
+        userDAO.removeUserByUserName("Giacomo");
+
+        ITable actual = tester.getConnection().createDataSet().getTable("US_ERS");
+        Assertion.assertEquals(new SortedTable(expected), new SortedTable(actual));
     }
 
     @Test
-    void getAllUsers() {
+    void removeUserByUserNameFail() {
 
+        Assert.assertThrows(DAOException.class, () -> userDAO.removeUserByUserName(" "));
+    }
+
+    @Test
+    void getAllUsers() throws SQLException {
+
+        Collection<User> users = new LinkedList<>();
+
+        users.add(new User("Tommaso", "password1!"));
+        users.add(new User("Giacomo", "password2!"));
+        users.add(new User("Sara", "password3!"));
+
+        Collection<User> actual = userDAO.getAllUsers("");
+
+        Assert.assertEquals(users, actual);
     }
 
     @Test
@@ -143,18 +168,72 @@ class UserDAOTest {
     }
 
     @Test
-    void getRoles() {
+    void getRolesPass() throws SQLException {
+
+        Collection<String> roles = new LinkedList<>();
+        roles.add("USER_MANAGER");
+        roles.add("ORDER_MANAGER");
+        roles.add("CATALOG_MANAGER");
+
+        // Giacomo ha tutti e tre i ruoli
+        Collection<String> actual = userDAO.getRoles("Giacomo");
+        Assert.assertTrue(roles.containsAll(actual));
     }
 
     @Test
-    void getUserByUsername() {
+    void getRolesFail() throws SQLException {
+
+        // Gino non è un utente del database e qundi non ha nessun ruolo
+        Collection<String> actual = userDAO.getRoles("Gino");
+        Assert.assertTrue(actual.isEmpty());
     }
 
     @Test
-    void checkUser() {
+    void getUserByUsernamePass() throws SQLException {
+
+        User expected = new User("Sara", "password3!");
+        User actual = userDAO.getUserByUsername("Sara");
+
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
-    void existsUsername() {
+    void getUserByUsernameFail() throws SQLException {
+
+        User actual = userDAO.getUserByUsername(" ");
+        Assert.assertTrue(actual == null);
+    }
+
+    @Test
+    void checkUserExists() throws SQLException {
+
+        Assert.assertTrue(userDAO.checkUser(new User("Giacomo", "password2!"), "USER_MANAGER"));
+    }
+
+    @ParameterizedTest()
+    @MethodSource("retrieveInvalidUsersProvider")
+    void checkUserNotExists(String testName, String username, String password, String roleToLog) throws SQLException {
+
+        Assert.assertFalse(userDAO.checkUser(new User(username, password), roleToLog));
+    }
+
+    private static Stream<Arguments> retrieveInvalidUsersProvider() {
+        return Stream.of(
+                Arguments.of("Test case check fallito, user non presente nel database", "Gino", "password", "ORDER_MANAGER"),
+                Arguments.of("Test case check fallito, password errata", "Sara", "password!1", "ORDER_MANAGER"),
+                Arguments.of("Test case check fallito, ruolo non assegnato", "Sara", "password!1", "USER_MANAGER")
+        );
+    }
+
+    @Test
+    void existsUsernamePass() throws SQLException {
+
+        Assert.assertTrue(userDAO.existsUsername("Sara"));
+    }
+
+    @Test
+    void existsUsernameFail() throws SQLException {
+
+        Assert.assertFalse(userDAO.existsUsername("Gino"));
     }
 }
