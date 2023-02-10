@@ -4,6 +4,7 @@ import User.AccountService.Address;
 import User.AccountService.AddressDAO;
 
 import User.AccountService.EndUser;
+import utils.DAOException;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -32,7 +33,11 @@ public class AddressDeleteServlet extends HttpServlet {
         Address address = new Address();
         address.setId(Integer.parseInt(request.getParameter("address_id")));
         address.setEndUser(user);
-        addressDAO.delete(address);
+        try {
+            addressDAO.delete(address);
+        } catch (DAOException e) {
+            response.setStatus(499);
+        }
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/AddressDashboardServlet"));
         dispatcher.forward(request, response);
     }

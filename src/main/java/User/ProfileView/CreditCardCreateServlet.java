@@ -16,6 +16,7 @@ import java.io.IOException;
 @WebServlet("/CreditCardCreateServlet")
 public class CreditCardCreateServlet extends HttpServlet {
 
+    private CreditCardDAO creditCardDAO;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,5 +39,9 @@ public class CreditCardCreateServlet extends HttpServlet {
         dao.create(card);
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/CreditCardDashboardServlet"));
         dispatcher.forward(request, response);
+    }
+
+    void setCreditCardDAO(CreditCardDAO dao) {
+        this.creditCardDAO = dao;
     }
 }

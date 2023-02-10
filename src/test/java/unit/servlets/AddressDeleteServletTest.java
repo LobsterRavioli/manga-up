@@ -7,6 +7,7 @@ import User.ProfileView.AddressDeleteServlet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import utils.DAOException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -48,15 +49,10 @@ class AddressDeleteServletTest {
 
     @Test
     void fail() throws ServletException, IOException {
-        Mockito.when(session.getAttribute("street")).thenReturn("Via Roma");
-        Mockito.when(request.getParameter("city")).thenReturn("Roma");
-        Mockito.when(request.getParameter("country")).thenReturn("Italia");
-        Mockito.when(request.getParameter("postal_code")).thenReturn("80040");
-        Mockito.when(request.getParameter("region")).thenReturn("Lazio");
-        Mockito.when(request.getParameter("phone_number")).thenReturn("+393662968496");
+        Mockito.when(request.getParameter("address_id")).thenReturn("1");
         addressDAO = mock(AddressDAO.class);
         Mockito.doAnswer(invocation -> {
-            throw new Exception();
+            throw new DAOException("Error");
         }).when(addressDAO).delete(any(Address.class));
         spy.setAddressDAO(addressDAO);
         spy.doPost(request, response);
@@ -65,12 +61,7 @@ class AddressDeleteServletTest {
 
     @Test
     void success() throws ServletException, IOException {
-        Mockito.when(session.getAttribute("street")).thenReturn("Via Roma");
-        Mockito.when(request.getParameter("city")).thenReturn("Roma");
-        Mockito.when(request.getParameter("country")).thenReturn("Italia");
-        Mockito.when(request.getParameter("postal_code")).thenReturn("80040");
-        Mockito.when(request.getParameter("region")).thenReturn("Lazio");
-        Mockito.when(request.getParameter("phone_number")).thenReturn("+393662968496");
+        Mockito.when(request.getParameter("address_id")).thenReturn("1");
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(spy.getServletContext()).thenReturn(context);
         RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
@@ -78,13 +69,12 @@ class AddressDeleteServletTest {
         addressDAO = mock(AddressDAO.class);
         Mockito.doAnswer(invocation -> {
             return null;
-        }).when(addressDAO).create(any(Address.class));
+        }).when(addressDAO).delete(any(Address.class));
 
         spy.setAddressDAO(addressDAO);
         spy.doPost(request, response);
         verify(context).getRequestDispatcher(response.encodeURL("/AddressDashboardServlet"));
     }
-
 
 
 }
