@@ -96,10 +96,10 @@ class AddressDAOTest {
                 Arguments.of("Test case creazione address fallita Numero non valido", "Italia", "Napoli", "Via roma 35", "00100", "abc", "Campania"),
                 Arguments.of("Test case creazione address fallita Numero non valido", "Italia", "Napoli", "Via roma 35", "00100", "", "Campania"),
                 Arguments.of("Test case creazione address fallita Numero carta non valido", "Italia", "Napoli", "Via roma 35", "00100", "2187361892736218697", "Campania"),
-                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via roma 35", "00100", null, "Campania"),
-                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via roma 35", "00100", "+393662968496", "123"),
-                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via roma 35", "00100", "+393662968496", ""),
-                Arguments.of("Test case creazione address fallita Nome non valido", "Italia", "Napoli", "Via roma 35", "00100", "+393662968496", null)
+                Arguments.of("Test case creazione address fallita Numero non valido", "Italia", "Napoli", "Via roma 35", "00100", null, "Campania"),
+                Arguments.of("Test case creazione address fallita Regione non valido", "Italia", "Napoli", "Via roma 35", "00100", "+393662968496", "123"),
+                Arguments.of("Test case creazione address fallita Regione non valido", "Italia", "Napoli", "Via roma 35", "00100", "+393662968496", ""),
+                Arguments.of("Test case creazione address fallita Regione non valido", "Italia", "Napoli", "Via roma 35", "00100", "+393662968496", null)
         );
     }
 

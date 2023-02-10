@@ -17,6 +17,7 @@ import java.util.Collection;
 @WebServlet("/AddressDashboardServlet")
 public class AddressDashboardServlet extends HttpServlet {
 
+    private AddressDAO addressDAO;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -24,16 +25,30 @@ public class AddressDashboardServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-        AddressDAO dao = new AddressDAO(ds);
-        response.setContentType("text/html");
+
+        if (addressDAO == null) {
+            addressDAO = new AddressDAO(ds);
+        }
+
         HttpSession session = request.getSession();
         EndUser user = (EndUser) session.getAttribute("user");
-
-        Collection addresses = dao.findAssociatedAddresses(user);
+        Collection addresses = null;
+        try {
+            addresses = addressDAO.findAssociatedAddresses(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(500);
+        }
         request.setAttribute("addresses", addresses);
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProfileView/dashboard_indirizzi.jsp"));
         dispatcher.forward(request, response);
     }
+
+    public void setAddressDAO(AddressDAO addressDAO) {
+        this.addressDAO = addressDAO;
+    }
+
+
 }

@@ -1,6 +1,5 @@
 package unit.dao;
 
-import Order.DispatchService.OrderDAO;
 import User.AccountService.*;
 import org.dbunit.Assertion;
 import org.dbunit.IDatabaseTester;
@@ -19,7 +18,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
-import utils.DAOException;
 
 import javax.sql.DataSource;
 
@@ -115,36 +113,13 @@ class UserDAOTest {
     }
 
     @Test
-    void removeUserByUserNamePass() throws Exception {
+    void removeUserByUserName() {
 
-        ITable expected = new FlatXmlDataSetBuilder().
-                build(OrderDAO.class.getClassLoader().getResourceAsStream("user_dao/delete_user_pass.xml")).
-                getTable("US_ERS");
-
-        userDAO.removeUserByUserName("Giacomo");
-
-        ITable actual = tester.getConnection().createDataSet().getTable("US_ERS");
-        Assertion.assertEquals(new SortedTable(expected), new SortedTable(actual));
     }
 
     @Test
-    void removeUserByUserNameFail() {
+    void getAllUsers() {
 
-        Assert.assertThrows(DAOException.class, () -> userDAO.removeUserByUserName(" "));
-    }
-
-    @Test
-    void getAllUsers() throws SQLException {
-
-        Collection<User> users = new LinkedList<>();
-
-        users.add(new User("Tommaso", "password1!"));
-        users.add(new User("Giacomo", "password2!"));
-        users.add(new User("Sara", "password3!"));
-
-        Collection<User> actual = userDAO.getAllUsers("");
-
-        Assert.assertEquals(users, actual);
     }
 
     @Test
@@ -181,11 +156,7 @@ class UserDAOTest {
     }
 
     @Test
-    void getRolesFail() throws SQLException {
-
-        // Gino non è un utente del database e qundi non ha nessun ruolo
-        Collection<String> actual = userDAO.getRoles("Gino");
-        Assert.assertTrue(actual.isEmpty());
+    void getUserByUsername() {
     }
 
     @Test

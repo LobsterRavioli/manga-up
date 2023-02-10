@@ -14,16 +14,19 @@ import java.io.IOException;
 @WebServlet("/AddressCreateServlet")
 public class AddressCreateServlet extends HttpServlet {
 
-
+    private AddressDAO addressDAO;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-        AddressDAO dao = new AddressDAO(ds);
+        if (addressDAO == null) {
+            addressDAO = new AddressDAO(ds);
+        }
         response.setContentType("text/html");
         EndUser user = (EndUser) request.getSession().getAttribute("user");
 
@@ -34,11 +37,20 @@ public class AddressCreateServlet extends HttpServlet {
         address.setPostalCode(request.getParameter("postal_code"));
         address.setRegion(request.getParameter("region"));
         address.setPhoneNumber(request.getParameter("phone_number"));
-
-
         address.setEndUser(user);
-        dao.create(address);
+
+        try {
+            addressDAO.create(address);
+        } catch (Exception e) {
+            response.setStatus(499);
+            return;
+        }
+
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/AddressDashboardServlet"));
             dispatcher.forward(request, response);
+    }
+
+    public void setAddressDAO(AddressDAO addressDAO) {
+        this.addressDAO = addressDAO;
     }
 }

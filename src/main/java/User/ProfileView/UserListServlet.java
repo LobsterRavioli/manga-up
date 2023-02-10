@@ -31,8 +31,6 @@ public class UserListServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-
-
         UserDAO userDAO = new UserDAO(ds);
         UserRoleDAO roleDAO = new UserRoleDAO(ds);
 
