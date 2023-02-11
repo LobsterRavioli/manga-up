@@ -45,17 +45,19 @@
 </div>-->
 <%String errore = (String)request.getAttribute("error");
     if(errore!=null){%>
-        <script>
+        <!--<script>
             errore('<%=errore%>');
-        </script>
+        </script>-->
+        <p id="error" style="position: relative;left: 30%;"><%=errore%></p>
     <%}%>
 
 
 <%String success = (String)request.getAttribute("success");
     if(success!=null){%>
-<script>
+<!--<script>
     errore('<%=success%>');
-</script>
+</script>-->
+<p id="success" style="position: relative;left: 30%;"><%=success%></p>
 <%}%>
 
 

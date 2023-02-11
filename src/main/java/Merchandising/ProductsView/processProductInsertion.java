@@ -89,6 +89,7 @@ public class processProductInsertion extends HttpServlet {
                     out.write(bytes, 0, read);
                 }
                 System.out.println("New file " + prodName + " created at " + "C:\\Users\\Francesco Monzillo\\Dropbox\\Il mio PC (LAPTOP-AMUDE4IL)\\Desktop\\Uni\\Corsi\\3° anno\\Primo Semestre\\Ingegneria del Software\\Progetto\\Implementation\\manga-up\\src\\main\\webapp\\images\\products" + File.separator + prodName);
+                request.setAttribute("success","prodotto inserito con successo");
                 RequestDispatcher rD = this.getServletContext().getRequestDispatcher("/ProductsView/homepage.jsp");
                 rD.forward(request,response);
                 return;
