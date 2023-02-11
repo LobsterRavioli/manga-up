@@ -11,17 +11,22 @@ import java.io.IOException;
 @WebServlet(name = "productE_U", value = "/productE_U")
 public class productE_U extends HttpServlet {
 
+    MangaDAO daoM;
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request,response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("prodId");
-        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
         String err = request.getParameter("err");
-        MangaDAO daoM = new MangaDAO(ds);
+
+        if(daoM == null) {
+            DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+            daoM = new MangaDAO(ds);
+        }
         if(err!=null){
             request.setAttribute("error",true);
         }
@@ -29,16 +34,22 @@ public class productE_U extends HttpServlet {
         if(success!=null){
             request.setAttribute("success",true);
         }
-        try{
-            Manga m = daoM.retrieveById(Integer.parseInt(id));
-            request.setAttribute("prod",m);
-            RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/product.jsp");
-            rD.forward(request,response);
-        }catch (Exception e){
-            request.setAttribute("prod",null);
-            RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/product.jsp");
-            rD.forward(request,response);
-        }
 
+        Manga m = daoM.retrieveById(Integer.parseInt(id));
+        if(m==null){
+            request.setAttribute("prod",null);
+            RequestDispatcher rD = getServletContext().getRequestDispatcher("/catalogServlet");
+            rD.forward(request,response);
+            return;
+        }
+        request.setAttribute("prod",m);
+        RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/product.jsp");
+        rD.forward(request,response);
+
+
+    }
+
+    public void setDaoM(MangaDAO daoM){
+        this.daoM=daoM;
     }
 }

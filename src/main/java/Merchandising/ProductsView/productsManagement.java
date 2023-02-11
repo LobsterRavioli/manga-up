@@ -11,15 +11,20 @@ import java.io.IOException;
 
 @WebServlet(name = "productsManagement", value = "/productsManagement")
 public class productsManagement extends HttpServlet {
+
+    MangaDAO ma;
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request,response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-        MangaDAO ma = new MangaDAO(ds);
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        if(ma==null) {
+            DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+            ma = new MangaDAO(ds);
+        }
         String red = request.getParameter("redirect");
         if(red!=null) {
             String id = request.getParameter("id");
@@ -32,6 +37,7 @@ public class productsManagement extends HttpServlet {
             String quantity = request.getParameter("quantity");
             int quantità = Integer.parseInt(quantity);
             try{
+                System.out.println(quantità+"\n"+id);
                 ma.updateQuantity(quantità,Integer.parseInt(id));
                 request.setAttribute("success","Operazione avvenuta con successo");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/ProductsView/homepage.jsp");
@@ -46,5 +52,8 @@ public class productsManagement extends HttpServlet {
             }
         }
 
+    }
+    public void setMa(MangaDAO ma){
+        this.ma=ma;
     }
 }

@@ -10,16 +10,21 @@ import java.io.IOException;
 
 @WebServlet(name = "productsRemoval", value = "/productsRemoval")
 public class productsRemoval extends HttpServlet {
+
+    MangaDAO daoM;
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request,response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        DataSource ds =(DataSource) getServletContext().getAttribute("DataSource");
-        MangaDAO daoM = new MangaDAO(ds);
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        if(daoM==null) {
+            DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+            daoM = new MangaDAO(ds);
+        }
         String ending= request.getParameter("goodEnding");
         if(ending!=null && !ending.equals("")){
             request.setAttribute("goodEnding",ending);
@@ -41,5 +46,9 @@ public class productsRemoval extends HttpServlet {
             response.setStatus(201);
             return;
         }
+    }
+
+    public void setDaoM(MangaDAO ma){
+        this.daoM=ma;
     }
 }

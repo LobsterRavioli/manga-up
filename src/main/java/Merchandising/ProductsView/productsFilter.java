@@ -14,17 +14,18 @@ import java.util.ArrayList;
 @WebServlet(name = "productsFilter", value = "/productsFilter")
 public class productsFilter extends HttpServlet {
 
-
+    private MangaDAO daoM;
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request,response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
-
-        MangaDAO daoM = new MangaDAO(ds);
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(daoM==null) {
+            DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+            daoM = new MangaDAO(ds);
+        }
         String name = request.getParameter("name");
         String collections = request.getParameter("collection");
         System.out.println(name+"\n"+collections);
@@ -54,7 +55,7 @@ public class productsFilter extends HttpServlet {
                 return;
             }catch (Exception e){
                 request.setAttribute("listaElementi",null);
-                request.setAttribute("errore","errore");
+                request.setAttribute("error",e.getMessage());
                 RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/prodManagement.jsp");
                 rD.forward(request,response);
                 return;
@@ -69,9 +70,14 @@ public class productsFilter extends HttpServlet {
         }catch (Exception e){
             System.out.println(e.getMessage()+" errore");
             request.setAttribute("listaElementi",null);
+            request.setAttribute("error",e.getMessage());
             RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/catalog.jsp");
             rD.forward(request,response);
             return;
         }
+    }
+
+    public void setDaoM(MangaDAO daoM){
+        this.daoM=daoM;
     }
 }

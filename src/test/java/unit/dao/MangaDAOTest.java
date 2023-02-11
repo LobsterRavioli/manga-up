@@ -235,12 +235,13 @@ class MangaDAOTest {
 
     @Test
     void updateQuantityInvalidQuantity() throws Exception {
-        Assert.assertThrows(Exception.class, () ->m.updateQuantity(0,20));
+        System.out.println(Assert.assertThrows(Exception.class, () ->m.updateQuantity(0,20)).getMessage());
     }
 
     @Test
     void updateQuantityInvalidId() {
-        Assert.assertThrows(Exception.class, () ->m.updateQuantity(20,15));
+
+        System.out.println(Assert.assertThrows(Exception.class, () ->m.updateQuantity(20,15)).getMessage());
     }
 
     @Test
