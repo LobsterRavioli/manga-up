@@ -24,24 +24,34 @@ public class CreditCardCreateServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-        CreditCardDAO dao = new CreditCardDAO(ds);
+        if (creditCardDAO == null) {
+            creditCardDAO = new CreditCardDAO(ds);
+        }
         HttpSession session = request.getSession();
         EndUser user = (EndUser) session.getAttribute("user");
-        response.setContentType("text/html");
         CreditCard card = new CreditCard();
         card.setCardHolder(request.getParameter("card_holder"));
         card.setCardNumber(request.getParameter("card_number"));
         card.setExpirementDate(Utils.parseDate(request.getParameter("expirement_date")));
         card.setCvv((request.getParameter("cvc")));
-        card.setEndUser(user);
-        dao.create(card);
+
+        try {
+            card.setEndUser(user);
+            creditCardDAO.create(card);
+        }
+        catch (Exception e) {
+            response.setStatus(499);
+            return;
+        }
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/CreditCardDashboardServlet"));
         dispatcher.forward(request, response);
     }
 
-    void setCreditCardDAO(CreditCardDAO dao) {
+    public void setCreditCardDAO(CreditCardDAO dao) {
         this.creditCardDAO = dao;
     }
+
+
 }

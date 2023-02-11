@@ -23,8 +23,7 @@ public class CreditCardDashboardServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
         CreditCardDAO dao = new CreditCardDAO(ds);
         HttpSession session = request.getSession();
@@ -35,4 +34,11 @@ public class CreditCardDashboardServlet extends HttpServlet {
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProfileView/dashboard_carte_di_credito.jsp"));
         dispatcher.forward(request, response);
     }
+
+    private CreditCardDAO creditCardDAO;
+
+    public void setCreditCardDAO(CreditCardDAO creditCardDAO) {
+        this.creditCardDAO = creditCardDAO;
+    }
+
 }

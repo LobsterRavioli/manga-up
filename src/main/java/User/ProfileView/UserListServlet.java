@@ -19,8 +19,6 @@ import java.util.Iterator;
 @WebServlet("/UserListServlet")
 public class UserListServlet extends HttpServlet {
 
-
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -52,5 +50,9 @@ public class UserListServlet extends HttpServlet {
         dispatcher.forward(req, resp);
 
     }
+    public void setUserDAO(UserDAO userDAO){
+        this.userDAO = userDAO;
+    }
+    private UserDAO userDAO;
 
 }

@@ -40,4 +40,10 @@ public class UserDeleteServlet extends HttpServlet {
 
         response.sendRedirect("UserListServlet");
     }
+
+    private UserDAO userDao;
+    public void setUserDAO(UserDAO dao) {
+        this.userDao = dao;
+    }
+
 }
