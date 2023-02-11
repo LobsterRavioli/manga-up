@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <end_user usr_id="1" usr_email="tommy@hotmail.it" usr_name="Tommaso" usr_surname="Sorrentino" usr_password="password1!" usr_phone_number="393662968496" usr_birth_date="2021-12-01"/>
+    <credit_card crd_id="20" crd_number="1234567890123456" usr_id="1"  crd_holder="Tommaso Sorrentino" crd_expiration_date="2030-11-16" crd_cvc="a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"/>
+</dataset>

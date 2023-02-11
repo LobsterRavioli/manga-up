@@ -65,11 +65,12 @@ class CreditCardDAOTest {
 
     @ParameterizedTest(name = "{index} - {0} (parametri: {1}, {2}, {3}, {4})")
     @MethodSource("invalidParameterProvider")
-    void createInvalidCard(String test, String number, String cvv, Date expirationDate, EndUser endUser) throws Exception {
+    void createInvalidCard(String test, String number, String cvv, Date expirationDate, EndUser endUser, String cardHolder) throws Exception {
         CreditCard creditCard = new CreditCard();
         creditCard.setCardNumber(number);
         creditCard.setCvv(cvv);
         creditCard.setExpirementDate(expirationDate);
+        creditCard.setCardHolder(cardHolder);
         creditCard.setEndUser(endUser);
         Assert.assertThrows(IllegalArgumentException.class, () -> creditCardDAO.create(creditCard));
         ITable actualTable = tester.getConnection().createDataSet().getTable("CREDIT_CARD");
@@ -78,15 +79,17 @@ class CreditCardDAOTest {
 
     private static Stream<Arguments> invalidParameterProvider() {
         return Stream.of(
-                Arguments.of("Test case lunghezza numero carta non valida", "1", "123", Utils.parseDate("2030-11-16"), new EndUser(1)),
-                Arguments.of("Test case formato numero carta non valido ", "abc", "123", Utils.parseDate("2030-11-16"), new EndUser(1)),
-                Arguments.of("Test case cvc formato non valido", "1111111111111", "abc", Utils.parseDate("2030-11-16"), new EndUser(1)),
-                Arguments.of("Test case cvc lunghezza non valida", "1111111111111", "11111111", Utils.parseDate("2030-11-16"), new EndUser(1)),
-                Arguments.of("Test case cvc lunghezza non valida", "1111111111111", "11111111", Utils.parseDate("2030-11-16"), new EndUser(1)),
-                Arguments.of("Test case cvc lunghezza non valida", "1111111111111", "11111111", null, new EndUser(1)),
-                Arguments.of("Test case ", "1111111111111", "111", Utils.parseDate("2030-11-16"), new EndUser(0)),
-                Arguments.of("Test case ", "1111111111111", "111", Utils.parseDate("2030-11-16"), new EndUser(0)),
-                Arguments.of("Test case ", "1111111111111", "111", null, new EndUser())
+                Arguments.of("Test case lunghezza numero carta non valida", "1", "123", Utils.parseDate("2030-11-16"), new EndUser(1), "Mario Rossi"),
+                Arguments.of("Test case formato numero carta non valido ", "abc", "123", Utils.parseDate("2030-11-16"), new EndUser(1), "Mario Rossi"),
+                Arguments.of("Test case cvc formato non valido", "1111111111111", "abc", Utils.parseDate("2030-11-16"), new EndUser(1), "Mario Rossi"),
+                Arguments.of("Test case cvc lunghezza non valida", "1111111111111", "11111111", Utils.parseDate("2030-11-16"), new EndUser(1), "Mario Rossi"),
+                Arguments.of("Test case cvc lunghezza non valida", "1111111111111", "11111111", Utils.parseDate("2030-11-16"), new EndUser(1), "Mario Rossi"),
+                Arguments.of("Test case cvc lunghezza non valida", "1111111111111", "11111111", null, new EndUser(1), "Mario Rossi"),
+                Arguments.of("Test case ", "1111111111111", "111", Utils.parseDate("2000-11-16"), new EndUser(0), "Mario Rossi"),
+                Arguments.of("Test case ", "1111111111111", "111", Utils.parseDate("2030-11-16"), null, "Mario Rossi"),
+                Arguments.of("Test case ", "1111111111111", "111", Utils.parseDate("2030-11-16"), new EndUser(1), null),
+                Arguments.of("Test case ", "1111111111111", "111", Utils.parseDate("2030-11-16"), new EndUser(1), ""),
+                Arguments.of("Test case ", "1111111111111", "111", Utils.parseDate("2030-11-16"), new EndUser(1), "123")
         );
     }
 

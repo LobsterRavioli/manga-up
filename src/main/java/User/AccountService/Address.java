@@ -153,7 +153,7 @@ public class Address {
         if (address.getRegion() == null || address.getRegion().isEmpty()) {
             return false;
         }
-        if (address.getCity().matches("^[a-zA-Z]{1,163}$") == false) {return false;}
+        if (address.getCity().matches("^[a-zA-Z-\\s]{1,163}$") == false) {return false;}
 
         if(address.getStreet().matches("^[a-zA-Z0-9\\-\\s]{1,40}$") == false) {return false;}
 
@@ -161,9 +161,9 @@ public class Address {
 
         if (address.getPhoneNumber().matches("^[+][0-9]{12,15}$") == false) {return false;}
 
-        if (address.getRegion().matches("^[a-zA-Z]{1,30}$") == false) {return false;}
+        if (address.getRegion().matches("^[a-zA-Z-\\s]{1,30}$") == false) {return false;}
 
-        if (address.getCountry().matches("^[a-zA-Z]{1,56}$") == false) {return false;}
+        if (address.getCountry().matches("^[a-zA-Z-\\s]{1,56}$") == false) {return false;}
 
         return true;
     }

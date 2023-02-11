@@ -54,7 +54,7 @@ class AddressCreateServletTest {
 
     @Test
     void fail() throws ServletException, IOException {
-        Mockito.when(session.getAttribute("street")).thenReturn("Via Roma");
+        Mockito.when(request.getAttribute("street")).thenReturn("Via Roma");
         Mockito.when(request.getParameter("city")).thenReturn("Roma");
         Mockito.when(request.getParameter("country")).thenReturn("Italia");
         Mockito.when(request.getParameter("postal_code")).thenReturn("80040");
@@ -77,7 +77,7 @@ class AddressCreateServletTest {
     @Test
     void success() throws ServletException, IOException {
 
-        Mockito.when(session.getAttribute("street")).thenReturn("Via Roma");
+        Mockito.when(request.getAttribute("street")).thenReturn("Via Roma");
         Mockito.when(request.getParameter("city")).thenReturn("Roma");
         Mockito.when(request.getParameter("country")).thenReturn("Italia");
         Mockito.when(request.getParameter("postal_code")).thenReturn("80040");

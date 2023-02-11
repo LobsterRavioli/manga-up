@@ -3,16 +3,21 @@ package integration;
 
 import Merchandising.MerchandiseService.MangaDAO;
 import Merchandising.ProductsView.processProductInsertion;
-import User.AccountService.AddressDAO;
+import User.AccountService.*;
 import User.ProfileView.AddressCreateServlet;
+import org.dbunit.Assertion;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
+import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
-import org.junit.Test;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -74,6 +79,7 @@ public class AddressCreateServletTestIntegration {
         Mockito.when(ds.getConnection()).thenReturn(tester.getConnection().getConnection());
         addressDAO = new AddressDAO(ds);
 
+
     }
 
     private static void refreshDataSet(String filename) throws Exception {
@@ -85,7 +91,7 @@ public class AddressCreateServletTestIntegration {
 
     @ParameterizedTest(name = "Test - {0} with [{arguments}]")
     @MethodSource("testCreateAddressInvalidParametersProvider")
-    void testCreateAddressInvalidParameters(String testName, String country, String city, String street, String postalCode, String phone_number, String region) throws ServletException, IOException {
+    void testCreateAddressInvalidParameters(String testName, String country, String city, String street, String postalCode, String phone_number, String region) throws Exception {
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(spy.getServletContext()).thenReturn(context);
         RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
@@ -100,7 +106,10 @@ public class AddressCreateServletTestIntegration {
         spy.doPost(request, response);
         verify(response).setStatus(500);
         verify(context).getRequestDispatcher(response.encodeURL("/error_page.jsp"));
-
+        IDataSet expectedDataSet = new FlatXmlDataSetBuilder()
+                .build(EndUserDAO.class.getClassLoader().getResourceAsStream("address_dao/init_integration.xml"));
+        ITable actualTable = tester.getConnection().createDataSet().getTable("address");
+        Assertion.assertEquals(new SortedTable(expectedDataSet.getTable("address")), new SortedTable(actualTable));
     }
 
     private static Stream<Arguments> testCreateAddressInvalidParametersProvider(){
@@ -126,6 +135,88 @@ public class AddressCreateServletTestIntegration {
                 Arguments.of("Test case creazione address fallita Regione non valido", "Italia", "Napoli", "Via roma 35", "00100", "+393662968496", null)
         );
     }
+    @Test
+    void success() throws Exception {
+        Mockito.when(request.getParameter("street")).thenReturn("Via Corbacchia 35");
+        Mockito.when(request.getParameter("city")).thenReturn("Roma");
+        Mockito.when(request.getParameter("country")).thenReturn("Inghilterra");
+        Mockito.when(request.getParameter("postal_code")).thenReturn("80500");
+        Mockito.when(request.getParameter("region")).thenReturn("Leningrado");
+        Mockito.when(request.getParameter("phone_number")).thenReturn("+393662968490");
+        session = Mockito.mock(HttpSession.class);
+        Mockito.when(request.getSession(false)).thenReturn(session);
+        Mockito.when(session.getAttribute("user")).thenReturn(new EndUser(1));
+        Mockito.when(request.getSession().getAttribute("user")).thenReturn(new EndUser(1));
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(spy.getServletContext()).thenReturn(context);
+        RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL("/AddressDashboardServlet"))).thenReturn(rD);
+        spy.setAddressDAO(addressDAO);
+        spy.doPost(request, response);
+        verify(context).getRequestDispatcher(response.encodeURL("/AddressDashboardServlet"));
+        IDataSet expectedDataSet = new FlatXmlDataSetBuilder()
+                .build(EndUserDAO.class.getClassLoader().getResourceAsStream("address_dao/expected_integration.xml"));
+        ITable actualTable = tester.getConnection().createDataSet().getTable("address");
+        Assertion.assertEquals(new SortedTable(expectedDataSet.getTable("address")), new SortedTable(actualTable));
+
+    }
+
+    @Test
+    void SessionInvalid() throws ServletException, IOException {
+        Mockito.when(request.getSession(false)).thenReturn(null);
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(spy.getServletContext()).thenReturn(context);
+        RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL("/error_page.jsp"))).thenReturn(rD);
+        spy.setAddressDAO(addressDAO);
+        spy.doPost(request, response);
+        verify(response).setStatus(500);
+        verify(context).getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+    }
+
+    @Test
+    void SessionInvalidParameter() throws ServletException, IOException {
+        Mockito.when(session.getAttribute("user")).thenReturn(null);
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(spy.getServletContext()).thenReturn(context);
+        RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL("/error_page.jsp"))).thenReturn(rD);
+        spy.setAddressDAO(addressDAO);
+        spy.doPost(request, response);
+        verify(response).setStatus(500);
+        verify(context).getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+    }
+
+
+    @Test
+    void createNotExistsUser() throws Exception {
+        Mockito.when(request.getParameter("street")).thenReturn("Via Corbacchia 35");
+        Mockito.when(request.getParameter("city")).thenReturn("Roma");
+        Mockito.when(request.getParameter("country")).thenReturn("Inghilterra");
+        Mockito.when(request.getParameter("postal_code")).thenReturn("80500");
+        Mockito.when(request.getParameter("region")).thenReturn("Leningrado");
+        Mockito.when(request.getParameter("phone_number")).thenReturn("+393662968490");
+        session = Mockito.mock(HttpSession.class);
+        Mockito.when(request.getSession(false)).thenReturn(session);
+        Mockito.when(session.getAttribute("user")).thenReturn(new EndUser(10000));
+        Mockito.when(request.getSession().getAttribute("user")).thenReturn(new EndUser(1000));
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(spy.getServletContext()).thenReturn(context);
+        RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL("/AddressDashboardServlet"))).thenReturn(rD);
+        spy.setAddressDAO(addressDAO);
+        spy.doPost(request, response);
+        verify(context).getRequestDispatcher(response.encodeURL("/AddressDashboardServlet"));
+        IDataSet expectedDataSet = new FlatXmlDataSetBuilder()
+                .build(EndUserDAO.class.getClassLoader().getResourceAsStream("address_dao/init_integration.xml"));
+        ITable actualTable = tester.getConnection().createDataSet().getTable("address");
+        Assertion.assertEquals(new SortedTable(expectedDataSet.getTable("address")), new SortedTable(actualTable));
+        verify(response).setStatus(500);
+        verify(context).getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+
+    }
+
+
 
 
 }

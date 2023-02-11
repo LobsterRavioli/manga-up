@@ -50,6 +50,7 @@ public class CreditCardCreateServlet extends HttpServlet {
             creditCardDAO.create(card);
         }
         catch (Exception e) {
+            System.out.println(e.getMessage());
             response.setStatus(500);
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/error_page.jsp"));
             dispatcher.forward(request, response);
