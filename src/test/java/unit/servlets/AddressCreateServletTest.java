@@ -60,18 +60,23 @@ class AddressCreateServletTest {
         Mockito.when(request.getParameter("postal_code")).thenReturn("80040");
         Mockito.when(request.getParameter("region")).thenReturn("Lazio");
         Mockito.when(request.getParameter("phone_number")).thenReturn("+393662968496");
-
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(spy.getServletContext()).thenReturn(context);
+        RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL("/error_page.jsp"))).thenReturn(rD);
         addressDAO = mock(AddressDAO.class);
         Mockito.doAnswer(invocation -> {
             throw new Exception();
         }).when(addressDAO).create(any(Address.class));
         spy.setAddressDAO(addressDAO);
         spy.doPost(request, response);
-        verify(response).setStatus(499);
+        verify(response).setStatus(500);
+        verify(context).getRequestDispatcher(response.encodeURL("/error_page.jsp"));
     }
 
     @Test
     void success() throws ServletException, IOException {
+
         Mockito.when(session.getAttribute("street")).thenReturn("Via Roma");
         Mockito.when(request.getParameter("city")).thenReturn("Roma");
         Mockito.when(request.getParameter("country")).thenReturn("Italia");
@@ -82,6 +87,7 @@ class AddressCreateServletTest {
         Mockito.when(spy.getServletContext()).thenReturn(context);
         RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
         Mockito.when(context.getRequestDispatcher(response.encodeURL("/AddressDashboardServlet"))).thenReturn(rD);
+
         addressDAO = mock(AddressDAO.class);
         Mockito.doAnswer(invocation -> {
             return null;
@@ -90,8 +96,42 @@ class AddressCreateServletTest {
         spy.setAddressDAO(addressDAO);
         spy.doPost(request, response);
         verify(context).getRequestDispatcher(response.encodeURL("/AddressDashboardServlet"));
+
     }
 
+    @Test
+    void SessionInvalid() throws ServletException, IOException {
+        Mockito.when(request.getSession(false)).thenReturn(null);
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(spy.getServletContext()).thenReturn(context);
+        RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL("/error_page.jsp"))).thenReturn(rD);
+        addressDAO = mock(AddressDAO.class);
+        Mockito.doAnswer(invocation -> {
+            throw new Exception();
+        }).when(addressDAO).create(any(Address.class));
+        spy.setAddressDAO(addressDAO);
+        spy.doPost(request, response);
+        verify(response).setStatus(500);
+        verify(context).getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+    }
+
+    @Test
+    void SessionInvalidParameter() throws ServletException, IOException {
+        Mockito.when(session.getAttribute("user")).thenReturn(null);
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(spy.getServletContext()).thenReturn(context);
+        RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL("/error_page.jsp"))).thenReturn(rD);
+        addressDAO = mock(AddressDAO.class);
+        Mockito.doAnswer(invocation -> {
+            throw new Exception();
+        }).when(addressDAO).create(any(Address.class));
+        spy.setAddressDAO(addressDAO);
+        spy.doPost(request, response);
+        verify(response).setStatus(500);
+        verify(context).getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+    }
 
 
 }

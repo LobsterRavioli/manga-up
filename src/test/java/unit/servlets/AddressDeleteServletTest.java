@@ -49,6 +49,12 @@ class AddressDeleteServletTest {
 
     @Test
     void fail() throws ServletException, IOException {
+
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(spy.getServletContext()).thenReturn(context);
+        RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL("/error_page.jsp"))).thenReturn(rD);
+
         Mockito.when(request.getParameter("address_id")).thenReturn("1");
         addressDAO = mock(AddressDAO.class);
         Mockito.doAnswer(invocation -> {
@@ -56,7 +62,8 @@ class AddressDeleteServletTest {
         }).when(addressDAO).delete(any(Address.class));
         spy.setAddressDAO(addressDAO);
         spy.doPost(request, response);
-        verify(response).setStatus(499);
+        verify(response).setStatus(500);
+        verify(context).getRequestDispatcher(response.encodeURL("/error_page.jsp"));
     }
 
     @Test
@@ -76,5 +83,39 @@ class AddressDeleteServletTest {
         verify(context).getRequestDispatcher(response.encodeURL("/AddressDashboardServlet"));
     }
 
+
+    @Test
+    void SessionInvalid() throws ServletException, IOException {
+        Mockito.when(request.getSession(false)).thenReturn(null);
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(spy.getServletContext()).thenReturn(context);
+        RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL("/error_page.jsp"))).thenReturn(rD);
+        addressDAO = mock(AddressDAO.class);
+        Mockito.doAnswer(invocation -> {
+            throw new Exception();
+        }).when(addressDAO).create(any(Address.class));
+        spy.setAddressDAO(addressDAO);
+        spy.doPost(request, response);
+        verify(response).setStatus(500);
+        verify(context).getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+    }
+
+    @Test
+    void SessionInvalidParameter() throws ServletException, IOException {
+        Mockito.when(session.getAttribute("user")).thenReturn(null);
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(spy.getServletContext()).thenReturn(context);
+        RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL("/error_page.jsp"))).thenReturn(rD);
+        addressDAO = mock(AddressDAO.class);
+        Mockito.doAnswer(invocation -> {
+            throw new Exception();
+        }).when(addressDAO).create(any(Address.class));
+        spy.setAddressDAO(addressDAO);
+        spy.doPost(request, response);
+        verify(response).setStatus(500);
+        verify(context).getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+    }
 
 }

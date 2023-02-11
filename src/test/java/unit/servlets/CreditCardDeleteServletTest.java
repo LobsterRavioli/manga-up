@@ -2,11 +2,14 @@ package unit.servlets;
 
 import User.AccountService.CreditCard;
 import User.AccountService.CreditCardDAO;
+import User.AccountService.EndUser;
 import User.ProfileView.CreditCardDashboardServlet;
 import User.ProfileView.CreditCardDeleteServlet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import utils.Utils;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -42,29 +45,28 @@ class CreditCardDeleteServletTest {
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(context.getRequestDispatcher(response.encodeURL(""))).thenReturn(Mockito.mock(RequestDispatcher.class));
         Mockito.when(spy.getServletContext()).thenReturn(context);
+        this.creditCardDAO = mock(CreditCardDAO.class);
     }
 
     @Test
     void fail() throws ServletException, IOException {
-        Mockito.when(session.getAttribute("card_holder")).thenReturn("Tommaso Sorrentino");
-        Mockito.when(request.getParameter("card_number")).thenReturn("1111111111111");
-        Mockito.when(request.getParameter("expirement_date")).thenReturn("2030-01-01");
-        Mockito.when(request.getParameter("cvc")).thenReturn("80040");
-        creditCardDAO = mock(CreditCardDAO.class);
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(spy.getServletContext()).thenReturn(context);
+        RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL("/error_page.jsp"))).thenReturn(rD);
+        Mockito.when(request.getParameter("credit_card_id")).thenReturn("1");
         Mockito.doAnswer(invocation -> {
             throw new Exception();
         }).when(creditCardDAO).delete(any(CreditCard.class));
         spy.setCreditCardDAO(creditCardDAO);
         spy.doPost(request, response);
-        verify(response).setStatus(499);
+        verify(response).setStatus(500);
+        verify(context).getRequestDispatcher(response.encodeURL("/error_page.jsp"));
     }
 
     @Test
     void success() throws ServletException, IOException {
-        Mockito.when(session.getAttribute("credit_card_id")).thenReturn("1");
-        Mockito.doAnswer(invocation -> {
-            throw new Exception();
-        }).when(creditCardDAO).delete(any(CreditCard.class));
+        Mockito.when(request.getParameter("credit_card_id")).thenReturn("1");
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(spy.getServletContext()).thenReturn(context);
         RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
@@ -75,7 +77,41 @@ class CreditCardDeleteServletTest {
         }).when(creditCardDAO).delete(any(CreditCard.class));
         spy.setCreditCardDAO(creditCardDAO);
         spy.doPost(request, response);
-        verify(context).getRequestDispatcher(response.encodeURL("/CreditCardDashboardServlet"));
+        verify(response).sendRedirect("CreditCardDashboardServlet");
+    }
+
+    @Test
+    void SessionInvalid() throws ServletException, IOException {
+        Mockito.when(request.getSession(false)).thenReturn(null);
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(spy.getServletContext()).thenReturn(context);
+        RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL("/error_page.jsp"))).thenReturn(rD);
+        creditCardDAO = mock(CreditCardDAO.class);
+        Mockito.doAnswer(invocation -> {
+            throw new Exception();
+        }).when(creditCardDAO).create(any(CreditCard.class));
+        spy.setCreditCardDAO(creditCardDAO);
+        spy.doPost(request, response);
+        verify(response).setStatus(500);
+        verify(context).getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+    }
+
+    @Test
+    void SessionInvalidParameter() throws ServletException, IOException {
+        Mockito.when(session.getAttribute("user")).thenReturn(null);
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(spy.getServletContext()).thenReturn(context);
+        RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL("/error_page.jsp"))).thenReturn(rD);
+        creditCardDAO = mock(CreditCardDAO.class);
+        Mockito.doAnswer(invocation -> {
+            throw new Exception();
+        }).when(creditCardDAO).create(any(CreditCard.class));
+        spy.setCreditCardDAO(creditCardDAO);
+        spy.doPost(request, response);
+        verify(response).setStatus(500);
+        verify(context).getRequestDispatcher(response.encodeURL("/error_page.jsp"));
     }
 
 }

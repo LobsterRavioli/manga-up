@@ -23,11 +23,21 @@ public class AddressCreateServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
         if (addressDAO == null) {
             addressDAO = new AddressDAO(ds);
         }
-        response.setContentType("text/html");
+
+        HttpSession s = request.getSession(false);
+
+        if (s == null || s.getAttribute("user")==null) {
+            response.setStatus(500);
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+            dispatcher.forward(request, response);
+            return;
+        }
+
         EndUser user = (EndUser) request.getSession().getAttribute("user");
 
         Address address = new Address();
@@ -42,12 +52,14 @@ public class AddressCreateServlet extends HttpServlet {
         try {
             addressDAO.create(address);
         } catch (Exception e) {
-            response.setStatus(499);
+            response.setStatus(500);
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+            dispatcher.forward(request, response);
             return;
         }
 
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/AddressDashboardServlet"));
-            dispatcher.forward(request, response);
+        dispatcher.forward(request, response);
     }
 
     public void setAddressDAO(AddressDAO addressDAO) {

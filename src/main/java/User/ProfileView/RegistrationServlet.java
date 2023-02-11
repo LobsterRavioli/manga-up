@@ -77,7 +77,10 @@ public class RegistrationServlet extends HttpServlet {
         try {
             facadeUser.registration(user);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            response.setStatus(500);
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+            dispatcher.forward(request, response);
+            return;
         }
 
         request.getSession().setAttribute("cart",new Cart(new HashMap<Manga,Integer>()));

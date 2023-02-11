@@ -16,9 +16,7 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
     private OrderDAO orderDAO;
     private UserDAO uD;
     private ToManageDAO assignDAO;
-
     private ManagedOrderDAO managedOrderDAO;
-
     private OrderRowDAO orderRowDAO;
     public OrderSubmissionFacadeImp(DataSource ds){
         this.ds = ds;

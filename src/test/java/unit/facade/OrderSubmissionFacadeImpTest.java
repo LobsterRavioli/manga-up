@@ -75,7 +75,7 @@ class OrderSubmissionFacadeImpTest {
 
     @Test
     void createOrderSuccess() {
-        // TO DO
+
     }
 
     @ParameterizedTest(name = "{index} - {0} (parametri: {1}, {2}, {3})")
@@ -87,7 +87,6 @@ class OrderSubmissionFacadeImpTest {
 
 
     private static Stream<Arguments> createInvalidParameter() {
-
         // Per ogni order, SOLO la order date e il total price sono calcolati dal facade.
         // Il facade recupera da un ordine passatogli come parametro il resto dei dati
         // PRIMA DI CHIAMARE IL FACADE SI PRESUPPONE CHE NEL DB SIA STATO RECUPERATO UN ORDINE "BEN FORMATO"
@@ -186,7 +185,6 @@ class OrderSubmissionFacadeImpTest {
         User orderManager2 = new User("Francesco", " "); // password vuota
         User orderManager3 = new User(null, "complexPassword!003"); // username null
         User orderManager4 = new User(" ", "ILoveSoftwareEng <3 <3 <3"); // username null
-
 
         return Stream.of(
                 Arguments.of("Ordine null", null, products, orderManager),

@@ -1,17 +1,17 @@
 package User.ProfileView;
 
-import User.AccountService.Address;
 import User.AccountService.AddressDAO;
-
 import User.AccountService.EndUser;
 
-
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 
 @WebServlet("/AddressDashboardServlet")
@@ -26,20 +26,29 @@ public class AddressDashboardServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            response.setStatus(500);
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+            dispatcher.forward(request, response);
+            return;
+        }
+
+        DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
 
         if (addressDAO == null) {
             addressDAO = new AddressDAO(ds);
         }
 
-        HttpSession session = request.getSession();
         EndUser user = (EndUser) session.getAttribute("user");
         Collection addresses = null;
         try {
             addresses = addressDAO.findAssociatedAddresses(user);
         } catch (Exception e) {
-            e.printStackTrace();
             response.setStatus(500);
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+            dispatcher.forward(request, response);
+            return;
         }
         request.setAttribute("addresses", addresses);
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProfileView/dashboard_indirizzi.jsp"));

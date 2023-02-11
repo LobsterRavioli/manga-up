@@ -24,11 +24,15 @@ public class UserCreateServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        UserDAO userDao = new UserDAO(ds);
-        UserRoleDAO userRoleDAO = new UserRoleDAO(ds);
+        if (userDao == null) {
+            userDao = new UserDAO((DataSource)getServletContext().getAttribute("DataSource"));
+        }
+        if (userRoleDAO == null) {
+            userRoleDAO = new UserRoleDAO((DataSource)getServletContext().getAttribute("DataSource"));
+        }
+
         User user = new User();
         user.setUsername(req.getParameter("username"));
         user.setPassword(req.getParameter("password"));
@@ -45,12 +49,20 @@ public class UserCreateServlet extends HttpServlet {
             userRoleDAO.setRoles(user, roles);
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            resp.setStatus(499);
+            return;
         }
 
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(resp.encodeURL("/UserListServlet"));
         dispatcher.forward(req, resp);
-        return;
+    }
+
+    public void setUserRoleDAO(UserRoleDAO userRoleDAO) {
+        this.userRoleDAO = userRoleDAO;
+    }
+
+    public void setUserDao(UserDAO userDao) {
+        this.userDao = userDao;
     }
 
     private UserRoleDAO userRoleDAO;

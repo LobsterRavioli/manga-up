@@ -12,7 +12,7 @@ public class EndUser{
     public static final String CITY_REGEX = "^[a-zA-Z]+$";
     public static final String COUNTRY_REGEX = "^[a-zA-Z]+$";
     public static final String POSTAL_CODE_REGEX = "^[0-9]+$";
-    public static final String PHONE_REGEX = "^[0-9]+$";
+    public static final String PHONE_REGEX = "^[+][0-9]{12,15}$";
     public static final String BIRTH_DATE_REGEX = "^\\d{4}-\\d{2}-\\d{2}$";
 
     private String name;

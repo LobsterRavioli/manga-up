@@ -25,6 +25,14 @@ public class CreditCardCreateServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession s = request.getSession(false);
+
+        if (s == null || s.getAttribute("user")==null) {
+            response.setStatus(500);
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+            dispatcher.forward(request, response);
+            return;
+        }
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
         if (creditCardDAO == null) {
             creditCardDAO = new CreditCardDAO(ds);
@@ -42,7 +50,9 @@ public class CreditCardCreateServlet extends HttpServlet {
             creditCardDAO.create(card);
         }
         catch (Exception e) {
-            response.setStatus(499);
+            response.setStatus(500);
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+            dispatcher.forward(request, response);
             return;
         }
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/CreditCardDashboardServlet"));

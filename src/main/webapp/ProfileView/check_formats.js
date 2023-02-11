@@ -13,9 +13,9 @@ function check_registration_format(){
     let expirement_date_format = /^\d{4}-\d{2}-\d{2}$/;
 
 
-    let country_format = /^[a-zA-Z]{1,56}$/;
-    let region_format = /^[a-zA-Z]{1,30}$/;
-    let city_format = /^[a-zA-Z]{1,163}$/;
+    let country_format = /^[a-zA-Z-\s]{1,56}$/;
+    let region_format = /^[a-zA-Z-\s]{1,30}$/;
+    let city_format = /^[a-zA-Z-\s]{1,163}$/;
     let street_format = /^[a-zA-Z0-9\-\s]{1,40}$/;
     let phone_number_format = /^[+][0-9]{12,15}$/;
     let postal_code_format = /^[0-9]{5}$/;
@@ -216,7 +216,7 @@ function check_registration_format(){
     }
 
     if(!phone_number_format.test(phone_number_address)) {
-        document.querySelector(".phone_number_address_error").innerHTML = "Campo non valido: il campo numero di cellulare è obbligatorio e la lunghezza del numero cellulare non deve essere compresa tra 13 e 15 e caratteri numerici";
+        document.querySelector(".phone_number_address_error").innerHTML = "Campo non valido: il campo numero di cellulare è obbligatorio e la lunghezza del numero cellulare non deve essere compresa tra 12 e 15 e deve rispettare il seguente formato +39xxxxxxxxxxx le cui x sono caratteri numerici";
         document.querySelector(".phone_number_address_error").style.display = "block";
         event.preventDefault();
 
@@ -241,7 +241,7 @@ function check_registration_format(){
     }
 
     if(!phone_number_format.test(phone_number)) {
-        document.querySelector(".phone_number_error").innerHTML = "Campo non valido: il campo numero di cellulare è obbligatorio e la lunghezza del numero cellulare non deve essere compresa tra 13 e 15 e caratteri numerici";;
+        document.querySelector(".phone_number_error").innerHTML = "Campo non valido: il campo numero di cellulare è obbligatorio e la lunghezza del numero cellulare non deve essere compresa tra 12 e 15 e deve rispettare il seguente formato +39xxxxxxxxxxx le cui x sono caratteri numerici";;
         document.querySelector(".phone_number_error").style.display = "block";
         event.preventDefault();
 

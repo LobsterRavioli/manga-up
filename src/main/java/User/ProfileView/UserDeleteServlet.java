@@ -26,16 +26,20 @@ public class UserDeleteServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (userDao == null) {
+            userDao = new UserDAO((DataSource)getServletContext().getAttribute("DataSource"));
+        }
 
-        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-        UserDAO dao = new UserDAO(ds);
         try {
             String username = request.getParameter("username");
-            System.out.println(username + " is being deleted");
-            dao.removeUserByUserName(username);
+            userDao.removeUserByUserName(username);
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            response.setStatus(500);
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+            dispatcher.forward(request, response);
+            return;
         }
 
         response.sendRedirect("UserListServlet");

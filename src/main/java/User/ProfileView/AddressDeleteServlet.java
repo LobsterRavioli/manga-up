@@ -24,6 +24,14 @@ public class AddressDeleteServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession s = request.getSession(false);
+
+        if (s == null || s.getAttribute("user")==null) {
+            response.setStatus(500);
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+            dispatcher.forward(request, response);
+            return;
+        }
 
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
         if (addressDAO == null) {
@@ -36,7 +44,10 @@ public class AddressDeleteServlet extends HttpServlet {
         try {
             addressDAO.delete(address);
         } catch (DAOException e) {
-            response.setStatus(499);
+            response.setStatus(500);
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+            dispatcher.forward(request, response);
+            return;
         }
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/AddressDashboardServlet"));
         dispatcher.forward(request, response);
