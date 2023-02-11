@@ -41,6 +41,7 @@ public class OrderServlet extends HttpServlet {
         {
             response.setStatus(400);
             request.setAttribute("error", e.getMessage());
+            getServletContext().getRequestDispatcher(response.encodeURL("/error_page.jsp")).forward(request, response);
             return;
         }
 
