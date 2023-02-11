@@ -25,7 +25,6 @@ public class UserCreateServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html");
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
 
         UserDAO userDao = new UserDAO(ds);
@@ -53,5 +52,8 @@ public class UserCreateServlet extends HttpServlet {
         dispatcher.forward(req, resp);
         return;
     }
+
+    private UserRoleDAO userRoleDAO;
+    private UserDAO userDao;
 
 }

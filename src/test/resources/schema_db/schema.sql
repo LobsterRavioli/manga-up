@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS ADDRESS
     addr_region       VARCHAR(30)  NOT NULL,
     addr_postal_code  VARCHAR(5)   NOT NULL,
     PRIMARY KEY (addr_id),
-    FOREIGN KEY (usr_id) REFERENCES end_user (usr_id)
+    FOREIGN KEY (usr_id) REFERENCES end_user (usr_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS CREDIT_CARD
@@ -30,11 +30,11 @@ CREATE TABLE IF NOT EXISTS CREDIT_CARD
     crd_id INT AUTO_INCREMENT NOT NULL,
     crd_number VARCHAR(16) UNIQUE NOT NULL,
     usr_id INT NOT NULL,
-    crd_cvc VARCHAR(32) NOT NULL,
+    crd_cvc VARCHAR(64) NOT NULL,
     crd_holder VARCHAR(50) NOT NULL,
     crd_expiration_date date NOT NULL,
-    PRIMARY KEY (crd_id)
-   // FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)
+    PRIMARY KEY (crd_id),
+    FOREIGN KEY (usr_id) REFERENCES end_user(usr_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS US_ERS
@@ -56,8 +56,8 @@ CREATE TABLE IF NOT EXISTS USER_ROLES
     user_name VARCHAR(20) NOT NULL,
     role_name VARCHAR(20) NOT NULL,
     PRIMARY KEY (user_name, role_name),
-    FOREIGN KEY (user_name) REFERENCES us_ers (user_name) ON DELETE CASCADE,
-    FOREIGN KEY (role_name) REFERENCES ro_les (role_name) ON DELETE CASCADE
+    FOREIGN KEY (user_name) REFERENCES us_ers (user_name) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (role_name) REFERENCES ro_les (role_name) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS ORDERS

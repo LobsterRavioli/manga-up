@@ -29,9 +29,14 @@ public class UserRoleDAO {
     private static String SQL_INSERT_ROLE = "INSERT INTO user_roles (user_name, role_name) VALUES (?, ?)";
     private static String REMOVE_ALL_ROLES = "DELETE FROM user_roles WHERE user_name = ?";
 
-
     public Set<String> getRoles(User user) {
+
+        if (user == null || user.getUsername() == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+
         HashSet<String> roles = new HashSet<String>();
+
         Object values[] = {user.getUsername()};
         try (
                 Connection connection = ds.getConnection();
@@ -45,10 +50,32 @@ public class UserRoleDAO {
             throw new DAOException(e);
         }
 
+        if (roles.isEmpty()) {
+            return null;
+        }
+
         return roles;
     }
 
+
     public void setRoles(User user, String [] roles) {
+        if (user == null || user.getUsername() == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+        if (roles == null) {
+            throw new IllegalArgumentException("Roles cannot be null");
+        }
+        if (roles.length == 0) {
+            throw new IllegalArgumentException("Roles cannot be empty");
+        }
+        for (String role : roles) {
+            if (role == null) {
+                throw new IllegalArgumentException("Roles cannot be null");
+            }
+            if (role.isEmpty()) {
+                throw new IllegalArgumentException("Roles cannot be empty");
+            }
+        }
         removeAllRoles(user);
         for (Object role : roles) {
             Object values[] = {user.getUsername(), role};

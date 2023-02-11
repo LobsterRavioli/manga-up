@@ -15,11 +15,11 @@ public class UserDAO {
 
     private DataSource ds;
 
-    private static final String USER_TABLE = "users";
-    private static final String USER_ROLE_TABLE = "user_roles";
+    private static final String USER_TABLE = "US_ERS";
+    private static final String USER_ROLE_TABLE = "USER_ROLES";
 
-    private static final String ROLE_TABLE = "roles";
-    private static final String MANAGES_TABLE = "manages";
+    private static final String ROLE_TABLE = "RO_LES";
+    private static final String MANAGES_TABLE = "MANAGES";
 
     private static final String CREATE = "INSERT INTO "+USER_TABLE+
             " (user_name, password)"+
@@ -45,7 +45,7 @@ public class UserDAO {
                                               "FROM "+ROLE_TABLE+" AS R, "+USER_ROLE_TABLE+" AS U1, "+USER_TABLE+" AS U2 "+
                                               "WHERE R.role_name=U1.role_name AND U1.user_name=U2.user_name AND U2.user_name=?";
 
-    private static final String EXISTS_USERNAME = "SELECT user_name FROM users WHERE user_name = ? ";
+    private static final String EXISTS_USERNAME = "SELECT user_name FROM "+USER_TABLE+" WHERE user_name = ? ";
 
     public UserDAO(DataSource ds)
     {
@@ -56,6 +56,14 @@ public class UserDAO {
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
+
+        if (user == null || user.getUsername() == null || user.getPassword() == null)
+            throw new IllegalArgumentException("User or username or password is null");
+        if (!user.getUsername().matches(User.USER_FORMAT))
+            throw new IllegalArgumentException("Username is not valid");
+
+        if (!user.getPassword().matches(User.PASSWORD_FORMAT))
+            throw new IllegalArgumentException("Username is not valid");
 
         try
         {

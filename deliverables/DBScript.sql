@@ -37,7 +37,7 @@ CREATE TABLE credit_card
     crd_holder VARCHAR(50) NOT NULL,
     crd_expiration_date date NOT NULL,
     PRIMARY KEY (crd_id),
-    FOREIGN KEY (usr_id) REFERENCES end_user(usr_id)
+    FOREIGN KEY (usr_id) REFERENCES end_user(usr_id) ON DELETE CASCADE
 );
 
 CREATE TABLE users

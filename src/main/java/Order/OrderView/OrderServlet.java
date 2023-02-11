@@ -15,28 +15,33 @@ import java.sql.SQLException;
 public class OrderServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private OrderDAO orderDAO;
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         // RECUPERO LO USERNAME DELL'ORDER MANAGER
         String orderManagerName = (String) request.getSession().getAttribute("managerName");
 
-        if(orderManagerName == null)
-            response.sendRedirect(getServletContext().getContextPath()+"/LoginManager");
+        if (orderManagerName == null)
+            response.sendRedirect(getServletContext().getContextPath() + "/LoginManager");
 
-        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-        OrderDAO model = new OrderDAO(ds);
+        DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+
+        if (orderDAO == null)
+            orderDAO = new OrderDAO(ds);
 
         String criteria = request.getParameter("sort");
 
         try
         {
             request.removeAttribute("orders");
-            request.setAttribute("orders", model.doRetrieveAllForSpecificUser(orderManagerName, criteria));
+            request.setAttribute("orders", orderDAO.doRetrieveAllForSpecificUser(orderManagerName, criteria));
         }
         catch (SQLException e)
         {
-            e.printStackTrace();
+            response.setStatus(400);
             request.setAttribute("error", e.getMessage());
+            return;
         }
 
         getServletContext().getRequestDispatcher("/OrderView/order_list.jsp").forward(request, response);
@@ -44,5 +49,10 @@ public class OrderServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
+    }
+
+    public void setOrderDAO(OrderDAO orderDAO)
+    {
+        this.orderDAO = orderDAO;
     }
 }

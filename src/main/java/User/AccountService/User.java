@@ -92,7 +92,13 @@ public class User {
             return true;
     }
 
+    public static final String PASSWORD_FORMAT = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$";
+    public static final String USER_FORMAT = "^([a-zA-Z0-9_-]){5,10}$";
+
+
     public void setRoles(Set roles) {
         this.roles = roles;
     }
+
+
 }

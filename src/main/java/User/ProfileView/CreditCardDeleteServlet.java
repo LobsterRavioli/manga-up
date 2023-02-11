@@ -16,7 +16,7 @@ public class CreditCardDeleteServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
         CreditCardDAO dao = new CreditCardDAO(ds);
         int id = Integer.valueOf(request.getParameter("credit_card_id"));
@@ -25,4 +25,10 @@ public class CreditCardDeleteServlet extends HttpServlet {
         dao.delete(card);
         response.sendRedirect("CreditCardDashboardServlet");
     }
+
+    public void setCreditCardDAO(CreditCardDAO dao) {
+        this.creditCardDAO = dao;
+    }
+    private CreditCardDAO creditCardDAO;
+
 }

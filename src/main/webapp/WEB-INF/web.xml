@@ -10,7 +10,7 @@
     </welcome-file-list>
 
     <servlet>
-        <servlet-name>productsFilter</servlet-name>
+        <servlet-name>/productsFilter</servlet-name>
         <servlet-class>Merchandising.ProductsView.productsFilter</servlet-class>
     </servlet>
     <servlet-mapping>

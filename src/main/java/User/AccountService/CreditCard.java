@@ -50,7 +50,6 @@ public class CreditCard {
     @Override
     public String toString() {
         return "cardNumber="+cardNumber
-                +",cvv="+cvv
                 +",cardHolder="+cardHolder
                 +",expirationDate="+expirementDate;
     }
@@ -100,9 +99,9 @@ public class CreditCard {
     }
 
     public static boolean validate(CreditCard creditCard){
-        if (creditCard.getCardNumber() == null || creditCard.getCardNumber().matches("^[0-9]{13,16}$")) return false;
-        if (creditCard.getCardHolder() == null || creditCard.getCardHolder().matches("^[a-zA-Z\\-\\s]{1,40}$")) return false;
-        if (creditCard.getCvv() == null || creditCard.getCvv().matches("^[0-9]{3,5}$")) return false;
+        if (creditCard.getCardNumber() == null || !creditCard.getCardNumber().matches("^[0-9]{13,16}$")) return false;
+        if (creditCard.getCardHolder() == null || !creditCard.getCardHolder().matches("^[a-zA-Z\\-\\s]{1,40}$")) return false;
+        if (creditCard.getCvv() == null || !creditCard.getCvv().matches("^[0-9]{3,5}$")) return false;
         if (creditCard.getExpirementDate() == null) return false;
         if (creditCard.getEndUser() == null) return false;
 

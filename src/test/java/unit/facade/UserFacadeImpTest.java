@@ -31,8 +31,6 @@ class UserFacadeImpTest {
         userFacadeImp = new UserFacadeImp(ds);
     }
 
-
-
     @Test
     void registrationPass() {
         EndUser user = new EndUser();
