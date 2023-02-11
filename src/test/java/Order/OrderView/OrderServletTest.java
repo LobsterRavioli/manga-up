@@ -84,7 +84,7 @@ class OrderServletTest {
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(spy.getServletContext()).thenReturn(context);
         RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
-        Mockito.when(context.getRequestDispatcher(response.encodeURL("/error_page.jsp"))).thenReturn(rD);
+        Mockito.when(context.getRequestDispatcher("/OrderView/order_list.jsp")).thenReturn(rD);
 
         Mockito.when(session.getAttribute("managerName")).thenReturn("Giovanni");
 
@@ -98,6 +98,6 @@ class OrderServletTest {
         spy.setOrderDAO(orderDAO);
         spy.doGet(request, response);
 
-        verify(context).getRequestDispatcher(response.encodeURL(request.getContextPath() + "/OrderView/order_list.jsp"));
+        verify(context).getRequestDispatcher("/OrderView/order_list.jsp");
     }
 }

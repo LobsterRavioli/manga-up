@@ -284,27 +284,24 @@ function check_registration_format(){
 
 function check_address_format(){
 
-    let country_format = /^[a-zA-Z]{1,56}$/;
-    let region_format = /^[a-zA-Z]{1,30}$/;
-    let city_format = /^[a-zA-Z]{1,163}$/;
-    let street_format = /^[a-zA-Z]{1,44}$/;
-    let phone_number_format = /^[0-9]{13,15}$/;
+    let country_format = /^[a-zA-Z-\s]{1,56}$/;
+    let region_format = /^[a-zA-Z-\s]{1,30}$/;
+    let city_format = /^[a-zA-Z-\s]{1,163}$/;
+    let street_format = /^[a-zA-Z0-9\-\s]{1,40}$/;
+    let phone_number_format = /^[+][0-9]{12,15}$/;
     let postal_code_format = /^[0-9]{5}$/;
-
 
     let country = document.getElementById("country").value;
     let region = document.getElementById("region").value;
     let city = document.getElementById("city").value;
     let street = document.getElementById("street").value;
-    let phone_number = document.getElementById("phone_number").value;
+    let phone_number = document.getElementById("phone_number_address").value;
     let postal_code = document.getElementById("postal_code").value;
 
-
     if(!country_format.test(country)) {
-        document.querySelector(".country_error").innerHTML = "Inserire un paese valido";
+        document.querySelector(".country_error").innerHTML = "Campo non valido: Il campo Paese è obbligatorio e la lunghezza del paese deve essere inferiore a 57 i cui caratteri sono esclusivamente alfabetici";
         document.querySelector(".country_error").style.display = "block";
         event.preventDefault();
-
     }
     else {
         document.querySelector(".country_error").innerHTML = "";
@@ -325,7 +322,7 @@ function check_address_format(){
     }
 
     if(!city_format.test(city)) {
-        document.querySelector(".city_error").innerHTML = "Inserire una città valida";
+        document.querySelector(".city_error").innerHTML = "Campo non valido: Il campo città è obbligatorio i cui caratteri sono esclusivamente alfabetici";
         document.querySelector(".city_error").style.display = "block";
         event.preventDefault();
 
@@ -337,10 +334,9 @@ function check_address_format(){
     }
 
     if(!street_format.test(street)) {
-        document.querySelector(".street_error").innerHTML = "Campo non valido: il campo via è obbligatorio e La lunghezza deve essere compresa tra 1 e 40 i cui caratteri sono esclusivamente alfanumerici";
+        document.querySelector(".street_error").innerHTML = "Campo non valido: il campo via è obbligatorio e La lunghezza deve essere compresa tra 1 e 40  i cui caratteri sono esclusivamente alfanumerici";
         document.querySelector(".street_error").style.display = "block";
         event.preventDefault();
-
     }
     else {
         document.querySelector(".street_error").innerHTML = "";
@@ -349,20 +345,20 @@ function check_address_format(){
     }
 
     if(!phone_number_format.test(phone_number)) {
-        document.querySelector(".phone_number_error").innerHTML = "Campo non valido: il campo numero di cellulare è obbligatorio e la lunghezza del numero cellulare non deve essere compresa tra 13 e 15 e il formato: +39–XXX-XXXXXXX di cui le x sono caratteri numerici";
-        document.querySelector(".phone_number_error").style.display = "block";
+        document.querySelector(".phone_number_address_error").innerHTML = "Campo non valido: il campo numero di cellulare è obbligatorio e la lunghezza del numero cellulare non deve essere compresa tra 12 e 15 e deve rispettare il seguente formato +xxxxxxxxxxx le cui x sono caratteri numerici";
+        document.querySelector(".phone_number_address_error").style.display = "block";
         event.preventDefault();
-
     }
     else {
-        document.querySelector(".phone_number_error").innerHTML = "";
-        document.querySelector(".phone_number_error").style.display = "block";
+        document.querySelector(".phone_number_address_error").innerHTML = "";
+        document.querySelector(".phone_number_address_error").style.display = "block";
         event.preventDefault();
     }
 
     if(!postal_code_format.test(postal_code)) {
-        document.querySelector(".postal_code_error").innerHTML = "Inserire un codice postale valido";
+        document.querySelector(".postal_code_error").innerHTML = "Campo non valido: Il campo CAP è obbligatorio e la lunghezza del CAP deve essere 5, i cui caratteri sono esclusivamente numerici";
         document.querySelector(".postal_code_error").style.display = "block";
+        document.querySelector(".postal_code_error").style.color = "red";
         event.preventDefault();
 
     }

@@ -46,7 +46,7 @@ public class AddressCreateServlet extends HttpServlet {
         address.setCountry(request.getParameter("country"));
         address.setPostalCode(request.getParameter("postal_code"));
         address.setRegion(request.getParameter("region"));
-        address.setPhoneNumber(request.getParameter("phone_number"));
+        address.setPhoneNumber(request.getParameter("phone_number_address"));
         address.setEndUser(user);
 
         try {
