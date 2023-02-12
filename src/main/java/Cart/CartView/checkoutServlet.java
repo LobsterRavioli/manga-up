@@ -42,9 +42,6 @@ public class checkoutServlet extends HttpServlet {
             int addressId = Integer.parseInt(req.getParameter("address"));
             int creditCardId = Integer.parseInt(req.getParameter("card"));
             CreditCard userCard = new CreditCardDAO(ds).findById(creditCardId);
-            if(userCard==null){
-
-            }
 
 
             Address addressEndUser = new AddressDAO(ds).findById(addressId);
@@ -63,9 +60,14 @@ public class checkoutServlet extends HttpServlet {
 
             double totalPrice=0;
 
+            ArrayList<Manga> lista = new ArrayList<Manga>();
+
             for (Entry<Manga, Integer> entry : map.entrySet()) {
                 Manga manga = entry.getKey();
+                Manga toadjust= new Manga(manga.getId());
                 mangaQuantityFromCart = entry.getValue();
+                toadjust.setQuantity(manga.getQuantity() - mangaQuantityFromCart);
+                lista.add(toadjust);
                 manga.setQuantity(mangaQuantityFromCart);
                 totalPrice=manga.getPrice()+totalPrice;
             }
@@ -82,10 +84,7 @@ public class checkoutServlet extends HttpServlet {
 
             cartDAO.toEmptyCart(order.getEndUser());
 
-            for (Entry<Manga, Integer> entry : map.entrySet()) {
-                Manga manga = entry.getKey();
-                mangaQuantityFromCart = entry.getValue();
-                manga.setQuantity(manga.getQuantity() - mangaQuantityFromCart);
+            for (Manga manga:lista) {
                 mangaDAO.updateQuantity(manga);
             }
 

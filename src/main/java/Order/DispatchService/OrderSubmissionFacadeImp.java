@@ -49,15 +49,11 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
 
     public void createOrder(Order order, ArrayList<Manga> products,User selectedManager) throws Exception{
 
-
-        if(!validateOrderCreationParameters(order, products, selectedManager))
-            throw new IllegalArgumentException("Invalid data");
-
         OrderRow orderRow;
         float total = 0;
 
         for (Manga p : products) {
-            total += p.getPrice();
+            total += p.getPrice()*p.getQuantity();
         }
 
         order.setTotalPrice(total);
@@ -72,7 +68,7 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
 
     public void executeTask(ManagedOrder managedOrder) throws SQLException
     {
-        managedOrderDAO.create(managedOrder); // aggiungo l'ordine alla tabbella degli ordini gestiti
+        managedOrderDAO.create(managedOrder); // aggiungo l'ordine alla tabella degli ordini gestiti
         managedOrder.setState(Order.SENT);
         orderDAO.update(managedOrder); // modifico lo stato dell'ordine nella tabella Orders
         ToManage toManage = new ToManage();

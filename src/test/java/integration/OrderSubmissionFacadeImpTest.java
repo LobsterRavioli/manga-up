@@ -1,4 +1,4 @@
-package unit.facade;
+package integration;
 
 import Merchandising.MerchandiseService.Manga;
 import Order.DispatchService.*;
@@ -76,13 +76,14 @@ class OrderSubmissionFacadeImpTest {
     @Test
     void createOrderSuccess() {
 
+
     }
 
     @ParameterizedTest(name = "{index} - {0} (parametri: {1}, {2}, {3})")
     @MethodSource("createInvalidParameter")
     void createOrderInvalidParameter(String testName, Order order, ArrayList<Manga> products, User selectedManager) {
 
-        assertThrows(IllegalArgumentException.class, () -> orderSubmissionFacadeImp.createOrder(order, products, selectedManager));
+        System.out.println(assertThrows(IllegalArgumentException.class, () -> orderSubmissionFacadeImp.createOrder(order, products, selectedManager)).getMessage());
     }
 
 
@@ -216,9 +217,5 @@ class OrderSubmissionFacadeImpTest {
         );
     }
 
-    @Test
-    void executeTask() {
-
-    }
 
 }
