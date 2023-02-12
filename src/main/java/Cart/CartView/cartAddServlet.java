@@ -45,21 +45,29 @@ public class cartAddServlet extends HttpServlet {
         }
         PrintWriter pw;
         EndUser endUser = (EndUser) s.getAttribute("user");
+
         System.out.println(endUser.getId());
+        Cart c = (Cart) s.getAttribute("cart");
         String quantity = request.getParameter("quantity");
         String prod_id = request.getParameter("id");
         String maxQ = request.getParameter("maxQ");
         System.out.println(request.getQueryString());
         System.out.println(Integer.parseInt(quantity));
         Manga m =new Manga(Integer.parseInt(prod_id));
-        Cart c = (Cart) s.getAttribute("cart");
+        Cart ca = null;
+        try{
+            ca = new Cart(dao.retrieveByUser(endUser));
+        }catch (Exception e){
+            ca= new Cart(new HashMap<Manga,Integer>());
+        }
         m.setQuantity(Integer.parseInt(maxQ));
-        for (Map.Entry<Manga,Integer> set : c.getProdotti().entrySet()) {
+        for (Map.Entry<Manga,Integer> set : ca.getProdotti().entrySet()) {
             Manga inCart = set.getKey();
             if (inCart.getId() == m.getId()) {
                 try {
                     dao.updateProduct(m, Integer.parseInt(quantity), endUser);
                     c.updateProdotto(m,Integer.parseInt(quantity));
+                    s.setAttribute("cart",c);
                     response.setStatus(200);
                     return;
                 }catch (Exception e){
@@ -95,6 +103,8 @@ public class cartAddServlet extends HttpServlet {
 
             }else if(e.getMessage().equals("quantità inserita non valida")){
                 response.setStatus(203);
+            }else{
+                response.setStatus(204);
             }
             return;
         }

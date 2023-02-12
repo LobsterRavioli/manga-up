@@ -19,6 +19,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import javax.naming.Context;
 import javax.servlet.RequestDispatcher;
@@ -29,9 +31,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
+import java.sql.Connection;
 import java.util.HashMap;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -82,7 +86,16 @@ public class cartAddServletIntegrationTest {
         Mockito.when(spy.getServletConfig()).thenReturn(Mockito.mock(ServletConfig.class));
         DataSource ds = Mockito.mock(DataSource.class);
         refreshDataSet("Merchandising/manga_dao/init.xml");
-        Mockito.when(ds.getConnection()).thenReturn(tester.getConnection().getConnection());
+        given(ds.getConnection()).willAnswer(new Answer<Connection>() {
+            public Connection answer(InvocationOnMock invocation) {
+                try {
+                    Connection c = tester.getConnection().getConnection();
+                    return c;
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        });
         cartDAO = new CartDAO(ds);
     }
 

@@ -101,13 +101,11 @@
 
           </form>
           <%if(request.getAttribute("error")!=null){%>
-            <div class="" type="submit" style="font-size: 15px;background-color: darksalmon;color: darkred;">
-              Errore con la quantità inserita precedentemente...Il prodotto è stato modificato
+            <div id="errQ" class="" type="submit" style="font-size: 15px;background-color: darksalmon;color: darkred;">
+              Non sono presenti abbastanza unità del prodotto per la quantità selezionata
             </div>
           <%}else if(request.getAttribute("success")!=null){%>
-              <div class="" type="submit" style="font-size: 15px;background-color: darksalmon;color: darkred;" >
-                Il prodotto corrente è stato correttamente inserito nel carrello con la quantità specificata
-              </div>
+              <div id="succInsertion" type="submit" style="font-size: 15px;background-color: darksalmon;color: darkred;" >Il prodotto corrente è stato correttamente inserito nel carrello con la quantità specificata</div>
           <%}else{
 
           }%>
@@ -219,6 +217,8 @@
       } else if (this.readyState == 4 && (this.status == 203)) {
         window.location.replace(window.location.pathname + "?prodId="+encodeURIComponent('<%=m.getId()%>')+"&err=tr");
         return;
+      }else if(this.readyState==4 && this.status==204){
+        window.location.replace("http://localhost:8080/manga_up_war/catalogServlet");
       }
     }
         req.open("GET", "http://localhost:8080/manga_up_war/cartAddServlet?maxQ="+encodeURIComponent('<%=m.getQuantity()%>')+"&quantity=" + encodeURIComponent(c.value) +"&id="+ encodeURIComponent('<%=m.getId()%>'), true);

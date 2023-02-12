@@ -6,6 +6,7 @@ import User.AccountService.EndUser;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -14,10 +15,17 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
+import org.mockito.invocation.Invocation;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import javax.sql.DataSource;
 
+import java.sql.Connection;
 import java.sql.Date;
+
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CartDAOTest {
@@ -58,8 +66,19 @@ class CartDAOTest {
         // Prepara lo stato iniziale di default
         refreshDataSet("Cart/cart_dao/init.xml");
         DataSource ds = Mockito.mock(DataSource.class);
-        Mockito.when(ds.getConnection()).thenReturn(tester.getConnection().getConnection());
         cD = new CartDAO(ds);
+
+        given(ds.getConnection()).willAnswer(new Answer<Connection>() {
+            public Connection answer(InvocationOnMock invocation) {
+                try {
+                    Connection c = tester.getConnection().getConnection();
+                    return c;
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        });
+
     }
 
 

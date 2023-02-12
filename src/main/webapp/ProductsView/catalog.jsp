@@ -66,14 +66,17 @@
 </div>
     <% Integer limit=0;%>
 
+    <%if(request.getAttribute("error")!=null){%>
+        <p id="prodNonEsistente"><%=request.getAttribute("error")%>></p>
+    <%}else{
+
+    }%>
+
 <div class="container mydiv x" id="paginated-list">
     <% ArrayList<Manga>list = (ArrayList<Manga>) request.getAttribute("listaElementi");
+
     if(list!=null){
         boolean b = false;
-        if(limit==null){
-
-        }
-
 
        for(int i=0;i<list.size();i++){
            Manga m = null;
@@ -120,7 +123,7 @@
                         </div>
            <%}
     }else{%>
-                        <p> Non è stato trovato alcun elemento <p>
+                        <p id="problemi"> Non è stato trovato alcun elemento <p>
                                 <%}%>
 
     </div>

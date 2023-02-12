@@ -77,6 +77,7 @@ public class CartDAO {
             try{
                 rsret.close();
                 prret.close();
+                conn.close();
             }catch (SQLException e){
                 e.printStackTrace();
             }
@@ -190,21 +191,23 @@ public class CartDAO {
             throw new Exception("quantità inserita non valida");
         }
 
-        try{
-            HashMap<Manga,Integer> ma = retrieveByUser(user);
-            for (Map.Entry <Manga, Integer> set : ma.entrySet()) {
-                System.out.println(manga.getId());
-                if(set.getKey().getId()==manga.getId()) {
-                    updateProduct(manga,quantity,user);
+            try {
+
+                HashMap<Manga, Integer> ma = retrieveByUser(user);
+                boolean b = false;
+                for (Map.Entry<Manga, Integer> set : ma.entrySet()) {
+                    System.out.println(manga.getId());
+                    if (set.getKey().getId() == manga.getId()) {
+                        b = true;
+                    }
+                }
+                if (b) {
+                    updateProduct(manga, quantity, user);
                     return;
                 }
+            }catch (Exception e){
+                System.out.println("tutto bene");
             }
-        }catch (Exception e){
-            if(e.getMessage().equals("nessun Elemento presente nel carrello"));
-            else{
-                throw e;
-            }
-        }
 
         try{
             pr = conn.prepareStatement("INSERT INTO CART (user_id,manga_id,quantity) VALUES (?,?,?)");
@@ -214,10 +217,12 @@ public class CartDAO {
             pr.setInt(3,quantity);
             pr.executeUpdate();
         }catch (SQLException e){
+            System.out.println("Qui");
             e.printStackTrace();
         }finally {
             try{
                 pr.close();
+                conn.close();
             }catch (SQLException e){
                 e.printStackTrace();
             }
@@ -227,16 +232,20 @@ public class CartDAO {
     public void updateProduct(Manga manga,int quantity, EndUser user) throws Exception{
 
 
+
         Connection conn = ds.getConnection();
+
 
         PreparedStatement pr = null;
         ResultSet rs = null;
 
         pr = conn.prepareStatement("SELECT * FROM END_USER AS e WHERE e.usr_id=?");
 
+
         pr.setInt(1,user.getId());
 
         rs = pr.executeQuery();
+
 
         if(rs.next()){
             ;
@@ -264,7 +273,12 @@ public class CartDAO {
             throw new Exception("quantità inserita non valida");
         }
 
+
+        conn.close();
+
         HashMap<Manga,Integer> mappa = retrieveByUser(user);
+
+        System.out.println("Update");
 
         boolean b = false;
         int qInCart=0;
@@ -272,15 +286,19 @@ public class CartDAO {
             if(set.getKey().getId()==manga.getId()) {
                 qInCart= set.getValue();
                 b = true;
+                System.out.println("Dentro");
                 break;
             }
         }
+
 
         if(!b){
             addProduct(manga,quantity,user);
             return;
         }
 
+
+        conn= ds.getConnection();
 
         try{
 
@@ -296,6 +314,7 @@ public class CartDAO {
         }finally {
             try{
                 pr.close();
+                conn.close();
             }catch (SQLException e){
                 System.out.println(e.getMessage());
             }
@@ -331,6 +350,7 @@ public class CartDAO {
         } finally {
             try {
                 pr.close();
+                conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
