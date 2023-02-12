@@ -29,6 +29,17 @@ public class Address {
         this.postalCode = postalCode;
     }
 
+
+    public Address(EndUser endUser, String country, String city, String street, String postalCode, String phoneNumber, String region) {
+        this.endUser = endUser;
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.postalCode = postalCode;
+        this.phoneNumber = phoneNumber;
+        this.region = region;
+    }
+
     public Address(int id, EndUser endUser, String country, String city, String street, String postalCode, String phoneNumber, String region) {
         this.id = id;
         this.endUser = endUser;

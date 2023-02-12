@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,7 +54,7 @@ class AddressCreateServletTest {
 
 
     @Test
-    void fail() throws ServletException, IOException {
+    void fail() throws ServletException, IOException, SQLException {
         Mockito.when(request.getAttribute("street")).thenReturn("Via Roma");
         Mockito.when(request.getParameter("city")).thenReturn("Roma");
         Mockito.when(request.getParameter("country")).thenReturn("Italia");
@@ -75,7 +76,7 @@ class AddressCreateServletTest {
     }
 
     @Test
-    void success() throws ServletException, IOException {
+    void success() throws ServletException, IOException, SQLException {
 
         Mockito.when(request.getAttribute("street")).thenReturn("Via Roma");
         Mockito.when(request.getParameter("city")).thenReturn("Roma");
@@ -100,7 +101,7 @@ class AddressCreateServletTest {
     }
 
     @Test
-    void SessionInvalid() throws ServletException, IOException {
+    void SessionInvalid() throws ServletException, IOException, SQLException {
         Mockito.when(request.getSession(false)).thenReturn(null);
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(spy.getServletContext()).thenReturn(context);
@@ -117,7 +118,7 @@ class AddressCreateServletTest {
     }
 
     @Test
-    void SessionInvalidParameter() throws ServletException, IOException {
+    void SessionInvalidParameter() throws ServletException, IOException, SQLException {
         Mockito.when(session.getAttribute("user")).thenReturn(null);
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(spy.getServletContext()).thenReturn(context);

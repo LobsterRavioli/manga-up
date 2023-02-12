@@ -44,8 +44,13 @@ public class CreditCardCreateServlet extends HttpServlet {
         card.setCardNumber(request.getParameter("card_number"));
         card.setExpirementDate(Utils.parseDate(request.getParameter("expirement_date")));
         card.setCvv((request.getParameter("cvc")));
-
         try {
+            if (creditCardDAO.existsCreditCardNumber(card.getCardNumber())){
+                request.setAttribute("error_credit_card_message", "La carta di credito è già presente");
+                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProfileView/creazione_carta_di_credito.jsp"));
+                dispatcher.forward(request, response);
+                return;
+            }
             card.setEndUser(user);
             creditCardDAO.create(card);
         }

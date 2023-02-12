@@ -28,6 +28,15 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
 
     }
 
+    public OrderSubmissionFacadeImp(DataSource ds, OrderDAO orderDAO, UserDAO uD, ToManageDAO assignDAO, ManagedOrderDAO managedOrderDAO, OrderRowDAO orderRowDAO){
+        this.ds = ds;
+        this.orderDAO = orderDAO;
+        this.uD = uD;
+        this.assignDAO = assignDAO;
+        this.managedOrderDAO = managedOrderDAO;
+        this.orderRowDAO = orderRowDAO;
+    }
+
 
     private static boolean validateOrderCreationParameters(Order order, ArrayList<Manga> products, User selectedManager)
     {

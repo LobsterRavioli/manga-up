@@ -37,6 +37,7 @@ public class EndUser{
     }
 
 
+
     public EndUser(String name, String surname, String email, String phoneNumber, String password, Date birthdate, int id) {
         this.name = name;
         this.surname = surname;

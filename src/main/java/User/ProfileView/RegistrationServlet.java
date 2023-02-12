@@ -4,6 +4,7 @@ import Cart.CheckoutService.Cart;
 import Cart.CheckoutService.CartDAO;
 import Merchandising.MerchandiseService.Manga;
 import User.AccountService.*;
+import org.apache.taglibs.standard.tag.el.core.IfTag;
 import utils.Utils;
 
 import javax.servlet.*;
@@ -16,22 +17,31 @@ import java.util.HashMap;
 @WebServlet(name = "RegistrationServlet", value = "/RegistrationServlet")
 public class RegistrationServlet extends HttpServlet {
 
-    private static final String EMAIL_ERROR = "Email già in uso";
-    private static final String CARD_ERROR = "Numero carta di credito già in uso";
+    private CreditCardDAO creditCardDAO;
+    private EndUserDAO endUserDAO;
+    private CartDAO cartDAO;
+
+
+    public static final String EMAIL_ERROR = "Email già in uso";
+    public static final String CARD_ERROR = "Numero carta di credito già in uso";
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try{
+
+
         boolean error = false;
 
-        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-        EndUserDAO daoEndUser = new EndUserDAO(ds);
-        AddressDAO daoAddress = new AddressDAO(ds);
-        CartDAO daoCart = new CartDAO(ds);
-        CreditCardDAO daoCreditCard = new CreditCardDAO(ds);
+        if (endUserDAO == null || creditCardDAO == null || cartDAO == null) {
+            DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+            endUserDAO = new EndUserDAO(ds);
+            creditCardDAO = new CreditCardDAO(ds);
+            cartDAO = new CartDAO(ds);
+        }
 
         EndUser user = new EndUser();
         user.setName(request.getParameter("name"));
@@ -49,19 +59,19 @@ public class RegistrationServlet extends HttpServlet {
         address.setRegion(request.getParameter("region"));
         address.setPhoneNumber(request.getParameter("phone_number_address"));
 
-
         CreditCard card = new CreditCard();
         card.setCardNumber(request.getParameter("card_number"));
         card.setCardHolder(request.getParameter("card_holder"));
         card.setExpirementDate(Utils.parseDate(request.getParameter("expirement_date")));
         card.setCvv(request.getParameter("cvc"));
 
-        if(daoEndUser.existEmail(user.getEmail())){
+
+        if(endUserDAO.existEmail(user.getEmail())){
             error = true;
             request.setAttribute("error_email_message", EMAIL_ERROR);
         }
 
-        if(daoCreditCard.existsCreditCardNumber(card.getCardNumber())){
+        if(creditCardDAO.existsCreditCardNumber(card.getCardNumber())){
             error = true;
             request.setAttribute("error_credit_card_message", CARD_ERROR);
         }
@@ -74,20 +84,35 @@ public class RegistrationServlet extends HttpServlet {
         user.addAddress(address);
         user.addCard(card);
         UserFacade facadeUser = (UserFacade) getServletContext().getAttribute(UserFacade.USER_FACADE);
-        try {
-            facadeUser.registration(user);
-        } catch (Exception e) {
-            response.setStatus(500);
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/error_page.jsp"));
-            dispatcher.forward(request, response);
-            return;
-        }
+
+        facadeUser.registration(user);
+
 
         request.getSession().setAttribute("cart",new Cart(new HashMap<Manga,Integer>()));
-
         request.getSession().setAttribute("user", user);
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/ProductsView/endUserHomepage.jsp"));
         dispatcher.forward(request, response);
 
+        }catch (Exception e){
+        response.setStatus(500);
+        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/error_page.jsp"));
+        dispatcher.forward(request, response);
+        return;
+        }
+
     }
+
+    public void setCreditCardDAO(CreditCardDAO creditCardDAO) {
+        this.creditCardDAO = creditCardDAO;
+    }
+
+    public void setEndUserDAO(EndUserDAO endUserDAO) {
+        this.endUserDAO = endUserDAO;
+    }
+
+    public void setCartDAO(CartDAO cartDAO) {
+        this.cartDAO = cartDAO;
+    }
+
+
 }

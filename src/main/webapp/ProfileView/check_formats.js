@@ -381,7 +381,7 @@ function check_card_format(){
 
     let card_number_format = /^[0-9]{13,16}$/;
     let cvc_format = /^[0-9]{3,5}$/;
-    let card_holder_format = /^[a-zA-Z]{1,20}$/;
+    let card_holder_format = /^[a-zA-Z\-\s]{1,40}$/;
     let expirement_date_format = /^\d{4}-\d{2}-\d{2}$/;
 
 
@@ -392,7 +392,7 @@ function check_card_format(){
 
 
     if(!card_number_format.test(card_number)) {
-        document.querySelector(".card_number_error").innerHTML = "Campo non valido: il campo proprietario carta deve contenere esclusivamente caratteri alfabetici";
+        document.querySelector(".card_number_error").innerHTML = "Campo non valido: Il campo carta di credito è obbligatorio e la lunghezza della carta deve essere compresa tra 13 e 16 e deve contenere esclusivamente caratteri numerici";
         document.querySelector(".card_number_error").style.display = "block";
         event.preventDefault();
 
@@ -439,9 +439,23 @@ function check_card_format(){
         document.querySelector(".expirement_date_error").style.display = "block";
         event.preventDefault();
     }
+    current_date = new Date();
+    card_date = new Date(expirement_date);
+
+    if(card_date < current_date) {
+        document.querySelector(".expirement_current_date_error").innerHTML = "La data di scadenza della carta non può essere inferiore alla data odierna";
+        document.querySelector(".expirement_current_date_error").style.display = "block";
+        event.preventDefault();
+
+    }
+    else {
+        document.querySelector(".expirement_current_date_error").innerHTML = "";
+        document.querySelector(".expirement_current_date_error").style.display = "block";
+        event.preventDefault();
+    }
 
 
-    if (card_number_format.test(card_number) && cvc_format.test(cvc) && card_holder_format.test(card_holder) && expirement_date_format.test(expirement_date)) {
+    if (card_number_format.test(card_number) && cvc_format.test(cvc) && card_holder_format.test(card_holder) && expirement_date_format.test(expirement_date) && (card_date > current_date)) {
         document.getElementById("card_form").submit();
     }
 
