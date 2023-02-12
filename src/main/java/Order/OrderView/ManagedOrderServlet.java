@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -17,18 +16,16 @@ import java.util.HashSet;
 
 @WebServlet(name = "manageServlet", value = "/manageServlet")
 public class ManagedOrderServlet extends HttpServlet{
+
     private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private OrderSubmissionFacade orderSubmissionFacade;
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-        OrderSubmissionFacade orderSubmissionFacade = (OrderSubmissionFacade) this.getServletContext().getAttribute(OrderSubmissionFacade.ORDER_SUBMISSION_FACADE);
+        // DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
 
-        /*
-        ManagedOrderDAO managedOrderDAO = new ManagedOrderDAO(ds);
-        OrderDAO orderDAO = new OrderDAO(ds);
-        ToManageDAO toManageDAO = new ToManageDAO(ds);
-        */
+        if(orderSubmissionFacade == null)
+            orderSubmissionFacade = (OrderSubmissionFacade) this.getServletContext().getAttribute(OrderSubmissionFacade.ORDER_SUBMISSION_FACADE);
 
         String action = request.getParameter("action");
         String ord_id = request.getParameter("manage");
@@ -46,6 +43,7 @@ public class ManagedOrderServlet extends HttpServlet{
         couriers.add("TNT");
         couriers.add("Nexive");
         couriers.add("Fercam");
+
         request.getSession().setAttribute("couriers", couriers);
 
         if (action == null) {
@@ -82,17 +80,6 @@ public class ManagedOrderServlet extends HttpServlet{
                     managed.setCourierName(courierName);
                     managed.setDeliveryDate(deliveryDate);
 
-                    /*
-                    managedOrderDAO.create(managed); // aggiungo l'ordine alla tabbella degli ordini gestiti
-                    managed.setState(Order.SENT);
-                    orderDAO.update(managed); // modifico lo stato dell'ordine
-
-                    ToManage toManage = new ToManage();
-                    toManage.setUserName(userName);
-                    toManage.setOrderId(orderId);
-
-                    toManageDAO.delete(toManage); // elimino l'ordine gestito dalla lista degli ordini da gestire
-                    */
 
                     // invoco il facade che utilizza i DAO per mantenere la coerenza delle info nel DB
                     orderSubmissionFacade.executeTask(managed);
@@ -102,7 +89,9 @@ public class ManagedOrderServlet extends HttpServlet{
             }
             catch (SQLIntegrityConstraintViolationException e)
             {
-                e.printStackTrace();
+                response.setStatus(400);
+
+                // e.printStackTrace();
                 HttpSession session = request.getSession();
                 session.setAttribute("errorMessage", e.getMessage());
                 String id = (String)session.getAttribute("s_ordID");
@@ -110,12 +99,19 @@ public class ManagedOrderServlet extends HttpServlet{
                 response.sendRedirect(getServletContext().getContextPath()+"/OrderView/manage_order.jsp?manage="+id+"&ord_date="+date);
             }
             catch (SQLException e) {
-                e.printStackTrace();
+
+                // e.printStackTrace();
+                response.setStatus(400);
             }
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
+    }
+
+    public void setOrderSubmissionFacade(OrderSubmissionFacade orderSubmissionFacade) {
+
+        this.orderSubmissionFacade = orderSubmissionFacade;
     }
 }

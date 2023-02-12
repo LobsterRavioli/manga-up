@@ -1,6 +1,7 @@
-package Order.OrderView;
+package unit.servlets;
 
 import Order.DispatchService.OrderDAO;
+import Order.OrderView.OrderServlet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,15 +17,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 
 class OrderServletTest {
 
     private OrderDAO orderDAO;
-
-    private ServletContext context;
 
     private HttpServletRequest request;
     private HttpServletResponse response;
@@ -35,7 +33,7 @@ class OrderServletTest {
     void setUp() {
         request = Mockito.mock(HttpServletRequest.class) ;
         response = Mockito.mock(HttpServletResponse.class);
-        session = mock(HttpSession.class);
+        session = Mockito.mock(HttpSession.class);
         Mockito.when(request.getSession()).thenReturn(session);
         Mockito.when(request.getSession(false)).thenReturn(session);
         spy = Mockito.spy(new OrderServlet());
@@ -43,7 +41,6 @@ class OrderServletTest {
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(context.getRequestDispatcher(response.encodeURL(""))).thenReturn(Mockito.mock(RequestDispatcher.class));
         Mockito.when(spy.getServletContext()).thenReturn(context);
-
     }
 
     @AfterEach

@@ -17,7 +17,7 @@ public class OrderServlet extends HttpServlet {
 
     private OrderDAO orderDAO;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         // RECUPERO LO USERNAME DELL'ORDER MANAGER
         String orderManagerName = (String) request.getSession().getAttribute("managerName");
