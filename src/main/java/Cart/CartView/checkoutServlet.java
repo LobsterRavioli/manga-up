@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import static java.util.Map.Entry;
@@ -56,21 +58,20 @@ public class checkoutServlet extends HttpServlet {
                 return;
             }
 
-            for (Entry<Manga, Integer> entry : map.entrySet()) {
-                Manga manga = entry.getKey();
-                mangaQuantityFromCart = entry.getValue();
-                manga.setQuantity(manga.getQuantity() - mangaQuantityFromCart);
-                mangaDAO.updateQuantity(manga);
-            }
+
+            double totalPrice=0;
 
             for (Entry<Manga, Integer> entry : map.entrySet()) {
                 Manga manga = entry.getKey();
                 mangaQuantityFromCart = entry.getValue();
                 manga.setQuantity(mangaQuantityFromCart);
+                totalPrice=manga.getPrice()+totalPrice;
             }
 
 
             Order order = new Order(endUser, addressEndUser, userCard);
+            order.setTotalPrice(totalPrice);
+            order.setOrderDate(Date.valueOf(LocalDate.now()));
 
             OrderSubmissionFacade facade = (OrderSubmissionFacade) getServletContext().getAttribute(OrderSubmissionFacade.ORDER_SUBMISSION_FACADE);
             UserFacade facadeUser = (UserFacade) getServletContext().getAttribute(UserFacade.USER_FACADE);
@@ -78,6 +79,13 @@ public class checkoutServlet extends HttpServlet {
             facade.createOrder(order, new ArrayList<Manga>(map.keySet()),facadeUser.managerEngagement());
 
             cartDAO.toEmptyCart(order.getEndUser());
+
+            for (Entry<Manga, Integer> entry : map.entrySet()) {
+                Manga manga = entry.getKey();
+                mangaQuantityFromCart = entry.getValue();
+                manga.setQuantity(manga.getQuantity() - mangaQuantityFromCart);
+                mangaDAO.updateQuantity(manga);
+            }
 
             req.getSession(false).setAttribute("cart",new Cart(new HashMap<Manga,Integer>()));
 

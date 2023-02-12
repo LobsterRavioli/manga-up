@@ -49,11 +49,11 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
 
     public void createOrder(Order order, ArrayList<Manga> products,User selectedManager) throws Exception{
 
+
         if(!validateOrderCreationParameters(order, products, selectedManager))
             throw new IllegalArgumentException("Invalid data");
 
         OrderRow orderRow;
-        order.setOrderDate(Date.valueOf(LocalDate.now()));
         float total = 0;
 
         for (Manga p : products) {

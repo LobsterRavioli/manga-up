@@ -94,6 +94,7 @@ class OrderSubmissionFacadeImpTest {
 
         Order order = new Order();
         order.setId(65);
+        order.setTotalPrice(6);
         order.setEndUserAddress(new Address("Italia", "Campania", "Salerno", "Via Garibaldi", "8400"));
         order.setEndUserCard(new CreditCard("14562222339984544", "116", "Giovanni Vincenzi", Date.valueOf("2025-10-02")));
         order.setEndUserID(43);
@@ -101,6 +102,7 @@ class OrderSubmissionFacadeImpTest {
 
         Order order1 = new Order();
         order1.setId(-3); // id ordine non valido
+        order.setTotalPrice(6);
         order1.setEndUserAddress(new Address("Italia", "Campania", "Salerno", "Via Garibaldi", "84003"));
         order1.setEndUserCard(new CreditCard("1111222233334444", "326", "Giovanni Vincenzi", Date.valueOf("2025-10-02")));
         order1.setEndUserID(56);
@@ -117,6 +119,7 @@ class OrderSubmissionFacadeImpTest {
         */
         Order order2 = new Order();
         order2.setId(9);
+        order.setTotalPrice(6);
         order2.setAddressEndUserInfo(" "); // indirizzo vuoto
         order2.setCreditCardEndUserInfo("Informazioni credit card fittizie");
         order2.setEndUserID(54);
@@ -124,6 +127,7 @@ class OrderSubmissionFacadeImpTest {
 
         Order order3 = new Order();
         order3.setId(10);
+        order.setTotalPrice(6);
         // order3.setAddressEndUserInfo("..."); ADDRESS NON IMPOSTATO = ADDRESS = null
         order3.setCreditCardEndUserInfo("Informazioni credit card fittizie");
         order3.setEndUserID(54);
@@ -131,6 +135,7 @@ class OrderSubmissionFacadeImpTest {
 
         Order order4 = new Order();
         order4.setId(10);
+        order.setTotalPrice(6);
         order4.setAddressEndUserInfo("Informazioni adress fittizie");
         order4.setCreditCardEndUserInfo(" "); // credit card info non valide -> stringa vuota
         order4.setEndUserID(22);
@@ -138,6 +143,7 @@ class OrderSubmissionFacadeImpTest {
 
         Order order5 = new Order();
         order5.setId(19);
+        order.setTotalPrice(6);
         order5.setAddressEndUserInfo("Informazioni adress fittizie");
         // order5.setCreditCardEndUserInfo("..."); // credit card info non valide -> NULL
         order5.setEndUserID(72);
@@ -145,6 +151,7 @@ class OrderSubmissionFacadeImpTest {
 
         Order order6 = new Order();
         order6.setId(7);
+        order.setTotalPrice(6);
         order6.setAddressEndUserInfo("Informazioni adress fittizie");
         order6.setCreditCardEndUserInfo("Informazioni credit card fittizie");
         order6.setEndUserID(-9); // id end user non valido
@@ -152,6 +159,7 @@ class OrderSubmissionFacadeImpTest {
 
         Order order7 = new Order();
         order7.setId(7);
+        order.setTotalPrice(6);
         order7.setAddressEndUserInfo("Informazioni adress fittizie");
         order7.setCreditCardEndUserInfo("Informazioni credit card fittizie");
         order7.setEndUserID(34);

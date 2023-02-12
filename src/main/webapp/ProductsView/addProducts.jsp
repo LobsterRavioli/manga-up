@@ -150,7 +150,7 @@
                 </div>
 
                 <br>
-                <button class="fry" form="addProductForm" type="submit" value="">Inserisci</button>
+                <button class="fry" form="addProductForm" type="submit" value="" onsubmit="check_registration_format()">Inserisci</button>
 
         </form>
         </div>

@@ -32,7 +32,7 @@
         </div>
         <div style="display:table-cell;">
             <div class="right" style="display: table-cell;position: relative;left: .8%;">
-                <form action="${pageContext.request.contextPath}/productsFilter" method="GET" id="filter">
+                <form action="${pageContext.request.contextPath}/productsFilter" onsubmit="return validatePricesAndColl()" method="GET" id="filter">
                     <p class="formMainLabel">Filtri:<p>
                     <p class="widthAppropriate formMainLabel">
                         <input type="hidden" value="true" name="UserManager" id="UserManager" form="filter">
@@ -40,9 +40,12 @@
                         <input type="text"  form="filter" id="name" name="name" placeholder="nome prodotto" class="filterinput"><br>
 
                         <label for="minPrice" class="filterinput">Prezzo di partenza:</label><br>
-                        <input type="number" form="filter" id="minPrice" name="minPrice" placeholder="0" min="0" class="filterinput"><br>
+                        <input type="number" form="filter" id="minPrice" name="minPrice" placeholder="0"  oninput="validatePricesAndColl()" class="filterinput"><br>
+
+                        <p id="price_error" class="price_error"></p>
+
                         <label for="maxPrice" class="filterinput">Prezzo Massimo:</label><br>
-                        <input type="number" form="filter" id="maxPrice" name="maxPrice" placeholder="0" min="0" class="filterinput"><br><br>
+                        <input type="number" form="filter" id="maxPrice" name="maxPrice" placeholder="0" oninput="validatePricesAndColl()" class="filterinput"><br><br>
 
                     <p> Ordina per :</p>
                     <input type="radio" id="soggetto" name="soggetto" value="name">
@@ -64,8 +67,11 @@
                     <%CollectionDAO c = new CollectionDAO((DataSource) application.getAttribute("DataSource"));
                         try{
                             ArrayList<Collection> collections = c.retrieveAlL();
-                    %><select id="collection" form="filter" name="collection">
 
+                    %>
+                    <p id ="coll_error" class="coll_error"></p>
+                    <select id="collection" oninput="validatePricesAndColl()"  form="filter" name="collection">
+                    <option value=""></option>
                     <%for(Collection coll: collections){%>
                     <option value="<%=coll.getName()%>"><%=coll.getName()%></option>
                     <%}%>
@@ -73,7 +79,7 @@
                     <%}catch (Exception e){
 
                     }%>
-                    <input type="submit" form="filter" value="Submit">
+                    <input type="submit" form="filter" onsubmit="check_registration_format()" value="Submit">
                     </p>
                 </form>
             </div>
@@ -81,7 +87,7 @@
                 String errore = (String) request.getAttribute("error");
             %>
             <%if(lista!=null){%>
-            <div class="results" style="display:table-cell;">
+            <div id="results" class="results" style="display:table-cell;">
                 <table style="margin: 0 auto;width: 100px;height: 100px;position: relative;top: 10rem;">
                     <tr>
                         <th class="fontMinus">Immagine</th>
@@ -107,13 +113,13 @@
                 </table>
             </div>
             <%}else if(request.getAttribute("error")!=null){%>
-            <p> Non sono stati trovati elementi conformi ai parametri di ricerca... Riprovare con altri</p>
+            <p id="found">Non sono stati trovati elementi conformi ai parametri di ricerca... Riprovare con altri</p>
             <%}else if(request.getAttribute("goodEnding")!=null){
                 String ending = (String) request.getAttribute("goodEnding");
                 if(ending.equals("true")){%>
-            <p> Prodotto rimosso con successo</p>
+            <p id="ending">Prodotto rimosso con successo</p>
             <%}else{%>
-            <p> Non è stato possibile rimuovere il prodotto selezionato... Ci deve essere stato un problema</p>
+            <p id ="ending">C’è stato un errore con il prodotto selezionato, il prodotto non è esistente</p>
             <%}%>
             <%}%>
 
@@ -135,6 +141,34 @@
 </body>
 
 <script>
+
+    function validatePricesAndColl(){
+        let min = document.getElementById("minPrice").value;
+        let max = document.getElementById("maxPrice").value;
+        let collection = document.getElementById("collection").value;
+        let b = true;
+
+        console.log(max+"\n"+min)
+
+        if(parseInt(max)<parseInt(min)){
+            document.querySelector(".price_error").innerHTML = "Range di prezzi non corretto";
+            document.querySelector(".price_error").style.display = "block";
+            b=false;
+        }else{
+            document.querySelector(".price_error").innerHTML = "";
+            document.querySelector(".price_error").style.display = "block";
+        }
+        if(collection.trim().length<1){
+            document.querySelector(".coll_error").innerHTML = "La collezione selezionata non deve essere vuota";
+            document.querySelector(".coll_error").style.display = "block";
+            b=false;
+        }else{
+            document.querySelector(".coll_error").innerHTML = "";
+            document.querySelector(".coll_error").style.display = "block";
+        }
+
+        return b;
+    }
 
     function redirect(string){
         window.location.replace("http://localhost:8080"+string);
