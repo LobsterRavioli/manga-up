@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
-/* NON FUNZIONA */
 class ManagedOrderServletTest {
 
     private OrderSubmissionFacade orderSubmissionFacade;
@@ -37,9 +36,9 @@ class ManagedOrderServletTest {
         Mockito.when(request.getSession(false)).thenReturn(session);
         spy = Mockito.spy(new ManagedOrderServlet());
         Mockito.when(spy.getServletConfig()).thenReturn(Mockito.mock(ServletConfig.class));
-        //ServletContext context = Mockito.mock(ServletContext.class);
-        //Mockito.when(context.getRequestDispatcher(response.encodeURL(""))).thenReturn(Mockito.mock(RequestDispatcher.class));
-        //Mockito.when(spy.getServletContext()).thenReturn(context);
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL(""))).thenReturn(Mockito.mock(RequestDispatcher.class));
+        Mockito.when(spy.getServletContext()).thenReturn(context);
     }
 
     @AfterEach
@@ -56,7 +55,17 @@ class ManagedOrderServletTest {
         RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
         Mockito.when(context.getRequestDispatcher("/OrderView/manage_order.jsp")).thenReturn(rD);
 
-        Mockito.when(request.getParameter("action")).thenReturn("action"); // in modo che sia diverso da null
+        Mockito.when(request.getParameter("action")).thenReturn("insert");
+
+        Mockito.when(session.getAttribute("managerName")).thenReturn(" ");
+        Mockito.when(request.getParameter("orderID")).thenReturn("0");
+        Mockito.when(request.getParameter("shipmentDate")).thenReturn("2012-03-03");
+        Mockito.when(request.getParameter("trackingNumber")).thenReturn(" ");
+        Mockito.when(request.getParameter("courier")).thenReturn(" ");
+        Mockito.when(request.getParameter("deliveryDate")).thenReturn("2012-05-03");
+
+        Mockito.when(session.getAttribute("s_ordID")).thenReturn("3");
+        Mockito.when(session.getAttribute("s_ordDate")).thenReturn("2012-03-03");
 
         orderSubmissionFacade = Mockito.mock(OrderSubmissionFacade.class);
         Mockito.doAnswer(invocation -> {
@@ -70,24 +79,35 @@ class ManagedOrderServletTest {
 
         Mockito.verify(response).setStatus(400);
         Mockito.verify(session).setAttribute("errorMessage", new SQLIntegrityConstraintViolationException().getMessage());
-        Mockito.verify(context).getRequestDispatcher("/OrderView/manage_order.jsp");
+        Mockito.verify(context).getRequestDispatcher(context.getContextPath()+"/OrderView/manage_order.jsp?manage=3&ord_date=2012-03-03");
     }
 
     @Test
-    void success() throws SQLException {
+    void success() throws SQLException, IOException, ServletException {
 
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(spy.getServletContext()).thenReturn(context);
         RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
-        Mockito.when(context.getRequestDispatcher("/OrderView/manage_order.jsp")).thenReturn(rD);
+        Mockito.when(context.getRequestDispatcher("/OrderView/order_list.jsp")).thenReturn(rD);
 
-        Mockito.when(request.getParameter("action")).thenReturn("action");
+        Mockito.when(request.getParameter("action")).thenReturn("insert");
+
+        Mockito.when(session.getAttribute("managerName")).thenReturn(" ");
+        Mockito.when(request.getParameter("orderID")).thenReturn("0");
+        Mockito.when(request.getParameter("shipmentDate")).thenReturn("2012-03-03");
+        Mockito.when(request.getParameter("trackingNumber")).thenReturn(" ");
+        Mockito.when(request.getParameter("courier")).thenReturn(" ");
+        Mockito.when(request.getParameter("deliveryDate")).thenReturn("2012-05-03");
+
 
         orderSubmissionFacade = Mockito.mock(OrderSubmissionFacade.class);
         Mockito.doAnswer(invocation -> {
             return null;
         }).when(orderSubmissionFacade).executeTask(Mockito.any(ManagedOrder.class));
 
-        Mockito.verify(context).getRequestDispatcher("/OrderView/manage_order.jsp");
+        spy.setOrderSubmissionFacade(orderSubmissionFacade);
+        spy.doGet(request, response);
+
+        Mockito.verify(context).getRequestDispatcher(context.getContextPath()+"/OrderView/order_list.jsp");
     }
 }
