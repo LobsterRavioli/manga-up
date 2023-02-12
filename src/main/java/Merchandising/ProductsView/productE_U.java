@@ -35,9 +35,11 @@ public class productE_U extends HttpServlet {
             request.setAttribute("success",true);
         }
 
+        System.out.println("Recursion :(");
+
         Manga m = daoM.retrieveById(Integer.parseInt(id));
         if(m==null){
-            request.setAttribute("prod",null);
+            request.setAttribute("error","Errore relativo al prodotto selezionato: Prodotto non esistente");
             RequestDispatcher rD = getServletContext().getRequestDispatcher("/catalogServlet");
             rD.forward(request,response);
             return;

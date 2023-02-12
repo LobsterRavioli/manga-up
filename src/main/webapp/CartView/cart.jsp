@@ -49,8 +49,13 @@
 <body>
 <%@ include file="/header.jsp" %>
 <%if(request.getParameter("agg")!=null){%>
-  <p style="text-align: center;">Il carrello è stato aggiornato con successo</p>
+  <p id="corrUpdate" style="text-align: center;">Il carrello è stato aggiornato con successo</p>
 <%}%>
+
+<%if(request.getParameter("prob")!=null){%>
+      <p id="removedProduct">Errore relativo al prodotto selezionato: Prodotto non esistente</p>
+<%}%>
+
 <div class="cart_section">
   <div class="container-fluid" id="container-fluid">
     <div class="row">
@@ -89,7 +94,7 @@
                       <div class="cart_item_title">Quantita'</div>
                       <form action="">
                         <div class="cart_item_text" id="<%=m.getId() %>">
-                          <input type="number" form="updateProd" value="<%=set.getValue()%>" min="0" max="<%=m.getQuantity()%>" oninput="controlvalue(this);" title="Quantità massima inseribile:<%=m.getQuantity()%>" aria-label="Search" class="form-control" id="countProducts<%=m.getId()%>" style="width: 100px">
+                          <input type="number" form="updateProd" value="<%=set.getValue()%>" min="0" max="<%=m.getQuantity()%>" oninput="controlValue(this);" title="Quantità massima inseribile:<%=m.getQuantity()%>" aria-label="Search" class="form-control" id="countProducts<%=m.getId()%>" style="width: 100px">
                           <button class="btn btn-primary btn-md my-0 p waves-effect waves-light" type="button" onclick="updateElement(<%=m.getId()%>)">Change quantity
                           <i class="fas fa-shopping-cart ml-1"></i>
                         </button>

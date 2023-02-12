@@ -45,15 +45,18 @@ public class cartUpdateItemServlet extends HttpServlet {
         String maxQ = request.getParameter("maxQ");
         Manga m =new Manga(Integer.parseInt(prod_id));
         Cart ca = (Cart) s.getAttribute("cart");
+        System.out.println("Ricorsione :(");
         try{
             m.setQuantity(Integer.parseInt(maxQ));
             if(quantity.equals("0")){
                 dao.removeProduct(m,endUser);
                 ca.removeFromCart(m);
                 s.setAttribute("cart",ca);
+                request.setAttribute("removed",true);
                 response.sendRedirect(request.getContextPath() + "/CartView/cart.jsp?agg=true");
                 return;
             }
+            System.out.println("Oltre");
             dao.updateProduct(m,Integer.parseInt(quantity),endUser);
             ca.updateProdotto(m,Integer.parseInt(quantity));
             if(aggiunta.equals("true")){
@@ -64,8 +67,13 @@ public class cartUpdateItemServlet extends HttpServlet {
             return;
             }catch (Exception e){
                 System.out.println(e.getMessage());
+
+                if(e.getMessage().equals("prodotto non esistente")){
+                    ca.removeFromCart(m);
+                    response.sendRedirect(request.getContextPath() + "/CartView/cart.jsp?prob=true");
+                }
                 if(e.getMessage().equals("utente non esistente")){
-                response.setStatus(201);
+                    response.setStatus(201);
                 }
                 else if (e.getMessage().equals("prodotto non esistente")) {
                     response.setStatus(202);

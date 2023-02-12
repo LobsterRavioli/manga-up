@@ -34,18 +34,18 @@ public class checkoutPreparationServlet extends HttpServlet {
         ArrayList<Address> listaAddresses = (ArrayList<Address>) daoADD.findAssociatedAddresses(endUser);
 
 
-        if(listaCarte.size()==0 && listaAddresses.size()==0){
+        if(listaCarte==null && listaAddresses==null){
             request.setAttribute("errorCard","nessuna carta di pagamento associata all'account");
             request.setAttribute("errorAddress","nessun indirizzo associato all'account");
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/cart.jsp");
             rd.forward(request, response);
             return;
-        }else if(listaAddresses.size()==0){
+        }else if(listaAddresses==null){
             request.setAttribute("errorAddress","nessun indirizzo associato all'account");
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/cart.jsp");
             rd.forward(request, response);
             return;
-        } else if (listaCarte.size()==0) {
+        } else if (listaCarte==null) {
             request.setAttribute("errorCard","nessuna carta di pagamento associata all'account");
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/cart.jsp");
             rd.forward(request, response);

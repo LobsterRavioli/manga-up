@@ -46,7 +46,7 @@ public class processProductInsertion extends HttpServlet {
         final String prodDataUscita = request.getParameter("data_uscita");
 
         if(prodDataUscita==null){
-            request.setAttribute("error","Il nome del prodotto non è stato specificato...errore");
+            request.setAttribute("error","La data di uscita non è stata specificata...errore");
             RequestDispatcher rD = this.getServletContext().getRequestDispatcher("/ProductsView/homepage.jsp");
             rD.forward(request,response);
             return;

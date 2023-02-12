@@ -42,8 +42,10 @@ public class checkoutServlet extends HttpServlet {
             int addressId = Integer.parseInt(req.getParameter("address"));
             int creditCardId = Integer.parseInt(req.getParameter("card"));
             CreditCard userCard = new CreditCardDAO(ds).findById(creditCardId);
-            if(userCard==null)
-                System.out.println("Problema null");
+            if(userCard==null){
+
+            }
+
 
             Address addressEndUser = new AddressDAO(ds).findById(addressId);
             CartDAO cartDAO = new CartDAO(ds);
