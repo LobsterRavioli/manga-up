@@ -282,7 +282,7 @@ public class MangaDAO {
     }
 
 
-    public Manga retrieveByName(String name) throws Exception {
+   /* public Manga retrieveByName(String name) throws Exception {
         if(name==null)
             throw new Exception("il nome non può essere nullo");
 
@@ -338,7 +338,7 @@ public class MangaDAO {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
     public ArrayList<Manga> filterForUsers(String name, float min_price, float max_price,String collection,boolean orderSubject, boolean order_criteria) throws Exception {
 
@@ -706,7 +706,7 @@ public class MangaDAO {
     */
 
 
-    public boolean checkQuantity(Manga manga){
+    /*public boolean checkQuantity(Manga manga){
         PreparedStatement pr = null;
         ResultSet rs = null;
         boolean result = true;
@@ -731,11 +731,23 @@ public class MangaDAO {
             }
         }
         return result;
-    }
+    }*/
 
-    public void updateQuantity(Manga manga){
+    public void updateQuantity(Manga manga) throws Exception{
         PreparedStatement pr = null;
         Manga m = retrieveById(manga.getId());
+        if(m==null){
+            throw new Exception("manga non presente nel db");
+        }
+        if(m.getQuantity()==0){
+            delete(m.getId());
+            return;
+        }
+
+        if(m.getQuantity()<0){
+            throw new Exception("Quantità inserita errata");
+        }
+
         try(Connection conn = ds.getConnection()){
             pr = conn.prepareStatement("UPDATE Manga SET quantity=? WHERE id=?");
             pr.setInt(1,manga.getQuantity());

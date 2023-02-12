@@ -25,12 +25,13 @@
             </nav>
         </div>
           <div style="display:table-cell;">
-                <form action="${pageContext.request.contextPath}/productsManagement" method="get" id="managing">
+                <form action="${pageContext.request.contextPath}/productsManagement" onsubmit="return validation()" method="get" id="managing">
 
+                    <p class="quantity_error" id="quantity_error"></p>
                     <input type="hidden" name="id" value="<%=request.getAttribute("id")%>" form="managing">
                     <label for="quantity">Aggiungi unita:</label>
-                    <input id="quantity" name="quantity" type="number" min="1" required form="managing">
-                    <button type="submit">Conferma</button>
+                    <input id="quantity" name="quantity" type="number" oninput="validation()" form="managing">
+                    <button type="submit" >Conferma</button>
 
                 </form>
           </div>
@@ -38,4 +39,25 @@
   </div>
 
 </body>
+
+
+<script>
+    function validation(){
+        let quantity = document.getElementById("quantity").value
+        console.log(quantity)
+        let b;
+        if(quantity<=0){
+            document.querySelector(".quantity_error").innerHTML ="La quantità inserita deve essere maggiore di 0";
+            document.querySelector(".quantity_error").style.display = "block";
+            b=false;
+        }
+        else {
+            document.querySelector(".quantity_error").innerHTML = "";
+            document.querySelector(".quantity_error").style.display = "block";
+            b=true;
+        }
+
+        return b;
+    }
+</script>
 </html>
