@@ -30,8 +30,8 @@ public class ManagedOrderDAO {
 
     public void create(ManagedOrder managedOrder) throws SQLException
     {
-        if(!managedOrder.validateManagedOrderCreation())
-            throw new IllegalArgumentException("Invalid data");
+
+
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -51,7 +51,6 @@ public class ManagedOrderDAO {
             if(affectedRows == 0)
                 throw new DAOException("Creating managed order failed, no rows affected.");
 
-           connection.commit();
         }
         finally
         {
