@@ -1,5 +1,6 @@
 package Order.OrderView;
 
+import Cart.CheckoutService.CartDAO;
 import Order.DispatchService.*;
 
 import javax.servlet.ServletException;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -19,6 +21,7 @@ public class ManagedOrderServlet extends HttpServlet{
 
     private static final long serialVersionUID = 1L;
 
+    private OrderDAO orderDAO;
     private OrderSubmissionFacade orderSubmissionFacade;
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -27,13 +30,18 @@ public class ManagedOrderServlet extends HttpServlet{
         if(orderSubmissionFacade == null)
             orderSubmissionFacade = (OrderSubmissionFacade) this.getServletContext().getAttribute(OrderSubmissionFacade.ORDER_SUBMISSION_FACADE);
 
+        if(orderDAO==null){
+            DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+            orderDAO = new OrderDAO(ds);
+        }
+
         String action = request.getParameter("action");
         String ord_id = request.getParameter("manage");
         String ord_date = request.getParameter("ord_date");
 
         /*
-         * L'insieme di tutti i corrieri disponibili nel sistema (non abbiamo una tabella, quindi li istanzio)
-         */
+        * L'insieme di tutti i corrieri disponibili nel sistema (non abbiamo una tabella, quindi li istanzio)
+        */
         HashSet<String> couriers = new HashSet<>();
         couriers.add("BRT");
         couriers.add("DHL");
@@ -71,7 +79,15 @@ public class ManagedOrderServlet extends HttpServlet{
                     Date deliveryDate = Date.valueOf(request.getParameter("deliveryDate"));
 
                     // Costruisco l'ordine gestito prelevando i dati che mi sono arrivati dal form
+                    Order fromDB = orderDAO.retrieve(orderId);
                     ManagedOrder managed = new ManagedOrder();
+
+                    managed.setTotalPrice(fromDB.getTotalPrice());
+                    managed.setEndUserID(fromDB.getEndUserID());
+                    managed.setOrderDate(fromDB.getOrderDate());
+                    managed.setState(fromDB.getState());
+                    managed.setAddressEndUserInfo(fromDB.getAddressEndUserInfo());
+                    managed.setCreditCardEndUserInfo(fromDB.getCreditCardEndUserInfo());
 
                     managed.setUserName(userName);
                     managed.setId(orderId);
@@ -89,6 +105,7 @@ public class ManagedOrderServlet extends HttpServlet{
             }
             catch (SQLIntegrityConstraintViolationException e)
             {
+                System.out.println(e.getMessage());
                 response.setStatus(400);
 
                 // e.printStackTrace();

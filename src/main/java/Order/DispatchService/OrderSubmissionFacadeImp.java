@@ -1,8 +1,6 @@
 package Order.DispatchService;
 
-import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
 
 import Merchandising.MerchandiseService.Manga;
@@ -77,5 +75,4 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
 
         assignDAO.delete(toManage); // elimino l'ordine gestito dalla lista degli ordini da gestire (task completato)
     }
-
 }

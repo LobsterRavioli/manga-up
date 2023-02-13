@@ -30,8 +30,8 @@ public class ManagedOrderDAO {
 
     public void create(ManagedOrder managedOrder) throws SQLException
     {
-
-
+        if(!managedOrder.validateManagedOrderCreation())
+            throw new IllegalArgumentException("Invalid data");
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -39,6 +39,9 @@ public class ManagedOrderDAO {
         try
         {
             connection = ds.getConnection();
+
+            connection.setAutoCommit(false);
+
             preparedStatement = connection.prepareStatement(CREATE);
             preparedStatement.setString(1, managedOrder.getUserName());
             preparedStatement.setLong(2, managedOrder.getId());
@@ -51,6 +54,8 @@ public class ManagedOrderDAO {
             if(affectedRows == 0)
                 throw new DAOException("Creating managed order failed, no rows affected.");
 
+             connection.commit();
+             connection.setAutoCommit(true);
         }
         finally
         {
