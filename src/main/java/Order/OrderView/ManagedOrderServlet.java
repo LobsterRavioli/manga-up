@@ -105,10 +105,10 @@ public class ManagedOrderServlet extends HttpServlet{
             }
             catch (SQLIntegrityConstraintViolationException e)
             {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
+
                 response.setStatus(400);
 
-                // e.printStackTrace();
                 HttpSession session = request.getSession();
                 session.setAttribute("errorMessage", e.getMessage());
                 String id = (String)session.getAttribute("s_ordID");
@@ -117,7 +117,7 @@ public class ManagedOrderServlet extends HttpServlet{
             }
             catch (SQLException e) {
 
-                // e.printStackTrace();
+                e.printStackTrace();
                 response.setStatus(400);
             }
         }

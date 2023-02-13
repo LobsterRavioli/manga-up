@@ -15,7 +15,7 @@ public class ManagedOrderDAO {
         this.ds = ds;
     }
 
-    private static final String MANAGED_ORDER_TABLE = "manages";
+    private static final String MANAGED_ORDER_TABLE = "MANAGES";
 
     private static final String CREATE = "INSERT INTO "+MANAGED_ORDER_TABLE+
             " (man_user_name, man_order_id, man_shipment_date, man_tracking_number, man_courier, man_delivery_date)"+
@@ -39,6 +39,9 @@ public class ManagedOrderDAO {
         try
         {
             connection = ds.getConnection();
+
+            connection.setAutoCommit(false);
+
             preparedStatement = connection.prepareStatement(CREATE);
             preparedStatement.setString(1, managedOrder.getUserName());
             preparedStatement.setLong(2, managedOrder.getId());
@@ -51,7 +54,8 @@ public class ManagedOrderDAO {
             if(affectedRows == 0)
                 throw new DAOException("Creating managed order failed, no rows affected.");
 
-           connection.commit();
+             connection.commit();
+             connection.setAutoCommit(true);
         }
         finally
         {
