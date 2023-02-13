@@ -25,15 +25,13 @@ public class ManagedOrderServlet extends HttpServlet{
     private OrderSubmissionFacade orderSubmissionFacade;
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+
+        if(orderDAO == null)
+            orderDAO = new OrderDAO(ds);
 
         if(orderSubmissionFacade == null)
             orderSubmissionFacade = (OrderSubmissionFacade) this.getServletContext().getAttribute(OrderSubmissionFacade.ORDER_SUBMISSION_FACADE);
-
-        if(orderDAO==null){
-            DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
-            orderDAO = new OrderDAO(ds);
-        }
 
         String action = request.getParameter("action");
         String ord_id = request.getParameter("manage");
@@ -130,5 +128,10 @@ public class ManagedOrderServlet extends HttpServlet{
     public void setOrderSubmissionFacade(OrderSubmissionFacade orderSubmissionFacade) {
 
         this.orderSubmissionFacade = orderSubmissionFacade;
+    }
+
+    public void setOrderDAO(OrderDAO orderDAO) {
+
+        this.orderDAO = orderDAO;
     }
 }

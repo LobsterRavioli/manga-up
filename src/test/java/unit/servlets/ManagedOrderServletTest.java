@@ -1,6 +1,8 @@
 package unit.servlets;
 
 import Order.DispatchService.ManagedOrder;
+import Order.DispatchService.Order;
+import Order.DispatchService.OrderDAO;
 import Order.DispatchService.OrderSubmissionFacade;
 import Order.OrderView.ManagedOrderServlet;
 import org.junit.jupiter.api.AfterEach;
@@ -21,6 +23,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 
 class ManagedOrderServletTest {
 
+    private OrderDAO orderDAO;
     private OrderSubmissionFacade orderSubmissionFacade;
     private HttpServletRequest request;
     private HttpServletResponse response;
@@ -43,8 +46,8 @@ class ManagedOrderServletTest {
 
     @AfterEach
     void tearDown() {
-        request=null;
-        response=null;
+        request = null;
+        response = null;
     }
 
     @Test
@@ -64,8 +67,19 @@ class ManagedOrderServletTest {
         Mockito.when(request.getParameter("courier")).thenReturn(" ");
         Mockito.when(request.getParameter("deliveryDate")).thenReturn("2012-05-03");
 
+        orderDAO = Mockito.mock(OrderDAO.class);
+        Mockito.doAnswer(invocation -> {
+
+            return new Order();
+
+        }).when(orderDAO).retrieve(Mockito.any(Integer.class));
+
+        spy.setOrderDAO(orderDAO);
+
+
         Mockito.when(session.getAttribute("s_ordID")).thenReturn("3");
         Mockito.when(session.getAttribute("s_ordDate")).thenReturn("2012-03-03");
+
 
         orderSubmissionFacade = Mockito.mock(OrderSubmissionFacade.class);
         Mockito.doAnswer(invocation -> {
@@ -99,6 +113,15 @@ class ManagedOrderServletTest {
         Mockito.when(request.getParameter("courier")).thenReturn(" ");
         Mockito.when(request.getParameter("deliveryDate")).thenReturn("2012-05-03");
 
+
+        orderDAO = Mockito.mock(OrderDAO.class);
+        Mockito.doAnswer(invocation -> {
+
+            return new Order();
+
+        }).when(orderDAO).retrieve(Mockito.any(Integer.class));
+
+        spy.setOrderDAO(orderDAO);
 
         orderSubmissionFacade = Mockito.mock(OrderSubmissionFacade.class);
         Mockito.doAnswer(invocation -> {
