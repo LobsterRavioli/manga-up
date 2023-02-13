@@ -14,8 +14,11 @@
 </head>
 <body>
 
+
+
     <jsp:include page="/header_manager_homepage.jsp"/>
 
+	<p>${error}</p>
 	<table class="extTable">
 		<tr class="extTable">
 			<th class="extTable">User name</th>
