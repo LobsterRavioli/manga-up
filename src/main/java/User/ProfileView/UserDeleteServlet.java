@@ -1,5 +1,7 @@
 package User.ProfileView;
 
+import Order.DispatchService.ManagedOrder;
+import Order.DispatchService.ToManageDAO;
 import User.AccountService.CreditCard;
 import User.AccountService.CreditCardDAO;
 import User.AccountService.EndUser;
@@ -31,8 +33,19 @@ public class UserDeleteServlet extends HttpServlet {
             userDao = new UserDAO((DataSource)getServletContext().getAttribute("DataSource"));
         }
 
+        if (toManageDAO == null) {
+            toManageDAO = new ToManageDAO((DataSource)getServletContext().getAttribute("DataSource"));
+        }
+
         try {
             String username = request.getParameter("username");
+            if (toManageDAO.hasOrders(username)){
+                request.setAttribute("error", "L’utente selezionato ha ancora degli ordini da gestire, non è possibile rimuoverlo");
+                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/UserListServlet"));
+                dispatcher.forward(request, response);
+                return;
+            }
+
             userDao.removeUserByUserName(username);
 
         } catch (SQLException e) {
@@ -46,6 +59,7 @@ public class UserDeleteServlet extends HttpServlet {
     }
 
     private UserDAO userDao;
+    private ToManageDAO toManageDAO;
     public void setUserDAO(UserDAO dao) {
         this.userDao = dao;
     }
