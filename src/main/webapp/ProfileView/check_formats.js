@@ -381,7 +381,7 @@ function check_card_format(){
 
     let card_number_format = /^[0-9]{13,16}$/;
     let cvc_format = /^[0-9]{3,5}$/;
-    let card_holder_format = /^[a-zA-Z]{1,20}$/;
+    let card_holder_format = /^[a-zA-Z\-\s]{1,40}$/;
     let expirement_date_format = /^\d{4}-\d{2}-\d{2}$/;
 
 
@@ -392,7 +392,7 @@ function check_card_format(){
 
 
     if(!card_number_format.test(card_number)) {
-        document.querySelector(".card_number_error").innerHTML = "Campo non valido: il campo proprietario carta deve contenere esclusivamente caratteri alfabetici";
+        document.querySelector(".card_number_error").innerHTML = "Campo non valido: Il campo carta di credito è obbligatorio e la lunghezza della carta deve essere compresa tra 13 e 16 e deve contenere esclusivamente caratteri numerici";
         document.querySelector(".card_number_error").style.display = "block";
         event.preventDefault();
 
@@ -439,11 +439,76 @@ function check_card_format(){
         document.querySelector(".expirement_date_error").style.display = "block";
         event.preventDefault();
     }
+    current_date = new Date();
+    card_date = new Date(expirement_date);
+
+    if(card_date < current_date) {
+        document.querySelector(".expirement_current_date_error").innerHTML = "La data di scadenza della carta non può essere inferiore alla data odierna";
+        document.querySelector(".expirement_current_date_error").style.display = "block";
+        event.preventDefault();
+
+    }
+    else {
+        document.querySelector(".expirement_current_date_error").innerHTML = "";
+        document.querySelector(".expirement_current_date_error").style.display = "block";
+        event.preventDefault();
+    }
 
 
-    if (card_number_format.test(card_number) && cvc_format.test(cvc) && card_holder_format.test(card_holder) && expirement_date_format.test(expirement_date)) {
+    if (card_number_format.test(card_number) && cvc_format.test(cvc) && card_holder_format.test(card_holder) && expirement_date_format.test(expirement_date) && (card_date > current_date)) {
         document.getElementById("card_form").submit();
     }
 
     return false;
+}
+
+
+function check_user_creation() {
+
+    let username_format = /^([a-zA-Z0-9_-]){5,10}$/;
+    let password_format = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+
+
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+
+    let r1 = document.getElementById("r1").checked;
+    let r2 = document.getElementById("r2").checked;
+    let r3 = document.getElementById("r3").checked;
+    if (!username_format.test(username)) {
+        document.querySelector(".username_error").innerHTML = "Campo non valido: Il campo username è obbligatorio e la lunghezza del username deve contenere da almeno 5 caratteri alfanumerici fino ad un massimo di 10 ";
+        document.querySelector(".username_error").style.display = "block";
+        event.preventDefault();
+
+    } else {
+        document.querySelector(".username_error").innerHTML = "";
+        document.querySelector(".username_error").style.display = "block";
+        event.preventDefault();
+    }
+    if (!password_format.test(password)) {
+        document.querySelector(".password_error").innerHTML = "Campo non valido: Il campo password è obbligatorio e la lunghezza della password minimo di 8 caratteri, almeno 1 lettera, 1 numero e un carattere speciale.";
+        document.querySelector(".password_error").style.display = "block";
+        event.preventDefault();
+    } else {
+        document.querySelector(".password_error").innerHTML = "";
+        document.querySelector(".password_error").style.display = "block";
+        event.preventDefault();
+    }
+
+    if (!r1 && !r2 && !r3) {
+        document.querySelector(".role_error").innerHTML = "Per inserire un nuovo gestore è necessario assegnargli almeno un ruolo";
+        document.querySelector(".role_error").style.display = "block";
+        event.preventDefault();
+    }
+    else {
+        document.querySelector(".role_error").innerHTML = "";
+        document.querySelector(".role_error").style.display = "block";
+        event.preventDefault();
+    }
+
+    if (username_format.test(username) && password_format.test(password) && (r1 || r2 || r3)) {
+        document.getElementById("user_form").submit();
+    }
+    return false;
+
 }

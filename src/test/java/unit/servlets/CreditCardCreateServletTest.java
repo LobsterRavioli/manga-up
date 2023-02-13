@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -47,7 +48,7 @@ class CreditCardCreateServletTest {
 
 
     @Test
-    void fail() throws ServletException, IOException {
+    void fail() throws ServletException, IOException, SQLException {
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(spy.getServletContext()).thenReturn(context);
         RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
@@ -70,7 +71,7 @@ class CreditCardCreateServletTest {
 
 
     @Test
-    void success() throws ServletException, IOException {
+    void success() throws ServletException, IOException, SQLException {
         Mockito.when(session.getAttribute("card_holder")).thenReturn("Tommaso Sorrentino");
         Mockito.when(request.getParameter("card_number")).thenReturn("1111111111111");
         Mockito.when(request.getParameter("expirement_date")).thenReturn("2030-01-01");
@@ -91,7 +92,7 @@ class CreditCardCreateServletTest {
 
 
     @Test
-    void SessionInvalid() throws ServletException, IOException {
+    void SessionInvalid() throws ServletException, IOException, SQLException {
         Mockito.when(request.getSession(false)).thenReturn(null);
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(spy.getServletContext()).thenReturn(context);
@@ -108,7 +109,7 @@ class CreditCardCreateServletTest {
     }
 
     @Test
-    void SessionInvalidParameter() throws ServletException, IOException {
+    void SessionInvalidParameter() throws ServletException, IOException, SQLException {
         Mockito.when(session.getAttribute("user")).thenReturn(null);
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(spy.getServletContext()).thenReturn(context);

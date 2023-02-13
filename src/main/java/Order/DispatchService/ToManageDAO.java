@@ -1,4 +1,5 @@
 package Order.DispatchService;
+import User.AccountService.User;
 import utils.DAOException;
 
 import javax.sql.DataSource;
@@ -15,6 +16,7 @@ public class ToManageDAO {
 
     private DataSource ds;
 
+
     public ToManageDAO(DataSource ds)
     {
         this.ds = ds;
@@ -25,6 +27,7 @@ public class ToManageDAO {
     private static final String CREATE = "INSERT INTO "+TO_MANAGE_TABLE+
             " (user_name, order_id)"+
             " VALUES (?, ?) ;";
+
 
     private static final String DELETE = "DELETE FROM "+TO_MANAGE_TABLE+" WHERE user_name = ? AND order_id = ? ;";
 
@@ -97,4 +100,5 @@ public class ToManageDAO {
             }
         }
     }
+
 }

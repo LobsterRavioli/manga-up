@@ -1,36 +1,36 @@
-package unit.facade;
+package integration;
 
 import User.AccountService.*;
-import User.ProfileView.AddressCreateServlet;
-import User.ProfileView.LoginEndUserServlet;
-import com.beust.ah.A;
-import org.checkerframework.checker.units.qual.C;
-import org.h2.command.ddl.CreateDomain;
+import org.dbunit.Assertion;
+import org.dbunit.IDatabaseTester;
+import org.dbunit.JdbcDatabaseTester;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.SortedTable;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.operation.DatabaseOperation;
 import org.junit.Assert;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import utils.Utils;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-
-import java.util.Date;
+import java.sql.Connection;
 import java.util.stream.Stream;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
-class UserFacadeImpTest {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class UserFacadeImpIntegrationTesting {
 
     private DataSource ds;
     private UserDAO userDAO;
@@ -38,16 +38,43 @@ class UserFacadeImpTest {
     private CreditCardDAO creditCardDAO;
     private EndUserDAO endUserDAO;
     private UserFacadeImp userFacadeImp;
+    private static IDatabaseTester tester;
+
+
+    @BeforeAll
+    void setUpAll() throws ClassNotFoundException {
+        tester = new JdbcDatabaseTester(org.h2.Driver.class.getName(),
+                "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;init=runscript from 'classpath:schema_db/schema.sql'",
+                "prova",
+                ""
+
+        );
+
+        // Refresh permette di svuotare la cache dopo un modifica con setDataSet
+        // DeleteAll ci svuota il DB mantenendo lo schema
+        tester.setSetUpOperation(DatabaseOperation.REFRESH);
+        tester.setTearDownOperation(DatabaseOperation.DELETE_ALL);
+    }
+
+    private static void refreshDataSet(String filename) throws Exception {
+        IDataSet initialState = new FlatXmlDataSetBuilder()
+                .build(LoginEndUserIntegrationTest.class.getClassLoader().getResourceAsStream(filename));
+        tester.setDataSet(initialState);
+        tester.onSetup();
+    }
 
     @BeforeEach
     void setUp() throws Exception {
         ds = Mockito.mock(DataSource.class);
-        userDAO = Mockito.mock(UserDAO.class);
-        addressDAO = Mockito.mock(AddressDAO.class);
-        creditCardDAO = Mockito.mock(CreditCardDAO.class);
-        endUserDAO = Mockito.mock(EndUserDAO.class);
+        when(ds.getConnection()).thenReturn(tester.getConnection().getConnection());
+        userDAO = new UserDAO(ds);
+        addressDAO = new AddressDAO(ds);
+        creditCardDAO = new CreditCardDAO(ds);
+        endUserDAO = new EndUserDAO(ds);
         userFacadeImp = new UserFacadeImp(userDAO, addressDAO, creditCardDAO, endUserDAO);
+        refreshDataSet("user_facade/registration_facade_init.xml");
         Mockito.spy(userFacadeImp);
+
     }
 
     @ParameterizedTest(name = "registrationPass: {0}")
@@ -56,29 +83,26 @@ class UserFacadeImpTest {
         user.addAddress(address);
         user.addCard(card);
         Assert.assertThrows(Exception.class, () -> userFacadeImp.registration(user));
-        verify(endUserDAO, Mockito.never()).create(any(EndUser.class));
-        verify(addressDAO, Mockito.never()).create(any(Address.class));
-        verify(creditCardDAO, Mockito.never()).create(any(CreditCard.class));
     }
 
     private static Stream<Arguments> registrationFail() {
 
         Address validAddress = new Address("Italia","Campania","Napoli","Via guinceri 31","80040");
-        Address a1 = new Address(null,"Campania","Napoli","Via guinceri 31","80040");
-        Address a2 = new Address("Italia",null,"Napoli","Via guinceri 31","80040");
-        Address a3 = new Address("Italia","Campania",null,"Via guinceri 31","80040");
-        Address a4 = new Address("Italia","Campania","Napoli",null,"80040");
-        Address a5 = new Address("Italia","Campania","Napoli","Via guinceri 31",null);
+        Address a1 = new Address("","Campania","Napoli","Via guinceri 31","80040");
+        Address a2 = new Address("Italia","","Napoli","Via guinceri 31","80040");
+        Address a3 = new Address("Italia","Campania","","Via guinceri 31","80040");
+        Address a4 = new Address("Italia","Campania","Napoli","","80040");
+        Address a5 = new Address("Italia","Campania","Napoli","Via guinceri 31","");
 
         EndUser validUser = new EndUser("Tommaso", "Rossi", "lollo@hotmail.it","+393662968496", "password1!", Utils.parseDate("1999-01-01"));
-        EndUser e1 = new EndUser(null, "Rossi", "lollo@hotmail.it","+393662968496", "password1!", Utils.parseDate("1999-01-01"));
+        EndUser e1 = new EndUser("", "Rossi", "lollo@hotmail.it","+393662968496", "password1!", Utils.parseDate("1999-01-01"));
         EndUser e2 = new EndUser("", "Rossi", "lollo@hotmail.it","+393662968496", "password1!", Utils.parseDate("1999-01-01"));
-        EndUser e3 = new EndUser("Mario", null, "lollo@hotmail.it","+393662968496", "password1!", Utils.parseDate("1999-01-01"));
+        EndUser e3 = new EndUser("Mario", "", "lollo@hotmail.it","+393662968496", "password1!", Utils.parseDate("1999-01-01"));
         EndUser e4 = new EndUser("Mario", "", "lollo@hotmail.it","+393662968496", "password1!", Utils.parseDate("1999-01-01"));
         EndUser e5 = new EndUser("Mario", "Rossi", "","+393662968496", "password1!", Utils.parseDate("1999-01-01"));
-        EndUser e6 = new EndUser("Mario", "Rossi", null,"+393662968496", "password1!", Utils.parseDate("1999-01-01"));
+        EndUser e6 = new EndUser("Mario", "Rossi", "","+393662968496", "password1!", Utils.parseDate("1999-01-01"));
         EndUser e7 = new EndUser("Mario", "Rossi", "lollo@hotmail.it","", "password1!", Utils.parseDate("1999-01-01"));
-        EndUser e8 = new EndUser("Mario", "Rossi", "lollo@hotmail.it",null, "password1!", Utils.parseDate("1999-01-01"));
+        EndUser e8 = new EndUser("Mario", "Rossi", "lollo@hotmail.it","", "password1!", Utils.parseDate("1999-01-01"));
         EndUser e9 = new EndUser("Mario", "Rossi", "lollo@hotmail.it","+393662968496", "", Utils.parseDate("1999-01-01"));
         EndUser e10 = new EndUser("Mario", "Rossi", "lollo@hotmail.it","+393662968496", "password1!", Utils.parseDate("1999-01-01"));
         EndUser e11 = new EndUser("Mario", "Rossi", "lollo@hotmail.it","+393662968496", "password1!", null);
@@ -133,23 +157,42 @@ class UserFacadeImpTest {
 
     @Test
     void registrationPass() throws Exception {
-        EndUser validUser = new EndUser("Tommaso", "Rossi", "lollo@hotmail.it","+393662968496", "password1!", Utils.parseDate("1999-01-01"));
+        doAnswer(new Answer()
+        {
+            @Override
+            public Connection answer(InvocationOnMock invocationOnMock) throws Throwable {
+                return tester.getConnection().getConnection();
+            }
+        }).when(ds).getConnection();
+
+        EndUser validUser = new EndUser("Tommaso", "Sorrentino", "tommy@hotmail.it","+393662968496", "password1!", Utils.parseDate("1999-01-01"));
         CreditCard validCard =  new CreditCard(0, "123", null, "1111111111111", "Tommaso Sorrentino",Utils.parseDate("2030-01-01"));
         Address validAddress = new Address();
         validAddress.setCountry("Italia");
         validAddress.setCity("Napoli");
-        validAddress.setStreet("Via guinceri 31");
-        validAddress.setPostalCode("80040");
+        validAddress.setStreet("Via Roma 24");
+        validAddress.setPostalCode("80100");
         validAddress.setRegion("Campania");
         validAddress.setPhoneNumber("+393662968496");
 
         validUser.addCard(validCard);
         validUser.addAddress(validAddress);
         userFacadeImp.registration(validUser);
-        verify(endUserDAO).create(validUser);
-        verify(creditCardDAO).create(validCard);
-        verify(addressDAO).create(validAddress);
+
+        IDataSet expectedDataSet = new FlatXmlDataSetBuilder()
+                .build(EndUserDAO.class.getClassLoader().getResourceAsStream("user_facade/registration_facade_expected.xml"));
+
+        ITable actualTable = tester.getConnection().createDataSet().getTable("address");
+        Assertion.assertEquals(new SortedTable(expectedDataSet.getTable("address")), new SortedTable(actualTable));
+
+        actualTable = tester.getConnection().createDataSet().getTable("credit_card");
+        Assertion.assertEquals(new SortedTable(expectedDataSet.getTable("credit_card")), new SortedTable(actualTable));
+
+        actualTable = tester.getConnection().createDataSet().getTable("end_user");
+        Assertion.assertEquals(new SortedTable(expectedDataSet.getTable("end_user")), new SortedTable(actualTable));
 
     }
+
+
 
 }

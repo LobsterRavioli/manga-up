@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -81,7 +82,7 @@ class CreditCardDeleteServletTest {
     }
 
     @Test
-    void SessionInvalid() throws ServletException, IOException {
+    void SessionInvalid() throws ServletException, IOException, SQLException {
         Mockito.when(request.getSession(false)).thenReturn(null);
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(spy.getServletContext()).thenReturn(context);
@@ -98,7 +99,7 @@ class CreditCardDeleteServletTest {
     }
 
     @Test
-    void SessionInvalidParameter() throws ServletException, IOException {
+    void SessionInvalidParameter() throws ServletException, IOException, SQLException {
         Mockito.when(session.getAttribute("user")).thenReturn(null);
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(spy.getServletContext()).thenReturn(context);

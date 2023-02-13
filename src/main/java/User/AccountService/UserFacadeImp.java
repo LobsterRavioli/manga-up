@@ -14,6 +14,12 @@ public class UserFacadeImp implements UserFacade {
     private CreditCardDAO creditCardDAO;
     private EndUserDAO endUserDAO;
 
+    public UserFacadeImp(UserDAO userDAO, AddressDAO addressDAO, CreditCardDAO creditCardDAO, EndUserDAO endUserDAO) {
+        this.userDAO = userDAO;
+        this.addressDAO = addressDAO;
+        this.creditCardDAO = creditCardDAO;
+        this.endUserDAO = endUserDAO;
+    }
 
     public UserFacadeImp(DataSource ds){
         this.ds = ds;
@@ -62,10 +68,17 @@ public class UserFacadeImp implements UserFacade {
     }
 
     public void registration(EndUser user) throws Exception{
-        endUserDAO.create(user);
+        if(user == null || user.getCards() == null || user.getAddresses() == null || user.getAddresses().size() == 0 || user.getCards().size() == 0)
+            throw new Exception("Utente non valido");
         Address userAddress = (Address) user.getAddresses().iterator().next();
         CreditCard userCard = (CreditCard) user.getCards().iterator().next();
+
+        if(!Address.validate(userAddress) || !CreditCard.validate(userCard) || !EndUser.validate(user))
+            throw new IllegalArgumentException("Dati non validi");
+
+        endUserDAO.create(user);
         addressDAO.create(userAddress);
         creditCardDAO.create(userCard);
+
     }
 }

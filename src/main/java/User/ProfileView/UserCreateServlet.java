@@ -33,6 +33,7 @@ public class UserCreateServlet extends HttpServlet {
             userRoleDAO = new UserRoleDAO((DataSource)getServletContext().getAttribute("DataSource"));
         }
 
+
         User user = new User();
         user.setUsername(req.getParameter("username"));
         user.setPassword(req.getParameter("password"));
