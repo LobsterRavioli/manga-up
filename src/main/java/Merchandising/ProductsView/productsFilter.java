@@ -62,6 +62,7 @@ public class productsFilter extends HttpServlet {
             }
         }
         try{
+            System.out.println(collections);
             ArrayList<Manga> lista = daoM.filterForEndUsers(name,collections);
             request.setAttribute("listaElementi",lista);
             RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/catalog.jsp");

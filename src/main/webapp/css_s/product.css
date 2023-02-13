@@ -1,7 +1,7 @@
 .contxxx{
     height: calc(100vh - 177px) !important;
     position: relative;
-    bottom: 0px;
+    bottom: -45px;
 }
 
 .mt-5{
@@ -10,6 +10,7 @@
 
 .thin{
     font-size: 1.05rem;
+    color: maroon;
 }
 .p-4{
     padding-top: 1.5% !important;

@@ -74,12 +74,11 @@
               <%}%>
           </div>
 
-          <p class="lead">
-          <p class="lead font-weight-bold">Prezzo</p>
 
-          <p class="lead">
-            <span>€<%= String.format("%.2f", m.getPrice()).replace(',', '.') %></span>
-          </p>
+
+          <p class="thin font-weight-bold">Nome</p>
+
+          <p><%=m.getName()%></p>
 
           <p class="thin font-weight-bold">Publisher</p>
 
@@ -90,6 +89,14 @@
           <p style="margin-bottom: 2rem;"><%=m.getCollection().getName()%></p>
 
           <p class="thin font-weight-bold">Unità Disponibili: <%=m.getQuantity()%></p>
+
+
+          <p class="lead">
+          <p class="lead font-weight-bold">Prezzo</p>
+
+          <p class="lead">
+            <span>€<%= String.format("%.2f", m.getPrice()).replace(',', '.') %></span>
+          </p>
 
           <form class="d-flex justify-content-left">
             <!-- Default input -->
@@ -157,6 +164,15 @@
           <li class="mLeft">Lingua
             <p class="none_center"><%=m.getLanguage()%></p>
           </li>
+          <li class="mLeft">StoryMaker
+            <p class="none_center"><%=m.getStoryMaker()%></p>
+          </li>
+          <li class="mLeft">Genere
+            <p class="none_center"><%=m.getGenre().getName()%></p>
+          </li>
+          <li class="mLeft">Rilegatura
+            <p class="none_center"><%=m.getBinding()%></p>
+          </li>
           <li class="mLeft">Volume
             <p class="none_center"><%=m.getVolume()%></p>
           </li>
@@ -196,7 +212,7 @@
   </div>
 <!--Main layout-->
 </div>
-<!--/.Footer-->>">
+<!--/.Footer-->
       }<div class="hiddendiv common"></div></div>
 <script>
   function addElement() {

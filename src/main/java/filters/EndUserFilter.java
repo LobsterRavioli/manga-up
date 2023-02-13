@@ -21,6 +21,7 @@ public class EndUserFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         HttpServletRequest newRequest = (HttpServletRequest) request;
+
         HttpSession session = newRequest.getSession(false);
         HttpServletResponse resp= (HttpServletResponse) response;
         if(session == null){
