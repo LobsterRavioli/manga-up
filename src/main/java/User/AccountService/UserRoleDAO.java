@@ -24,10 +24,10 @@ public class UserRoleDAO {
         this.ds = ds;
     }
 
-    private static String SQL_GET_ROLES = "SELECT * FROM user_roles WHERE user_name = ?";
+    private static String SQL_GET_ROLES = "SELECT * FROM USER_ROLES WHERE user_name = ?";
 
-    private static String SQL_INSERT_ROLE = "INSERT INTO user_roles (user_name, role_name) VALUES (?, ?)";
-    private static String REMOVE_ALL_ROLES = "DELETE FROM user_roles WHERE user_name = ?";
+    private static String SQL_INSERT_ROLE = "INSERT INTO USER_ROLES (user_name, role_name) VALUES (?, ?)";
+    private static String REMOVE_ALL_ROLES = "DELETE FROM USER_ROLES WHERE user_name = ?";
 
     public Set<String> getRoles(User user) {
 
