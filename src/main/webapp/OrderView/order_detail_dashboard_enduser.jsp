@@ -52,14 +52,6 @@
         ${order.orderDate}
     </li>
 
-    <li>
-        Data consegna:
-        <c:if test="${empty order.orderDate}">
-            Data consegna.
-        </c:if>
-        ${order.orderDate}
-    </li>
-
     <li>Indirizzo di consegna:
         <c:if test="${empty order.addressEndUserInfo}">
             Indirizzo di consegna dell'ordine.
