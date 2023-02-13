@@ -496,7 +496,7 @@ function check_user_creation() {
     }
 
     if (!r1 && !r2 && !r3) {
-        document.querySelector(".role_error").innerHTML = "Campo non valido: Selezionare un ruolo";
+        document.querySelector(".role_error").innerHTML = "Per inserire un nuovo gestore è necessario assegnargli almeno un ruolo";
         document.querySelector(".role_error").style.display = "block";
         event.preventDefault();
     }
