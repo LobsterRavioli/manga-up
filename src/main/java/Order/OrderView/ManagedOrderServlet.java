@@ -115,7 +115,7 @@ public class ManagedOrderServlet extends HttpServlet{
             }
             catch (SQLException e) {
 
-                // e.printStackTrace();
+                e.printStackTrace();
                 response.setStatus(400);
             }
         }

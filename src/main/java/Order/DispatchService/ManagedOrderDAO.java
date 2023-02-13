@@ -15,7 +15,7 @@ public class ManagedOrderDAO {
         this.ds = ds;
     }
 
-    private static final String MANAGED_ORDER_TABLE = "manages";
+    private static final String MANAGED_ORDER_TABLE = "MANAGES";
 
     private static final String CREATE = "INSERT INTO "+MANAGED_ORDER_TABLE+
             " (man_user_name, man_order_id, man_shipment_date, man_tracking_number, man_courier, man_delivery_date)"+
