@@ -56,7 +56,7 @@ public class checkoutPreparationServletTest {
         addressDAO = mock(AddressDAO.class);
         creditCardDAO = mock(CreditCardDAO.class);
         Mockito.doAnswer(invocation -> {
-            return new ArrayList<CreditCard>();
+            return null;
         }).when(creditCardDAO).findAssociatedCards(any(EndUser.class));
 
         Mockito.doAnswer(invocation -> {
@@ -96,7 +96,7 @@ public class checkoutPreparationServletTest {
         }).when(creditCardDAO).findAssociatedCards(any(EndUser.class));
 
         Mockito.doAnswer(invocation -> {
-            return new ArrayList<Address>();
+            return null;
         }).when(addressDAO).findAssociatedAddresses(any(EndUser.class));
 
 
@@ -124,11 +124,11 @@ public class checkoutPreparationServletTest {
         addressDAO = mock(AddressDAO.class);
         creditCardDAO = mock(CreditCardDAO.class);
         Mockito.doAnswer(invocation -> {
-            return new ArrayList<CreditCard>();
+            return null;
         }).when(creditCardDAO).findAssociatedCards(any(EndUser.class));
 
         Mockito.doAnswer(invocation -> {
-            return new ArrayList<Address>();
+            return null;
         }).when(addressDAO).findAssociatedAddresses(any(EndUser.class));
 
 

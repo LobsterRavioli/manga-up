@@ -84,7 +84,7 @@ public class productE_UTest {
         spy.setDaoM(mangaDAO);
         spy.doPost(request,response);
 
-        verify(request).setAttribute("prod",null);
+        verify(request).setAttribute("error","Errore relativo al prodotto selezionato: Prodotto non esistente");
         verify(context).getRequestDispatcher("/catalogServlet");
     }
 

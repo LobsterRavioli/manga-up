@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Iterator;
+/*
 
 public class UserServicesFacadeImp {
 
@@ -237,4 +238,4 @@ public class UserServicesFacadeImp {
                 && address.getEndUser() != null;
     }
 
-}
+}*/
