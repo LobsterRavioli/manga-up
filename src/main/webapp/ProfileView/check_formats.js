@@ -461,3 +461,39 @@ function check_card_format(){
 
     return false;
 }
+
+
+function check_user_creation() {
+
+    let username_format = /^([a-zA-Z0-9_-]){5,10}$/;
+    let password_format = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+
+    if (!username_format.test(username)) {
+        document.querySelector(".username_error").innerHTML = "Campo non valido: Il campo username è obbligatorio e la lunghezza del username deve contenere da almeno 5 caratteri alfanumerici fino ad un massimo di 10 ";
+        document.querySelector(".username_error").style.display = "block";
+        event.preventDefault();
+
+    } else {
+        document.querySelector(".username_error").innerHTML = "";
+        document.querySelector(".username_error").style.display = "block";
+        event.preventDefault();
+    }
+    if (!password_format.test(password)) {
+        document.querySelector(".password_error").innerHTML = "Campo non valido: Il campo password è obbligatorio e la lunghezza della password minimo di 8 caratteri, almeno 1 lettera, 1 numero e un carattere speciale.";
+        document.querySelector(".password_error").style.display = "block";
+        event.preventDefault();
+    } else {
+        document.querySelector(".password_error").innerHTML = "";
+        document.querySelector(".password_error").style.display = "block";
+        event.preventDefault();
+    }
+
+    if (username_format.test(username) && password_format.test(password)) {
+        document.getElementById("user_form").submit();
+    }
+    return false;
+
+}

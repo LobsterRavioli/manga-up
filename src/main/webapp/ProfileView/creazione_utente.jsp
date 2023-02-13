@@ -18,13 +18,16 @@
 
 <p>${error_message}</p>
 
-  <form name= "form" action="${pageContext.request.contextPath}/UserCreateServlet" method="post">
+
+<script type = "text/javascript" src="check_formats.js"></script>
+  <form name= "form" action="${pageContext.request.contextPath}/UserCreateServlet" method="post" id="user_form">
   <fieldset>
     <legend><h2>Crea utente</h2></legend>
-
+    <p class="username_error" id="username_error"></p>
     <label for="username">Username:</label>
     <input type="text" placeholder="Campo obbligatorio" name="username" id="username" required>
     <br>
+    <p class="password_error" id="password_error"></p>
     <p class="password"></p>
     <label for="password">Password:</label>
     <input type="password"  placeholder="Campo obbligatorio" name="password" id="password" required>
@@ -41,7 +44,8 @@
     <br>
     <output id='req'>Scegli almeno una checkbox.</output>
 
-    <input type="submit" id="checkBtn">
+    <input type="submit" id="checkBtn" onclick="check_user_creation()">
+
   </fieldset>
   </form>
 

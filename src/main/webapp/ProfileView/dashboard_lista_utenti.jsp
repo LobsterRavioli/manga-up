@@ -24,24 +24,26 @@
 		</tr>
 
     	<c:forEach items="${users}" var="user">
-    	<tr>
-        	<td class="extTable">${user.username}</td>
-        	<td class="extTable">
-        	<table>
-        	<c:forEach items="${user.roles}" var="role">
-            	<tr>
-            	<td>${role}</td>
-        		</tr>
-        	</c:forEach>
-        	</table>
-        	</td>
-        	<td class="extTable">
-        	<form action="${pageContext.request.contextPath}/UserDeleteServlet" method="post">
-            	<input type="hidden" name="username" value=${user.username} />
-            	<input type="submit" value="elimina" name="act" id="box_button" class="accept">
-        	</form>
-        	</td>
-        </tr>	
+			<c:if test="${user.username ne sessionScope.managerName}">
+				<tr>
+					<td class="extTable">${user.username}</td>
+					<td class="extTable">
+					<table>
+					<c:forEach items="${user.roles}" var="role">
+						<tr>
+						<td>${role}</td>
+						</tr>
+					</c:forEach>
+					</table>
+					</td>
+					<td class="extTable">
+					<form action="${pageContext.request.contextPath}/UserDeleteServlet" method="post">
+						<input type="hidden" name="username" value=${user.username} />
+						<input type="submit" value="elimina" name="act" id="box_button" class="accept">
+					</form>
+					</td>
+				</tr>
+			</c:if>
     	</c:forEach>
     
     </table>
