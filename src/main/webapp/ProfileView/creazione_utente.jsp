@@ -33,6 +33,7 @@
     <input type="password"  placeholder="Campo obbligatorio" name="password" id="password" required>
     <br>
 
+    <p class="role_error" id="role_error"></p>
     <div>
       <label for="r1">USER MANAGER</label>
       <input type="checkbox" name="roles" id="r1" value= "USER_MANAGER">
@@ -43,7 +44,6 @@
     </div>
     <br>
     <output id='req'>Scegli almeno una checkbox.</output>
-
     <input type="submit" id="checkBtn" onclick="check_user_creation()">
 
   </fieldset>

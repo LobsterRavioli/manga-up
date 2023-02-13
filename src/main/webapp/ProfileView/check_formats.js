@@ -468,9 +468,13 @@ function check_user_creation() {
     let username_format = /^([a-zA-Z0-9_-]){5,10}$/;
     let password_format = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
 
+
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
 
+    let r1 = document.getElementById("r1").checked;
+    let r2 = document.getElementById("r2").checked;
+    let r3 = document.getElementById("r3").checked;
     if (!username_format.test(username)) {
         document.querySelector(".username_error").innerHTML = "Campo non valido: Il campo username è obbligatorio e la lunghezza del username deve contenere da almeno 5 caratteri alfanumerici fino ad un massimo di 10 ";
         document.querySelector(".username_error").style.display = "block";
@@ -491,7 +495,18 @@ function check_user_creation() {
         event.preventDefault();
     }
 
-    if (username_format.test(username) && password_format.test(password)) {
+    if (!r1 && !r2 && !r3) {
+        document.querySelector(".role_error").innerHTML = "Campo non valido: Selezionare un ruolo";
+        document.querySelector(".role_error").style.display = "block";
+        event.preventDefault();
+    }
+    else {
+        document.querySelector(".role_error").innerHTML = "";
+        document.querySelector(".role_error").style.display = "block";
+        event.preventDefault();
+    }
+
+    if (username_format.test(username) && password_format.test(password) && (r1 || r2 || r3)) {
         document.getElementById("user_form").submit();
     }
     return false;
