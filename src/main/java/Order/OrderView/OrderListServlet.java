@@ -1,7 +1,5 @@
 package Order.OrderView;
 
-
-import Order.DispatchService.Order;
 import Order.DispatchService.OrderDAO;
 import User.AccountService.EndUser;
 
@@ -19,26 +17,38 @@ import java.util.Collection;
 @WebServlet(name = "OrderListServlet", value = "/OrderListServlet")
 public class OrderListServlet extends HttpServlet {
 
+    private OrderDAO orderDAO;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        EndUser user = (EndUser) request.getSession().getAttribute("user");
+
+        DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
+
+        if(orderDAO == null)
+            orderDAO = new OrderDAO(ds);
+
         try
         {
-            EndUser user = (EndUser) request.getSession().getAttribute("user");
-            DataSource ds = (DataSource)getServletContext().getAttribute("DataSource");
-            OrderDAO dao = new OrderDAO(ds);
-            Collection<Order>order = dao.retrieveOrdersAssociatedToUsers(user);
+            Collection order = orderDAO.retrieveOrdersAssociatedToUsers(user);
             request.setAttribute("orders", order);
+
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/OrderView/order_dashboard_enduser.jsp"));
-
             dispatcher.forward(request, response);
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+            response.setStatus(400);
+            getServletContext().getRequestDispatcher(response.encodeURL("/error_page.jsp")).forward(request, response);
         }
-
     }
-
+    public void setOrderDAO(OrderDAO orderDAO)
+    {
+        this.orderDAO = orderDAO;
+    }
 }

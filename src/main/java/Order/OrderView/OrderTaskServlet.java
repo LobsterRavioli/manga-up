@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-
+/*
 @WebServlet(name = "orderTask", value = "/orderTask")
 public class OrderTaskServlet extends HttpServlet {
     @Override
@@ -47,7 +47,7 @@ public class OrderTaskServlet extends HttpServlet {
                     orderToMan.setId(6);
                 }
                  */
-                try
+               /* try
                 {
                     orderManagers = userDAO.getAllBeginnerOrderManagers(); //RECUPERO I GESTORI DEGLI ORDINI CHE HANNO GESTITO 0 ORDINI
 
@@ -79,4 +79,4 @@ public class OrderTaskServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
-}
+}*/

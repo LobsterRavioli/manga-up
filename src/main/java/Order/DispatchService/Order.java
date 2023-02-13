@@ -200,11 +200,12 @@ public class Order {
         else
             return true;
     }
+
     public boolean validateOrderCreation()
     {
         if(this.orderDate == null || this.state.equals(Order.SENT) ||
-           this.totalPrice <= 0 || this.getEndUserID() < 0 || this.addressInfo == null || this.addressInfo.trim() == ""
-                || this.creditCardInfo == null || this.creditCardInfo.trim() == "")
+                this.totalPrice <= 0 || this.getEndUserID() < 0 || this.addressInfo == null || this.addressInfo.trim().equals("")
+                || this.creditCardInfo == null || this.creditCardInfo.trim().equals(""))
             return false;
         else
             return true;

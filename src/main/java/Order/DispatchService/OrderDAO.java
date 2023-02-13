@@ -17,7 +17,7 @@ public class OrderDAO
         this.ds = ds;
     }
 
-    private static final String ORDER_TABLE = "Orders";
+    private static final String ORDER_TABLE = "ORDERS";
 
     private static final String CREATE = "INSERT INTO "+ORDER_TABLE+
             " (ord_date, ord_state, ord_total_price, ord_end_user_id, ord_address, ord_card)"+
@@ -31,8 +31,10 @@ public class OrderDAO
 
     public void create(Order order) throws IllegalArgumentException, SQLException
     {
+
         if(!order.validateOrderCreation())
             throw new IllegalArgumentException("Invalid data.");
+
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -238,7 +240,7 @@ public class OrderDAO
         Collection<Order> orders = new LinkedList<Order>();
 
         String selectQuery = "SELECT * " +
-                             "FROM Orders AS O, TO_MANAGE AS M " +
+                             "FROM ORDERS AS O, TO_MANAGE AS M " +
                              "WHERE O.ord_id = M.order_id AND M.user_name = ?";
 
         if(ordCriteria != null && !ordCriteria.equals(""))
@@ -283,7 +285,7 @@ public class OrderDAO
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         Collection<Order> orders = new LinkedList<Order>();
-        String selectQuery = "SELECT * FROM Orders o WHERE o.ord_end_user_id = ?;";
+        String selectQuery = "SELECT * FROM ORDERS o WHERE o.ord_end_user_id = ?;";
 
         try
         {
