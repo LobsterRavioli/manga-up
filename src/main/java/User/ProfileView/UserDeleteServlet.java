@@ -40,7 +40,7 @@ public class UserDeleteServlet extends HttpServlet {
         try {
             String username = request.getParameter("username");
             if (toManageDAO.hasOrders(username)){
-                request.setAttribute("error", "You have orders to manage. Please manage them before deleting your account.");
+                request.setAttribute("error", "L’utente selezionato ha ancora degli ordini da gestire, non è possibile rimuoverlo");
                 RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/UserListServlet"));
                 dispatcher.forward(request, response);
                 return;
