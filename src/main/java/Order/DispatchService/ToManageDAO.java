@@ -5,6 +5,7 @@ import utils.DAOException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /*
@@ -27,6 +28,8 @@ public class ToManageDAO {
     private static final String CREATE = "INSERT INTO "+TO_MANAGE_TABLE+
             " (user_name, order_id)"+
             " VALUES (?, ?) ;";
+
+    private static final String SELECT_BY_USERNAME = "SELECT * FROM TO_MANAGE WHERE user_name = ?;";
 
 
     private static final String DELETE = "DELETE FROM "+TO_MANAGE_TABLE+" WHERE user_name = ? AND order_id = ? ;";
@@ -99,6 +102,41 @@ public class ToManageDAO {
                     connection.close();
             }
         }
+    }
+
+    public boolean hasOrders(String username) throws SQLException{
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try
+        {
+            connection = ds.getConnection();
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(SELECT_BY_USERNAME);
+            preparedStatement.setString(1, username);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+            connection.commit();
+            connection.setAutoCommit(true);
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            }
+            finally
+            {
+                if(connection != null)
+                    connection.close();
+            }
+        }
+
+        return false;
     }
 
 }
