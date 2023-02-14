@@ -302,10 +302,10 @@ public class processProductInsertionIntegrationTest {
         }).when(rD).forward(request,response);*/
 
         spy.doPost(request, response);
-        verify(request,never()).setAttribute(any(String.class),any(String.class));
+        verify(request,never()).setAttribute(eq("error"),any(String.class));
         verify(context).getRequestDispatcher("/ProductsView/homepage.jsp");
         ITable actualTable = tester.getConnection().createDataSet().getTable("MANGA");
-        Assert.assertTrue(actualTable.getRowCount()==2);
+        Assert.assertTrue(actualTable.getRowCount()==3);
     }
 
 

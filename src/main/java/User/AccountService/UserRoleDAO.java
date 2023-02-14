@@ -91,6 +91,11 @@ public class UserRoleDAO {
     }
 
     private void removeAllRoles(User user) {
+
+        if(user==null){
+            throw new IllegalArgumentException("user cannot be null");
+        }
+
         Object values[] = {user.getUsername()};
         try (
                 Connection connection = ds.getConnection();

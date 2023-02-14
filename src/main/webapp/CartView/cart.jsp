@@ -56,6 +56,14 @@
       <p id="removedProduct">Errore relativo al prodotto selezionato: Prodotto non esistente</p>
 <%}%>
 
+<%if(request.getParameter("qtity")!=null){%>
+<p id="qtity_error">Non sono presenti abbastanza unità del prodotto per la quantità selezionata</p>
+<%}%>
+
+<%if(request.getAttribute("error")!=null){%>
+<p id="excessiveQuantity"><%=request.getAttribute("error")%></p>
+<%}%>
+
 <div class="cart_section">
   <div class="container-fluid" id="container-fluid">
     <div class="row">
@@ -105,8 +113,11 @@
                       <div class="cart_item_title">Prezzo</div>
                       <div class="cart_item_text">
                         <p class="item_Quant3"><%= String.format("%.2f", m.getPrice()).replace(',', '.') %> &euro;</p>
-                        <!--<p class="item_Quant4"> &euro;</p>
-                       <p class="to_be_hidden"><%= String.format("%.2f", m.getPrice()).replace(',', '.') %></p>-->
+                        <div class="cart_item_text">
+                          <button class="item_Quant3" onclick="removeElement(<%=m.getId()%>)">Rimuovi dal carrello</button>
+                          <!--<p class="item_Quant4"> &euro;</p>
+                         <p class="to_be_hidden">26.59</p>-->
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -149,7 +160,7 @@
     window.location.replace("http://localhost:8080"+string);
   }
 
-  function updateElement(y){
+  function updateElement(y,input){
     console.log(y);
     let stringToQuery = "#countProducts"+y
     console.log(stringToQuery)
@@ -158,99 +169,13 @@
     redirect("${pageContext.request.contextPath}/cartUpdateItemServlet?add=true&maxQ="+encodeURIComponent(max)+"&quantity="+encodeURIComponent(x)+"&id="+encodeURIComponent(y));
   }
 
-  function increase(x){
-    let y = x.parentElement.firstElementChild;
-    let calc=parseInt(y.innerHTML);
-    calc=calc+1;
-    y.innerHTML=""+calc;
-    let priceDiv = x.parentElement.parentElement.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild;
-    let pr=parseFloat(priceDiv.nextElementSibling.nextElementSibling.innerHTML.replace(',','.'));
-    let priceConst=priceDiv.nextElementSibling.nextElementSibling;
-    if(calc==1){
-      let z = document.getElementById("order_total_amount");
-      let m=parseFloat(z.firstElementChild.innerHTML).toFixed(2);
-      pr=pr.toFixed(2);
-      m=Number(m)+Number(parseFloat(priceConst.innerHTML).toFixed(2));
-      z.innerHTML= ""+m.toFixed(2);
-      let xhrObj=new XMLHttpRequest();
-      let TreeName=x.parentElement.parentElement.previousElementSibling.firstElementChild.nextElementSibling;
-      xhrObj.open("GET","/ArborVitae/shoppingCartServlet?treeName="+TreeName.innerHTML,true);
-      xhrObj.send();
-      return;
-    }
-    pr = parseFloat(priceDiv.innerHTML.replace(',','.'));
-    pr= pr.toFixed(2);
-    let z = document.getElementById("order_total_amount");
-    let m = parseFloat(z.firstElementChild.innerHTML).toFixed(2);
-    m=Number(m) + Number(parseFloat(priceConst.innerHTML).toFixed(2));
-    m=m.toFixed(2);
-    z.firstElementChild.innerHTML= ""+m;
-    let xhrObj=new XMLHttpRequest();
-    let TreeName=x.parentElement.parentElement.previousElementSibling.firstElementChild.nextElementSibling;
-    xhrObj.open("GET","/ArborVitae/shoppingCartServlet?treeName="+encodeURIComponent(TreeName.innerHTML),true);
-    xhrObj.send();
-    let g = document.querySelector("#count");
-    let listCount=g.parentElement;
-    g.innerHTML=""+(parseInt(g.innerHTML)+1);
-
-  }
-
-  function decrease(x){
-    let y = x.parentElement.firstElementChild;
-    let calc=parseInt(y.innerHTML);
-    if(calc==0) return;
-    calc=calc-1;
-    y.innerHTML=""+calc;
-    let priceDiv=x.parentElement.parentElement.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild;
-    let pr=parseFloat(priceDiv.innerHTML);
-    let priceConst=priceDiv.nextElementSibling.nextElementSibling;
-    pr=pr.toFixed(2);
-    let z = document.getElementById("order_total_amount");
-    let m=parseFloat(z.firstElementChild.innerHTML).toFixed(2);
-    m=m-parseFloat(priceConst.innerHTML).toFixed(2);
-    m=m.toFixed(2);
-    z.firstElementChild.innerHTML= ""+m;
-    let xhrObj=new XMLHttpRequest();
-    let TreeName=x.parentElement.parentElement.previousElementSibling.firstElementChild.nextElementSibling;
-    xhrObj.open("GET","/ArborVitae/shoppingCartServlet?tRemove="+encodeURIComponent(TreeName.innerHTML),true);
-    xhrObj.send();
-    if(calc==0){
-      let listElement = x.parentElement.parentElement.parentElement.parentElement.parentElement;
-      while((listElement.firstElementChild)!=null){
-        listElement.removeChild(listElement.firstElementChild);
-      }
-      let ul=listElement.parentElement;
-      listElement.parentElement.removeChild(listElement);
-      let firstDivChild=ul.firstElementChild;
-      if(firstDivChild==(ul.lastElementChild)){
-        let elem=document.getElementById("hor_line");
-        if(elem!=null){
-          elem.parentElement.removeChild(elem);
-        }
-      }
-
-
-    }
-    let g = document.querySelector("#count");
-    let listCount=y.parentElement;
-    if((g.innerHTML)=='1'){
-      let totalDiv=document.getElementById("totalContainer");
-      while((totalDiv.firstElementChild)!=null){
-        totalDiv.removeChild(totalDiv.firstElementChild);
-      }
-      totalDiv.parentElement.removeChild(totalDiv);
-      g.parentElement.removeChild(g);
-      listCount.parentElement.removeChild(listCount);
-      let f_textEl=document.createElement("p");
-      f_textEl.setAttribute("id","f-text");
-      f_textEl.classList.add("f-text");
-      f_textEl.innerHTML="Non hai inserito alcun elemento nel tuo carrello";
-      let contFl=document.getElementById("cart_list");
-      contFl.insertBefore(f_textEl,null);
-      return;
-    }else{
-      g.innerHTML=""+(parseInt(g.innerHTML)-1);
-    }
+  function removeElement(y){
+    console.log(y);
+    let stringToQuery = "#countProducts"+y
+    console.log(stringToQuery)
+    let x = $(stringToQuery).attr('value');
+    let max = $(stringToQuery).attr('max');
+    redirect("${pageContext.request.contextPath}/cartUpdateItemServlet?add=true&maxQ="+encodeURIComponent(max)+"&quantity="+encodeURIComponent("0")+"&id="+encodeURIComponent(y));
 
   }
 

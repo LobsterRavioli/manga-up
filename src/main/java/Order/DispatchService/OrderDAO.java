@@ -282,6 +282,10 @@ public class OrderDAO
 
     public Collection retrieveOrdersAssociatedToUsers(EndUser user) throws SQLException {
 
+        if(user == null){
+            throw new SQLException("utente passato nullo");
+        }
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         Collection<Order> orders = new LinkedList<Order>();

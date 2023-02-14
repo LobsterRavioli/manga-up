@@ -75,6 +75,11 @@ public class ToManageDAO {
 
     // delete: rimuove un ordine gestito
     public void delete(ToManage order) throws SQLException {
+
+        if(order == null){
+            throw new SQLException("ordine inserito errato");
+        }
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 

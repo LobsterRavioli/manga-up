@@ -51,7 +51,8 @@ public class checkoutServlet extends HttpServlet {
 
             if(!isAvailableProducts(map)){
                 cartDAO.toEmptyCart(endUser);
-                req.setAttribute("error","Quantità prodotti non disponibili");
+                req.getSession().setAttribute("cart",new Cart(new HashMap<Manga,Integer>()));
+                req.setAttribute("error","Quantità prodotti non disponibile");
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/CartView/cart.jsp");
                 rd.forward(req, resp);
                 return;

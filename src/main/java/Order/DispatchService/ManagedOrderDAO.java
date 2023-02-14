@@ -150,7 +150,7 @@ public class ManagedOrderDAO {
             finally
             {
                 if(connection != null)
-                    preparedStatement.close();
+                    connection.close();
             }
         }
         if(managedOrderBean.validateManagedOrder())

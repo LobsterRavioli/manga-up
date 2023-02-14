@@ -68,6 +68,7 @@ public class UserFacadeImp implements UserFacade {
     }
 
     public void registration(EndUser user) throws Exception{
+
         if(user == null || user.getCards() == null || user.getAddresses() == null || user.getAddresses().size() == 0 || user.getCards().size() == 0)
             throw new Exception("Utente non valido");
         Address userAddress = (Address) user.getAddresses().iterator().next();

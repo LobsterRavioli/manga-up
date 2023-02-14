@@ -12,7 +12,6 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
 
     private DataSource ds;
     private OrderDAO orderDAO;
-    private UserDAO uD;
     private ToManageDAO assignDAO;
     private ManagedOrderDAO managedOrderDAO;
     private OrderRowDAO orderRowDAO;
@@ -20,7 +19,6 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
         this.ds = ds;
         this.orderDAO = new OrderDAO(ds);
         this.orderRowDAO = new OrderRowDAO(ds);
-        this.uD = new UserDAO(ds);
         this.assignDAO = new ToManageDAO(ds);
         this.managedOrderDAO = new ManagedOrderDAO(ds);
 
@@ -29,32 +27,17 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
     public OrderSubmissionFacadeImp(DataSource ds, OrderDAO orderDAO, UserDAO uD, ToManageDAO assignDAO, ManagedOrderDAO managedOrderDAO, OrderRowDAO orderRowDAO){
         this.ds = ds;
         this.orderDAO = orderDAO;
-        this.uD = uD;
         this.assignDAO = assignDAO;
         this.managedOrderDAO = managedOrderDAO;
         this.orderRowDAO = orderRowDAO;
     }
 
 
-    private static boolean validateOrderCreationParameters(Order order, ArrayList<Manga> products, User selectedManager)
-    {
-        if(order == null || products == null || selectedManager == null)
-            return false;
-
-        if(!order.validateOrder())
-            return false;
-
-        for(Manga m : products)
-            if(!m.validateManga())
-                return false;
-
-        if(!selectedManager.validateUser())
-            return false;
-
-        return true;
-    }
-
     public void createOrder(Order order, ArrayList<Manga> products,User selectedManager) throws Exception{
+
+        if(order==null || products==null || selectedManager==null){
+            throw new Exception("Almeno uno dei parametri passati è nullo");
+        }
 
         OrderRow orderRow;
         float total = 0;
@@ -75,6 +58,11 @@ public class OrderSubmissionFacadeImp implements OrderSubmissionFacade {
 
     public void executeTask(ManagedOrder managedOrder) throws SQLException
     {
+
+        if(managedOrder==null){
+            throw new SQLException("managedOrder passato nullo");
+        }
+
         managedOrderDAO.create(managedOrder); // aggiungo l'ordine alla tabella degli ordini gestiti
         managedOrder.setState(Order.SENT);
         orderDAO.update(managedOrder); // modifico lo stato dell'ordine nella tabella Orders

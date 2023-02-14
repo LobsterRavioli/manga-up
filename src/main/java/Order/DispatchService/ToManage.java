@@ -50,6 +50,10 @@ public class ToManage {
 
     public boolean validateCreation()
     {
+        if(this.user == null || this.order == null){
+            return false;
+        }
+
         if(this.user.getUsername() == null || this.user.getUsername().trim().equals("") ||
         this.order.getId() <= 0)
             return false;

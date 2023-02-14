@@ -25,6 +25,10 @@ public class CartDAO {
 
     public HashMap<Manga,Integer> retrieveByUser(EndUser user) throws Exception{
 
+        if(user == null){
+            throw new Exception("L'utente passato non può essere nullo");
+        }
+
 
         Connection conn = ds.getConnection();
         PreparedStatement prret = null;
@@ -86,6 +90,10 @@ public class CartDAO {
     }
     public void removeProduct(Manga manga,EndUser user) throws Exception{
 
+
+        if(manga==null || user == null){
+            throw new Exception("Il manga o utente passati risultano nulli");
+        }
 
         Connection conn = ds.getConnection();
 
@@ -153,6 +161,10 @@ public class CartDAO {
 
     public void addProduct(Manga manga,int quantity,EndUser user) throws Exception{
 
+
+        if(manga==null || user == null){
+            throw new Exception("Il manga o utente passati risultano nulli");
+        }
 
         Connection conn = ds.getConnection();
 
@@ -231,6 +243,9 @@ public class CartDAO {
 
     public void updateProduct(Manga manga,int quantity, EndUser user) throws Exception{
 
+        if(manga==null || user == null){
+            throw new Exception("Il manga o utente passati risultano nulli");
+        }
 
 
         Connection conn = ds.getConnection();
@@ -323,6 +338,11 @@ public class CartDAO {
 
 
     public void toEmptyCart(EndUser user) throws Exception {
+
+        if(user == null){
+            throw new Exception("L'utente passato risultano nullo");
+        }
+
         Connection conn =ds.getConnection();
 
         PreparedStatement pr = null;

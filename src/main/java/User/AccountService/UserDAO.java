@@ -95,6 +95,10 @@ public class UserDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
+        if(username==null){
+            throw new SQLException("");
+        }
+
         try
         {
             connection = ds.getConnection();
@@ -392,4 +396,5 @@ public class UserDAO {
         }
 
     }
+
 }

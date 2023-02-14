@@ -80,6 +80,7 @@ public class cartUpdateItemServlet extends HttpServlet {
 
                 }else if(e.getMessage().equals("quantità inserita non valida")){
                     response.setStatus(203);
+                    response.sendRedirect(request.getContextPath() + "/CartView/cart.jsp?qtity=true");
                 }
                 return;
         }

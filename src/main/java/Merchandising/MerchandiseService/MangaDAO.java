@@ -734,6 +734,10 @@ public class MangaDAO {
     }*/
 
     public void updateQuantity(Manga manga) throws Exception{
+
+        if(manga==null){
+            throw new Exception("Il manga inserito è nullo");
+        }
         PreparedStatement pr = null;
         Manga m = retrieveById(manga.getId());
         if(m==null){

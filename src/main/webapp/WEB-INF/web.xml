@@ -25,8 +25,6 @@
         <url-pattern>/ProductsView/prodManagement.jsp</url-pattern>
         <url-pattern>/ProductsView/processProductInsertion</url-pattern>
         <url-pattern>/manageServlet</url-pattern>
-        <url-pattern>/OrderListServlet</url-pattern>
-        <url-pattern>/OrderDetailServlet</url-pattern>
         <url-pattern>/orderServlet</url-pattern>
         <url-pattern>/UserCreateServlet</url-pattern>
         <url-pattern>/UserDeleteServlet</url-pattern>

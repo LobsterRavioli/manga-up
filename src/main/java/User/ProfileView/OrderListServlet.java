@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
 
-@WebServlet(name = "OrderListServlet", value = "/OrderListServlet")
+/*@WebServlet(name = "OrderListServlet", value = "/OrderListServlet")
 public class OrderListServlet extends HttpServlet {
 
     @Override
@@ -41,4 +41,4 @@ public class OrderListServlet extends HttpServlet {
         }
     }
 
-}
+}*/
