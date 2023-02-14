@@ -26,7 +26,7 @@ public class AddressDAO {
 
     private static final String SQL_LIST_ORDER_BY_ORDER_ID =
             "SELECT * FROM ADDRESS ORDER BY addr_id";
-    private static final String SQL_FIND_BY_ADDRESS_ID = "SELECT * FROM ADDRESS WHERE usr_id = ?;";
+    private static final String SQL_FIND_BY_ADDRESS_ID = "SELECT * FROM ADDRESS WHERE addr_id = ?;";
     private static final String SQL_FIND_ALL_BY_ENDUSER = "SELECT * FROM ADDRESS WHERE usr_id = ?;";
     private static final String SQL_FIND_SINGLE_BY_ENDUSER = "SELECT * FROM ADDRESS WHERE addr_id = ?1\n" +
             "    AND addr_city = ?1\n" +

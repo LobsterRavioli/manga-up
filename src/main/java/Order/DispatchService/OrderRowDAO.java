@@ -68,6 +68,11 @@ public class OrderRowDAO {
 
 
     public Collection<OrderRow> retrieveOrderRowAssociatedToOrder(Order order) throws SQLException {
+
+        if(order==null){
+            throw new IllegalArgumentException("ordine passato è nullo");
+        }
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         Collection<OrderRow> orders = new LinkedList<OrderRow>();
