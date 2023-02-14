@@ -81,7 +81,7 @@ public class EndUserDAO {
     }
 
     public boolean existEmail(String email) throws DAOException {
-        if (email == null || email.isEmpty() || email.length() > 50) {
+        if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("Email is null");
         }
         boolean exist;
