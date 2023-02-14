@@ -49,6 +49,7 @@ public class UserDeleteServlet extends HttpServlet {
             userDao.removeUserByUserName(username);
 
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             response.setStatus(500);
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/error_page.jsp"));
             dispatcher.forward(request, response);

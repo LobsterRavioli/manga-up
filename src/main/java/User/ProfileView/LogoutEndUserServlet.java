@@ -19,6 +19,6 @@ public class LogoutEndUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getSession().invalidate();
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(response.encodeURL("/MerchandisingView/home.jsp"));
+        response.sendRedirect(request.getContextPath()+"/ProductsView/endUserHomepage.jsp");
     }
 }

@@ -26,9 +26,11 @@ public class catalogServlet extends HttpServlet {
             daoM = new MangaDAO(ds);
         }
 
+
         HttpSession session = request.getSession(true);
         try{
             list = daoM.retrieveAll();
+
             request.setAttribute("listaElementi",list);
             RequestDispatcher rD = getServletContext().getRequestDispatcher("/ProductsView/catalog.jsp");
             rD.forward(request,response);

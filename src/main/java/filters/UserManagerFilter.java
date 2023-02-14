@@ -26,6 +26,12 @@ public class UserManagerFilter implements Filter {
         String toBeginWithUserManager="/ProfileView";
         String toBeginWithOrderManager="/OrderView";
         String toBeginWithCatalogManager="/ProductsView";
+
+        if(((HttpServletRequest) request).getServletPath().startsWith("/productsFilter") && ((HttpServletRequest) request).getQueryString()==null){
+            chain.doFilter(request,response);
+            return;
+        }
+
         if (session == null) {
             resp.sendRedirect(req.getContextPath() + "/ProfileView/login_manager.jsp");
             return;

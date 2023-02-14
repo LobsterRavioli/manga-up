@@ -110,6 +110,9 @@
                 <a href="${pageContext.request.contextPath}/ProfileView/dashboard_end_user.jsp">
                   <img src="${pageContext.request.contextPath}/images/login.png" style="max-width: 47px;position: relative;bottom: 14%;padding-left: 9px;" alt="">
                 </a>
+
+                <a href="${pageContext.request.contextPath}/LogoutEndUserServlet">Logout</a>
+
           <%}%>
         </div>
       </div>

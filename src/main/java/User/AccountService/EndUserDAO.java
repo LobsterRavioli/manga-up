@@ -22,26 +22,26 @@ public class EndUserDAO {
     }
 
     private static final String SQL_INSERT =
-            "INSERT INTO end_user (usr_email, usr_name, usr_surname, usr_password, usr_phone_number, usr_birth_date)\n" +
+            "INSERT INTO END_USER (usr_email, usr_name, usr_surname, usr_password, usr_phone_number, usr_birth_date)\n" +
             "VALUES (?, ?, ?, ?, ?, ?);";
 
     private static final String SQL_DELETE =
-            "DELETE FROM end_user WHERE usr_id = ? ;";
+            "DELETE FROM END_USER WHERE usr_id = ? ;";
 
     private static final String SQL_UPDATE =
-            "UPDATE end_user SET usr_name = ? , usr_surname = ? , usr_email = ? , usr_password = ? , usr_phone_number = ? WHERE usr_id = ? ;";
+            "UPDATE END_USER SET usr_name = ? , usr_surname = ? , usr_email = ? , usr_password = ? , usr_phone_number = ? WHERE usr_id = ? ;";
 
     private static final String SQL_FIND_BY_ID =
-            "SELECT * FROM end_user WHERE usr_id = ? ;";
+            "SELECT * FROM END_USER WHERE usr_id = ? ;";
 
 
     private static final String SQL_FIND_BY_EMAIL_AND_PASSWORD =
-            "SELECT * FROM end_user WHERE usr_email = ? AND usr_password = ? ;";
+            "SELECT * FROM END_USER WHERE usr_email = ? AND usr_password = ? ;";
 
     private static final String SQL_EXIST_EMAIL =
-            "SELECT usr_email FROM end_user WHERE usr_email = ?";
+            "SELECT usr_email FROM END_USER WHERE usr_email = ?";
 
-    private static final String SQL_LIST_ORDER_BY_ID = "SELECT * FROM end_user ORDER BY usr_id;";
+    private static final String SQL_LIST_ORDER_BY_ID = "SELECT * FROM END_USER ORDER BY usr_id;";
 
     public void create(EndUser user) throws IllegalArgumentException, DAOException {
 
@@ -81,7 +81,7 @@ public class EndUserDAO {
     }
 
     public boolean existEmail(String email) throws DAOException {
-        if (email == null || email.isEmpty() || email.length() > 50) {
+        if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("Email is null");
         }
         boolean exist;

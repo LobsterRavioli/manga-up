@@ -67,7 +67,7 @@
     <% Integer limit=0;%>
 
     <%if(request.getAttribute("error")!=null){%>
-        <p id="prodNonEsistente"><%=request.getAttribute("error")%>></p>
+        <p id="prodNonEsistente"><%=request.getAttribute("error")%></p>
     <%}else{
 
     }%>

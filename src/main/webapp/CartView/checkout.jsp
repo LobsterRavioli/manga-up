@@ -21,13 +21,13 @@
     <form id="checkoutForm" method="post" action="${pageContext.request.contextPath}/checkoutServlet">
         <c:forEach items="${addresses}" var="address">
             <input type="radio" form="checkoutForm" id="address${address.id}" name="address" value="${address.id}" required>
-            <label for="address${address.id}">Paese: ${address.country}, Città: ${address.city}, Via: ${address.street}, postal code: ${address.postalCode}, phoneNumber ${address.phoneNumber}, Regione: ${address.region} </label>
+            <label for="address${address.id}">Paese: ${address.country}, Città: ${address.city}, Via: ${address.street}, postal code: ${address.postalCode}, phoneNumber ${address.phoneNumber}, Regione: ${address.region} </label>  </br>
         </c:forEach>
 
 
         <c:forEach items="${cards}" var="card">
-            <label for="carta${card.id}">Numero Carta: ${card.cardNumber}, Proprietario: ${card.cardHolder}, Data di scadenza: ${card.expirementDate} </label><br/>
             <input type="radio" form="checkoutForm" id="carta${address.id}" name="card" value="${card.id}" required>
+            <label for="carta${card.id}">Numero Carta: ${card.cardNumber}, Proprietario: ${card.cardHolder}, Data di scadenza: ${card.expirementDate} </label></br>
         </c:forEach>
 
 
@@ -46,7 +46,7 @@
                         totalProducts = totalProducts + set.getValue();%>
                 <tr id="productInspector" class="productInspector">
                     <td><%=currManga.getName()%></td>
-                    <td><%=currManga.getPrice()%></td>
+                    <td><%= String.format("%.2f", currManga.getPrice()).replace(',', '.') %></td>
                     <td><%=currQuantity%></td>
                 </tr>
                 <%}%>
