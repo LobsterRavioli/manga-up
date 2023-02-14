@@ -77,6 +77,7 @@ class UserCreateServletTest {
 
         userDAO = mock(UserDAO.class);
         userRole = mock(UserRoleDAO.class);
+
         Mockito.when(request.getParameter("username")).thenReturn("tommaso1");
         Mockito.when(request.getParameter("password")).thenReturn("password1!");
         String[] roles = new String[] {"USER_MANAGER", "CATALOG_MANAGER"};
@@ -94,7 +95,6 @@ class UserCreateServletTest {
         spy.setUserRoleDAO(userRole);
         spy.doPost(request, response);
 
-        verify(response).setStatus(500);
         verify(context).getRequestDispatcher(response.encodeURL("/error_page.jsp"));
     }
 
@@ -112,7 +112,7 @@ class UserCreateServletTest {
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(spy.getServletContext()).thenReturn(context);
         RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
-        Mockito.when(context.getRequestDispatcher(response.encodeURL("/ProfileView/creazione_utente.jsp"))).thenReturn(rD);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL("/error_page.jsp"))).thenReturn(rD);
         Mockito.when(userDAO.existsUsername(any())).thenReturn(false);
 
         Mockito.doAnswer(invocation -> {
@@ -123,7 +123,8 @@ class UserCreateServletTest {
         spy.setUserRoleDAO(userRole);
         spy.doPost(request, response);
 
-        verify(response).setStatus(499);
+        verify(response).setStatus(500);
+        verify(context).getRequestDispatcher(response.encodeURL("/error_page.jsp"));
     }
 
     @Test

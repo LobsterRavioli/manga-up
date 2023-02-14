@@ -65,4 +65,8 @@ public class UserDeleteServlet extends HttpServlet {
         this.userDao = dao;
     }
 
+    public void setToManageDAO(ToManageDAO dao) {
+        this.toManageDAO = dao;
+    }
+
 }

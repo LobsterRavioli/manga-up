@@ -23,6 +23,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import utils.Utils;
 
 import javax.naming.Context;
@@ -35,10 +37,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.stream.Stream;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CreditCardCreateServletIntegrationTest {
 
@@ -76,7 +79,13 @@ public class CreditCardCreateServletIntegrationTest {
         Mockito.when(spy.getServletConfig()).thenReturn(Mockito.mock(ServletConfig.class));
         DataSource ds = Mockito.mock(DataSource.class);
         refreshDataSet("credit_card_dao/init_integration_test.xml");
-        Mockito.when(ds.getConnection()).thenReturn(tester.getConnection().getConnection());
+        doAnswer(new Answer()
+        {
+            @Override
+            public Connection answer(InvocationOnMock invocationOnMock) throws Throwable {
+                return tester.getConnection().getConnection();
+            }
+        }).when(ds).getConnection();
         creditCardDAO = new CreditCardDAO(ds);
     }
 
@@ -178,25 +187,24 @@ public class CreditCardCreateServletIntegrationTest {
 
     @Test
     void createNotExistsUser() throws Exception {
-        Mockito.when(request.getParameter("card_number")).thenReturn("11111111111111");
+        Mockito.when(request.getParameter("card_number")).thenReturn("9999999999999");
         Mockito.when(request.getParameter("expirement_date")).thenReturn("2030-11-16");
         Mockito.when(request.getParameter("cvc")).thenReturn("123");
         Mockito.when(request.getParameter("card_holder")).thenReturn("Tommaso Sorrentino");
-        Mockito.when(session.getAttribute("user")).thenReturn(new EndUser(1000));
         Mockito.when(session.getAttribute("user")).thenReturn(new EndUser(1000));
         Mockito.when(request.getSession().getAttribute("user")).thenReturn(new EndUser(1000));
         Mockito.when(request.getSession(false)).thenReturn(session);
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(spy.getServletContext()).thenReturn(context);
         RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
-        Mockito.when(context.getRequestDispatcher(response.encodeURL("/CreditCardDashboardServlet"))).thenReturn(rD);
+        Mockito.when(context.getRequestDispatcher(response.encodeURL("/error_page.jsp"))).thenReturn(rD);
         spy.setCreditCardDAO(creditCardDAO);
         spy.doPost(request, response);
-        verify(context).getRequestDispatcher(response.encodeURL("/CreditCardDashboardServlet"));
         IDataSet expectedDataSet = new FlatXmlDataSetBuilder()
                 .build(EndUserDAO.class.getClassLoader().getResourceAsStream("credit_card_dao/create_expected_integration_test.xml"));
         String[] ignoreCol = new String[1];
         ignoreCol[0] = "crd_id";
+
         verify(response).setStatus(500);
         verify(context).getRequestDispatcher(response.encodeURL("/error_page.jsp"));
 

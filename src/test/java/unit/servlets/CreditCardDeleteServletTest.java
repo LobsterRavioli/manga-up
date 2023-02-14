@@ -70,6 +70,7 @@ class CreditCardDeleteServletTest {
         Mockito.when(request.getParameter("credit_card_id")).thenReturn("1");
         ServletContext context = Mockito.mock(ServletContext.class);
         Mockito.when(spy.getServletContext()).thenReturn(context);
+        Mockito.when(session.getAttribute("user")).thenReturn(new EndUser());
         RequestDispatcher rD = Mockito.mock(RequestDispatcher.class);
         Mockito.when(context.getRequestDispatcher(response.encodeURL("/CreditCardDashboardServlet"))).thenReturn(rD);
         creditCardDAO = mock(CreditCardDAO.class);

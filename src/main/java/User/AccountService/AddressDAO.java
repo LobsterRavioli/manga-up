@@ -45,6 +45,10 @@ public class AddressDAO {
 
         if (!Address.validate(address))
             throw new IllegalArgumentException("Address is not valid");
+        if (address.getEndUser() == null)
+            throw new IllegalArgumentException("Address must have an end user");
+        if (address.getEndUser().getId() <= 0)
+            throw new IllegalArgumentException("Address must have an end user with an id");
 
         Object[] values = {
             address.getStreet(),

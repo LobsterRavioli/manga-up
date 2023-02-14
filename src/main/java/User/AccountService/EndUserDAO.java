@@ -81,7 +81,7 @@ public class EndUserDAO {
     }
 
     public boolean existEmail(String email) throws DAOException {
-        if (email == null || email.isEmpty() || email.length() > 50) {
+        if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("Email is null");
         }
         boolean exist;
@@ -106,7 +106,12 @@ public class EndUserDAO {
         return find(SQL_FIND_BY_EMAIL_AND_PASSWORD,email, Utils.hash(password));
     }
 
-    public EndUser findById(int id) { return find(SQL_FIND_BY_ID, id); }
+    public EndUser findById(int id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("Invalid id");
+        }
+        return find(SQL_FIND_BY_ID, id);
+    }
 
     private EndUser find(String sql, Object... values) throws DAOException {
         EndUser user = null;

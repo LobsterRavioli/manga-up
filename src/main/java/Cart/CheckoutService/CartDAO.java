@@ -88,8 +88,8 @@ public class CartDAO {
         }
 
     }
-    public void removeProduct(Manga manga,EndUser user) throws Exception{
 
+    public void removeProduct(Manga manga,EndUser user) throws Exception{
 
         if(manga==null || user == null){
             throw new Exception("Il manga o utente passati risultano nulli");
@@ -335,7 +335,6 @@ public class CartDAO {
             }
         }
     }
-
 
     public void toEmptyCart(EndUser user) throws Exception {
 

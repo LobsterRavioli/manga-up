@@ -90,8 +90,7 @@ public class UserDAO {
             }
         }
     }
-    public void removeUserByUserName(String username) throws SQLException
-    {
+    public void removeUserByUserName(String username) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 

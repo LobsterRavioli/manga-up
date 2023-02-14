@@ -154,10 +154,22 @@ class UserDAOTest {
         Collection<String> actual = userDAO.getRoles("Giacomo");
         Assert.assertTrue(roles.containsAll(actual));
     }
-
     @Test
-    void getUserByUsername() {
+    void getRolesBoh() throws SQLException {
+
+        Collection<String> roles = new LinkedList<>();
+        roles.add("USER_MANAGER");
+        roles.add("ORDER_MANAGER");
+        roles.add("CATALOG_MANAGER");
+
+        // Giacomo ha tutti e tre i ruoli
+
+        Collection<String> actual2 = userDAO.getRoles("");
+        System.out.println(actual2);
+        Assert.assertTrue(roles.containsAll(actual2));
     }
+
+
 
     @Test
     void getUserByUsernamePass() throws SQLException {

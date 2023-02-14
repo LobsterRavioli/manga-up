@@ -1,5 +1,6 @@
 package unit.servlets;
 
+import Order.DispatchService.ToManageDAO;
 import User.AccountService.User;
 import User.AccountService.UserDAO;
 import User.AccountService.UserRoleDAO;
@@ -30,6 +31,7 @@ class UserDeleteServletTest {
 
     private UserDeleteServlet spy;
     private UserDAO userDAO;
+    private ToManageDAO toManage;
     private HttpServletRequest request;
     private HttpServletResponse response;
     private HttpSession session;
@@ -48,10 +50,12 @@ class UserDeleteServletTest {
         Mockito.when(context.getRequestDispatcher(response.encodeURL(""))).thenReturn(Mockito.mock(RequestDispatcher.class));
         Mockito.when(spy.getServletContext()).thenReturn(context);
         userDAO = mock(UserDAO.class);
-
+        toManage = mock(ToManageDAO.class);
+        spy.setToManageDAO(toManage);
     }
     @Test
     void success() throws ServletException, IOException, SQLException {
+        Mockito.when(toManage.hasOrders(any())).thenReturn(false);
         Mockito.when(request.getAttribute("username")).thenReturn("tommaso");
         Mockito.doAnswer(invocation -> {
             return null;
