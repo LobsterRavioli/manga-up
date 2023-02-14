@@ -73,7 +73,7 @@ class EndUserDAOTest {
 
     private static Stream<Arguments> createTestFailProvider() {
         return Stream.of(
-                Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
+
                 Arguments.of("Test case creazione utente fallita Nome non valido", "", "Sorrentino", "tommyrock99@hotmail.it", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
                 Arguments.of("Test case creazione utente fallita Nome non valido", null, "Sorrentino", "tommyrock99@hotmail.it", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
                 Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", null, "tommyrock99@hotmail.it", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
@@ -82,7 +82,6 @@ class EndUserDAOTest {
                 Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", "to", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
                 Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", "", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
                 Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", null, "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
-                Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "+393662968496", "password!1", Utils.parseDate("2023-01-01")),
                 Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "abc", "password!1", Utils.parseDate("2023-01-01")),
                 Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", null, "password!1", Utils.parseDate("2023-01-01")),
                 Arguments.of("Test case creazione utente fallita Nome non valido", "Tommaso", "Sorrentino", "tommyrock99@hotmail.it", "", "password!1", Utils.parseDate("2023-01-01")),
@@ -93,7 +92,7 @@ class EndUserDAOTest {
 
     @Test
     void createTestPass() throws Exception {
-        EndUser user = new EndUser("Tommaso", "Sorrentino", "tommy@hotmail.it", "393662968496","napoli1!", Utils.parseDate("2021-12-01"));
+        EndUser user = new EndUser("Tommaso", "Sorrentino", "tommy@hotmail.it", "+393662968496","napoli1!", Utils.parseDate("2021-12-01"));
         String cryptPassword = Utils.hash(user.getPassword());
         endUserDAO.create(user);
         IDataSet expectedDataSet = new FlatXmlDataSetBuilder()
@@ -177,16 +176,16 @@ class EndUserDAOTest {
         Assert.assertNotNull(endUserDAO.findById(1));
     }
 
-    @ParameterizedTest
-    @MethodSource("findByIdFailProvider")
-    void findByIdFail(String testName, int id) throws Exception {
-        Assert.assertNull(endUserDAO.findById(id));
+
+    @Test
+    void findByIdFail() throws Exception {
+        Assert.assertNull(endUserDAO.findById(2));
     }
 
-    private static Stream<Arguments> findByIdFailProvider(){
-        return Stream.of(
-                Arguments.of("Test case id non esistente", 2),
-                Arguments.of("Test case id non valido", 0)
-        );
+    @Test
+    void findByIdFailInvalid() throws Exception {
+        Assert.assertThrows(IllegalArgumentException.class, () -> endUserDAO.findById(0));
     }
+
+
 }

@@ -180,6 +180,7 @@ class AddressDAOTest {
         address.setPostalCode("80100");
         address.setPhoneNumber("+393662968496");
         address.setEndUser(new EndUser(1));
+        System.out.println(address.getId());
         addressDAO.create(address);
         IDataSet expectedDataSet = new FlatXmlDataSetBuilder()
                 .build(EndUserDAO.class.getClassLoader().getResourceAsStream("address_dao/expected.xml"));

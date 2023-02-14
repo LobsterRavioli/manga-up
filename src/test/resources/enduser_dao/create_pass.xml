@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <end_user usr_id="1" usr_email="tommy@hotmail.it" usr_name="Tommaso" usr_surname="Sorrentino" usr_password="password1!" usr_phone_number="393662968496" usr_birth_date="2021-12-01"/>
+    <end_user usr_id="1" usr_email="tommy@hotmail.it" usr_name="Tommaso" usr_surname="Sorrentino" usr_password="password1!" usr_phone_number="+393662968496" usr_birth_date="2021-12-01"/>
     <address addr_id="24" usr_id="1"  addr_country="Italia" addr_city="Napoli" addr_street="Via Roma 24" addr_phone_number="393662968496" addr_region="Campania" addr_postal_code="80100"/>
     <credit_card crd_id="1" crd_number="1234567890123456" usr_id="1"  crd_holder="Tommaso Sorrentino" crd_expiration_date="2021-12-01" crd_cvc="123"/>
 </dataset>

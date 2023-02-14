@@ -50,7 +50,9 @@ public class UserCreateServlet extends HttpServlet {
             userRoleDAO.setRoles(user, roles);
 
         } catch (SQLException e) {
-            resp.setStatus(499);
+            resp.setStatus(500);
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher(resp.encodeURL("/error_page.jsp"));
+            dispatcher.forward(req, resp);
             return;
         }
 
