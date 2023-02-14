@@ -43,7 +43,7 @@ function check_registration_format(){
 
 
     if(!email_format.test(email) || email.length > 319) {
-        document.querySelector(".email_error").innerHTML = "Indirizzo email deve rispettare il seguente formato: x@dominio.x e la lunghezza deve essere di 319";
+        document.querySelector(".email_error").innerHTML = "Indirizzo email deve rispettare il seguente formato: x@x.dominio";
         document.querySelector(".email_error").style.display = "block";
         event.preventDefault();
 
@@ -133,7 +133,7 @@ function check_registration_format(){
     }
 
     if(!cvc_format.test(cvc)) {
-        document.querySelector(".cvc_error").innerHTML = "Campo non valido: Il campo cvv è obbligatorio e la lunghezza la cui lunghezza deve essere compresa tra 3 e 5 contenente caratteri numeri";
+        document.querySelector(".cvc_error").innerHTML = "Campo non valido: Il campo cvv è obbligatorio e la lunghezza la cui lunghezza deve essere compresa tra 3 e 5 contenente caratteri numerici";
         document.querySelector(".cvc_error").style.display = "block";
         event.preventDefault();
     }
