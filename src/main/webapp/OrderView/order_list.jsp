@@ -33,8 +33,8 @@
 		    <th>Order state</th>
 		    <th>Total price <a href="${pageContext.request.contextPath}/orderServlet?sort=ord_total_price">Sort</a></th>
 		    <th>End-user ID</th>
-		    <th>Address info</th>
 		    <th>Credit card info</th>
+		    <th>Address info</th>
 		    <th>Action</th>
 	    </tr>
 	    <%
