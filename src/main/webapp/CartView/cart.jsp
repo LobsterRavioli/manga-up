@@ -75,7 +75,7 @@
               <p><%=request.getAttribute("errorCard")%></p>
           <%}%>
           <%if(request.getAttribute("errorAddress")!=null){%>
-            <p><%=request.getAttribute("errorCard")%></p>
+            <p><%=request.getAttribute("errorAddress")%></p>
           <%}%>
               <%Cart cart = (Cart) session.getAttribute("cart");
                 if(cart.getProdotti().size()>0){

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import static java.util.Map.Entry;
 
@@ -48,6 +49,9 @@ public class checkoutServlet extends HttpServlet {
             CartDAO cartDAO = new CartDAO(ds);
             MangaDAO mangaDAO = new MangaDAO(ds);
             HashMap<Manga, Integer> map = cartDAO.retrieveByUser(endUser);
+
+            endUser.addAddress(addressEndUser);
+            endUser.addCard(userCard);
 
             if(!isAvailableProducts(map)){
                 cartDAO.toEmptyCart(endUser);
