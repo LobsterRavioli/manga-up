@@ -40,15 +40,15 @@
                         <input type="text"  form="filter" id="name" name="name" placeholder="nome prodotto" class="filterinput"><br>
 
                         <label for="minPrice" class="filterinput">Prezzo di partenza:</label><br>
-                        <input type="number" form="filter" id="minPrice" name="minPrice" placeholder="0"  oninput="validatePricesAndColl()" class="filterinput"><br>
+                        <input type="number" form="filter" value="0" id="minPrice" name="minPrice" placeholder="0"  oninput="validatePricesAndColl()" class="filterinput"><br>
 
                         <p id="price_error" class="price_error"></p>
 
                         <label for="maxPrice" class="filterinput">Prezzo Massimo:</label><br>
-                        <input type="number" form="filter" id="maxPrice" name="maxPrice" placeholder="0" oninput="validatePricesAndColl()" class="filterinput"><br><br>
+                        <input type="number" value="0" form="filter" id="maxPrice" name="maxPrice" placeholder="0" oninput="validatePricesAndColl()" class="filterinput"><br><br>
 
                     <p> Ordina per :</p>
-                    <input type="radio" id="soggetto" name="soggetto" value="name">
+                    <input type="radio" id="soggetto" name="soggetto" value="name" checked>
                     <label for="soggetto">Nome</label><br>
                     <input type="radio" id="prezzo" name="soggetto" value="prezzo">
                     <label for="prezzo">Prezzo</label><br>
@@ -56,7 +56,7 @@
                     <hr style="display: inline-block;width: 15.5rem;">
 
                     <p> Criterio Ordinamento:</p>
-                    <input type="radio" id="crescente" name="criteria" value="ASC">
+                    <input type="radio" id="crescente" name="criteria" value="ASC" checked>
                     <label for="crescente">Crescente</label><br>
                     <input type="radio" id="decrescente" name="criteria" value="DESC">
                     <label for="decrescente">Decrescente</label><br>
