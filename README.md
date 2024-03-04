@@ -5,6 +5,7 @@
 
 <h3 align="center">Manga Up!</h3>
 
+<p align="center"> Manga-Up! is a dynamic web application for manga enthusiasts.</p>
 <div align="center">
 
 
