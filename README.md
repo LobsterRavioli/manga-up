@@ -31,7 +31,7 @@
 
 Follow these steps:
 
-1. Install IntelliJ ultimate edition on your PC;
+1. Install IntelliJ on your PC;
 2. Clone this repo;
 3. Open cloned directory with IntelliJ;
 4. Open your browser on localhost:8080.
