@@ -50,7 +50,7 @@ The project's documentation can be found in deliverables folder.
 
 ## ✍️ Authors <a name = "authors"></a>
 
-- Tommaso Sorrentino - [TommasoSorrentino](#)
-- Alessandro  - Developer - [Alessandro](#)
-- Francesco - Developer - [Francesco](#)
+- Tommaso Sorrentino - [Tommaso Sorrentino](#)
+- Alessandro  - Developer - [Alessandro Cannavale](#)
+- Francesco - Developer - [Francesco Monzillo](#)
 
