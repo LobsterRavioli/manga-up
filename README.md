@@ -29,9 +29,12 @@
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
-1. Clone this repo;
-2. Navigate to the project directory;
-3. Run the application using your preferred Java IDE or directly through the command line.
+Follow these steps:
+
+1. Install IntelliJ ultimate edition on your PC;
+2. Clone this repo;
+3. Open cloned directory with IntelliJ;
+4. Open your browser on localhost:8080.
 
 ## 📖 Docs  <a name = "documentation"></a>
 The project's documentation can be found in deliverables folder.
