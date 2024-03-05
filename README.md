@@ -1,13 +1,12 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=200px height=100px src="./src/main/webapp/images/logo_readme.png" alt="Project logo"></a>
+ <img width=200px height=100px src="./src/main/webapp/images/logo_readme.png" alt="AmandiGioielli logo"></a>
 </p>
 
-<h3 align="center">Manga Up!</h3>
+<h3 align="center">AmandiGioielli</h3>
 
-<p align="center"> Manga-Up! is a dynamic web application for manga enthusiasts.</p>
+<p align="center"> A dynamic web application designed to showcase and sell jewelry, providing a comprehensive platform for product, order, and purchase management.</p>
 <div align="center">
-
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
@@ -25,36 +24,36 @@
 
 ## 🧐 About <a name = "about"></a>
 
-📕 🎓 Manga-Up! is a dynamic web application for manga enthusiasts. Produced for the [Software Engineering and Software](https://docenti.unisa.it/003241/didattica?anno=2023&id=507546&cId=9999-2017&pId=MODULO_3*RESTO_0*S1) of Computer Science at University of Salerno.
-
+AmandiGioielli is a dynamic web application developed as a project for the "Software Technologies for the Web" course. This e-commerce platform allows for the efficient management of products, orders, and purchases. It leverages advanced web technologies, including servlets, design patterns like DAO, Ajax for asynchronous operations, vanilla HTML/CSS for the front end, and Java with MySQL/SQL for the back end.
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
-Follow these steps:
+To get started with AmandiGioielli:
 
-1. Install IntelliJ on your PC;
-2. Clone this repo;
-3. Open cloned directory with IntelliJ;
-4. Open your browser on localhost:8080.
+1. Clone this repository.
+2. Navigate to the cloned folder and extract `eclipse-settings.7z` into the project root directory.
+3. Open Eclipse and import the project via `File > Open Project from File System`, selecting the cloned directory.
+4. In Eclipse, right-click on the project and go to `Properties > Java Build Path`.
+5. In the ClassPath section, adjust the JRE System Library to your installed version.
+6. Add `MySqlConnector.JAR` from the `lib` folder to the project libraries.
+7. Apply the changes and ensure the Java version in Project Facets matches your setup.
+8. Right-click on the project and select `Run As > Run on Server`.
 
-## 📖 Docs  <a name = "documentation"></a>
-The project's documentation can be found in deliverables folder.
+## 📖 Documentation <a name = "documentation"></a>
 
+The documentation for the project is available in the `documentation` folder, providing detailed insights into its design and implementation.
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
-- **Java** - The programming language used for back-end development.
-- **Javax** - Used for creating web components in Java.
-- **Maven** - Dependency Management.
-- **HTML/CSS** - The programming languages used for front-end development.
-- **Bootstrap** - Front-end framework.
-- **SQL & MySQL** - Used for database management and data manipulation.
-- **JUnit** - Used for unit and integration testing.
-- **Selenium** - Used for system testing to automate web applications for testing purposes.
+- **Java** - For backend logic and server-side operations.
+- **Javax Servlets** - To create web components and handle requests.
+- **Maven** - For dependency management.
+- **HTML/CSS** - To craft the user interface.
+- **AJAX** - For asynchronous web page updates.
+- **MySQL/SQL** - For database management.
 
 ## ✍️ Authors <a name = "authors"></a>
 
-- Tommaso Sorrentino - [Tommaso Sorrentino](#)
-- Alessandro  - Developer - [Alessandro Cannavale](#)
-- Francesco - Developer - [Francesco Monzillo](#)
-
+- Tommaso Sorrentino
+- Dario Mazza
+- Nicolo Delugo
