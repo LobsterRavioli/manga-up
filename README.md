@@ -25,7 +25,7 @@
 
 ## 🧐 About <a name = "about"></a>
 
-📕 🎓 Manga-Up! is a dynamic web application for manga enthusiasts. Produced for the [Software Engineering and Software](https://docenti.unisa.it/003241/didattica?anno=2023&id=507546&cId=9999-2017&pId=MODULO_3*RESTO_0*S1) of Computer Science at University of Salerno.
+📕 🎓 Manga-Up! is a dynamic web application for manga enthusiasts. Produced for the [Software Engineering Course](https://docenti.unisa.it/003241/didattica?anno=2023&id=507546&cId=9999-2017&pId=MODULO_3*RESTO_0*S1) of Computer Science at University of Salerno.
 
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
